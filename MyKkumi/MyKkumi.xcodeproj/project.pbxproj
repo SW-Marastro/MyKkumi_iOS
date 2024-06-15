@@ -1,0 +1,616 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		D230F9252C1D714C00C43797 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D230F9242C1D714C00C43797 /* AppDelegate.swift */; };
+		D230F9272C1D714C00C43797 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D230F9262C1D714C00C43797 /* SceneDelegate.swift */; };
+		D230F9292C1D714C00C43797 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D230F9282C1D714C00C43797 /* ViewController.swift */; };
+		D230F92C2C1D714C00C43797 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = D230F92B2C1D714C00C43797 /* Base */; };
+		D230F92E2C1D714D00C43797 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D230F92D2C1D714D00C43797 /* Assets.xcassets */; };
+		D230F9312C1D714D00C43797 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = D230F9302C1D714D00C43797 /* Base */; };
+		D230F93C2C1D714E00C43797 /* MyKkumiTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D230F93B2C1D714E00C43797 /* MyKkumiTests.swift */; };
+		D230F9462C1D714E00C43797 /* MyKkumiUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D230F9452C1D714E00C43797 /* MyKkumiUITests.swift */; };
+		D230F9482C1D714E00C43797 /* MyKkumiUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D230F9472C1D714E00C43797 /* MyKkumiUITestsLaunchTests.swift */; };
+		D230F9552C1D721C00C43797 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = D230F9542C1D721C00C43797 /* .gitignore */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		D230F9382C1D714E00C43797 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D230F9192C1D714C00C43797 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D230F9202C1D714C00C43797;
+			remoteInfo = MyKkumi;
+		};
+		D230F9422C1D714E00C43797 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D230F9192C1D714C00C43797 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D230F9202C1D714C00C43797;
+			remoteInfo = MyKkumi;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		D230F9212C1D714C00C43797 /* MyKkumi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyKkumi.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D230F9242C1D714C00C43797 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		D230F9262C1D714C00C43797 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		D230F9282C1D714C00C43797 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		D230F92B2C1D714C00C43797 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		D230F92D2C1D714D00C43797 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		D230F9302C1D714D00C43797 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		D230F9322C1D714D00C43797 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D230F9372C1D714E00C43797 /* MyKkumiTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MyKkumiTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		D230F93B2C1D714E00C43797 /* MyKkumiTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyKkumiTests.swift; sourceTree = "<group>"; };
+		D230F9412C1D714E00C43797 /* MyKkumiUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MyKkumiUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		D230F9452C1D714E00C43797 /* MyKkumiUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyKkumiUITests.swift; sourceTree = "<group>"; };
+		D230F9472C1D714E00C43797 /* MyKkumiUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyKkumiUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		D230F9542C1D721C00C43797 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		D230F91E2C1D714C00C43797 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D230F9342C1D714E00C43797 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D230F93E2C1D714E00C43797 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		D230F9182C1D714C00C43797 = {
+			isa = PBXGroup;
+			children = (
+				D230F9232C1D714C00C43797 /* MyKkumi */,
+				D230F93A2C1D714E00C43797 /* MyKkumiTests */,
+				D230F9442C1D714E00C43797 /* MyKkumiUITests */,
+				D230F9222C1D714C00C43797 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		D230F9222C1D714C00C43797 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D230F9212C1D714C00C43797 /* MyKkumi.app */,
+				D230F9372C1D714E00C43797 /* MyKkumiTests.xctest */,
+				D230F9412C1D714E00C43797 /* MyKkumiUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		D230F9232C1D714C00C43797 /* MyKkumi */ = {
+			isa = PBXGroup;
+			children = (
+				D230F9242C1D714C00C43797 /* AppDelegate.swift */,
+				D230F9262C1D714C00C43797 /* SceneDelegate.swift */,
+				D230F9282C1D714C00C43797 /* ViewController.swift */,
+				D230F92A2C1D714C00C43797 /* Main.storyboard */,
+				D230F9542C1D721C00C43797 /* .gitignore */,
+				D230F92D2C1D714D00C43797 /* Assets.xcassets */,
+				D230F92F2C1D714D00C43797 /* LaunchScreen.storyboard */,
+				D230F9322C1D714D00C43797 /* Info.plist */,
+			);
+			path = MyKkumi;
+			sourceTree = "<group>";
+		};
+		D230F93A2C1D714E00C43797 /* MyKkumiTests */ = {
+			isa = PBXGroup;
+			children = (
+				D230F93B2C1D714E00C43797 /* MyKkumiTests.swift */,
+			);
+			path = MyKkumiTests;
+			sourceTree = "<group>";
+		};
+		D230F9442C1D714E00C43797 /* MyKkumiUITests */ = {
+			isa = PBXGroup;
+			children = (
+				D230F9452C1D714E00C43797 /* MyKkumiUITests.swift */,
+				D230F9472C1D714E00C43797 /* MyKkumiUITestsLaunchTests.swift */,
+			);
+			path = MyKkumiUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		D230F9202C1D714C00C43797 /* MyKkumi */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D230F94B2C1D714E00C43797 /* Build configuration list for PBXNativeTarget "MyKkumi" */;
+			buildPhases = (
+				D230F91D2C1D714C00C43797 /* Sources */,
+				D230F91E2C1D714C00C43797 /* Frameworks */,
+				D230F91F2C1D714C00C43797 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MyKkumi;
+			productName = MyKkumi;
+			productReference = D230F9212C1D714C00C43797 /* MyKkumi.app */;
+			productType = "com.apple.product-type.application";
+		};
+		D230F9362C1D714E00C43797 /* MyKkumiTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D230F94E2C1D714E00C43797 /* Build configuration list for PBXNativeTarget "MyKkumiTests" */;
+			buildPhases = (
+				D230F9332C1D714E00C43797 /* Sources */,
+				D230F9342C1D714E00C43797 /* Frameworks */,
+				D230F9352C1D714E00C43797 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D230F9392C1D714E00C43797 /* PBXTargetDependency */,
+			);
+			name = MyKkumiTests;
+			productName = MyKkumiTests;
+			productReference = D230F9372C1D714E00C43797 /* MyKkumiTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		D230F9402C1D714E00C43797 /* MyKkumiUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D230F9512C1D714E00C43797 /* Build configuration list for PBXNativeTarget "MyKkumiUITests" */;
+			buildPhases = (
+				D230F93D2C1D714E00C43797 /* Sources */,
+				D230F93E2C1D714E00C43797 /* Frameworks */,
+				D230F93F2C1D714E00C43797 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D230F9432C1D714E00C43797 /* PBXTargetDependency */,
+			);
+			name = MyKkumiUITests;
+			productName = MyKkumiUITests;
+			productReference = D230F9412C1D714E00C43797 /* MyKkumiUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		D230F9192C1D714C00C43797 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1540;
+				LastUpgradeCheck = 1540;
+				TargetAttributes = {
+					D230F9202C1D714C00C43797 = {
+						CreatedOnToolsVersion = 15.4;
+					};
+					D230F9362C1D714E00C43797 = {
+						CreatedOnToolsVersion = 15.4;
+						TestTargetID = D230F9202C1D714C00C43797;
+					};
+					D230F9402C1D714E00C43797 = {
+						CreatedOnToolsVersion = 15.4;
+						TestTargetID = D230F9202C1D714C00C43797;
+					};
+				};
+			};
+			buildConfigurationList = D230F91C2C1D714C00C43797 /* Build configuration list for PBXProject "MyKkumi" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = D230F9182C1D714C00C43797;
+			productRefGroup = D230F9222C1D714C00C43797 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				D230F9202C1D714C00C43797 /* MyKkumi */,
+				D230F9362C1D714E00C43797 /* MyKkumiTests */,
+				D230F9402C1D714E00C43797 /* MyKkumiUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		D230F91F2C1D714C00C43797 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D230F9552C1D721C00C43797 /* .gitignore in Resources */,
+				D230F92E2C1D714D00C43797 /* Assets.xcassets in Resources */,
+				D230F9312C1D714D00C43797 /* Base in Resources */,
+				D230F92C2C1D714C00C43797 /* Base in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D230F9352C1D714E00C43797 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D230F93F2C1D714E00C43797 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		D230F91D2C1D714C00C43797 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D230F9292C1D714C00C43797 /* ViewController.swift in Sources */,
+				D230F9252C1D714C00C43797 /* AppDelegate.swift in Sources */,
+				D230F9272C1D714C00C43797 /* SceneDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D230F9332C1D714E00C43797 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D230F93C2C1D714E00C43797 /* MyKkumiTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D230F93D2C1D714E00C43797 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D230F9482C1D714E00C43797 /* MyKkumiUITestsLaunchTests.swift in Sources */,
+				D230F9462C1D714E00C43797 /* MyKkumiUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		D230F9392C1D714E00C43797 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D230F9202C1D714C00C43797 /* MyKkumi */;
+			targetProxy = D230F9382C1D714E00C43797 /* PBXContainerItemProxy */;
+		};
+		D230F9432C1D714E00C43797 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D230F9202C1D714C00C43797 /* MyKkumi */;
+			targetProxy = D230F9422C1D714E00C43797 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		D230F92A2C1D714C00C43797 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D230F92B2C1D714C00C43797 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		D230F92F2C1D714D00C43797 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D230F9302C1D714D00C43797 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		D230F9492C1D714E00C43797 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		D230F94A2C1D714E00C43797 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		D230F94C2C1D714E00C43797 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = FHYRWZCT6D;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = MyKkumi/Info.plist;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.MyKkumi.MyKkumi;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		D230F94D2C1D714E00C43797 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = FHYRWZCT6D;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = MyKkumi/Info.plist;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.MyKkumi.MyKkumi;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		D230F94F2C1D714E00C43797 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = FHYRWZCT6D;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.MyKkumi.MyKkumiTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MyKkumi.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/MyKkumi";
+			};
+			name = Debug;
+		};
+		D230F9502C1D714E00C43797 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = FHYRWZCT6D;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.MyKkumi.MyKkumiTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MyKkumi.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/MyKkumi";
+			};
+			name = Release;
+		};
+		D230F9522C1D714E00C43797 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = FHYRWZCT6D;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.MyKkumi.MyKkumiUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = MyKkumi;
+			};
+			name = Debug;
+		};
+		D230F9532C1D714E00C43797 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = FHYRWZCT6D;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.MyKkumi.MyKkumiUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = MyKkumi;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		D230F91C2C1D714C00C43797 /* Build configuration list for PBXProject "MyKkumi" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D230F9492C1D714E00C43797 /* Debug */,
+				D230F94A2C1D714E00C43797 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D230F94B2C1D714E00C43797 /* Build configuration list for PBXNativeTarget "MyKkumi" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D230F94C2C1D714E00C43797 /* Debug */,
+				D230F94D2C1D714E00C43797 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D230F94E2C1D714E00C43797 /* Build configuration list for PBXNativeTarget "MyKkumiTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D230F94F2C1D714E00C43797 /* Debug */,
+				D230F9502C1D714E00C43797 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D230F9512C1D714E00C43797 /* Build configuration list for PBXNativeTarget "MyKkumiUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D230F9522C1D714E00C43797 /* Debug */,
+				D230F9532C1D714E00C43797 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = D230F9192C1D714C00C43797 /* Project object */;
+}
