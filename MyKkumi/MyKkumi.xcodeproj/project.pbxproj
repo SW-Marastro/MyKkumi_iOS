@@ -13,13 +13,13 @@
 		D230F9252C1D714C00C43797 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D230F9242C1D714C00C43797 /* AppDelegate.swift */; };
 		D230F9272C1D714C00C43797 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D230F9262C1D714C00C43797 /* SceneDelegate.swift */; };
 		D230F9292C1D714C00C43797 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D230F9282C1D714C00C43797 /* ViewController.swift */; };
-		D230F92C2C1D714C00C43797 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = D230F92B2C1D714C00C43797 /* Base */; };
 		D230F92E2C1D714D00C43797 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D230F92D2C1D714D00C43797 /* Assets.xcassets */; };
-		D230F9312C1D714D00C43797 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = D230F9302C1D714D00C43797 /* Base */; };
 		D230F93C2C1D714E00C43797 /* MyKkumiTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D230F93B2C1D714E00C43797 /* MyKkumiTests.swift */; };
 		D230F9462C1D714E00C43797 /* MyKkumiUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D230F9452C1D714E00C43797 /* MyKkumiUITests.swift */; };
 		D230F9482C1D714E00C43797 /* MyKkumiUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D230F9472C1D714E00C43797 /* MyKkumiUITestsLaunchTests.swift */; };
 		D230F9552C1D721C00C43797 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = D230F9542C1D721C00C43797 /* .gitignore */; };
+		D2E4594F2C1DB41500DB0756 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D2E4594E2C1DB41500DB0756 /* LaunchScreen.storyboard */; };
+		D2E459542C1E1A6300DB0756 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2E459532C1E1A6300DB0756 /* ViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,9 +50,7 @@
 		D230F9242C1D714C00C43797 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D230F9262C1D714C00C43797 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		D230F9282C1D714C00C43797 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		D230F92B2C1D714C00C43797 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		D230F92D2C1D714D00C43797 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		D230F9302C1D714D00C43797 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D230F9322C1D714D00C43797 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D230F9372C1D714E00C43797 /* MyKkumiTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MyKkumiTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D230F93B2C1D714E00C43797 /* MyKkumiTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyKkumiTests.swift; sourceTree = "<group>"; };
@@ -60,6 +58,8 @@
 		D230F9452C1D714E00C43797 /* MyKkumiUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyKkumiUITests.swift; sourceTree = "<group>"; };
 		D230F9472C1D714E00C43797 /* MyKkumiUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyKkumiUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		D230F9542C1D721C00C43797 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		D2E4594E2C1DB41500DB0756 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		D2E459532C1E1A6300DB0756 /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
 		DD509B30BF78F2EF18546CC5 /* Pods-MyKkumiTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyKkumiTests.debug.xcconfig"; path = "Target Support Files/Pods-MyKkumiTests/Pods-MyKkumiTests.debug.xcconfig"; sourceTree = "<group>"; };
 		F6DC5A17030EFC69F83EACBA /* Pods-MyKkumi.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyKkumi.release.xcconfig"; path = "Target Support Files/Pods-MyKkumi/Pods-MyKkumi.release.xcconfig"; sourceTree = "<group>"; };
 		FC2461C807CEF6A2AC1EB837 /* Pods-MyKkumi-MyKkumiUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyKkumi-MyKkumiUITests.debug.xcconfig"; path = "Target Support Files/Pods-MyKkumi-MyKkumiUITests/Pods-MyKkumi-MyKkumiUITests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -113,7 +113,6 @@
 				DD509B30BF78F2EF18546CC5 /* Pods-MyKkumiTests.debug.xcconfig */,
 				06175985FB43C015630DA014 /* Pods-MyKkumiTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -142,14 +141,14 @@
 		D230F9232C1D714C00C43797 /* MyKkumi */ = {
 			isa = PBXGroup;
 			children = (
-				D230F9242C1D714C00C43797 /* AppDelegate.swift */,
-				D230F9262C1D714C00C43797 /* SceneDelegate.swift */,
-				D230F9282C1D714C00C43797 /* ViewController.swift */,
-				D230F92A2C1D714C00C43797 /* Main.storyboard */,
+				D2E459502C1E140400DB0756 /* Resources */,
+				D2E4594D2C1DB20A00DB0756 /* Presentation */,
+				D2E4594C2C1DB20500DB0756 /* Domain */,
+				D2E4594B2C1DB20000DB0756 /* Data */,
+				D2E4594A2C1DB1F900DB0756 /* CommonUI */,
+				D2E459492C1DB1C800DB0756 /* Common */,
+				D2E459482C1DB1C000DB0756 /* App */,
 				D230F9542C1D721C00C43797 /* .gitignore */,
-				D230F92D2C1D714D00C43797 /* Assets.xcassets */,
-				D230F92F2C1D714D00C43797 /* LaunchScreen.storyboard */,
-				D230F9322C1D714D00C43797 /* Info.plist */,
 			);
 			path = MyKkumi;
 			sourceTree = "<group>";
@@ -169,6 +168,78 @@
 				D230F9472C1D714E00C43797 /* MyKkumiUITestsLaunchTests.swift */,
 			);
 			path = MyKkumiUITests;
+			sourceTree = "<group>";
+		};
+		D2E459482C1DB1C000DB0756 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				D230F9242C1D714C00C43797 /* AppDelegate.swift */,
+				D230F9262C1D714C00C43797 /* SceneDelegate.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		D2E459492C1DB1C800DB0756 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		D2E4594A2C1DB1F900DB0756 /* CommonUI */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = CommonUI;
+			sourceTree = "<group>";
+		};
+		D2E4594B2C1DB20000DB0756 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+		D2E4594C2C1DB20500DB0756 /* Domain */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Domain;
+			sourceTree = "<group>";
+		};
+		D2E4594D2C1DB20A00DB0756 /* Presentation */ = {
+			isa = PBXGroup;
+			children = (
+				D2E459512C1E144200DB0756 /* Basic */,
+			);
+			path = Presentation;
+			sourceTree = "<group>";
+		};
+		D2E459502C1E140400DB0756 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				D230F92D2C1D714D00C43797 /* Assets.xcassets */,
+				D230F9322C1D714D00C43797 /* Info.plist */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		D2E459512C1E144200DB0756 /* Basic */ = {
+			isa = PBXGroup;
+			children = (
+				D2E459522C1E1A4600DB0756 /* ExampleView */,
+				D2E4594E2C1DB41500DB0756 /* LaunchScreen.storyboard */,
+			);
+			path = Basic;
+			sourceTree = "<group>";
+		};
+		D2E459522C1E1A4600DB0756 /* ExampleView */ = {
+			isa = PBXGroup;
+			children = (
+				D230F9282C1D714C00C43797 /* ViewController.swift */,
+				D2E459532C1E1A6300DB0756 /* ViewModel.swift */,
+			);
+			path = ExampleView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -280,10 +351,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D2E4594F2C1DB41500DB0756 /* LaunchScreen.storyboard in Resources */,
 				D230F9552C1D721C00C43797 /* .gitignore in Resources */,
 				D230F92E2C1D714D00C43797 /* Assets.xcassets in Resources */,
-				D230F9312C1D714D00C43797 /* Base in Resources */,
-				D230F92C2C1D714C00C43797 /* Base in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -413,6 +483,7 @@
 			files = (
 				D230F9292C1D714C00C43797 /* ViewController.swift in Sources */,
 				D230F9252C1D714C00C43797 /* AppDelegate.swift in Sources */,
+				D2E459542C1E1A6300DB0756 /* ViewModel.swift in Sources */,
 				D230F9272C1D714C00C43797 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -448,25 +519,6 @@
 			targetProxy = D230F9422C1D714E00C43797 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
-
-/* Begin PBXVariantGroup section */
-		D230F92A2C1D714C00C43797 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				D230F92B2C1D714C00C43797 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		D230F92F2C1D714D00C43797 /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				D230F9302C1D714D00C43797 /* Base */,
-			);
-			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		D230F9492C1D714E00C43797 /* Debug */ = {
@@ -597,13 +649,14 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = FHYRWZCT6D;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = MyKkumi/Info.plist;
+				INFOPLIST_FILE = MyKkumi/Resources/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -626,13 +679,14 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = FHYRWZCT6D;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = MyKkumi/Info.plist;
+				INFOPLIST_FILE = MyKkumi/Resources/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
