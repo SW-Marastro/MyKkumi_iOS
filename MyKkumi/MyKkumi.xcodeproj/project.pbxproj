@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2EBDF12C48E4FB6E383A9E9A /* Pods_MyKkumi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A547AF2DE94455B170A30B21 /* Pods_MyKkumi.framework */; };
+		C7A6261FFAE1D0CA5DC9569A /* Pods_MyKkumiTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0BF70C9C9B019E1CDAB0985C /* Pods_MyKkumiTests.framework */; };
+		CEE63EDF48E74F388F0DB9F5 /* Pods_MyKkumi_MyKkumiUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07DFB17D7AB07B56C790B172 /* Pods_MyKkumi_MyKkumiUITests.framework */; };
 		D230F9252C1D714C00C43797 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D230F9242C1D714C00C43797 /* AppDelegate.swift */; };
 		D230F9272C1D714C00C43797 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D230F9262C1D714C00C43797 /* SceneDelegate.swift */; };
 		D230F9292C1D714C00C43797 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D230F9282C1D714C00C43797 /* ViewController.swift */; };
@@ -37,6 +40,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		06175985FB43C015630DA014 /* Pods-MyKkumiTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyKkumiTests.release.xcconfig"; path = "Target Support Files/Pods-MyKkumiTests/Pods-MyKkumiTests.release.xcconfig"; sourceTree = "<group>"; };
+		07DFB17D7AB07B56C790B172 /* Pods_MyKkumi_MyKkumiUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MyKkumi_MyKkumiUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		0BF70C9C9B019E1CDAB0985C /* Pods_MyKkumiTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MyKkumiTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		3DC498AE771C65151C848D34 /* Pods-MyKkumi.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyKkumi.debug.xcconfig"; path = "Target Support Files/Pods-MyKkumi/Pods-MyKkumi.debug.xcconfig"; sourceTree = "<group>"; };
+		41C962447B851B4C15F4BDA8 /* Pods-MyKkumi-MyKkumiUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyKkumi-MyKkumiUITests.release.xcconfig"; path = "Target Support Files/Pods-MyKkumi-MyKkumiUITests/Pods-MyKkumi-MyKkumiUITests.release.xcconfig"; sourceTree = "<group>"; };
+		A547AF2DE94455B170A30B21 /* Pods_MyKkumi.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MyKkumi.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D230F9212C1D714C00C43797 /* MyKkumi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyKkumi.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D230F9242C1D714C00C43797 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D230F9262C1D714C00C43797 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -51,6 +60,9 @@
 		D230F9452C1D714E00C43797 /* MyKkumiUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyKkumiUITests.swift; sourceTree = "<group>"; };
 		D230F9472C1D714E00C43797 /* MyKkumiUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyKkumiUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		D230F9542C1D721C00C43797 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		DD509B30BF78F2EF18546CC5 /* Pods-MyKkumiTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyKkumiTests.debug.xcconfig"; path = "Target Support Files/Pods-MyKkumiTests/Pods-MyKkumiTests.debug.xcconfig"; sourceTree = "<group>"; };
+		F6DC5A17030EFC69F83EACBA /* Pods-MyKkumi.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyKkumi.release.xcconfig"; path = "Target Support Files/Pods-MyKkumi/Pods-MyKkumi.release.xcconfig"; sourceTree = "<group>"; };
+		FC2461C807CEF6A2AC1EB837 /* Pods-MyKkumi-MyKkumiUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyKkumi-MyKkumiUITests.debug.xcconfig"; path = "Target Support Files/Pods-MyKkumi-MyKkumiUITests/Pods-MyKkumi-MyKkumiUITests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +70,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2EBDF12C48E4FB6E383A9E9A /* Pods_MyKkumi.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +78,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C7A6261FFAE1D0CA5DC9569A /* Pods_MyKkumiTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -72,12 +86,37 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CEE63EDF48E74F388F0DB9F5 /* Pods_MyKkumi_MyKkumiUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8391B1094354BAA0A203431C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				A547AF2DE94455B170A30B21 /* Pods_MyKkumi.framework */,
+				07DFB17D7AB07B56C790B172 /* Pods_MyKkumi_MyKkumiUITests.framework */,
+				0BF70C9C9B019E1CDAB0985C /* Pods_MyKkumiTests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		D07E5E3D78402DE1A804A4E1 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				3DC498AE771C65151C848D34 /* Pods-MyKkumi.debug.xcconfig */,
+				F6DC5A17030EFC69F83EACBA /* Pods-MyKkumi.release.xcconfig */,
+				FC2461C807CEF6A2AC1EB837 /* Pods-MyKkumi-MyKkumiUITests.debug.xcconfig */,
+				41C962447B851B4C15F4BDA8 /* Pods-MyKkumi-MyKkumiUITests.release.xcconfig */,
+				DD509B30BF78F2EF18546CC5 /* Pods-MyKkumiTests.debug.xcconfig */,
+				06175985FB43C015630DA014 /* Pods-MyKkumiTests.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		D230F9182C1D714C00C43797 = {
 			isa = PBXGroup;
 			children = (
@@ -85,6 +124,8 @@
 				D230F93A2C1D714E00C43797 /* MyKkumiTests */,
 				D230F9442C1D714E00C43797 /* MyKkumiUITests */,
 				D230F9222C1D714C00C43797 /* Products */,
+				D07E5E3D78402DE1A804A4E1 /* Pods */,
+				8391B1094354BAA0A203431C /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -137,9 +178,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = D230F94B2C1D714E00C43797 /* Build configuration list for PBXNativeTarget "MyKkumi" */;
 			buildPhases = (
+				BE75B2B8C0BF4C80328B643F /* [CP] Check Pods Manifest.lock */,
 				D230F91D2C1D714C00C43797 /* Sources */,
 				D230F91E2C1D714C00C43797 /* Frameworks */,
 				D230F91F2C1D714C00C43797 /* Resources */,
+				2AC53148F3F26C0A4590FC53 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -154,6 +197,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = D230F94E2C1D714E00C43797 /* Build configuration list for PBXNativeTarget "MyKkumiTests" */;
 			buildPhases = (
+				8D3D19025A0EFAABF134E1C3 /* [CP] Check Pods Manifest.lock */,
 				D230F9332C1D714E00C43797 /* Sources */,
 				D230F9342C1D714E00C43797 /* Frameworks */,
 				D230F9352C1D714E00C43797 /* Resources */,
@@ -172,9 +216,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = D230F9512C1D714E00C43797 /* Build configuration list for PBXNativeTarget "MyKkumiUITests" */;
 			buildPhases = (
+				B10C5A2776D481A25807A57F /* [CP] Check Pods Manifest.lock */,
 				D230F93D2C1D714E00C43797 /* Sources */,
 				D230F93E2C1D714E00C43797 /* Frameworks */,
 				D230F93F2C1D714E00C43797 /* Resources */,
+				4EE165852DFC036B3B8FD592 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -256,6 +302,109 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		2AC53148F3F26C0A4590FC53 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-MyKkumi/Pods-MyKkumi-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-MyKkumi/Pods-MyKkumi-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MyKkumi/Pods-MyKkumi-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		4EE165852DFC036B3B8FD592 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-MyKkumi-MyKkumiUITests/Pods-MyKkumi-MyKkumiUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-MyKkumi-MyKkumiUITests/Pods-MyKkumi-MyKkumiUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MyKkumi-MyKkumiUITests/Pods-MyKkumi-MyKkumiUITests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		8D3D19025A0EFAABF134E1C3 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-MyKkumiTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		B10C5A2776D481A25807A57F /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-MyKkumi-MyKkumiUITests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		BE75B2B8C0BF4C80328B643F /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-MyKkumi-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		D230F91D2C1D714C00C43797 /* Sources */ = {
@@ -441,6 +590,7 @@
 		};
 		D230F94C2C1D714E00C43797 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3DC498AE771C65151C848D34 /* Pods-MyKkumi.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -469,6 +619,7 @@
 		};
 		D230F94D2C1D714E00C43797 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F6DC5A17030EFC69F83EACBA /* Pods-MyKkumi.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -497,6 +648,7 @@
 		};
 		D230F94F2C1D714E00C43797 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = DD509B30BF78F2EF18546CC5 /* Pods-MyKkumiTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -517,6 +669,7 @@
 		};
 		D230F9502C1D714E00C43797 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 06175985FB43C015630DA014 /* Pods-MyKkumiTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -537,6 +690,7 @@
 		};
 		D230F9522C1D714E00C43797 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FC2461C807CEF6A2AC1EB837 /* Pods-MyKkumi-MyKkumiUITests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -555,6 +709,7 @@
 		};
 		D230F9532C1D714E00C43797 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 41C962447B851B4C15F4BDA8 /* Pods-MyKkumi-MyKkumiUITests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
