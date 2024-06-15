@@ -20,6 +20,10 @@
 		D230F9552C1D721C00C43797 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = D230F9542C1D721C00C43797 /* .gitignore */; };
 		D2E4594F2C1DB41500DB0756 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D2E4594E2C1DB41500DB0756 /* LaunchScreen.storyboard */; };
 		D2E459542C1E1A6300DB0756 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2E459532C1E1A6300DB0756 /* ViewModel.swift */; };
+		D2E459562C1E380600DB0756 /* BasicDomain.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2E459552C1E380600DB0756 /* BasicDomain.swift */; };
+		D2E459582C1E381A00DB0756 /* BasicData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2E459572C1E381A00DB0756 /* BasicData.swift */; };
+		D2E4595A2C1E382900DB0756 /* BasicCommonUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2E459592C1E382900DB0756 /* BasicCommonUI.swift */; };
+		D2E4595C2C1E383D00DB0756 /* BasicCommon.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2E4595B2C1E383D00DB0756 /* BasicCommon.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -60,6 +64,10 @@
 		D230F9542C1D721C00C43797 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		D2E4594E2C1DB41500DB0756 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D2E459532C1E1A6300DB0756 /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
+		D2E459552C1E380600DB0756 /* BasicDomain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicDomain.swift; sourceTree = "<group>"; };
+		D2E459572C1E381A00DB0756 /* BasicData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicData.swift; sourceTree = "<group>"; };
+		D2E459592C1E382900DB0756 /* BasicCommonUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicCommonUI.swift; sourceTree = "<group>"; };
+		D2E4595B2C1E383D00DB0756 /* BasicCommon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicCommon.swift; sourceTree = "<group>"; };
 		DD509B30BF78F2EF18546CC5 /* Pods-MyKkumiTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyKkumiTests.debug.xcconfig"; path = "Target Support Files/Pods-MyKkumiTests/Pods-MyKkumiTests.debug.xcconfig"; sourceTree = "<group>"; };
 		F6DC5A17030EFC69F83EACBA /* Pods-MyKkumi.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyKkumi.release.xcconfig"; path = "Target Support Files/Pods-MyKkumi/Pods-MyKkumi.release.xcconfig"; sourceTree = "<group>"; };
 		FC2461C807CEF6A2AC1EB837 /* Pods-MyKkumi-MyKkumiUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyKkumi-MyKkumiUITests.debug.xcconfig"; path = "Target Support Files/Pods-MyKkumi-MyKkumiUITests/Pods-MyKkumi-MyKkumiUITests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -182,6 +190,7 @@
 		D2E459492C1DB1C800DB0756 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				D2E4595B2C1E383D00DB0756 /* BasicCommon.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -189,6 +198,7 @@
 		D2E4594A2C1DB1F900DB0756 /* CommonUI */ = {
 			isa = PBXGroup;
 			children = (
+				D2E459592C1E382900DB0756 /* BasicCommonUI.swift */,
 			);
 			path = CommonUI;
 			sourceTree = "<group>";
@@ -196,6 +206,7 @@
 		D2E4594B2C1DB20000DB0756 /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				D2E459572C1E381A00DB0756 /* BasicData.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -203,6 +214,7 @@
 		D2E4594C2C1DB20500DB0756 /* Domain */ = {
 			isa = PBXGroup;
 			children = (
+				D2E459552C1E380600DB0756 /* BasicDomain.swift */,
 			);
 			path = Domain;
 			sourceTree = "<group>";
@@ -483,8 +495,12 @@
 			files = (
 				D230F9292C1D714C00C43797 /* ViewController.swift in Sources */,
 				D230F9252C1D714C00C43797 /* AppDelegate.swift in Sources */,
+				D2E4595A2C1E382900DB0756 /* BasicCommonUI.swift in Sources */,
+				D2E459582C1E381A00DB0756 /* BasicData.swift in Sources */,
 				D2E459542C1E1A6300DB0756 /* ViewModel.swift in Sources */,
+				D2E459562C1E380600DB0756 /* BasicDomain.swift in Sources */,
 				D230F9272C1D714C00C43797 /* SceneDelegate.swift in Sources */,
+				D2E4595C2C1E383D00DB0756 /* BasicCommon.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
