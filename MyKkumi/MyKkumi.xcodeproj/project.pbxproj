@@ -19,6 +19,7 @@
 		D230F9482C1D714E00C43797 /* MyKkumiUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D230F9472C1D714E00C43797 /* MyKkumiUITestsLaunchTests.swift */; };
 		D230F9552C1D721C00C43797 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = D230F9542C1D721C00C43797 /* .gitignore */; };
 		D2E4594F2C1DB41500DB0756 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D2E4594E2C1DB41500DB0756 /* LaunchScreen.storyboard */; };
+		D2E459542C1E1A6300DB0756 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2E459532C1E1A6300DB0756 /* ViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,6 +59,7 @@
 		D230F9472C1D714E00C43797 /* MyKkumiUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyKkumiUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		D230F9542C1D721C00C43797 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		D2E4594E2C1DB41500DB0756 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		D2E459532C1E1A6300DB0756 /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
 		DD509B30BF78F2EF18546CC5 /* Pods-MyKkumiTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyKkumiTests.debug.xcconfig"; path = "Target Support Files/Pods-MyKkumiTests/Pods-MyKkumiTests.debug.xcconfig"; sourceTree = "<group>"; };
 		F6DC5A17030EFC69F83EACBA /* Pods-MyKkumi.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyKkumi.release.xcconfig"; path = "Target Support Files/Pods-MyKkumi/Pods-MyKkumi.release.xcconfig"; sourceTree = "<group>"; };
 		FC2461C807CEF6A2AC1EB837 /* Pods-MyKkumi-MyKkumiUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyKkumi-MyKkumiUITests.debug.xcconfig"; path = "Target Support Files/Pods-MyKkumi-MyKkumiUITests/Pods-MyKkumi-MyKkumiUITests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -225,10 +227,19 @@
 		D2E459512C1E144200DB0756 /* Basic */ = {
 			isa = PBXGroup;
 			children = (
+				D2E459522C1E1A4600DB0756 /* ExampleView */,
 				D2E4594E2C1DB41500DB0756 /* LaunchScreen.storyboard */,
-				D230F9282C1D714C00C43797 /* ViewController.swift */,
 			);
 			path = Basic;
+			sourceTree = "<group>";
+		};
+		D2E459522C1E1A4600DB0756 /* ExampleView */ = {
+			isa = PBXGroup;
+			children = (
+				D230F9282C1D714C00C43797 /* ViewController.swift */,
+				D2E459532C1E1A6300DB0756 /* ViewModel.swift */,
+			);
+			path = ExampleView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -472,6 +483,7 @@
 			files = (
 				D230F9292C1D714C00C43797 /* ViewController.swift in Sources */,
 				D230F9252C1D714C00C43797 /* AppDelegate.swift in Sources */,
+				D2E459542C1E1A6300DB0756 /* ViewModel.swift in Sources */,
 				D230F9272C1D714C00C43797 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
