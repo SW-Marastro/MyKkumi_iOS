@@ -14,16 +14,20 @@ import RxSwift
 private let disposeBag = DisposeBag()
 
 public protocol HelloWordData {
-    var helloWord : PublishSubject<String?> {get}
+    var helloWord : Observable<String?> {get}
     var helloWordDefault : BehaviorSubject<String?> { get }
 }
 
 public class ViewModel :  HelloWordData {
     public init() {
-        self.helloWord = PublishSubject<String?>()
+//        self.helloWord = PublishSubject<String?>()
+        self.helloWord = API.sharedAPI.getHelloworld()
+            .map{$0.title}
+            .catchAndReturn("Error fetching data")
+            .asObservable()
         self.helloWordDefault = BehaviorSubject<String?>(value: "hello world default")
     }
     
-    public var helloWord: PublishSubject<String?>
+    public var helloWord: Observable<String?>
     public var helloWordDefault: BehaviorSubject<String?>
 }

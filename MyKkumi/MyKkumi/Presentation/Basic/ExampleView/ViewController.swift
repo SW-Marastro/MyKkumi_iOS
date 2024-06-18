@@ -29,7 +29,7 @@ class ViewController: UIViewController {
     
     func bindRx() {
         viewModel = ViewModel()
-        viewModel.helloWordDefault
+        viewModel.helloWord
             .asObservable()
             .bind(to: helloWord.rx.text)
             .disposed(by: disposeBag)

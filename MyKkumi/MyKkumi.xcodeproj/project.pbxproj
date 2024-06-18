@@ -10,6 +10,10 @@
 		2EBDF12C48E4FB6E383A9E9A /* Pods_MyKkumi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A547AF2DE94455B170A30B21 /* Pods_MyKkumi.framework */; };
 		C7A6261FFAE1D0CA5DC9569A /* Pods_MyKkumiTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0BF70C9C9B019E1CDAB0985C /* Pods_MyKkumiTests.framework */; };
 		CEE63EDF48E74F388F0DB9F5 /* Pods_MyKkumi_MyKkumiUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07DFB17D7AB07B56C790B172 /* Pods_MyKkumi_MyKkumiUITests.framework */; };
+		D21030602C1FC1900059CACA /* HelloWorld.swift in Sources */ = {isa = PBXBuildFile; fileRef = D210305F2C1FC1900059CACA /* HelloWorld.swift */; };
+		D21030632C2177E90059CACA /* BasicNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = D21030622C2177E90059CACA /* BasicNetwork.swift */; };
+		D21030662C2178530059CACA /* BasicProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D21030652C2178530059CACA /* BasicProtocol.swift */; };
+		D210306D2C21864B0059CACA /* GetTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D210306C2C21864B0059CACA /* GetTitle.swift */; };
 		D230F9252C1D714C00C43797 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D230F9242C1D714C00C43797 /* AppDelegate.swift */; };
 		D230F9272C1D714C00C43797 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D230F9262C1D714C00C43797 /* SceneDelegate.swift */; };
 		D230F9292C1D714C00C43797 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D230F9282C1D714C00C43797 /* ViewController.swift */; };
@@ -50,6 +54,10 @@
 		3DC498AE771C65151C848D34 /* Pods-MyKkumi.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyKkumi.debug.xcconfig"; path = "Target Support Files/Pods-MyKkumi/Pods-MyKkumi.debug.xcconfig"; sourceTree = "<group>"; };
 		41C962447B851B4C15F4BDA8 /* Pods-MyKkumi-MyKkumiUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyKkumi-MyKkumiUITests.release.xcconfig"; path = "Target Support Files/Pods-MyKkumi-MyKkumiUITests/Pods-MyKkumi-MyKkumiUITests.release.xcconfig"; sourceTree = "<group>"; };
 		A547AF2DE94455B170A30B21 /* Pods_MyKkumi.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MyKkumi.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D210305F2C1FC1900059CACA /* HelloWorld.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelloWorld.swift; sourceTree = "<group>"; };
+		D21030622C2177E90059CACA /* BasicNetwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicNetwork.swift; sourceTree = "<group>"; };
+		D21030652C2178530059CACA /* BasicProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicProtocol.swift; sourceTree = "<group>"; };
+		D210306C2C21864B0059CACA /* GetTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetTitle.swift; sourceTree = "<group>"; };
 		D230F9212C1D714C00C43797 /* MyKkumi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyKkumi.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D230F9242C1D714C00C43797 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D230F9262C1D714C00C43797 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -122,6 +130,31 @@
 				06175985FB43C015630DA014 /* Pods-MyKkumiTests.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		D210305E2C1FC1850059CACA /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				D210305F2C1FC1900059CACA /* HelloWorld.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		D21030612C2177C50059CACA /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				D21030622C2177E90059CACA /* BasicNetwork.swift */,
+				D210306C2C21864B0059CACA /* GetTitle.swift */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
+		D21030642C2178220059CACA /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				D21030652C2178530059CACA /* BasicProtocol.swift */,
+			);
+			path = Protocols;
 			sourceTree = "<group>";
 		};
 		D230F9182C1D714C00C43797 = {
@@ -206,6 +239,8 @@
 		D2E4594B2C1DB20000DB0756 /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				D21030642C2178220059CACA /* Protocols */,
+				D21030612C2177C50059CACA /* Network */,
 				D2E459572C1E381A00DB0756 /* BasicData.swift */,
 			);
 			path = Data;
@@ -214,6 +249,7 @@
 		D2E4594C2C1DB20500DB0756 /* Domain */ = {
 			isa = PBXGroup;
 			children = (
+				D210305E2C1FC1850059CACA /* Model */,
 				D2E459552C1E380600DB0756 /* BasicDomain.swift */,
 			);
 			path = Domain;
@@ -327,6 +363,7 @@
 				TargetAttributes = {
 					D230F9202C1D714C00C43797 = {
 						CreatedOnToolsVersion = 15.4;
+						LastSwiftMigration = 1540;
 					};
 					D230F9362C1D714E00C43797 = {
 						CreatedOnToolsVersion = 15.4;
@@ -497,9 +534,13 @@
 				D230F9252C1D714C00C43797 /* AppDelegate.swift in Sources */,
 				D2E4595A2C1E382900DB0756 /* BasicCommonUI.swift in Sources */,
 				D2E459582C1E381A00DB0756 /* BasicData.swift in Sources */,
+				D210306D2C21864B0059CACA /* GetTitle.swift in Sources */,
+				D21030662C2178530059CACA /* BasicProtocol.swift in Sources */,
 				D2E459542C1E1A6300DB0756 /* ViewModel.swift in Sources */,
+				D21030632C2177E90059CACA /* BasicNetwork.swift in Sources */,
 				D2E459562C1E380600DB0756 /* BasicDomain.swift in Sources */,
 				D230F9272C1D714C00C43797 /* SceneDelegate.swift in Sources */,
+				D21030602C1FC1900059CACA /* HelloWorld.swift in Sources */,
 				D2E4595C2C1E383D00DB0756 /* BasicCommon.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -662,9 +703,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = FHYRWZCT6D;
+				DEVELOPMENT_TEAM = Y7GS8T9LGZ;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MyKkumi/Resources/Info.plist;
@@ -681,6 +723,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.MyKkumi.MyKkumi;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -692,9 +735,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = FHYRWZCT6D;
+				DEVELOPMENT_TEAM = Y7GS8T9LGZ;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MyKkumi/Resources/Info.plist;
