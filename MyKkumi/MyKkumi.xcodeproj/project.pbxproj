@@ -21,7 +21,6 @@
 		D230F93C2C1D714E00C43797 /* MyKkumiTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D230F93B2C1D714E00C43797 /* MyKkumiTests.swift */; };
 		D230F9462C1D714E00C43797 /* MyKkumiUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D230F9452C1D714E00C43797 /* MyKkumiUITests.swift */; };
 		D230F9482C1D714E00C43797 /* MyKkumiUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D230F9472C1D714E00C43797 /* MyKkumiUITestsLaunchTests.swift */; };
-		D230F9552C1D721C00C43797 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = D230F9542C1D721C00C43797 /* .gitignore */; };
 		D2E4594F2C1DB41500DB0756 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D2E4594E2C1DB41500DB0756 /* LaunchScreen.storyboard */; };
 		D2E459542C1E1A6300DB0756 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2E459532C1E1A6300DB0756 /* ViewModel.swift */; };
 		D2E459562C1E380600DB0756 /* BasicDomain.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2E459552C1E380600DB0756 /* BasicDomain.swift */; };
@@ -69,7 +68,6 @@
 		D230F9412C1D714E00C43797 /* MyKkumiUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MyKkumiUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D230F9452C1D714E00C43797 /* MyKkumiUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyKkumiUITests.swift; sourceTree = "<group>"; };
 		D230F9472C1D714E00C43797 /* MyKkumiUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyKkumiUITestsLaunchTests.swift; sourceTree = "<group>"; };
-		D230F9542C1D721C00C43797 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		D2E4594E2C1DB41500DB0756 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D2E459532C1E1A6300DB0756 /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
 		D2E459552C1E380600DB0756 /* BasicDomain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicDomain.swift; sourceTree = "<group>"; };
@@ -189,7 +187,6 @@
 				D2E4594A2C1DB1F900DB0756 /* CommonUI */,
 				D2E459492C1DB1C800DB0756 /* Common */,
 				D2E459482C1DB1C000DB0756 /* App */,
-				D230F9542C1D721C00C43797 /* .gitignore */,
 			);
 			path = MyKkumi;
 			sourceTree = "<group>";
@@ -401,7 +398,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				D2E4594F2C1DB41500DB0756 /* LaunchScreen.storyboard in Resources */,
-				D230F9552C1D721C00C43797 /* .gitignore in Resources */,
 				D230F92E2C1D714D00C43797 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
