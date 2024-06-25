@@ -21,10 +21,17 @@
 		D230F93C2C1D714E00C43797 /* MyKkumiTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D230F93B2C1D714E00C43797 /* MyKkumiTests.swift */; };
 		D230F9462C1D714E00C43797 /* MyKkumiUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D230F9452C1D714E00C43797 /* MyKkumiUITests.swift */; };
 		D230F9482C1D714E00C43797 /* MyKkumiUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D230F9472C1D714E00C43797 /* MyKkumiUITestsLaunchTests.swift */; };
+		D2ABCDCB2C2A66350035F7A1 /* BasicUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ABCDCA2C2A66350035F7A1 /* BasicUsecase.swift */; };
+		D2ABCDCE2C2A66910035F7A1 /* BasicRespository.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ABCDCD2C2A66910035F7A1 /* BasicRespository.swift */; };
+		D2ABCDD22C2A68940035F7A1 /* BasicDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ABCDD12C2A68940035F7A1 /* BasicDataSource.swift */; };
+		D2ABCDD42C2A69D10035F7A1 /* BasicRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ABCDD32C2A69D10035F7A1 /* BasicRepository.swift */; };
+		D2ABCDD82C2A6AE10035F7A1 /* BasicAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ABCDD72C2A6AE10035F7A1 /* BasicAssembly.swift */; };
+		D2ABCDDA2C2A6D630035F7A1 /* BasiDataAssemply.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ABCDD92C2A6D630035F7A1 /* BasiDataAssemply.swift */; };
+		D2ABCDDC2C2A6E780035F7A1 /* DependencyInjector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ABCDDB2C2A6E780035F7A1 /* DependencyInjector.swift */; };
+		D2ABCDDE2C2A770E0035F7A1 /* ViewAssemply.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ABCDDD2C2A770E0035F7A1 /* ViewAssemply.swift */; };
 		D2E4594F2C1DB41500DB0756 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D2E4594E2C1DB41500DB0756 /* LaunchScreen.storyboard */; };
 		D2E459542C1E1A6300DB0756 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2E459532C1E1A6300DB0756 /* ViewModel.swift */; };
 		D2E459562C1E380600DB0756 /* BasicDomain.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2E459552C1E380600DB0756 /* BasicDomain.swift */; };
-		D2E459582C1E381A00DB0756 /* BasicData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2E459572C1E381A00DB0756 /* BasicData.swift */; };
 		D2E4595A2C1E382900DB0756 /* BasicCommonUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2E459592C1E382900DB0756 /* BasicCommonUI.swift */; };
 		D2E4595C2C1E383D00DB0756 /* BasicCommon.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2E4595B2C1E383D00DB0756 /* BasicCommon.swift */; };
 /* End PBXBuildFile section */
@@ -68,10 +75,17 @@
 		D230F9412C1D714E00C43797 /* MyKkumiUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MyKkumiUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D230F9452C1D714E00C43797 /* MyKkumiUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyKkumiUITests.swift; sourceTree = "<group>"; };
 		D230F9472C1D714E00C43797 /* MyKkumiUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyKkumiUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		D2ABCDCA2C2A66350035F7A1 /* BasicUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicUsecase.swift; sourceTree = "<group>"; };
+		D2ABCDCD2C2A66910035F7A1 /* BasicRespository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicRespository.swift; sourceTree = "<group>"; };
+		D2ABCDD12C2A68940035F7A1 /* BasicDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicDataSource.swift; sourceTree = "<group>"; };
+		D2ABCDD32C2A69D10035F7A1 /* BasicRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicRepository.swift; sourceTree = "<group>"; };
+		D2ABCDD72C2A6AE10035F7A1 /* BasicAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicAssembly.swift; sourceTree = "<group>"; };
+		D2ABCDD92C2A6D630035F7A1 /* BasiDataAssemply.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasiDataAssemply.swift; sourceTree = "<group>"; };
+		D2ABCDDB2C2A6E780035F7A1 /* DependencyInjector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DependencyInjector.swift; sourceTree = "<group>"; };
+		D2ABCDDD2C2A770E0035F7A1 /* ViewAssemply.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewAssemply.swift; sourceTree = "<group>"; };
 		D2E4594E2C1DB41500DB0756 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D2E459532C1E1A6300DB0756 /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
 		D2E459552C1E380600DB0756 /* BasicDomain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicDomain.swift; sourceTree = "<group>"; };
-		D2E459572C1E381A00DB0756 /* BasicData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicData.swift; sourceTree = "<group>"; };
 		D2E459592C1E382900DB0756 /* BasicCommonUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicCommonUI.swift; sourceTree = "<group>"; };
 		D2E4595B2C1E383D00DB0756 /* BasicCommon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicCommon.swift; sourceTree = "<group>"; };
 		DD509B30BF78F2EF18546CC5 /* Pods-MyKkumiTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyKkumiTests.debug.xcconfig"; path = "Target Support Files/Pods-MyKkumiTests/Pods-MyKkumiTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -133,7 +147,7 @@
 		D210305E2C1FC1850059CACA /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				D210305F2C1FC1900059CACA /* HelloWorld.swift */,
+				D2ABCDC82C2A5C600035F7A1 /* BasicModel */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -208,9 +222,61 @@
 			path = MyKkumiUITests;
 			sourceTree = "<group>";
 		};
+		D2ABCDC82C2A5C600035F7A1 /* BasicModel */ = {
+			isa = PBXGroup;
+			children = (
+				D210305F2C1FC1900059CACA /* HelloWorld.swift */,
+			);
+			path = BasicModel;
+			sourceTree = "<group>";
+		};
+		D2ABCDC92C2A66150035F7A1 /* UseCase */ = {
+			isa = PBXGroup;
+			children = (
+				D2ABCDCA2C2A66350035F7A1 /* BasicUsecase.swift */,
+			);
+			path = UseCase;
+			sourceTree = "<group>";
+		};
+		D2ABCDCC2C2A66680035F7A1 /* RepositoryProtocol */ = {
+			isa = PBXGroup;
+			children = (
+				D2ABCDCD2C2A66910035F7A1 /* BasicRespository.swift */,
+			);
+			path = RepositoryProtocol;
+			sourceTree = "<group>";
+		};
+		D2ABCDCF2C2A68360035F7A1 /* DataSource */ = {
+			isa = PBXGroup;
+			children = (
+				D2ABCDD12C2A68940035F7A1 /* BasicDataSource.swift */,
+			);
+			path = DataSource;
+			sourceTree = "<group>";
+		};
+		D2ABCDD02C2A683D0035F7A1 /* Repository */ = {
+			isa = PBXGroup;
+			children = (
+				D2ABCDD32C2A69D10035F7A1 /* BasicRepository.swift */,
+			);
+			path = Repository;
+			sourceTree = "<group>";
+		};
+		D2ABCDD52C2A6AAD0035F7A1 /* DI */ = {
+			isa = PBXGroup;
+			children = (
+				D2ABCDD72C2A6AE10035F7A1 /* BasicAssembly.swift */,
+				D2ABCDD92C2A6D630035F7A1 /* BasiDataAssemply.swift */,
+				D2ABCDDB2C2A6E780035F7A1 /* DependencyInjector.swift */,
+				D2ABCDDD2C2A770E0035F7A1 /* ViewAssemply.swift */,
+			);
+			path = DI;
+			sourceTree = "<group>";
+		};
 		D2E459482C1DB1C000DB0756 /* App */ = {
 			isa = PBXGroup;
 			children = (
+				D2ABCDD52C2A6AAD0035F7A1 /* DI */,
 				D230F9242C1D714C00C43797 /* AppDelegate.swift */,
 				D230F9262C1D714C00C43797 /* SceneDelegate.swift */,
 			);
@@ -236,9 +302,10 @@
 		D2E4594B2C1DB20000DB0756 /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				D2ABCDD02C2A683D0035F7A1 /* Repository */,
+				D2ABCDCF2C2A68360035F7A1 /* DataSource */,
 				D21030642C2178220059CACA /* Protocols */,
 				D21030612C2177C50059CACA /* Network */,
-				D2E459572C1E381A00DB0756 /* BasicData.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -246,6 +313,8 @@
 		D2E4594C2C1DB20500DB0756 /* Domain */ = {
 			isa = PBXGroup;
 			children = (
+				D2ABCDCC2C2A66680035F7A1 /* RepositoryProtocol */,
+				D2ABCDC92C2A66150035F7A1 /* UseCase */,
 				D210305E2C1FC1850059CACA /* Model */,
 				D2E459552C1E380600DB0756 /* BasicDomain.swift */,
 			);
@@ -528,16 +597,23 @@
 			files = (
 				D230F9292C1D714C00C43797 /* ViewController.swift in Sources */,
 				D230F9252C1D714C00C43797 /* AppDelegate.swift in Sources */,
+				D2ABCDDA2C2A6D630035F7A1 /* BasiDataAssemply.swift in Sources */,
+				D2ABCDD22C2A68940035F7A1 /* BasicDataSource.swift in Sources */,
 				D2E4595A2C1E382900DB0756 /* BasicCommonUI.swift in Sources */,
-				D2E459582C1E381A00DB0756 /* BasicData.swift in Sources */,
+				D2ABCDCE2C2A66910035F7A1 /* BasicRespository.swift in Sources */,
+				D2ABCDDE2C2A770E0035F7A1 /* ViewAssemply.swift in Sources */,
+				D2ABCDCB2C2A66350035F7A1 /* BasicUsecase.swift in Sources */,
 				D210306D2C21864B0059CACA /* GetTitle.swift in Sources */,
 				D21030662C2178530059CACA /* BasicProtocol.swift in Sources */,
 				D2E459542C1E1A6300DB0756 /* ViewModel.swift in Sources */,
+				D2ABCDDC2C2A6E780035F7A1 /* DependencyInjector.swift in Sources */,
 				D21030632C2177E90059CACA /* BasicNetwork.swift in Sources */,
 				D2E459562C1E380600DB0756 /* BasicDomain.swift in Sources */,
 				D230F9272C1D714C00C43797 /* SceneDelegate.swift in Sources */,
 				D21030602C1FC1900059CACA /* HelloWorld.swift in Sources */,
 				D2E4595C2C1E383D00DB0756 /* BasicCommon.swift in Sources */,
+				D2ABCDD82C2A6AE10035F7A1 /* BasicAssembly.swift in Sources */,
+				D2ABCDD42C2A69D10035F7A1 /* BasicRepository.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

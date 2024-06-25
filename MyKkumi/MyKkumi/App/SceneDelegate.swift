@@ -6,16 +6,23 @@
 //
 
 import UIKit
+import Swinject
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
-
+    private var injector : Injector = DependencyInjector(container: Container())
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScence = (scene as? UIWindowScene) else { return }
-        window = UIWindow(windowScene: windowScence)
-        window?.rootViewController = ViewController()
+        
+        injector.assemble([BasicAssembly(),
+                          BasicDataAssembly(),
+                          ViewAssembly()])
+        
+        let viewController = injector.resolve(ViewController.self)
+        window = .init(windowScene: windowScence)
+        window?.rootViewController = viewController
         window?.makeKeyAndVisible()
     }
 
