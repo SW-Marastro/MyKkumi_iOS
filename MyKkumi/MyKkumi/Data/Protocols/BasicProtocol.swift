@@ -7,6 +7,7 @@
 
 import Foundation
 import RxSwift
+import Moya
 
 public enum ValidationResult {
     case ok(message : String)
@@ -15,8 +16,13 @@ public enum ValidationResult {
     case failed
 }
 
+public enum HelloWordError : Error {
+    case unknownError
+    case serverError(String)
+}
+
 public protocol BasicAPI {
-    func getHelloworld() -> Single<HelloWorld>
+    func getHelloworld() -> Single<Result<HelloWorld, HelloWordError>>
 }
 
 extension ValidationResult {

@@ -11,7 +11,7 @@ public struct HelloWorld : Codable {
     let title : String?
     
     enum CodingKeys : String, CodingKey {
-        case title = "title"
+        case title
     }
     
     public init(from decoder : Decoder) throws {
