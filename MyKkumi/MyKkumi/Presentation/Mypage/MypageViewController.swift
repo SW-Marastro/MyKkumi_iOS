@@ -6,3 +6,11 @@
 //
 
 import Foundation
+import RxSwift
+
+class MypageViewController : UIViewController {
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = .white
+    }
+}
