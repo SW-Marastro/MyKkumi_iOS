@@ -18,24 +18,25 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         injector.assemble([BasicAssembly(),
                           BasicDataAssembly(),
-                          ViewAssembly()])
+                          ViewAssembly(),
+                          TabBarAssembly()])
         
-        let homeViewController = UINavigationController(rootViewController: HomeViewController())
-                let aroundViewController = UINavigationController(rootViewController: AroundViewController())
-                let shoppingViewController = UINavigationController(rootViewController: ShoppingViewController())
-                let mypageViewController = UINavigationController(rootViewController: MypageViewController())
-                
-                let tabBarController = UITabBarController()
-                tabBarController.setViewControllers([homeViewController, aroundViewController, shoppingViewController, mypageViewController], animated: true)
-                
-                if let items = tabBarController.tabBar.items {
-                    items[0].title = "홈"
-                    
-                    items[1].title = "둘러보기"
-                    
-                    items[2].title = "쇼핑"
-                    
-                    items[3].title = "마이페이지"
+        let homeViewController = UINavigationController(rootViewController: injector.resolve(HomeViewController.self))
+        let aroundViewController = UINavigationController(rootViewController: AroundViewController())
+        let shoppingViewController = UINavigationController(rootViewController: ShoppingViewController())
+        let mypageViewController = UINavigationController(rootViewController: MypageViewController())
+        
+        let tabBarController = UITabBarController()
+        tabBarController.setViewControllers([homeViewController, aroundViewController, shoppingViewController, mypageViewController], animated: true)
+        
+        if let items = tabBarController.tabBar.items {
+            items[0].title = "홈"
+            
+            items[1].title = "둘러보기"
+            
+            items[2].title = "쇼핑"
+            
+            items[3].title = "마이페이지"
                 }
         window = .init(windowScene: windowScence)
         window?.rootViewController = tabBarController
