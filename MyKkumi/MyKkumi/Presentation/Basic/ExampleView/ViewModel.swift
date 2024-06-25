@@ -19,25 +19,14 @@ public protocol HelloWordData {
 }
 
 public class ViewModel :  HelloWordData {
-    public init() {
+    private let basicUseCase : BasicUsecase
+    
+    public init(basicUsecase : BasicUsecase) {
+        self.basicUseCase = basicUsecase
         self.buttontaps = PublishSubject<Void>()
         self.helloWord = self.buttontaps
-            .flatMapLatest {
-                return API.sharedAPI.getHelloworld()
-                    .asObservable()
-                    .map{result -> String? in
-                        switch result {
-                        case .success(let helloWrld) :
-                            return helloWrld.title
-                        case .failure(let error):
-                            switch error {
-                            case .serverError(let message) :
-                                return message
-                            case .unknownError :
-                                return "unknown error"
-                            }
-                        }
-                    }
+            .flatMapLatest {_ in
+                basicUsecase.getHelloWorld()
             }
     }
     
