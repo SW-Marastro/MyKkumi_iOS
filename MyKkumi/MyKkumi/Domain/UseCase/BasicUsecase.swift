@@ -9,7 +9,7 @@ import Foundation
 import RxSwift
 
 public protocol BasicUsecase {
-    func getHelloWorld() -> Observable<String?>
+    func getHelloWorld() -> Single<String?>
 }
 
 public final class DefaultBasicUsecase : BasicUsecase {
@@ -19,9 +19,8 @@ public final class DefaultBasicUsecase : BasicUsecase {
         self.repository = repository
     }
     
-    public func getHelloWorld() -> Observable<String?> {
+    public func getHelloWorld() -> Single<String?> {
         return repository.getHelloWorld()
-            .asObservable()
             .map{result -> String? in
                 switch result {
                 case .success(let helloWrld) :

@@ -9,7 +9,7 @@ import UIKit
 import RxSwift
 
 class ViewController: UIViewController {
-    var viewModel : ViewModel
+    var viewModel : HelloWordData
     private let disposeBag = DisposeBag()
     
     private lazy var helloWord : UILabel = {
@@ -45,6 +45,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
         bindRx()
+        layout()
     }
     
     func bindRx() {
@@ -56,7 +57,9 @@ class ViewController: UIViewController {
         hellowordButton.rx.tap
             .bind(to: self.viewModel.buttontaps)
             .disposed(by: disposeBag)
-        
+    }
+    
+    func layout() {
         view.addSubview(helloWord)
         view.addSubview(hellowordButton)
         
