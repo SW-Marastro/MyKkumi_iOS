@@ -2,7 +2,7 @@ import UIKit
 import RxSwift
 
 class HomeViewController: UIViewController {
-    var viewModel: HomeViewModel
+    var viewModel: HomeViewModelProtocol
     private let disposeBag = DisposeBag()
     
     private lazy var hamburgurButton: UIButton = {

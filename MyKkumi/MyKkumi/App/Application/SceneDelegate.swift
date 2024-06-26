@@ -17,11 +17,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScence = (scene as? UIWindowScene) else { return }
         
         injector.assemble([BasicAssembly(),
-                          BasicDataAssembly(),
-                          ViewAssembly(),
-                          TabBarAssembly()])
+                          BasicDataAssembly()])
         
-        let homeViewController = UINavigationController(rootViewController: injector.resolve(HomeViewController.self))
+        let homeViewModel = HomeViewModel()
+        let homeViewController = UINavigationController(rootViewController: HomeViewController(viewModel: homeViewModel))
+        
         let aroundViewController = UINavigationController(rootViewController: AroundViewController())
         let shoppingViewController = UINavigationController(rootViewController: ShoppingViewController())
         let mypageViewController = UINavigationController(rootViewController: MypageViewController())
