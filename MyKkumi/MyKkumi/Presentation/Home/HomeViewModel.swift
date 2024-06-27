@@ -14,9 +14,13 @@ import RxSwift
 private let disposeBag = DisposeBag()
 
 public protocol HomeViewModelProtocol {
-    
+    var images : BehaviorRelay<[String]> { get }
 }
 
 public class HomeViewModel : HomeViewModelProtocol {
+    init() {
+        self.images = BehaviorRelay(value: ["image1", "image2", "image3"])
+    }
     
+    public var images: BehaviorRelay<[String]>
 }

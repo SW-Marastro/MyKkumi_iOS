@@ -15,7 +15,7 @@ public enum BasicTitle {
 }
 
 extension BasicTitle : TargetType {
-    public var baseURL : URL { return URL(string:"http://54.180.214.144:8080/v1")!}
+    public var baseURL : URL { return URL(string:"http://dev.api.mykkumi.com/v1")!}
     
     public var path: String {
         switch self {
