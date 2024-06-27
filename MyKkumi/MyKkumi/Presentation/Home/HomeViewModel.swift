@@ -14,13 +14,49 @@ import RxSwift
 private let disposeBag = DisposeBag()
 
 public protocol HomeViewModelProtocol {
-    var images : BehaviorRelay<[String]> { get }
+    var banners : PublishRelay<[BannerVO]> { get }
+    var bannerTap : PublishSubject<Int> {get} //각 cell이 tap된 경우 어떤 action할지
+    var bannersData : Signal<Result<BannersVO, BannerError>> {get}
+    //var bannerData : Single<Result<BannerVO,BannerError>>{get}
 }
 
 public class HomeViewModel : HomeViewModelProtocol {
-    init() {
-        self.images = BehaviorRelay(value: ["image1", "image2", "image3"])
+    private let bannerUseCase : BannerUsecase
+    
+    public init(bannerUseCase : BannerUsecase) {
+        self.bannerUseCase = bannerUseCase
+        self.banners = PublishRelay<[BannerVO]>()
+        self.bannerTap = PublishSubject<Int>()
+        self.bannersData = bannerUseCase.getBanners()
+            .asSignal(onErrorRecover: { error in
+                if let bannerError = error as? BannerError {
+                    return .just(.failure(bannerError))
+                } else {
+                    let errorVO = ErrorVO(errorCode: "unknown", message: "unknown error", detail: "unknown error")
+                    return .just(.failure(BannerError.unknownError(errorVO)))
+                }
+            })
+        
+        self.bannersData.emit(onNext: { [weak self] result in //이벤트 발생 = emit
+            switch result {//이벤트 발생으로 일어나는 일 -> Images에 값 변경 -> 이걸 view에서 구독??
+            case .success(let bannersVO):
+                let imageUrls = bannersVO.banners.compactMap { $0.imageURL }
+                self?.banners.accept(bannersVO.banners)
+            case .failure(let error):
+                print("Error: \(error)")
+            }
+        }).disposed(by: disposeBag)
+        
+        self.bannerTap
+            .subscribe(onNext : { id in
+                let cellId = String(id)
+                //bannerUseCase.getBanner(cellId)
+            })
+            .disposed(by: disposeBag)
     }
     
-    public var images: BehaviorRelay<[String]>
+    public var banners: PublishRelay<[BannerVO]>
+    public var bannerTap: PublishSubject<Int>
+    public var bannersData: Signal<Result<BannersVO, BannerError>>
+    //public var bannerData : Single<Result<BannerVO,BannerError>>
 }

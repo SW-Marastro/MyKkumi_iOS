@@ -22,6 +22,7 @@ open class BannerCollectionCell : UICollectionViewCell {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
+        imageView.layer.cornerRadius = 10
     }
     
     private func initUI() {

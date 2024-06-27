@@ -153,10 +153,20 @@ class HomeViewController: BaseViewController {
     }
     
     public override func setupBind() {
-        viewModel.images
-            .bind(to: banner.rx.items(cellIdentifier: BannerCollectionCell.cellID, cellType: BannerCollectionCell.self)) {row, element, cell in
-                cell.imageView.image = UIImage(named:element)
+        viewModel.banners
+            .bind(to: banner.rx.items(cellIdentifier: BannerCollectionCell.cellID, cellType: BannerCollectionCell.self)) {row, bannerVO, cell in
+                if let urlString = bannerVO.imageURL {
+                    cell.imageView.load(url: URL(string: urlString)!)
+                }
             }
+            .disposed(by: disposeBag)
+        
+        banner.rx.modelSelected(BannerVO.self)
+            .subscribe(onNext : {[weak self] bannerVO in
+                if let id = bannerVO.id {
+                    self?.viewModel.bannerTap.onNext(id)
+                }
+            })
             .disposed(by: disposeBag)
     }
     
@@ -196,3 +206,5 @@ extension HomeViewController : UICollectionViewDelegateFlowLayout {
         return CGSize(width: collectionView.bounds.width, height: collectionView.bounds.height)
     }
 }
+
+
