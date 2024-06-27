@@ -26,19 +26,31 @@
 		D2ABCDD22C2A68940035F7A1 /* BasicDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ABCDD12C2A68940035F7A1 /* BasicDataSource.swift */; };
 		D2ABCDD42C2A69D10035F7A1 /* BasicRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ABCDD32C2A69D10035F7A1 /* BasicRepository.swift */; };
 		D2ABCDD82C2A6AE10035F7A1 /* BasicAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ABCDD72C2A6AE10035F7A1 /* BasicAssembly.swift */; };
-		D2ABCDDA2C2A6D630035F7A1 /* BasiDataAssemply.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ABCDD92C2A6D630035F7A1 /* BasiDataAssemply.swift */; };
+		D2ABCDDA2C2A6D630035F7A1 /* BasicDataAssemply.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ABCDD92C2A6D630035F7A1 /* BasicDataAssemply.swift */; };
 		D2ABCDDC2C2A6E780035F7A1 /* DependencyInjector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ABCDDB2C2A6E780035F7A1 /* DependencyInjector.swift */; };
-		D2ABCDDE2C2A770E0035F7A1 /* ViewAssemply.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ABCDDD2C2A770E0035F7A1 /* ViewAssemply.swift */; };
 		D2ABCDE52C2A9CED0035F7A1 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ABCDE42C2A9CED0035F7A1 /* HomeViewController.swift */; };
 		D2ABCDE72C2A9D510035F7A1 /* AroundViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ABCDE62C2A9D510035F7A1 /* AroundViewController.swift */; };
 		D2ABCDE92C2A9D6F0035F7A1 /* ShoppingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ABCDE82C2A9D6F0035F7A1 /* ShoppingViewController.swift */; };
 		D2ABCDEB2C2A9D8A0035F7A1 /* MypageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ABCDEA2C2A9D8A0035F7A1 /* MypageViewController.swift */; };
 		D2ABCDED2C2AAEA10035F7A1 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ABCDEC2C2AAEA10035F7A1 /* HomeViewModel.swift */; };
 		D2ABCDF22C2AB5470035F7A1 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ABCDF12C2AB5470035F7A1 /* Colors.swift */; };
-		D2ABCDF52C2AC1440035F7A1 /* TabBarAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ABCDF42C2AC1440035F7A1 /* TabBarAssembly.swift */; };
+		D2ABCDF92C2BE55B0035F7A1 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ABCDF82C2BE55B0035F7A1 /* BaseViewController.swift */; };
+		D2ABCDFD2C2BFE370035F7A1 /* BannerCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ABCDFC2C2BFE370035F7A1 /* BannerCollectionView.swift */; };
+		D2ABCDFF2C2BFF330035F7A1 /* BannerCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ABCDFE2C2BFF330035F7A1 /* BannerCollectionCell.swift */; };
+		D2ABCE012C2C01880035F7A1 /* BannerCollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ABCE002C2C01880035F7A1 /* BannerCollectionViewFlowLayout.swift */; };
+		D2ABCE032C2D1E490035F7A1 /* BannerVO.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ABCE022C2D1E490035F7A1 /* BannerVO.swift */; };
+		D2ABCE062C2D20110035F7A1 /* ErrorVO.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ABCE052C2D20110035F7A1 /* ErrorVO.swift */; };
+		D2ABCE082C2D256B0035F7A1 /* BannerUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ABCE072C2D256B0035F7A1 /* BannerUsecase.swift */; };
+		D2ABCE0A2C2D26430035F7A1 /* BannerRepositoryProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ABCE092C2D26430035F7A1 /* BannerRepositoryProtocol.swift */; };
+		D2ABCE0C2C2D2D6A0035F7A1 /* BannerRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ABCE0B2C2D2D6A0035F7A1 /* BannerRepository.swift */; };
+		D2ABCE0E2C2D2DB10035F7A1 /* BannerDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ABCE0D2C2D2DB10035F7A1 /* BannerDataSource.swift */; };
+		D2ABCE112C2D2E9F0035F7A1 /* Banner.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ABCE102C2D2E9F0035F7A1 /* Banner.swift */; };
+		D2ABCE142C2D2F490035F7A1 /* NetworkConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ABCE132C2D2F490035F7A1 /* NetworkConfiguration.swift */; };
+		D2ABCE162C2D4BF50035F7A1 /* ImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ABCE152C2D4BF50035F7A1 /* ImageExtension.swift */; };
+		D2ABCE182C2D4E370035F7A1 /* DataAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ABCE172C2D4E370035F7A1 /* DataAssembly.swift */; };
+		D2ABCE1A2C2D4F590035F7A1 /* DomainAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ABCE192C2D4F590035F7A1 /* DomainAssembly.swift */; };
 		D2E4594F2C1DB41500DB0756 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D2E4594E2C1DB41500DB0756 /* LaunchScreen.storyboard */; };
 		D2E459542C1E1A6300DB0756 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2E459532C1E1A6300DB0756 /* ViewModel.swift */; };
-		D2E459562C1E380600DB0756 /* BasicDomain.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2E459552C1E380600DB0756 /* BasicDomain.swift */; };
 		D2E4595A2C1E382900DB0756 /* BasicCommonUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2E459592C1E382900DB0756 /* BasicCommonUI.swift */; };
 		D2E4595C2C1E383D00DB0756 /* BasicCommon.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2E4595B2C1E383D00DB0756 /* BasicCommon.swift */; };
 /* End PBXBuildFile section */
@@ -87,19 +99,31 @@
 		D2ABCDD12C2A68940035F7A1 /* BasicDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicDataSource.swift; sourceTree = "<group>"; };
 		D2ABCDD32C2A69D10035F7A1 /* BasicRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicRepository.swift; sourceTree = "<group>"; };
 		D2ABCDD72C2A6AE10035F7A1 /* BasicAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicAssembly.swift; sourceTree = "<group>"; };
-		D2ABCDD92C2A6D630035F7A1 /* BasiDataAssemply.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasiDataAssemply.swift; sourceTree = "<group>"; };
+		D2ABCDD92C2A6D630035F7A1 /* BasicDataAssemply.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicDataAssemply.swift; sourceTree = "<group>"; };
 		D2ABCDDB2C2A6E780035F7A1 /* DependencyInjector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DependencyInjector.swift; sourceTree = "<group>"; };
-		D2ABCDDD2C2A770E0035F7A1 /* ViewAssemply.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewAssemply.swift; sourceTree = "<group>"; };
 		D2ABCDE42C2A9CED0035F7A1 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		D2ABCDE62C2A9D510035F7A1 /* AroundViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AroundViewController.swift; sourceTree = "<group>"; };
 		D2ABCDE82C2A9D6F0035F7A1 /* ShoppingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingViewController.swift; sourceTree = "<group>"; };
 		D2ABCDEA2C2A9D8A0035F7A1 /* MypageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MypageViewController.swift; sourceTree = "<group>"; };
 		D2ABCDEC2C2AAEA10035F7A1 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		D2ABCDF12C2AB5470035F7A1 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
-		D2ABCDF42C2AC1440035F7A1 /* TabBarAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarAssembly.swift; sourceTree = "<group>"; };
+		D2ABCDF82C2BE55B0035F7A1 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
+		D2ABCDFC2C2BFE370035F7A1 /* BannerCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerCollectionView.swift; sourceTree = "<group>"; };
+		D2ABCDFE2C2BFF330035F7A1 /* BannerCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerCollectionCell.swift; sourceTree = "<group>"; };
+		D2ABCE002C2C01880035F7A1 /* BannerCollectionViewFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerCollectionViewFlowLayout.swift; sourceTree = "<group>"; };
+		D2ABCE022C2D1E490035F7A1 /* BannerVO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerVO.swift; sourceTree = "<group>"; };
+		D2ABCE052C2D20110035F7A1 /* ErrorVO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorVO.swift; sourceTree = "<group>"; };
+		D2ABCE072C2D256B0035F7A1 /* BannerUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerUsecase.swift; sourceTree = "<group>"; };
+		D2ABCE092C2D26430035F7A1 /* BannerRepositoryProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerRepositoryProtocol.swift; sourceTree = "<group>"; };
+		D2ABCE0B2C2D2D6A0035F7A1 /* BannerRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerRepository.swift; sourceTree = "<group>"; };
+		D2ABCE0D2C2D2DB10035F7A1 /* BannerDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerDataSource.swift; sourceTree = "<group>"; };
+		D2ABCE102C2D2E9F0035F7A1 /* Banner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Banner.swift; sourceTree = "<group>"; };
+		D2ABCE132C2D2F490035F7A1 /* NetworkConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkConfiguration.swift; sourceTree = "<group>"; };
+		D2ABCE152C2D4BF50035F7A1 /* ImageExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageExtension.swift; sourceTree = "<group>"; };
+		D2ABCE172C2D4E370035F7A1 /* DataAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataAssembly.swift; sourceTree = "<group>"; };
+		D2ABCE192C2D4F590035F7A1 /* DomainAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainAssembly.swift; sourceTree = "<group>"; };
 		D2E4594E2C1DB41500DB0756 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D2E459532C1E1A6300DB0756 /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
-		D2E459552C1E380600DB0756 /* BasicDomain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicDomain.swift; sourceTree = "<group>"; };
 		D2E459592C1E382900DB0756 /* BasicCommonUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicCommonUI.swift; sourceTree = "<group>"; };
 		D2E4595B2C1E383D00DB0756 /* BasicCommon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicCommon.swift; sourceTree = "<group>"; };
 		DD509B30BF78F2EF18546CC5 /* Pods-MyKkumiTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyKkumiTests.debug.xcconfig"; path = "Target Support Files/Pods-MyKkumiTests/Pods-MyKkumiTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -161,6 +185,7 @@
 		D210305E2C1FC1850059CACA /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				D2ABCE042C2D1E4D0035F7A1 /* VO */,
 				D2ABCDC82C2A5C600035F7A1 /* BasicModel */,
 			);
 			path = Model;
@@ -169,8 +194,9 @@
 		D21030612C2177C50059CACA /* Network */ = {
 			isa = PBXGroup;
 			children = (
-				D21030622C2177E90059CACA /* BasicNetwork.swift */,
-				D210306C2C21864B0059CACA /* GetTitle.swift */,
+				D2ABCE122C2D2F2D0035F7A1 /* Basic */,
+				D2ABCE0F2C2D2E920035F7A1 /* Home */,
+				D2ABCE132C2D2F490035F7A1 /* NetworkConfiguration.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -248,6 +274,7 @@
 			isa = PBXGroup;
 			children = (
 				D2ABCDCA2C2A66350035F7A1 /* BasicUsecase.swift */,
+				D2ABCE072C2D256B0035F7A1 /* BannerUsecase.swift */,
 			);
 			path = UseCase;
 			sourceTree = "<group>";
@@ -256,6 +283,7 @@
 			isa = PBXGroup;
 			children = (
 				D2ABCDCD2C2A66910035F7A1 /* BasicRespository.swift */,
+				D2ABCE092C2D26430035F7A1 /* BannerRepositoryProtocol.swift */,
 			);
 			path = RepositoryProtocol;
 			sourceTree = "<group>";
@@ -264,6 +292,7 @@
 			isa = PBXGroup;
 			children = (
 				D2ABCDD12C2A68940035F7A1 /* BasicDataSource.swift */,
+				D2ABCE0D2C2D2DB10035F7A1 /* BannerDataSource.swift */,
 			);
 			path = DataSource;
 			sourceTree = "<group>";
@@ -272,6 +301,7 @@
 			isa = PBXGroup;
 			children = (
 				D2ABCDD32C2A69D10035F7A1 /* BasicRepository.swift */,
+				D2ABCE0B2C2D2D6A0035F7A1 /* BannerRepository.swift */,
 			);
 			path = Repository;
 			sourceTree = "<group>";
@@ -280,10 +310,10 @@
 			isa = PBXGroup;
 			children = (
 				D2ABCDD72C2A6AE10035F7A1 /* BasicAssembly.swift */,
-				D2ABCDD92C2A6D630035F7A1 /* BasiDataAssemply.swift */,
+				D2ABCDD92C2A6D630035F7A1 /* BasicDataAssemply.swift */,
 				D2ABCDDB2C2A6E780035F7A1 /* DependencyInjector.swift */,
-				D2ABCDDD2C2A770E0035F7A1 /* ViewAssemply.swift */,
-				D2ABCDF42C2AC1440035F7A1 /* TabBarAssembly.swift */,
+				D2ABCE172C2D4E370035F7A1 /* DataAssembly.swift */,
+				D2ABCE192C2D4F590035F7A1 /* DomainAssembly.swift */,
 			);
 			path = DI;
 			sourceTree = "<group>";
@@ -333,6 +363,7 @@
 		D2ABCDEE2C2AB2FC0035F7A1 /* Extension */ = {
 			isa = PBXGroup;
 			children = (
+				D2ABCE152C2D4BF50035F7A1 /* ImageExtension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -343,6 +374,50 @@
 				D2ABCDF12C2AB5470035F7A1 /* Colors.swift */,
 			);
 			path = Enum;
+			sourceTree = "<group>";
+		};
+		D2ABCDF62C2BE5390035F7A1 /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				D2ABCDF82C2BE55B0035F7A1 /* BaseViewController.swift */,
+			);
+			path = Base;
+			sourceTree = "<group>";
+		};
+		D2ABCDFB2C2BFE200035F7A1 /* CollectionView */ = {
+			isa = PBXGroup;
+			children = (
+				D2ABCDFC2C2BFE370035F7A1 /* BannerCollectionView.swift */,
+				D2ABCDFE2C2BFF330035F7A1 /* BannerCollectionCell.swift */,
+				D2ABCE002C2C01880035F7A1 /* BannerCollectionViewFlowLayout.swift */,
+			);
+			path = CollectionView;
+			sourceTree = "<group>";
+		};
+		D2ABCE042C2D1E4D0035F7A1 /* VO */ = {
+			isa = PBXGroup;
+			children = (
+				D2ABCE022C2D1E490035F7A1 /* BannerVO.swift */,
+				D2ABCE052C2D20110035F7A1 /* ErrorVO.swift */,
+			);
+			path = VO;
+			sourceTree = "<group>";
+		};
+		D2ABCE0F2C2D2E920035F7A1 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				D2ABCE102C2D2E9F0035F7A1 /* Banner.swift */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		D2ABCE122C2D2F2D0035F7A1 /* Basic */ = {
+			isa = PBXGroup;
+			children = (
+				D21030622C2177E90059CACA /* BasicNetwork.swift */,
+				D210306C2C21864B0059CACA /* GetTitle.swift */,
+			);
+			path = Basic;
 			sourceTree = "<group>";
 		};
 		D2E459482C1DB1C000DB0756 /* App */ = {
@@ -365,6 +440,8 @@
 		D2E4594A2C1DB1F900DB0756 /* CommonUI */ = {
 			isa = PBXGroup;
 			children = (
+				D2ABCDFB2C2BFE200035F7A1 /* CollectionView */,
+				D2ABCDF62C2BE5390035F7A1 /* Base */,
 				D2ABCDF32C2AB5930035F7A1 /* Enum */,
 				D2E459592C1E382900DB0756 /* BasicCommonUI.swift */,
 			);
@@ -389,7 +466,6 @@
 				D2ABCDCC2C2A66680035F7A1 /* RepositoryProtocol */,
 				D2ABCDC92C2A66150035F7A1 /* UseCase */,
 				D210305E2C1FC1850059CACA /* Model */,
-				D2E459552C1E380600DB0756 /* BasicDomain.swift */,
 			);
 			path = Domain;
 			sourceTree = "<group>";
@@ -674,28 +750,40 @@
 			files = (
 				D230F9292C1D714C00C43797 /* ViewController.swift in Sources */,
 				D2ABCDE72C2A9D510035F7A1 /* AroundViewController.swift in Sources */,
+				D2ABCDFD2C2BFE370035F7A1 /* BannerCollectionView.swift in Sources */,
 				D230F9252C1D714C00C43797 /* AppDelegate.swift in Sources */,
-				D2ABCDDA2C2A6D630035F7A1 /* BasiDataAssemply.swift in Sources */,
+				D2ABCE162C2D4BF50035F7A1 /* ImageExtension.swift in Sources */,
+				D2ABCDDA2C2A6D630035F7A1 /* BasicDataAssemply.swift in Sources */,
+				D2ABCE142C2D2F490035F7A1 /* NetworkConfiguration.swift in Sources */,
 				D2ABCDD22C2A68940035F7A1 /* BasicDataSource.swift in Sources */,
+				D2ABCDF92C2BE55B0035F7A1 /* BaseViewController.swift in Sources */,
 				D2E4595A2C1E382900DB0756 /* BasicCommonUI.swift in Sources */,
 				D2ABCDF22C2AB5470035F7A1 /* Colors.swift in Sources */,
 				D2ABCDCE2C2A66910035F7A1 /* BasicRespository.swift in Sources */,
-				D2ABCDDE2C2A770E0035F7A1 /* ViewAssemply.swift in Sources */,
-				D2ABCDF52C2AC1440035F7A1 /* TabBarAssembly.swift in Sources */,
+				D2ABCE082C2D256B0035F7A1 /* BannerUsecase.swift in Sources */,
+				D2ABCE0E2C2D2DB10035F7A1 /* BannerDataSource.swift in Sources */,
 				D2ABCDCB2C2A66350035F7A1 /* BasicUsecase.swift in Sources */,
+				D2ABCDFF2C2BFF330035F7A1 /* BannerCollectionCell.swift in Sources */,
 				D210306D2C21864B0059CACA /* GetTitle.swift in Sources */,
 				D21030662C2178530059CACA /* BasicProtocol.swift in Sources */,
+				D2ABCE0C2C2D2D6A0035F7A1 /* BannerRepository.swift in Sources */,
+				D2ABCE0A2C2D26430035F7A1 /* BannerRepositoryProtocol.swift in Sources */,
 				D2E459542C1E1A6300DB0756 /* ViewModel.swift in Sources */,
 				D2ABCDE92C2A9D6F0035F7A1 /* ShoppingViewController.swift in Sources */,
 				D2ABCDDC2C2A6E780035F7A1 /* DependencyInjector.swift in Sources */,
 				D21030632C2177E90059CACA /* BasicNetwork.swift in Sources */,
-				D2E459562C1E380600DB0756 /* BasicDomain.swift in Sources */,
 				D230F9272C1D714C00C43797 /* SceneDelegate.swift in Sources */,
+				D2ABCE1A2C2D4F590035F7A1 /* DomainAssembly.swift in Sources */,
 				D2ABCDE52C2A9CED0035F7A1 /* HomeViewController.swift in Sources */,
+				D2ABCE062C2D20110035F7A1 /* ErrorVO.swift in Sources */,
 				D21030602C1FC1900059CACA /* HelloWorld.swift in Sources */,
+				D2ABCE012C2C01880035F7A1 /* BannerCollectionViewFlowLayout.swift in Sources */,
+				D2ABCE112C2D2E9F0035F7A1 /* Banner.swift in Sources */,
 				D2ABCDED2C2AAEA10035F7A1 /* HomeViewModel.swift in Sources */,
 				D2E4595C2C1E383D00DB0756 /* BasicCommon.swift in Sources */,
+				D2ABCE032C2D1E490035F7A1 /* BannerVO.swift in Sources */,
 				D2ABCDEB2C2A9D8A0035F7A1 /* MypageViewController.swift in Sources */,
+				D2ABCE182C2D4E370035F7A1 /* DataAssembly.swift in Sources */,
 				D2ABCDD82C2A6AE10035F7A1 /* BasicAssembly.swift in Sources */,
 				D2ABCDD42C2A69D10035F7A1 /* BasicRepository.swift in Sources */,
 			);

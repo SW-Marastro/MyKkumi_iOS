@@ -17,9 +17,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScence = (scene as? UIWindowScene) else { return }
         
         injector.assemble([BasicAssembly(),
-                          BasicDataAssembly()])
+                          BasicDataAssembly(),
+                          DataAssembly(),
+                          DomainAssembly()])
         
-        let homeViewModel = HomeViewModel()
+        let homeViewModel = HomeViewModel(bannerUseCase : injector.resolve(BannerUsecase.self))
         let homeViewController = UINavigationController(rootViewController: HomeViewController(viewModel: homeViewModel))
         
         let aroundViewController = UINavigationController(rootViewController: AroundViewController())
