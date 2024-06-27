@@ -5,6 +5,7 @@ import RxCocoa
 class HomeViewController: BaseViewController {
     var viewModel: HomeViewModelProtocol
     private var currentIndex = 0
+    private var autoScrollTimer : Timer?
     
     private lazy var hamburgurButton: UIButton = {
         let button = UIButton()
@@ -65,7 +66,7 @@ class HomeViewController: BaseViewController {
         return button
     }()
     
-    public lazy var banner = {
+    public lazy var banner : BannerCollectionView = {
         let collectionView = BannerCollectionView(frame: CGRect.zero, collectionViewLayout: BannerCollectionViewFlowLayout())
         return collectionView
     }()
@@ -175,8 +176,14 @@ class HomeViewController: BaseViewController {
     }
     
     private func setupAutoScroll() {
-        let _ : Timer = Timer.scheduledTimer(withTimeInterval: 2, repeats: true) {(Timer) in
+        stopAutoScrollTimer()
+        autoScrollTimer = Timer.scheduledTimer(withTimeInterval: 3, repeats: true) {(Timer) in
             self.moveToNextCell()}
+    }
+    
+    private func stopAutoScrollTimer() {
+        autoScrollTimer?.invalidate()
+        autoScrollTimer = nil
     }
     
     private func moveToNextCell() {
@@ -200,10 +207,19 @@ extension HomeViewController: UITextFieldDelegate {
     }
 }
 
-extension HomeViewController : UICollectionViewDelegateFlowLayout {
+extension HomeViewController : UICollectionViewDelegateFlowLayout, UIScrollViewDelegate {
     // 셀 크기를 CollectionView 크기와 동일하게 설정
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: collectionView.bounds.width, height: collectionView.bounds.height)
+    }
+    //셀 수동으로 움직일시 currentIndex 조절
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        let visibleRect = CGRect(origin: banner.contentOffset, size: banner.bounds.size)
+        let visiblePoint = CGPoint(x: visibleRect.midX, y: visibleRect.midY)
+        if let visibleIndexPath = banner.indexPathForItem(at: visiblePoint) {
+            currentIndex = visibleIndexPath.item
+        }
+        setupAutoScroll()
     }
 }
 
