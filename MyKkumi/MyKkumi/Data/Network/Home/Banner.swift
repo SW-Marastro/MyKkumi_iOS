@@ -25,7 +25,7 @@ extension Banner : TargetType {
     public var path: String {
         switch self {
         case .getBanners : return NetworkConfiguration.banners
-        case .getBanner(let id) : return NetworkConfiguration.banners + id
+        case .getBanner(let id) : return NetworkConfiguration.banner + id
         }
     }
     

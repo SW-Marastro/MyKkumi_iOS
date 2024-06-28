@@ -76,10 +76,6 @@ class HomeViewController: BaseViewController {
         super.init()
     }
     
-    required public init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupAutoScroll()
@@ -157,7 +153,7 @@ class HomeViewController: BaseViewController {
         viewModel.banners
             .bind(to: banner.rx.items(cellIdentifier: BannerCollectionCell.cellID, cellType: BannerCollectionCell.self)) {row, bannerVO, cell in
                 if let urlString = bannerVO.imageURL {
-                    cell.imageView.load(url: URL(string: urlString)!)
+                    cell.imageView.load(url: URL(string: urlString)!, placeholder: "placeholder")
                 }
             }
             .disposed(by: disposeBag)
@@ -166,6 +162,18 @@ class HomeViewController: BaseViewController {
             .subscribe(onNext : {[weak self] bannerVO in
                 if let id = bannerVO.id {
                     self?.viewModel.bannerTap.onNext(id)
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        viewModel.bannerData
+            .subscribe(onNext : {[weak self] result in
+                switch result {
+                case .success(let bannerVO):
+                    let cellVC = BannerViewController(banner: bannerVO)
+                    self?.navigationController?.pushViewController(cellVC, animated: true)
+                case .failure(let error):
+                    print("Error: \(error)")
                 }
             })
             .disposed(by: disposeBag)

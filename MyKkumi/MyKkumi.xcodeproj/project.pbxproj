@@ -49,9 +49,9 @@
 		D2ABCE162C2D4BF50035F7A1 /* ImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ABCE152C2D4BF50035F7A1 /* ImageExtension.swift */; };
 		D2ABCE182C2D4E370035F7A1 /* DataAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ABCE172C2D4E370035F7A1 /* DataAssembly.swift */; };
 		D2ABCE1A2C2D4F590035F7A1 /* DomainAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ABCE192C2D4F590035F7A1 /* DomainAssembly.swift */; };
+		D2ABCE1C2C2D94EE0035F7A1 /* BannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ABCE1B2C2D94EE0035F7A1 /* BannerViewController.swift */; };
 		D2E4594F2C1DB41500DB0756 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D2E4594E2C1DB41500DB0756 /* LaunchScreen.storyboard */; };
 		D2E459542C1E1A6300DB0756 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2E459532C1E1A6300DB0756 /* ViewModel.swift */; };
-		D2E4595A2C1E382900DB0756 /* BasicCommonUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2E459592C1E382900DB0756 /* BasicCommonUI.swift */; };
 		D2E4595C2C1E383D00DB0756 /* BasicCommon.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2E4595B2C1E383D00DB0756 /* BasicCommon.swift */; };
 /* End PBXBuildFile section */
 
@@ -122,9 +122,9 @@
 		D2ABCE152C2D4BF50035F7A1 /* ImageExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageExtension.swift; sourceTree = "<group>"; };
 		D2ABCE172C2D4E370035F7A1 /* DataAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataAssembly.swift; sourceTree = "<group>"; };
 		D2ABCE192C2D4F590035F7A1 /* DomainAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainAssembly.swift; sourceTree = "<group>"; };
+		D2ABCE1B2C2D94EE0035F7A1 /* BannerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerViewController.swift; sourceTree = "<group>"; };
 		D2E4594E2C1DB41500DB0756 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D2E459532C1E1A6300DB0756 /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
-		D2E459592C1E382900DB0756 /* BasicCommonUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicCommonUI.swift; sourceTree = "<group>"; };
 		D2E4595B2C1E383D00DB0756 /* BasicCommon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicCommon.swift; sourceTree = "<group>"; };
 		DD509B30BF78F2EF18546CC5 /* Pods-MyKkumiTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyKkumiTests.debug.xcconfig"; path = "Target Support Files/Pods-MyKkumiTests/Pods-MyKkumiTests.debug.xcconfig"; sourceTree = "<group>"; };
 		F6DC5A17030EFC69F83EACBA /* Pods-MyKkumi.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyKkumi.release.xcconfig"; path = "Target Support Files/Pods-MyKkumi/Pods-MyKkumi.release.xcconfig"; sourceTree = "<group>"; };
@@ -332,6 +332,7 @@
 			children = (
 				D2ABCDE42C2A9CED0035F7A1 /* HomeViewController.swift */,
 				D2ABCDEC2C2AAEA10035F7A1 /* HomeViewModel.swift */,
+				D2ABCE1B2C2D94EE0035F7A1 /* BannerViewController.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -443,7 +444,6 @@
 				D2ABCDFB2C2BFE200035F7A1 /* CollectionView */,
 				D2ABCDF62C2BE5390035F7A1 /* Base */,
 				D2ABCDF32C2AB5930035F7A1 /* Enum */,
-				D2E459592C1E382900DB0756 /* BasicCommonUI.swift */,
 			);
 			path = CommonUI;
 			sourceTree = "<group>";
@@ -757,7 +757,6 @@
 				D2ABCE142C2D2F490035F7A1 /* NetworkConfiguration.swift in Sources */,
 				D2ABCDD22C2A68940035F7A1 /* BasicDataSource.swift in Sources */,
 				D2ABCDF92C2BE55B0035F7A1 /* BaseViewController.swift in Sources */,
-				D2E4595A2C1E382900DB0756 /* BasicCommonUI.swift in Sources */,
 				D2ABCDF22C2AB5470035F7A1 /* Colors.swift in Sources */,
 				D2ABCDCE2C2A66910035F7A1 /* BasicRespository.swift in Sources */,
 				D2ABCE082C2D256B0035F7A1 /* BannerUsecase.swift in Sources */,
@@ -784,6 +783,7 @@
 				D2ABCE032C2D1E490035F7A1 /* BannerVO.swift in Sources */,
 				D2ABCDEB2C2A9D8A0035F7A1 /* MypageViewController.swift in Sources */,
 				D2ABCE182C2D4E370035F7A1 /* DataAssembly.swift in Sources */,
+				D2ABCE1C2C2D94EE0035F7A1 /* BannerViewController.swift in Sources */,
 				D2ABCDD82C2A6AE10035F7A1 /* BasicAssembly.swift in Sources */,
 				D2ABCDD42C2A69D10035F7A1 /* BasicRepository.swift in Sources */,
 			);

@@ -17,7 +17,7 @@ public protocol HomeViewModelProtocol {
     var banners : PublishRelay<[BannerVO]> { get }
     var bannerTap : PublishSubject<Int> {get} //각 cell이 tap된 경우 어떤 action할지
     var bannersData : Signal<Result<BannersVO, BannerError>> {get}
-    //var bannerData : Single<Result<BannerVO,BannerError>>{get}
+    var bannerData : PublishSubject<Result<BannerVO,BannerError>>{get}
 }
 
 public class HomeViewModel : HomeViewModelProtocol {
@@ -36,6 +36,7 @@ public class HomeViewModel : HomeViewModelProtocol {
                     return .just(.failure(BannerError.unknownError(errorVO)))
                 }
             })
+        self.bannerData = PublishSubject<Result<BannerVO, BannerError>>()
         
         self.bannersData.emit(onNext: { [weak self] result in //이벤트 발생 = emit
             switch result {//이벤트 발생으로 일어나는 일 -> Images에 값 변경 -> 이걸 view에서 구독??
@@ -48,15 +49,19 @@ public class HomeViewModel : HomeViewModelProtocol {
         }).disposed(by: disposeBag)
         
         self.bannerTap
-            .subscribe(onNext : { id in
-                let cellId = String(id)
-                //bannerUseCase.getBanner(cellId)
-            })
-            .disposed(by: disposeBag)
+        .flatMap { id in
+            bannerUseCase.getBanner(String(id))
+                .asObservable()
+                .materialize()
+        }
+        .compactMap { $0.element }
+        .bind(to: bannerData)
+        .disposed(by: disposeBag)
+
     }
     
     public var banners: PublishRelay<[BannerVO]>
     public var bannerTap: PublishSubject<Int>
     public var bannersData: Signal<Result<BannersVO, BannerError>>
-    //public var bannerData : Single<Result<BannerVO,BannerError>>
+    public var bannerData : PublishSubject<Result<BannerVO,BannerError>>
 }
