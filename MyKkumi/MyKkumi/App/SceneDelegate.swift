@@ -17,10 +17,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScence = (scene as? UIWindowScene) else { return }
         
         injector.assemble([BasicAssembly(),
-                          BasicDataAssembly(),
-                          ViewAssembly()])
+                          BasicDataAssembly()])
         
-        let viewController = injector.resolve(ViewController.self)
+        let viewmodel = ViewModel(basicUsecase: injector.resolve(BasicUsecase.self))
+        let viewController = ViewController(viewModel: viewmodel)
         window = .init(windowScene: windowScence)
         window?.rootViewController = viewController
         window?.makeKeyAndVisible()
