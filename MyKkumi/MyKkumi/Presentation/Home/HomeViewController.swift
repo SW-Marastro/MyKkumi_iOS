@@ -66,12 +66,24 @@ class HomeViewController: BaseViewController {
         return button
     }()
     
+    private lazy var bannerPage : UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = UIColor(white: 0, alpha: 0.5)
+        button.setTitleColor(.white, for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 12)
+        button.titleLabel?.textAlignment = .center
+        button.layer.cornerRadius = 5
+        button.clipsToBounds = true
+        return button
+    }()
+    
     public lazy var banner : BannerCollectionView = {
         let collectionView = BannerCollectionView(frame: CGRect.zero, collectionViewLayout: BannerCollectionViewFlowLayout())
         return collectionView
     }()
     
-    public init(viewModel: HomeViewModel) {
+    public init(viewModel: HomeViewModelProtocol) {
         self.viewModel = viewModel
         super.init()
     }
@@ -89,6 +101,7 @@ class HomeViewController: BaseViewController {
         view.addSubview(notificationButton)
         view.addSubview(shoppingCartButton)
         view.addSubview(banner)
+        view.addSubview(bannerPage)
     }
     
     public override func setupLayout() {
@@ -147,11 +160,22 @@ class HomeViewController: BaseViewController {
            banner.topAnchor.constraint(equalTo: searchView.bottomAnchor, constant: 16),
            banner.heightAnchor.constraint(equalToConstant: 120)
         ])
+        
+        // pageInfoLabel Layout
+        NSLayoutConstraint.activate([
+            bannerPage.trailingAnchor.constraint(equalTo: banner.trailingAnchor, constant: -8),
+            bannerPage.bottomAnchor.constraint(equalTo: banner.bottomAnchor, constant: -8),
+            bannerPage.widthAnchor.constraint(equalToConstant: 50),
+            bannerPage.heightAnchor.constraint(equalToConstant: 24)
+        ])
     }
     
     public override func setupBind() {
         viewModel.banners
-            .bind(to: banner.rx.items(cellIdentifier: BannerCollectionCell.cellID, cellType: BannerCollectionCell.self)) {row, bannerVO, cell in
+            .do(onNext: { [weak self] banners in
+                self?.updatePageIndex(totalItems: banners.count)
+            })
+            .bind(to: banner.rx.items(cellIdentifier: BannerCollectionCell.cellID, cellType: BannerCollectionCell.self)) { row, bannerVO, cell in
                 if let urlString = bannerVO.imageURL {
                     cell.imageView.load(url: URL(string: urlString)!, placeholder: "placeholder")
                 }
@@ -177,6 +201,18 @@ class HomeViewController: BaseViewController {
                 }
             })
             .disposed(by: disposeBag)
+        
+        bannerPage.rx.tap
+            .bind(to: viewModel.bannerPageTap)
+            .disposed(by: disposeBag)
+        
+        viewModel.bannerPageTap
+            .subscribe(onNext : {[weak self] in
+                let bannerInfoVC = BannerInfoViewController(viewModel: self!.viewModel)
+                self?.navigationController?.pushViewController(bannerInfoVC, animated: true)
+            })
+            .disposed(by: disposeBag)
+        
     }
     
     public override func setupDelegate() {
@@ -200,6 +236,7 @@ class HomeViewController: BaseViewController {
         currentIndex = (currentIndex + 1) % itemCount
         let indexPath = IndexPath(item: currentIndex, section: 0)
         banner.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+        updatePageIndex(totalItems: itemCount)
     }
     
     override func didReceiveMemoryWarning() {
@@ -222,12 +259,25 @@ extension HomeViewController : UICollectionViewDelegateFlowLayout, UIScrollViewD
     }
     //셀 수동으로 움직일시 currentIndex 조절
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        updateIndex()
+        setupAutoScroll()
+    }
+    
+    private func updateIndex() {
         let visibleRect = CGRect(origin: banner.contentOffset, size: banner.bounds.size)
         let visiblePoint = CGPoint(x: visibleRect.midX, y: visibleRect.midY)
         if let visibleIndexPath = banner.indexPathForItem(at: visiblePoint) {
             currentIndex = visibleIndexPath.item
+            updatePageIndex(totalItems: banner.numberOfItems(inSection: 0))
         }
-        setupAutoScroll()
+    }
+    
+    func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
+        updatePageIndex(totalItems: banner.numberOfItems(inSection: 0))
+    }
+    
+    private func updatePageIndex(totalItems : Int) {
+        bannerPage.setTitle( "\(currentIndex + 1) / \(totalItems)", for: .normal)
     }
 }
 
