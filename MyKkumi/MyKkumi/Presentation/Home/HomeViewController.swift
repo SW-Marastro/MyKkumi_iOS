@@ -78,6 +78,14 @@ class HomeViewController: BaseViewController {
         return button
     }()
     
+    private lazy var makePost : UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = Colors.GrayColor
+        button.setBackgroundImage(UIImage(named: "makePost"), for: .normal)
+        return button
+    }()
+    
     public lazy var banner : BannerCollectionView = {
         let collectionView = BannerCollectionView(frame: CGRect.zero, collectionViewLayout: BannerCollectionViewFlowLayout())
         return collectionView
@@ -102,6 +110,7 @@ class HomeViewController: BaseViewController {
         view.addSubview(shoppingCartButton)
         view.addSubview(banner)
         view.addSubview(bannerPage)
+        view.addSubview(makePost)
     }
     
     public override func setupLayout() {
@@ -117,7 +126,7 @@ class HomeViewController: BaseViewController {
         NSLayoutConstraint.activate([
             searchView.leadingAnchor.constraint(equalTo: hamburgurButton.trailingAnchor, constant: 8),
             searchView.trailingAnchor.constraint(equalTo: notificationButton.leadingAnchor, constant: -8),
-            searchView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 8),
+            searchView.topAnchor.constraint(equalTo: view.topAnchor, constant: 8),
             searchView.heightAnchor.constraint(equalToConstant: 36)
         ])
         
@@ -161,12 +170,20 @@ class HomeViewController: BaseViewController {
            banner.heightAnchor.constraint(equalToConstant: 120)
         ])
         
-        // pageInfoLabel Layout
+        //pageInfoLabel Layout
         NSLayoutConstraint.activate([
             bannerPage.trailingAnchor.constraint(equalTo: banner.trailingAnchor, constant: -8),
             bannerPage.bottomAnchor.constraint(equalTo: banner.bottomAnchor, constant: -8),
             bannerPage.widthAnchor.constraint(equalToConstant: 50),
             bannerPage.heightAnchor.constraint(equalToConstant: 24)
+        ])
+        
+        //makePost Layout
+        NSLayoutConstraint.activate([
+            makePost.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            makePost.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
+            makePost.heightAnchor.constraint(equalToConstant: 30),
+            makePost.widthAnchor.constraint(equalToConstant: 30)
         ])
     }
     
