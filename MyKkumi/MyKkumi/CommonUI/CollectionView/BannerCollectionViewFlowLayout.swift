@@ -23,3 +23,20 @@ open class BannerCollectionViewFlowLayout : UICollectionViewFlowLayout {
         fatalError("init(coder:) has not been implemented")
     }
 }
+
+open class BannerCollectionViewFlowLayoutVertical : UICollectionViewFlowLayout {
+    public override init() {
+        super.init()
+        initAttribute()
+    }
+    
+    private func initAttribute() {
+        scrollDirection = .vertical
+        minimumLineSpacing = 0;
+        minimumInteritemSpacing = 0
+    }
+    
+    public required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}

@@ -8,6 +8,7 @@
 import UIKit
 
 open class BannerCollectionView : UICollectionView {
+    
     public override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
         super.init(frame: frame, collectionViewLayout: layout)
         initAttribute()
@@ -18,6 +19,7 @@ open class BannerCollectionView : UICollectionView {
         self.layer.masksToBounds = false
         self.layer.cornerRadius = 10
         self.register(BannerCollectionCell.self, forCellWithReuseIdentifier: BannerCollectionCell.cellID)
+        self.register(BannerCollectionCellVertical.self, forCellWithReuseIdentifier: BannerCollectionCellVertical.cellID)
         self.showsHorizontalScrollIndicator = false
         self.showsVerticalScrollIndicator = false
         self.isPagingEnabled = true

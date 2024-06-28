@@ -16,8 +16,11 @@ private let disposeBag = DisposeBag()
 public protocol HomeViewModelProtocol {
     var banners : PublishRelay<[BannerVO]> { get }
     var bannerTap : PublishSubject<Int> {get} //각 cell이 tap된 경우 어떤 action할지
-    var bannersData : Signal<Result<BannersVO, BannerError>> {get}
-    //var bannerData : Single<Result<BannerVO,BannerError>>{get}
+    var bannersData : Observable<Result<BannersVO, BannerError>> {get}
+    var bannerData : PublishSubject<Result<BannerVO,BannerError>>{get}
+    var bannerPageTap : PublishSubject<Void> {get}
+    
+    func fetchData()
 }
 
 public class HomeViewModel : HomeViewModelProtocol {
@@ -28,16 +31,19 @@ public class HomeViewModel : HomeViewModelProtocol {
         self.banners = PublishRelay<[BannerVO]>()
         self.bannerTap = PublishSubject<Int>()
         self.bannersData = bannerUseCase.getBanners()
-            .asSignal(onErrorRecover: { error in
+            .asObservable()
+            .catch{ error in
                 if let bannerError = error as? BannerError {
                     return .just(.failure(bannerError))
                 } else {
                     let errorVO = ErrorVO(errorCode: "unknown", message: "unknown error", detail: "unknown error")
                     return .just(.failure(BannerError.unknownError(errorVO)))
                 }
-            })
+            }
+        self.bannerData = PublishSubject<Result<BannerVO, BannerError>>()
+        self.bannerPageTap = PublishSubject<Void>()
         
-        self.bannersData.emit(onNext: { [weak self] result in //이벤트 발생 = emit
+        self.bannersData.subscribe(onNext: { [weak self] result in //이벤트 발생
             switch result {//이벤트 발생으로 일어나는 일 -> Images에 값 변경 -> 이걸 view에서 구독??
             case .success(let bannersVO):
                 let imageUrls = bannersVO.banners.compactMap { $0.imageURL }
@@ -48,15 +54,42 @@ public class HomeViewModel : HomeViewModelProtocol {
         }).disposed(by: disposeBag)
         
         self.bannerTap
-            .subscribe(onNext : { id in
-                let cellId = String(id)
-                //bannerUseCase.getBanner(cellId)
+        .flatMap { id in
+            bannerUseCase.getBanner(String(id))
+                .asObservable()
+                .materialize()
+        }
+        .compactMap { $0.element }
+        .bind(to: bannerData)
+        .disposed(by: disposeBag)
+    }
+    
+    public func fetchData() {
+        bannerUseCase.getBanners()
+            .asObservable()
+            .catch { error in
+                if let bannerError = error as? BannerError {
+                    return .just(.failure(bannerError))
+                } else {
+                    let errorVO = ErrorVO(errorCode: "unknown", message: "unknown error", detail: "unknown error")
+                    return .just(.failure(BannerError.unknownError(errorVO)))
+                }
+            }
+            .subscribe(onNext: { [weak self] result in
+                switch result {
+                case .success(let bannersVO):
+                    self?.banners.accept(bannersVO.banners)
+                case .failure(let error):
+                    print("Error: \(error)")
+                }
             })
             .disposed(by: disposeBag)
     }
     
+    
     public var banners: PublishRelay<[BannerVO]>
     public var bannerTap: PublishSubject<Int>
-    public var bannersData: Signal<Result<BannersVO, BannerError>>
-    //public var bannerData : Single<Result<BannerVO,BannerError>>
+    public var bannersData: Observable<Result<BannersVO, BannerError>>
+    public var bannerData : PublishSubject<Result<BannerVO,BannerError>>
+    public var bannerPageTap: RxSwift.PublishSubject<Void>
 }
