@@ -1,10 +1,9 @@
 //
-//  HomeViewModel.swift
+//  BannerInfoViewModel.swift
 //  MyKkumi
 //
-//  Created by 최재혁 on 6/25/24.
+//  Created by 최재혁 on 7/1/24.
 //
-
 import Foundation
 import UIKit
 import RxCocoa
@@ -13,16 +12,14 @@ import RxSwift
 
 private let disposeBag = DisposeBag()
 
-public protocol HomeViewModelProtocol {
+public protocol BannerInfoViewModelProtocol {
     var banners : Single<[BannerVO]> { get }//전체 배너 정보 view로 전달 -> output
     var bannersData : Observable<Result<BannersVO, BannerError>> {get} //전체 배너 정보 받아옴 -> input
     var bannerTap : PublishSubject<Int> {get} //각 cell이 tap된 경우 어떤 action할지 -> input 받아옴(어떤 배너 눌렸는지)
     var bannerPageData : Driver<BannerVO>{get} // 눌린 배너 상세 정보 view로 전달
-    var allBannerPageTap : PublishSubject<Void> {get} //전체 베너보기 버튼 클릭
-    var shouldPushBannerView : Driver<Void> { get } // 전체 베너보기 버튼 결과 전달
 }
 
-public class HomeViewModel : HomeViewModelProtocol {
+public class BannerInfoViewModel : BannerInfoViewModelProtocol {
     
     private let bannerUseCase : BannerUsecase
     
@@ -49,7 +46,7 @@ public class HomeViewModel : HomeViewModelProtocol {
                 }
             }
             .asSingle()
-        self.allBannerPageTap = PublishSubject<Void>()
+
         self.bannerPageData = self.bannerTap
             .flatMap {
                 id in
@@ -66,19 +63,10 @@ public class HomeViewModel : HomeViewModelProtocol {
                     .asDriver(onErrorDriveWith: .empty())
             }
             .asDriver(onErrorDriveWith: .empty())
-        
-        self.shouldPushBannerView = self.allBannerPageTap
-            .flatMap { _ in
-                Observable<Void>.just(())
-                    .asDriver(onErrorDriveWith: .empty())
-            }
-            .asDriver(onErrorDriveWith: .empty())
     }
     
     public var banners: Single<[BannerVO]>
     public var bannerTap: PublishSubject<Int>
     public var bannersData: Observable<Result<BannersVO, BannerError>>
     public var bannerPageData : Driver<BannerVO>
-    public var allBannerPageTap: PublishSubject<Void>
-    public var shouldPushBannerView: Driver<Void>
 }
