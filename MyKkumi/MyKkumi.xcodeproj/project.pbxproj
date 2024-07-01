@@ -52,6 +52,7 @@
 		D2ABCE1C2C2D94EE0035F7A1 /* BannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ABCE1B2C2D94EE0035F7A1 /* BannerViewController.swift */; };
 		D2ABCE1E2C2EAB5D0035F7A1 /* BannerInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ABCE1D2C2EAB5D0035F7A1 /* BannerInfoViewController.swift */; };
 		D2ABCE202C31CF090035F7A1 /* BaseViewModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ABCE1F2C31CF090035F7A1 /* BaseViewModelProtocol.swift */; };
+		D2ABCE222C3271B60035F7A1 /* BannerInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ABCE212C3271B60035F7A1 /* BannerInfoViewModel.swift */; };
 		D2E4594F2C1DB41500DB0756 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D2E4594E2C1DB41500DB0756 /* LaunchScreen.storyboard */; };
 		D2E459542C1E1A6300DB0756 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2E459532C1E1A6300DB0756 /* ViewModel.swift */; };
 		D2E4595C2C1E383D00DB0756 /* BasicCommon.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2E4595B2C1E383D00DB0756 /* BasicCommon.swift */; };
@@ -127,6 +128,7 @@
 		D2ABCE1B2C2D94EE0035F7A1 /* BannerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerViewController.swift; sourceTree = "<group>"; };
 		D2ABCE1D2C2EAB5D0035F7A1 /* BannerInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerInfoViewController.swift; sourceTree = "<group>"; };
 		D2ABCE1F2C31CF090035F7A1 /* BaseViewModelProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewModelProtocol.swift; sourceTree = "<group>"; };
+		D2ABCE212C3271B60035F7A1 /* BannerInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerInfoViewModel.swift; sourceTree = "<group>"; };
 		D2E4594E2C1DB41500DB0756 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D2E459532C1E1A6300DB0756 /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
 		D2E4595B2C1E383D00DB0756 /* BasicCommon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicCommon.swift; sourceTree = "<group>"; };
@@ -338,6 +340,7 @@
 				D2ABCDEC2C2AAEA10035F7A1 /* HomeViewModel.swift */,
 				D2ABCE1B2C2D94EE0035F7A1 /* BannerViewController.swift */,
 				D2ABCE1D2C2EAB5D0035F7A1 /* BannerInfoViewController.swift */,
+				D2ABCE212C3271B60035F7A1 /* BannerInfoViewModel.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -782,6 +785,7 @@
 				D2ABCE1A2C2D4F590035F7A1 /* DomainAssembly.swift in Sources */,
 				D2ABCDE52C2A9CED0035F7A1 /* HomeViewController.swift in Sources */,
 				D2ABCE062C2D20110035F7A1 /* ErrorVO.swift in Sources */,
+				D2ABCE222C3271B60035F7A1 /* BannerInfoViewModel.swift in Sources */,
 				D21030602C1FC1900059CACA /* HelloWorld.swift in Sources */,
 				D2ABCE012C2C01880035F7A1 /* BannerCollectionViewFlowLayout.swift in Sources */,
 				D2ABCE1E2C2EAB5D0035F7A1 /* BannerInfoViewController.swift in Sources */,

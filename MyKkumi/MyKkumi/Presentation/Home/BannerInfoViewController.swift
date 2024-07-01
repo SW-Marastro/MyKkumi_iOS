@@ -8,9 +8,10 @@
 import Foundation
 import RxSwift
 import RxCocoa
+import RxDataSources
 
 class BannerInfoViewController : BaseViewController {
-    var viewModel : HomeViewModelProtocol!
+    var viewModel : BannerInfoViewModelProtocol!
     
     override public init() {
         super.init()
@@ -18,7 +19,6 @@ class BannerInfoViewController : BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        viewModel.fetchData()
     }
     
     public override func setupHierarchy() {
@@ -26,12 +26,17 @@ class BannerInfoViewController : BaseViewController {
     }
     
     public override func setupBind() {
-        viewModel.banners
-            .bind(to: banner.rx.items(cellIdentifier: BannerCollectionCellVertical.cellID, cellType: BannerCollectionCellVertical.self)) { row, bannerVO, cell in
-                if let urlString = bannerVO.imageURL {
-                    cell.imageView.load(url: URL(string: urlString)!, placeholder: "placeholder")
-                }
+        let dataSource = RxCollectionViewSectionedReloadDataSource<SectionModel<String, BannerVO>>(configureCell: { (_, collectionView, indexPath, bannerVO) -> UICollectionViewCell in
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: BannerCollectionCellVertical.cellID, for: indexPath) as! BannerCollectionCellVertical
+            if let urlString = bannerVO.imageURL {
+                cell.imageView.load(url: URL(string: urlString)!, placeholder: "placeholder")
             }
+            return cell
+        })
+        viewModel.banners
+            .map { [SectionModel(model: "Section 1", items: $0)] }
+            .asDriver(onErrorJustReturn: [])
+            .drive(banner.rx.items(dataSource: dataSource))
             .disposed(by: disposeBag)
         
         banner.rx.modelSelected(BannerVO.self)
@@ -39,6 +44,13 @@ class BannerInfoViewController : BaseViewController {
                 if let id = bannerVO.id {
                     self?.viewModel.bannerTap.onNext(id)
                 }
+            })
+            .disposed(by: disposeBag)
+        
+        viewModel.bannerPageData
+            .drive(onNext : {[weak self] bannerVO in
+                let cellVC = BannerViewController(banner: bannerVO)
+                self?.navigationController?.pushViewController(cellVC, animated: true)
             })
             .disposed(by: disposeBag)
     }
@@ -58,12 +70,10 @@ class BannerInfoViewController : BaseViewController {
     
     public lazy var banner : BannerCollectionView = {
         let collectionView = BannerCollectionView(frame: CGRect.zero, collectionViewLayout: BannerCollectionViewFlowLayoutVertical())
-        
-        collectionView.backgroundColor = .green
         return collectionView
     }()
     
-    func setupViewModel(viewModel : HomeViewModelProtocol) {
+    func setupViewModel(viewModel : BannerInfoViewModelProtocol) {
         self.viewModel = viewModel
     }
     

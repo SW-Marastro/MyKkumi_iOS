@@ -1,6 +1,7 @@
 import UIKit
 import RxSwift
 import RxCocoa
+import RxDataSources
 
 class HomeViewController: BaseViewController {
     var viewModel: HomeViewModelProtocol!
@@ -30,17 +31,20 @@ class HomeViewController: BaseViewController {
     }
     
     public override func setupBind() {
-        viewModel.banners
-            .do(onNext: { [weak self] banners in
-                self?.updatePageIndex(totalItems: banners.count)
-            })
-            .bind(to: banner.rx.items(cellIdentifier: BannerCollectionCell.cellID, cellType: BannerCollectionCell.self)) { row, bannerVO, cell in
-                if let urlString = bannerVO.imageURL {
-                    cell.imageView.load(url: URL(string: urlString)!, placeholder: "placeholder")
-                }
+        let dataSource = RxCollectionViewSectionedReloadDataSource<SectionModel<String, BannerVO>>(configureCell: { (_, collectionView, indexPath, bannerVO) -> UICollectionViewCell in
+            self.updateIndex()
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: BannerCollectionCell.cellID, for: indexPath) as! BannerCollectionCell
+            if let urlString = bannerVO.imageURL {
+                cell.imageView.load(url: URL(string: urlString)!, placeholder: "placeholder")
             }
+            return cell
+        })
+        viewModel.banners
+            .map { [SectionModel(model: "Section 1", items: $0)] }
+            .asDriver(onErrorJustReturn: [])
+            .drive(banner.rx.items(dataSource: dataSource))
             .disposed(by: disposeBag)
-        
+
         banner.rx.modelSelected(BannerVO.self)
             .subscribe(onNext : {[weak self] bannerVO in
                 if let id = bannerVO.id {
@@ -49,31 +53,25 @@ class HomeViewController: BaseViewController {
             })
             .disposed(by: disposeBag)
         
-        viewModel.bannerData
-            .subscribe(onNext : {[weak self] result in
-                switch result {
-                case .success(let bannerVO):
-                    let cellVC = BannerViewController(banner: bannerVO)
-                    self?.navigationController?.pushViewController(cellVC, animated: true)
-                case .failure(let error):
-                    print("Error: \(error)")
-                }
+        viewModel.bannerPageData
+            .drive(onNext : {[weak self] bannerVO in
+                let cellVC = BannerViewController(banner: bannerVO)
+                self?.navigationController?.pushViewController(cellVC, animated: true)
             })
             .disposed(by: disposeBag)
         
         bannerPage.rx.tap
-            .bind(to: viewModel.bannerPageTap)
+            .bind(to: viewModel.allBannerPageTap)
             .disposed(by: disposeBag)
         
-        viewModel.bannerPageTap
-            .subscribe(onNext : {[weak self] in
+        viewModel.shouldPushBannerView
+            .drive (onNext : {[weak self] in
                 let bannerInfoVC = BannerInfoViewController()
-                bannerInfoVC.setupViewModel(viewModel: self!.viewModel)
+                bannerInfoVC.setupViewModel(viewModel: BannerInfoViewModel(bannerUseCase: injector.resolve(BannerUsecase.self)))
                 bannerInfoVC.hidesBottomBarWhenPushed = true
                 self?.navigationController?.pushViewController(bannerInfoVC, animated: true)
             })
             .disposed(by: disposeBag)
-        
     }
     
     public override func setupDelegate() {

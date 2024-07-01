@@ -8,10 +8,11 @@
 import UIKit
 import Swinject
 
+public var injector : Injector = DependencyInjector(container: Container())
+
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
-    public var injector : Injector = DependencyInjector(container: Container())
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScence = (scene as? UIWindowScene) else { return }
