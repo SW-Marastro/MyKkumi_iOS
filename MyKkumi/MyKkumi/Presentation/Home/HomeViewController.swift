@@ -7,6 +7,20 @@ class HomeViewController: BaseViewController {
     var viewModel: HomeViewModelProtocol!
     private var currentIndex = 0
     private var autoScrollTimer : Timer?
+    private var bannerItem : [BannerVO] = []
+    private var dataItems: [BannerVO] = []
+    private var circularItems: [BannerVO] {
+        var items: [BannerVO] = []
+        if dataItems.count > 0 {
+            let previousIndex = (currentIndex - 1 + dataItems.count) % dataItems.count
+            let nextIndex = (currentIndex + 1) % dataItems.count
+
+            items.append(dataItems[previousIndex])
+            items.append(dataItems[currentIndex])
+            items.append(dataItems[nextIndex])
+        }
+        return items
+    }
     
     override public init() {
         super.init()
@@ -31,20 +45,17 @@ class HomeViewController: BaseViewController {
     }
     
     public override func setupBind() {
-        let dataSource = RxCollectionViewSectionedReloadDataSource<SectionModel<String, BannerVO>>(configureCell: { (_, collectionView, indexPath, bannerVO) -> UICollectionViewCell in
-            self.updateIndex()
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: BannerCollectionCell.cellID, for: indexPath) as! BannerCollectionCell
-            if let urlString = bannerVO.imageURL {
-                cell.imageView.load(url: URL(string: urlString)!, placeholder: "placeholder")
-            }
-            return cell
-        })
         viewModel.banners
-            .map { [SectionModel(model: "Section 1", items: $0)] }
-            .asDriver(onErrorJustReturn: [])
-            .drive(banner.rx.items(dataSource: dataSource))
+            .subscribe(onSuccess: { [weak self] banners in
+                self?.dataItems = banners
+                self?.bannerItem = self?.circularItems ?? []
+                self?.currentIndex = 0
+                self?.banner.reloadData()
+                self!.updateIndex()
+            })
             .disposed(by: disposeBag)
 
+        
         banner.rx.modelSelected(BannerVO.self)
             .subscribe(onNext : {[weak self] bannerVO in
                 if let id = bannerVO.id {
@@ -76,6 +87,7 @@ class HomeViewController: BaseViewController {
     
     public override func setupDelegate() {
         banner.delegate = self
+        banner.dataSource = self
     }
     
     private func setupAutoScroll() {
@@ -90,12 +102,12 @@ class HomeViewController: BaseViewController {
     }
     
     private func moveToNextCell() {
-        let itemCount = banner.numberOfItems(inSection: 0)
-        if itemCount == 0 { return }
-        currentIndex = (currentIndex + 1) % itemCount
-        let indexPath = IndexPath(item: currentIndex, section: 0)
-        banner.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
-        updatePageIndex(totalItems: itemCount)
+        guard !dataItems.isEmpty else { return }
+        currentIndex = (currentIndex + 1) % dataItems.count
+        bannerItem = circularItems
+        banner.reloadData()
+        banner.scrollToItem(at: IndexPath(item: 1, section: 0), at: .centeredHorizontally, animated: true)
+        updatePageIndex(totalItems: dataItems.count)
     }
     
     public func setupViewModel(viewModel : HomeViewModelProtocol){
@@ -273,28 +285,59 @@ extension HomeViewController: UITextFieldDelegate {
     }
 }
 
-extension HomeViewController : UICollectionViewDelegateFlowLayout, UIScrollViewDelegate {
+extension HomeViewController : UICollectionViewDelegateFlowLayout, UIScrollViewDelegate, UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return dataItems.count
+    }
+
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: BannerCollectionCell.cellID, for: indexPath) as! BannerCollectionCell
+        if(bannerItem.count > 0) {
+            let bannerVO = bannerItem[indexPath.item]
+            if let urlString = bannerVO.imageURL {
+                cell.imageView.load(url: URL(string: urlString)!, placeholder: "placeholder")
+            }
+        }
+        return cell
+    }
+
+    
     // 셀 크기를 CollectionView 크기와 동일하게 설정
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: collectionView.bounds.width, height: collectionView.bounds.height)
     }
+    
     //셀 수동으로 움직일시 currentIndex 조절
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        updateIndex()
+        let visibleRect = CGRect(origin: banner.contentOffset, size: banner.bounds.size)
+        let visiblePoint = CGPoint(x: visibleRect.midX, y: visibleRect.midY)
+        if let visibleIndexPath = banner.indexPathForItem(at: visiblePoint) {
+            if visibleIndexPath.item == 0 {
+                currentIndex = (currentIndex - 1 + dataItems.count) % dataItems.count
+            } else if visibleIndexPath.item == 2 {
+                currentIndex = (currentIndex + 1) % dataItems.count
+            }
+            bannerItem = circularItems
+            banner.reloadData()
+            banner.scrollToItem(at: IndexPath(item: 1, section: 0), at: .centeredHorizontally, animated: true)
+            updatePageIndex(totalItems: dataItems.count)
+        }
         setupAutoScroll()
     }
+
     
     private func updateIndex() {
         let visibleRect = CGRect(origin: banner.contentOffset, size: banner.bounds.size)
         let visiblePoint = CGPoint(x: visibleRect.midX, y: visibleRect.midY)
         if let visibleIndexPath = banner.indexPathForItem(at: visiblePoint) {
             currentIndex = visibleIndexPath.item
-            updatePageIndex(totalItems: banner.numberOfItems(inSection: 0))
+            updatePageIndex(totalItems: dataItems.count)
         }
     }
     
     func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
-        updatePageIndex(totalItems: banner.numberOfItems(inSection: 0))
+        updatePageIndex(totalItems: dataItems.count)
     }
     
     private func updatePageIndex(totalItems : Int) {
