@@ -11,7 +11,7 @@ import Swinject
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
-    private var injector : Injector = DependencyInjector(container: Container())
+    public var injector : Injector = DependencyInjector(container: Container())
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScence = (scene as? UIWindowScene) else { return }
@@ -20,10 +20,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                           BasicDataAssembly(),
                           DataAssembly(),
                           DomainAssembly()])
-        
-        let homeViewModel = HomeViewModel(bannerUseCase : injector.resolve(BannerUsecase.self))
-        let homeViewController = UINavigationController(rootViewController: HomeViewController(viewModel: homeViewModel))
-        
+    
+        let homeVC = HomeViewController()
+        homeVC.setupViewModel(viewModel: HomeViewModel(bannerUseCase: injector.resolve(BannerUsecase.self)))
+        let homeViewController = UINavigationController(rootViewController: homeVC)
         let aroundViewController = UINavigationController(rootViewController: AroundViewController())
         let shoppingViewController = UINavigationController(rootViewController: ShoppingViewController())
         let mypageViewController = UINavigationController(rootViewController: MypageViewController())

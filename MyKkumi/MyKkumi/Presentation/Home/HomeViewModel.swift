@@ -62,6 +62,8 @@ public class HomeViewModel : HomeViewModelProtocol {
         .compactMap { $0.element }
         .bind(to: bannerData)
         .disposed(by: disposeBag)
+        
+        //self.shouldPushBannerView = bannerTap.asSignal(onErrorJustReturn: 0)
     }
     
     public func fetchData() {

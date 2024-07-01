@@ -10,15 +10,9 @@ import RxSwift
 import RxCocoa
 
 class BannerInfoViewController : BaseViewController {
-    var viewModel : HomeViewModelProtocol
+    var viewModel : HomeViewModelProtocol!
     
-    public lazy var banner : BannerCollectionView = {
-        let collectionView = BannerCollectionView(frame: CGRect.zero, collectionViewLayout: BannerCollectionViewFlowLayoutVertical())
-        return collectionView
-    }()
-    
-    public init(viewModel : HomeViewModelProtocol) {
-        self.viewModel = viewModel
+    override public init() {
         super.init()
     }
     
@@ -29,15 +23,6 @@ class BannerInfoViewController : BaseViewController {
     
     public override func setupHierarchy() {
         view.addSubview(banner)
-    }
-    
-    public override func setupLayout() {
-        NSLayoutConstraint.activate([
-            banner.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
-            banner.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
-            banner.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
-            banner.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0)
-        ])
     }
     
     public override func setupBind() {
@@ -56,22 +41,30 @@ class BannerInfoViewController : BaseViewController {
                 }
             })
             .disposed(by: disposeBag)
-        
-//        viewModel.bannerData
-//            .subscribe(onNext : {[weak self] result in
-//                switch result {
-//                case .success(let bannerVO):
-//                    let cellVC = BannerViewController(banner: bannerVO)
-//                    self?.navigationController?.pushViewController(cellVC, animated: true)
-//                case .failure(let error):
-//                    print("Error: \(error)")
-//                }
-//            })
-//            .disposed(by: disposeBag)
     }
     
     override func setupDelegate() {
         banner.delegate = self
+    }
+    
+    public override func setupLayout() {
+        NSLayoutConstraint.activate([
+            banner.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
+            banner.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
+            banner.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
+            banner.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0)
+        ])
+    }
+    
+    public lazy var banner : BannerCollectionView = {
+        let collectionView = BannerCollectionView(frame: CGRect.zero, collectionViewLayout: BannerCollectionViewFlowLayoutVertical())
+        
+        collectionView.backgroundColor = .green
+        return collectionView
+    }()
+    
+    func setupViewModel(viewModel : HomeViewModelProtocol) {
+        self.viewModel = viewModel
     }
     
     override func didReceiveMemoryWarning() {
