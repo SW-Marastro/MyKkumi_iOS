@@ -1,11 +1,110 @@
 import UIKit
 import RxSwift
 import RxCocoa
+import RxDataSources
 
 class HomeViewController: BaseViewController {
-    var viewModel: HomeViewModelProtocol
+    var viewModel: HomeViewModelProtocol!
     private var currentIndex = 0
     private var autoScrollTimer : Timer?
+    
+    override public init() {
+        super.init()
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupAutoScroll()
+        //self.navigationController?.setNavigationBarHidden(true, animated: false)
+    }
+    
+    public override func setupHierarchy() {
+        view.addSubview(hamburgurButton)
+        view.addSubview(searchView)
+        searchView.addSubview(searchText)
+        searchView.addSubview(searchButton)
+        view.addSubview(notificationButton)
+        view.addSubview(shoppingCartButton)
+        view.addSubview(banner)
+        view.addSubview(bannerPage)
+        view.addSubview(makePost)
+    }
+    
+    public override func setupBind() {
+        let dataSource = RxCollectionViewSectionedReloadDataSource<SectionModel<String, BannerVO>>(configureCell: { (_, collectionView, indexPath, bannerVO) -> UICollectionViewCell in
+            self.updateIndex()
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: BannerCollectionCell.cellID, for: indexPath) as! BannerCollectionCell
+            if let urlString = bannerVO.imageURL {
+                cell.imageView.load(url: URL(string: urlString)!, placeholder: "placeholder")
+            }
+            return cell
+        })
+        viewModel.banners
+            .map { [SectionModel(model: "Section 1", items: $0)] }
+            .asDriver(onErrorJustReturn: [])
+            .drive(banner.rx.items(dataSource: dataSource))
+            .disposed(by: disposeBag)
+
+        banner.rx.modelSelected(BannerVO.self)
+            .subscribe(onNext : {[weak self] bannerVO in
+                if let id = bannerVO.id {
+                    self?.viewModel.bannerTap.onNext(id)
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        viewModel.bannerPageData
+            .drive(onNext : {[weak self] bannerVO in
+                let cellVC = BannerViewController(banner: bannerVO)
+                self?.navigationController?.pushViewController(cellVC, animated: true)
+            })
+            .disposed(by: disposeBag)
+        
+        bannerPage.rx.tap
+            .bind(to: viewModel.allBannerPageTap)
+            .disposed(by: disposeBag)
+        
+        viewModel.shouldPushBannerView
+            .drive (onNext : {[weak self] in
+                let bannerInfoVC = BannerInfoViewController()
+                bannerInfoVC.setupViewModel(viewModel: BannerInfoViewModel(bannerUseCase: injector.resolve(BannerUsecase.self)))
+                bannerInfoVC.hidesBottomBarWhenPushed = true
+                self?.navigationController?.pushViewController(bannerInfoVC, animated: true)
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    public override func setupDelegate() {
+        banner.delegate = self
+    }
+    
+    private func setupAutoScroll() {
+        stopAutoScrollTimer()
+        autoScrollTimer = Timer.scheduledTimer(withTimeInterval: 3, repeats: true) {(Timer) in
+            self.moveToNextCell()}
+    }
+    
+    private func stopAutoScrollTimer() {
+        autoScrollTimer?.invalidate()
+        autoScrollTimer = nil
+    }
+    
+    private func moveToNextCell() {
+        let itemCount = banner.numberOfItems(inSection: 0)
+        if itemCount == 0 { return }
+        currentIndex = (currentIndex + 1) % itemCount
+        let indexPath = IndexPath(item: currentIndex, section: 0)
+        banner.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+        updatePageIndex(totalItems: itemCount)
+    }
+    
+    public func setupViewModel(viewModel : HomeViewModelProtocol){
+        self.viewModel = viewModel
+    }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+    }
     
     private lazy var hamburgurButton: UIButton = {
         let button = UIButton()
@@ -78,31 +177,18 @@ class HomeViewController: BaseViewController {
         return button
     }()
     
+    private lazy var makePost : UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = Colors.GrayColor
+        button.setBackgroundImage(UIImage(named: "makePost"), for: .normal)
+        return button
+    }()
+    
     public lazy var banner : BannerCollectionView = {
         let collectionView = BannerCollectionView(frame: CGRect.zero, collectionViewLayout: BannerCollectionViewFlowLayout())
         return collectionView
     }()
-    
-    public init(viewModel: HomeViewModelProtocol) {
-        self.viewModel = viewModel
-        super.init()
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        setupAutoScroll()
-    }
-    
-    public override func setupHierarchy() {
-        view.addSubview(hamburgurButton)
-        view.addSubview(searchView)
-        searchView.addSubview(searchText)
-        searchView.addSubview(searchButton)
-        view.addSubview(notificationButton)
-        view.addSubview(shoppingCartButton)
-        view.addSubview(banner)
-        view.addSubview(bannerPage)
-    }
     
     public override func setupLayout() {
         // hamburgerButton Layout
@@ -161,86 +247,21 @@ class HomeViewController: BaseViewController {
            banner.heightAnchor.constraint(equalToConstant: 120)
         ])
         
-        // pageInfoLabel Layout
+        //pageInfoLabel Layout
         NSLayoutConstraint.activate([
             bannerPage.trailingAnchor.constraint(equalTo: banner.trailingAnchor, constant: -8),
             bannerPage.bottomAnchor.constraint(equalTo: banner.bottomAnchor, constant: -8),
             bannerPage.widthAnchor.constraint(equalToConstant: 50),
             bannerPage.heightAnchor.constraint(equalToConstant: 24)
         ])
-    }
-    
-    public override func setupBind() {
-        viewModel.banners
-            .do(onNext: { [weak self] banners in
-                self?.updatePageIndex(totalItems: banners.count)
-            })
-            .bind(to: banner.rx.items(cellIdentifier: BannerCollectionCell.cellID, cellType: BannerCollectionCell.self)) { row, bannerVO, cell in
-                if let urlString = bannerVO.imageURL {
-                    cell.imageView.load(url: URL(string: urlString)!, placeholder: "placeholder")
-                }
-            }
-            .disposed(by: disposeBag)
         
-        banner.rx.modelSelected(BannerVO.self)
-            .subscribe(onNext : {[weak self] bannerVO in
-                if let id = bannerVO.id {
-                    self?.viewModel.bannerTap.onNext(id)
-                }
-            })
-            .disposed(by: disposeBag)
-        
-        viewModel.bannerData
-            .subscribe(onNext : {[weak self] result in
-                switch result {
-                case .success(let bannerVO):
-                    let cellVC = BannerViewController(banner: bannerVO)
-                    self?.navigationController?.pushViewController(cellVC, animated: true)
-                case .failure(let error):
-                    print("Error: \(error)")
-                }
-            })
-            .disposed(by: disposeBag)
-        
-        bannerPage.rx.tap
-            .bind(to: viewModel.bannerPageTap)
-            .disposed(by: disposeBag)
-        
-        viewModel.bannerPageTap
-            .subscribe(onNext : {[weak self] in
-                let bannerInfoVC = BannerInfoViewController(viewModel: self!.viewModel)
-                self?.navigationController?.pushViewController(bannerInfoVC, animated: true)
-            })
-            .disposed(by: disposeBag)
-        
-    }
-    
-    public override func setupDelegate() {
-        banner.delegate = self
-    }
-    
-    private func setupAutoScroll() {
-        stopAutoScrollTimer()
-        autoScrollTimer = Timer.scheduledTimer(withTimeInterval: 3, repeats: true) {(Timer) in
-            self.moveToNextCell()}
-    }
-    
-    private func stopAutoScrollTimer() {
-        autoScrollTimer?.invalidate()
-        autoScrollTimer = nil
-    }
-    
-    private func moveToNextCell() {
-        let itemCount = banner.numberOfItems(inSection: 0)
-        if itemCount == 0 { return }
-        currentIndex = (currentIndex + 1) % itemCount
-        let indexPath = IndexPath(item: currentIndex, section: 0)
-        banner.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
-        updatePageIndex(totalItems: itemCount)
-    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
+        //makePost Layout
+        NSLayoutConstraint.activate([
+            makePost.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            makePost.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
+            makePost.heightAnchor.constraint(equalToConstant: 30),
+            makePost.widthAnchor.constraint(equalToConstant: 30)
+        ])
     }
 }
 
