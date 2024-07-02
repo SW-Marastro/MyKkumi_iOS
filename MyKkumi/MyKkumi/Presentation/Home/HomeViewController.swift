@@ -301,5 +301,3 @@ extension HomeViewController : UICollectionViewDelegateFlowLayout, UIScrollViewD
         bannerPage.setTitle( "\(currentIndex + 1) / \(totalItems)", for: .normal)
     }
 }
-
-
