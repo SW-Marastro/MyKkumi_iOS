@@ -5,6 +5,7 @@ import RxDataSources
 
 class HomeViewController: BaseViewController {
     var viewModel: HomeViewModelProtocol!
+    var postViewModel : PostViewModelProtocol!
     private var currentIndex = 0
     private var autoScrollTimer : Timer?
     
@@ -28,6 +29,7 @@ class HomeViewController: BaseViewController {
         view.addSubview(banner)
         view.addSubview(bannerPage)
         view.addSubview(makePost)
+        view.addSubview(postTableView)
     }
     
     public override func setupBind() {
@@ -76,6 +78,8 @@ class HomeViewController: BaseViewController {
     
     public override func setupDelegate() {
         banner.delegate = self
+        postTableView.delegate = self
+        postTableView.dataSource = self
     }
     
     private func setupAutoScroll() {
@@ -98,8 +102,9 @@ class HomeViewController: BaseViewController {
         updatePageIndex(totalItems: itemCount)
     }
     
-    public func setupViewModel(viewModel : HomeViewModelProtocol){
+    public func setupViewModel(viewModel : HomeViewModelProtocol, postViewModel : PostViewModelProtocol){
         self.viewModel = viewModel
+        self.postViewModel = postViewModel
     }
     
     override func didReceiveMemoryWarning() {
@@ -190,6 +195,11 @@ class HomeViewController: BaseViewController {
         return collectionView
     }()
     
+    public lazy var postTableView : PostTableView = {
+        let tableView = PostTableView()
+        return tableView
+    }()
+    
     public override func setupLayout() {
         // hamburgerButton Layout
         NSLayoutConstraint.activate([
@@ -262,6 +272,14 @@ class HomeViewController: BaseViewController {
             makePost.heightAnchor.constraint(equalToConstant: 30),
             makePost.widthAnchor.constraint(equalToConstant: 30)
         ])
+        
+        //PostTable Layout
+        NSLayoutConstraint.activate([
+            postTableView.topAnchor.constraint(equalTo: banner.bottomAnchor, constant: 0),
+            postTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0),
+            postTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor,constant: 0),
+            postTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0)
+        ])
     }
 }
 
@@ -299,5 +317,26 @@ extension HomeViewController : UICollectionViewDelegateFlowLayout, UIScrollViewD
     
     private func updatePageIndex(totalItems : Int) {
         bannerPage.setTitle( "\(currentIndex + 1) / \(totalItems)", for: .normal)
+    }
+}
+
+extension HomeViewController : UITableViewDelegate, UITableViewDataSource {
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 2
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if indexPath.row == 0 {
+            let cell = tableView.dequeueReusableCell(withIdentifier: PostTableCell.cellID, for: indexPath) as! PostTableCell
+            //data설정
+            return cell
+        } else {
+            let cell = tableView.dequeueReusableCell(withIdentifier: PostTableCellOption.cellID, for: indexPath) as! PostTableCellOption
+            return cell
+        }
     }
 }

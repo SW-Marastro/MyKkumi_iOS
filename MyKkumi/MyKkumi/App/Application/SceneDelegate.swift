@@ -23,7 +23,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                           DomainAssembly()])
     
         let homeVC = HomeViewController()
-        homeVC.setupViewModel(viewModel: HomeViewModel(bannerUseCase: injector.resolve(BannerUsecase.self)))
+        homeVC.setupViewModel(viewModel: HomeViewModel(bannerUseCase: injector.resolve(BannerUsecase.self)), postViewModel: PostViewModel())
         let homeViewController = UINavigationController(rootViewController: homeVC)
         let aroundViewController = UINavigationController(rootViewController: AroundViewController())
         let shoppingViewController = UINavigationController(rootViewController: ShoppingViewController())

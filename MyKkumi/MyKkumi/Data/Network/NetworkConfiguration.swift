@@ -11,4 +11,7 @@ enum NetworkConfiguration {
     //MARK: banners
     static let banners = "/banners"
     static let banner = "/banners/"
+    
+    //MARK: Post
+    static let getPost = "/posts"
 }
