@@ -9,20 +9,17 @@ import Foundation
 import RxSwift
 
 public protocol PostUsecase {
-    func getPosts(_ cursor : String) -> Single<PostsVO>
+    func getPosts(_ cursor : String?) -> Single<Result<PostsVO, PostError>>
 }
 
 public final class DefaultPostUsecase : PostUsecase {
-    let repository : PostRespositoryProtocol
+    let repository : PostRespository
     
-    public init(repository: PostRespositoryProtocol) {
+    public init(repository: PostRespository) {
         self.repository = repository
     }
     
-//    public func getPosts(_ cursor: String) -> Single<PostsVO> {
-//        return repository.getPosts(cursor)
-//            .flatMap {
-//                
-//            }
-//    }
+    public func getPosts(_ cursor: String?) -> Single<Result<PostsVO, PostError>> {
+        return repository.getPosts(cursor)
+    }
 }

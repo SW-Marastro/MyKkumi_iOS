@@ -9,14 +9,14 @@ import Foundation
 import RxSwift
 import Moya
 
-public class DefaultPostRespository : PostRespositoryProtocol {
+public class DefaultPostRespository : PostRespository {
     let dataSource : PostDataSource
     
     public init(dataSource : PostDataSource) {
         self.dataSource = dataSource
     }
     
-    public func getPosts(_ cursor : String) -> Single<Result<PostsVO, PostError>> {
+    public func getPosts(_ cursor : String?) -> Single<Result<PostsVO, PostError>> {
         return dataSource.getPosts(cursor)
     }
 }

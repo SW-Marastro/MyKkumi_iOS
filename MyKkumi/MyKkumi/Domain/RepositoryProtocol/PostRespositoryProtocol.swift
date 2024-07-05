@@ -8,6 +8,6 @@
 import Foundation
 import RxSwift
 
-public protocol PostRespositoryProtocol {
-    func getPosts(_ cursor : String) -> Single<Result<PostsVO, PostError>>
+public protocol PostRespository {
+    func getPosts(_ cursor : String?) -> Single<Result<PostsVO, PostError>>
 }

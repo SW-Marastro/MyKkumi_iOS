@@ -38,7 +38,7 @@ public class DefaultPostDataSource : PostDataSource {
                             return .just(.failure(PostError.DECODING_ERROR))
                         }
                     default :
-                        customError = ErrorVO(errorCode: "unknown", message: "UnknownError", detail: "unknownError in POST")
+                        customError = ErrorVO(errorCode: "unknown", message: "UnknownError", detail: "unknownError in Default")
                         return .just(.failure(PostError.unknownError(customError)))
                     }
                 } else {

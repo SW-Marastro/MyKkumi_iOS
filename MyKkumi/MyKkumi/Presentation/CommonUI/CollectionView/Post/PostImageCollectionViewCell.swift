@@ -9,7 +9,7 @@ import UIKit
 
 open class PostImageCollectionViewCell : UICollectionViewCell {
     public static let cellID = "PostImageCollectionViewCell"
-    let imageView : UIImageView = UIImageView(frame: .zero)
+    var imageView : UIImageView = UIImageView(frame: .zero)
     
     override public init(frame: CGRect) {
         super.init(frame: frame)

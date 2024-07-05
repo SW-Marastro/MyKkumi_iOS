@@ -23,7 +23,7 @@ public class BannerInfoViewModel : BannerInfoViewModelProtocol {
     
     private let bannerUseCase : BannerUsecase
     
-    public init(bannerUseCase : BannerUsecase) {
+    public init(bannerUseCase : BannerUsecase = injector.resolve(BannerUsecase.self)) {
         self.bannerUseCase = bannerUseCase
         self.bannerTap = PublishSubject<Int>()
         self.bannersData = bannerUseCase.getBanners()

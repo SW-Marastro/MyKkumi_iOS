@@ -9,6 +9,7 @@ import UIKit
 
 open class PostTableCell : UITableViewCell {
     public static let cellID = "PostTableCell"
+    private var images : [String] = []
     
     public override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -18,8 +19,14 @@ open class PostTableCell : UITableViewCell {
     }
     
     //관련 Data Binding
-    public func bind() {
-        
+    public func bind(postVO : PostVO) {
+        if let urlString = postVO.writer?.profileImage {
+            profileImageView.load(url: URL(string: urlString)!, placeholder: "placeholder")
+        }
+        self.images = postVO.imageURL!
+        postImageCollection.reloadData()
+        updateCountLabel()
+        categoryLabel.text = postVO.category! + "-" + postVO.subCategory!
     }
     
     func initAttribute() {
@@ -28,6 +35,17 @@ open class PostTableCell : UITableViewCell {
         categoryLabel.translatesAutoresizingMaskIntoConstraints = false
         optionButton.translatesAutoresizingMaskIntoConstraints = false
         countImageLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        profileImageView.contentMode = .scaleAspectFill
+        profileImageView.layer.cornerRadius = profileImageView.frame.height/2
+        
+        nicknameLabel.font = UIFont.boldSystemFont(ofSize:17)
+        categoryLabel.font = UIFont.systemFont(ofSize: 17)
+        
+        optionButton.setBackgroundImage(UIImage(named: "threePoint"), for: .normal)
+        
+        postImageCollection.delegate = self
+        postImageCollection.dataSource = self
     }
     
     func setupHierarchy() {
@@ -44,8 +62,8 @@ open class PostTableCell : UITableViewCell {
         NSLayoutConstraint.activate([
             profileImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
             profileImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
-            profileImageView.widthAnchor.constraint(equalToConstant: 40),
-            profileImageView.heightAnchor.constraint(equalToConstant: 40)
+            profileImageView.widthAnchor.constraint(equalToConstant: 50),
+            profileImageView.heightAnchor.constraint(equalToConstant: 50)
         ])
         
         NSLayoutConstraint.activate([
@@ -61,8 +79,10 @@ open class PostTableCell : UITableViewCell {
         ])
         
         NSLayoutConstraint.activate([
-            optionButton.topAnchor.constraint(equalTo: nicknameLabel.bottomAnchor, constant: 2),
-            optionButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10)
+            optionButton.centerXAnchor.constraint(equalTo: profileImageView.centerXAnchor),
+            optionButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
+            optionButton.heightAnchor.constraint(equalToConstant: 24),
+            optionButton.widthAnchor.constraint(equalToConstant: 24)
         ])
         
         NSLayoutConstraint.activate([
@@ -101,8 +121,8 @@ open class PostTableCellOption : UITableViewCell {
         setupLayout()
     }
     
-    public func bind() {
-        
+    public func bind(postVO : PostVO) {
+        contentLabel.text = postVO.content!
     }
     
     func initAttribute() {
@@ -114,6 +134,9 @@ open class PostTableCellOption : UITableViewCell {
         bookMarkButton.translatesAutoresizingMaskIntoConstraints = false
         shareButton.translatesAutoresizingMaskIntoConstraints = false
         contentLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        contentLabel.font = UIFont.systemFont(ofSize: 17)
+        contentLabel.textColor = .gray
     }
     
     func setupHierarchy() {
@@ -183,3 +206,32 @@ open class PostTableCellOption : UITableViewCell {
     let contentLabel = UILabel()
 }
 
+extension PostTableCell : UICollectionViewDelegate, UICollectionViewDataSource {
+    public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return images.count
+    }
+    
+    public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PostImageCollectionViewCell.cellID, for: indexPath) as! PostImageCollectionViewCell
+        cell.imageView.load(url: URL(string: images[indexPath.item])!, placeholder: "placeholder")
+        return cell
+    }
+    
+    public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        updateCountLabel()
+    }
+
+    public func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
+        updateCountLabel()
+    }
+    
+    private func updateCountLabel() {
+        let visibleCells = postImageCollection.visibleCells
+        guard let visibleCell = visibleCells.first else { return }
+        guard let indexPath = postImageCollection.indexPath(for: visibleCell) else { return }
+        
+        let currentItem = indexPath.item + 1
+        let totalItems = postImageCollection.numberOfItems(inSection: 0)
+        countImageLabel.text = "\(currentItem) / \(totalItems)"
+    }
+}

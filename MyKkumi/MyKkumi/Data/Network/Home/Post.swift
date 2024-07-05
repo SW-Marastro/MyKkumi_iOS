@@ -26,13 +26,13 @@ extension Post : TargetType {
     
     public var path: String {
         switch self {
-        case .getPost(let cursur) : return NetworkConfiguration.getPost
+        case .getPost(_) : return NetworkConfiguration.getPost
         }
     }
     
     public var method: Moya.Method {
         switch self {
-        case .getPost(let cursur) : return .get
+        case .getPost(_) : return .get
         }
     }
     
@@ -41,9 +41,7 @@ extension Post : TargetType {
         case .getPost(let cursor) :
             var params : [String: Any] = [:]
             params["limit"] = 5
-            if cursor != nil {
-                params["cursor"] = cursor
-            }
+            params["cursor"] = cursor
             return .requestParameters(parameters: params, encoding: URLEncoding.default)
         }
     }

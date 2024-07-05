@@ -16,6 +16,7 @@ open class PostTableView: UITableView {
     func initAtrribute() {
         self.register(PostTableCell.self, forCellReuseIdentifier: PostTableCell.cellID)
         self.register(PostTableCellOption.self, forCellReuseIdentifier: PostTableCellOption.cellID)
+        self.register(HomeBannerCell.self, forCellReuseIdentifier: HomeBannerCell.cellID)
         self.rowHeight = 350
         self.translatesAutoresizingMaskIntoConstraints = false
     }

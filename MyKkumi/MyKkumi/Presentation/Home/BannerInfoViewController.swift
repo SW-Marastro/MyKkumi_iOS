@@ -10,7 +10,7 @@ import RxSwift
 import RxCocoa
 import RxDataSources
 
-class BannerInfoViewController : BaseViewController {
+class BannerInfoViewController : BaseViewController<BannerInfoViewModelProtocol> {
     var viewModel : BannerInfoViewModelProtocol!
     
     override public init() {
@@ -25,7 +25,8 @@ class BannerInfoViewController : BaseViewController {
         view.addSubview(banner)
     }
     
-    public override func setupBind() {
+    public override func setupBind(viewModel : BannerInfoViewModelProtocol) {
+        self.viewModel = viewModel
         let dataSource = RxCollectionViewSectionedReloadDataSource<SectionModel<String, BannerVO>>(configureCell: { (_, collectionView, indexPath, bannerVO) -> UICollectionViewCell in
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: BannerCollectionCellVertical.cellID, for: indexPath) as! BannerCollectionCellVertical
             if let urlString = bannerVO.imageURL {
@@ -72,10 +73,6 @@ class BannerInfoViewController : BaseViewController {
         let collectionView = BannerCollectionView(frame: CGRect.zero, collectionViewLayout: BannerCollectionViewFlowLayoutVertical())
         return collectionView
     }()
-    
-    func setupViewModel(viewModel : BannerInfoViewModelProtocol) {
-        self.viewModel = viewModel
-    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

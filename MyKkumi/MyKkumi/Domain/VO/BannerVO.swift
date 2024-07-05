@@ -26,3 +26,19 @@ public struct BannerVO : Codable {
         imageURL = try values.decodeIfPresent(String.self, forKey: .imageURL)
     }
 }
+
+public struct BannerInfoVO : Codable {
+    let id : Int?
+    let imageURL : String?
+    
+    enum CodingKeys : String, CodingKey {
+        case id
+        case imageURL = "imageUrl"
+    }
+    
+    public init(from decoder : Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        id = try values.decodeIfPresent(Int.self, forKey: .id)
+        imageURL = try values.decodeIfPresent(String.self, forKey: .imageURL)
+    }
+}

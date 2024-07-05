@@ -11,74 +11,96 @@ import RxCocoa
 import Moya
 import RxSwift
 
-private let disposeBag = DisposeBag()
-
-public protocol HomeViewModelProtocol {
-    var banners : Single<[BannerVO]> { get }//전체 배너 정보 view로 전달 -> output
-    var bannersData : Observable<Result<BannersVO, BannerError>> {get} //전체 배너 정보 받아옴 -> input
+public protocol HomeViewModelInput {
+    var viewdidload : PublishSubject<Void> { get } //전체 배너 정보 받아옴 -> input
     var bannerTap : PublishSubject<Int> {get} //각 cell이 tap된 경우 어떤 action할지 -> input 받아옴(어떤 배너 눌렸는지)
-    var bannerPageData : Driver<BannerVO>{get} // 눌린 배너 상세 정보 view로 전달
     var allBannerPageTap : PublishSubject<Void> {get} //전체 베너보기 버튼 클릭
-    var shouldPushBannerView : Driver<Void> { get } // 전체 베너보기 버튼 결과 전달
+    var postTap : PublishSubject<Int64> { get }
+    var uploadPostButtonTap : PublishSubject<Void> { get }
+    var getPostsData : BehaviorSubject<String?> { get }
+}
+
+public protocol HomeviewModelOutput {
+    var showBanner : Signal<[BannerVO]> { get }//전체 배너 정보 view로 전달 -> output
+    var shouldPushBannerView : Driver<BannerVO>{ get } // 눌린 배너 상세 정보 view로 전달
+    var shouldPushBannerInfoView : Driver<Void> { get } // 전체 베너보기 버튼 결과 전달
+    var shouldPushPostTableView : Driver<PostsVO> { get }
+}
+
+public protocol HomeViewModelProtocol : HomeviewModelOutput, HomeViewModelInput {
 }
 
 public class HomeViewModel : HomeViewModelProtocol {
+    private let disposeBag = DisposeBag()
+    private let bannerUsecase : BannerUsecase
+    private let postUsecase : PostUsecase
     
-    private let bannerUseCase : BannerUsecase
-    
-    public init(bannerUseCase : BannerUsecase) {
-        self.bannerUseCase = bannerUseCase
+    public init(bannerUsecase : BannerUsecase = injector.resolve(BannerUsecase.self), postUsecase : PostUsecase = injector.resolve(PostUsecase.self)) {
+        self.bannerUsecase = bannerUsecase
+        self.postUsecase = postUsecase
+        self.viewdidload = PublishSubject<Void>()
         self.bannerTap = PublishSubject<Int>()
-        self.bannersData = bannerUseCase.getBanners()
-            .asObservable()
-            .catch{ error in
-                if let bannerError = error as? BannerError {
-                    return .just(.failure(bannerError))
-                } else {
-                    let errorVO = ErrorVO(errorCode: "unknown", message: "unknown error", detail: "unknown error")
-                    return .just(.failure(BannerError.unknownError(errorVO)))
-                }
-            }
-        self.banners = self.bannersData
-            .flatMap { result -> Single<[BannerVO]> in
-                switch result {
-                case .success(let bannersVO):
-                    return .just(bannersVO.banners)
-                case .failure(let error):
-                    return .error(error)
-                }
-            }
-            .asSingle()
         self.allBannerPageTap = PublishSubject<Void>()
-        self.bannerPageData = self.bannerTap
-            .flatMap {
-                id in
-                bannerUseCase.getBanner(String(id))
-                    .asObservable()
-                    .flatMap { result -> Observable<BannerVO> in
-                        switch result {
-                        case .success(let bannerVO) :
-                            return Observable.just(bannerVO)
-                        case .failure(let error) :
-                            return Observable.error(error)
-                        }
-                    }
-                    .asDriver(onErrorDriveWith: .empty())
+        self.postTap = PublishSubject<Int64>()
+        self.uploadPostButtonTap = PublishSubject<Void>()
+        self.getPostsData = BehaviorSubject<String?>(value: nil)
+        
+        let allBannerResult = self.viewdidload
+            .flatMap {_ in 
+                return bannerUsecase.getBanners()
+            }
+            .share()
+        
+        let allPostResult = self.getPostsData
+            .flatMap { cursor in
+                return postUsecase.getPosts(cursor)
+            }
+        
+        self.showBanner = allBannerResult
+            .compactMap { result -> [BannerVO]? in
+                switch result {
+                case .success(let response) : return response.banners
+                case .failure(_) : return nil
+                }
+            }
+            .asSignal(onErrorSignalWith: .empty())
+        
+        let bannerResult = self.bannerTap
+            .flatMap {id in
+                return bannerUsecase.getBanner(String(id))
+            }
+        
+        self.shouldPushBannerView = bannerResult
+            .compactMap { result -> BannerVO? in
+                switch result {
+                case .success(let response) : return response
+                case .failure(_) : return nil
+                }
             }
             .asDriver(onErrorDriveWith: .empty())
         
-        self.shouldPushBannerView = self.allBannerPageTap
-            .flatMap { _ in
-                Observable<Void>.just(())
-                    .asDriver(onErrorDriveWith: .empty())
+        self.shouldPushBannerInfoView = allBannerPageTap
+            .asDriver(onErrorJustReturn: ())
+        
+        
+        self.shouldPushPostTableView = allPostResult
+            .compactMap { result -> PostsVO? in
+                switch result {
+                case .success(let response) : return response
+                case .failure(_) : return nil
+                }
             }
             .asDriver(onErrorDriveWith: .empty())
     }
     
-    public var banners: Single<[BannerVO]>
+    public var viewdidload: PublishSubject<Void>
     public var bannerTap: PublishSubject<Int>
-    public var bannersData: Observable<Result<BannersVO, BannerError>>
-    public var bannerPageData : Driver<BannerVO>
     public var allBannerPageTap: PublishSubject<Void>
-    public var shouldPushBannerView: Driver<Void>
+    public var showBanner: Signal<[BannerVO]>
+    public var shouldPushBannerView: Driver<BannerVO>
+    public var shouldPushBannerInfoView: Driver<Void>
+    public var postTap : PublishSubject<Int64>
+    public var uploadPostButtonTap : PublishSubject<Void>
+    public var shouldPushPostTableView : Driver<PostsVO>
+    public var getPostsData: BehaviorSubject<String?>
 }

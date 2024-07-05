@@ -19,16 +19,19 @@ public protocol BaseViewItemProtocol : AnyObject {
     func setupLayout()
 }
 
-public protocol BaseViewControllerProtocol: AnyObject, BaseViewItemProtocol {
+public protocol BaseViewControllerProtocol : AnyObject, BaseViewItemProtocol {
     /// delegate 설정
     func setupDelegate()
     
     /// view binding 설정
-    func setupBind()
+    associatedtype T
+    func setupBind(viewModel : T)
 }
 
-open class BaseViewController : UIViewController, BaseViewControllerProtocol {
+open class BaseViewController <ProtocolType> : UIViewController, BaseViewControllerProtocol {
     public var disposeBag = DisposeBag()
+    
+    public typealias T = ProtocolType
     
     public init() {
         super.init(nibName: nil, bundle: nil)
@@ -47,12 +50,13 @@ open class BaseViewController : UIViewController, BaseViewControllerProtocol {
         setupDelegate()
         setupHierarchy()
         setupLayout()
-        setupBind()
     }
     
     open func setupViewProperty() { }
     open func setupDelegate() { }
     open func setupHierarchy() { }
     open func setupLayout() { }
-    open func setupBind() { }
+    open func setupBind (viewModel : T) {
+        self.disposeBag = DisposeBag()
+    }
 }

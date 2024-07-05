@@ -24,7 +24,7 @@ public struct PostsVO: Codable {
 }
 
 public struct PostVO: Codable {
-    let id: String?
+    let id: Int?
     let imageURL: [String]?
     let category: String?
     let subCategory: String?
@@ -42,7 +42,7 @@ public struct PostVO: Codable {
     
     public init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
-        id = try values.decodeIfPresent(String.self, forKey: .id)
+        id = try values.decodeIfPresent(Int.self, forKey: .id)
         imageURL = try values.decodeIfPresent([String].self, forKey: .imageURL)
         category = try values.decodeIfPresent(String.self, forKey: .category)
         subCategory = try values.decodeIfPresent(String.self, forKey: .subCategory)

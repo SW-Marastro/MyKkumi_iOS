@@ -9,7 +9,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-class BannerViewController : BaseViewController {
+class BannerViewController : BaseViewController<Void> {
     var banner : BannerVO?
     
     private lazy var bannerImageView : UIImageView = {
@@ -42,7 +42,8 @@ class BannerViewController : BaseViewController {
         ])
     }
     
-    public override func setupBind() {
+    public override func setupBind(viewModel : Void) {
+        super.setupBind(viewModel: viewModel)
         if let urlString = banner?.imageURL {
             bannerImageView.load(url: URL(string: urlString)!, placeholder: "placeholder")
         }

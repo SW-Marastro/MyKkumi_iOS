@@ -14,9 +14,18 @@ public struct DataAssembly : Assembly {
             return DefaultBannerDataSource()
         }
         
+        container.register(PostDataSource.self) {_ in
+            return DefaultPostDataSource()
+        }
+        
         container.register(BannerRepository.self) {resolver in
             let dataSource = resolver.resolve(BannerDataSource.self)!
             return DefaultBannerRepository(dataSource: dataSource)
+        }
+        
+        container.register(PostRespository.self) {resolver in
+            let dataSource = resolver.resolve(PostDataSource.self)!
+            return DefaultPostRespository(dataSource: dataSource)
         }
     }
 }
