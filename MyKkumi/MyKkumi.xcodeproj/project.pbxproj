@@ -23,6 +23,7 @@
 		D230F9482C1D714E00C43797 /* MyKkumiUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D230F9472C1D714E00C43797 /* MyKkumiUITestsLaunchTests.swift */; };
 		D28346D72C3575ED0048CB2E /* UIViewController+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28346D62C3575ED0048CB2E /* UIViewController+Rx.swift */; };
 		D28346F72C37F6230048CB2E /* HomeBannerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28346F62C37F6230048CB2E /* HomeBannerCell.swift */; };
+		D28346FA2C38312A0048CB2E /* CountButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28346F92C38312A0048CB2E /* CountButton.swift */; };
 		D2ABCDCB2C2A66350035F7A1 /* BasicUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ABCDCA2C2A66350035F7A1 /* BasicUsecase.swift */; };
 		D2ABCDCE2C2A66910035F7A1 /* BasicRespository.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ABCDCD2C2A66910035F7A1 /* BasicRespository.swift */; };
 		D2ABCDD22C2A68940035F7A1 /* BasicDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ABCDD12C2A68940035F7A1 /* BasicDataSource.swift */; };
@@ -111,6 +112,7 @@
 		D230F9472C1D714E00C43797 /* MyKkumiUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyKkumiUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		D28346D62C3575ED0048CB2E /* UIViewController+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Rx.swift"; sourceTree = "<group>"; };
 		D28346F62C37F6230048CB2E /* HomeBannerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeBannerCell.swift; sourceTree = "<group>"; };
+		D28346F92C38312A0048CB2E /* CountButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountButton.swift; sourceTree = "<group>"; };
 		D2ABCDCA2C2A66350035F7A1 /* BasicUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicUsecase.swift; sourceTree = "<group>"; };
 		D2ABCDCD2C2A66910035F7A1 /* BasicRespository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicRespository.swift; sourceTree = "<group>"; };
 		D2ABCDD12C2A68940035F7A1 /* BasicDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicDataSource.swift; sourceTree = "<group>"; };
@@ -289,6 +291,14 @@
 			path = MyKkumiUITests;
 			sourceTree = "<group>";
 		};
+		D28346F82C38310F0048CB2E /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				D28346F92C38312A0048CB2E /* CountButton.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
 		D2ABCDC82C2A5C600035F7A1 /* BasicModel */ = {
 			isa = PBXGroup;
 			children = (
@@ -459,6 +469,7 @@
 		D2ABCE252C33BFC20035F7A1 /* TableView */ = {
 			isa = PBXGroup;
 			children = (
+				D28346F62C37F6230048CB2E /* HomeBannerCell.swift */,
 				D2ABCE262C33BFD00035F7A1 /* PostTableView.swift */,
 				D2ABCE282C33C2560035F7A1 /* PostTableCell.swift */,
 			);
@@ -481,7 +492,6 @@
 				D2ABCE2A2C33C4D90035F7A1 /* PostImageCollectionView.swift */,
 				D2ABCE2C2C33C53A0035F7A1 /* PostImageCollectionViewCell.swift */,
 				D2ABCE302C33C64C0035F7A1 /* PostImageCollectionViewFlowLayout.swift */,
-				D28346F62C37F6230048CB2E /* HomeBannerCell.swift */,
 			);
 			path = Post;
 			sourceTree = "<group>";
@@ -507,6 +517,7 @@
 		D2E4594A2C1DB1F900DB0756 /* CommonUI */ = {
 			isa = PBXGroup;
 			children = (
+				D28346F82C38310F0048CB2E /* Components */,
 				D2ABCE252C33BFC20035F7A1 /* TableView */,
 				D2ABCDFB2C2BFE200035F7A1 /* CollectionView */,
 				D2ABCDF62C2BE5390035F7A1 /* Base */,
@@ -826,6 +837,7 @@
 				D2ABCDE72C2A9D510035F7A1 /* AroundViewController.swift in Sources */,
 				D2ABCE372C3427E70035F7A1 /* Post.swift in Sources */,
 				D2ABCE272C33BFD00035F7A1 /* PostTableView.swift in Sources */,
+				D28346FA2C38312A0048CB2E /* CountButton.swift in Sources */,
 				D2ABCDFD2C2BFE370035F7A1 /* BannerCollectionView.swift in Sources */,
 				D230F9252C1D714C00C43797 /* AppDelegate.swift in Sources */,
 				D2ABCE162C2D4BF50035F7A1 /* ImageExtension.swift in Sources */,

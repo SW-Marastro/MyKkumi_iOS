@@ -9,7 +9,6 @@ import UIKit
 
 open class PostImageCollectionViewCell : UICollectionViewCell {
     public static let cellID = "PostImageCollectionViewCell"
-    var imageView : UIImageView = UIImageView(frame: .zero)
     
     override public init(frame: CGRect) {
         super.init(frame: frame)
@@ -26,12 +25,14 @@ open class PostImageCollectionViewCell : UICollectionViewCell {
     private func initUI() {
         contentView.addSubview(imageView)
         NSLayoutConstraint.activate([
-            imageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 0),
-            imageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: 0),
-            imageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 0),
-            imageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 0)
+            imageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            imageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            imageView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            imageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
     }
+    
+    var imageView : UIImageView = UIImageView(frame: .zero)
     
     public required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

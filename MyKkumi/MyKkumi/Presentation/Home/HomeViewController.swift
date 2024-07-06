@@ -5,6 +5,7 @@ import RxDataSources
 
 class HomeViewController: BaseViewController<HomeViewModelProtocol> {
     var viewModel: HomeViewModelProtocol!
+    private var fetch : Bool = false
     private var posts : [PostVO] = []
     private var cursor : String?
     private var banner : [BannerVO] = []
@@ -251,5 +252,23 @@ extension HomeViewController : UITableViewDelegate, UITableViewDataSource {
         }
     }
     
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let offsetY = scrollView.contentOffset.y
+        let contentHeight = scrollView.contentSize.height
+        
+        if offsetY > contentHeight - scrollView.frame.height
+        {
+            if !fetch
+            {
+                beginFetch()
+                fetch = false
+            }
+        }
+    }
     
+    func beginFetch() {
+        fetch = true
+        viewModel.getPostsData.onNext(cursor)
+        postTableView.reloadData()
+    }
 }
