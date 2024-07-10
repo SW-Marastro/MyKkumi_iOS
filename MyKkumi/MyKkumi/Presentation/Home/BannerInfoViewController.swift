@@ -15,6 +15,7 @@ class BannerInfoViewController : BaseViewController<BannerInfoViewModelProtocol>
     
     override public init() {
         super.init()
+        self.banner.delegate = self
     }
     
     override func viewDidLoad() {
@@ -27,14 +28,18 @@ class BannerInfoViewController : BaseViewController<BannerInfoViewModelProtocol>
     
     public override func setupBind(viewModel : BannerInfoViewModelProtocol) {
         self.viewModel = viewModel
+        
+        self.rx.viewDidLoad
+            .bind(to: viewModel.viewDidLoad)
+            .disposed(by: disposeBag)
+        
         let dataSource = RxCollectionViewSectionedReloadDataSource<SectionModel<String, BannerVO>>(configureCell: { (_, collectionView, indexPath, bannerVO) -> UICollectionViewCell in
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: BannerCollectionCellVertical.cellID, for: indexPath) as! BannerCollectionCellVertical
-            if let urlString = bannerVO.imageURL {
-                cell.imageView.load(url: URL(string: urlString)!, placeholder: "placeholder")
-            }
+            cell.imageView.load(url: URL(string: bannerVO.imageURL)!, placeholder: "placeholder")
             return cell
         })
-        viewModel.banners
+        
+        viewModel.deliverBannerData
             .map { [SectionModel(model: "Section 1", items: $0)] }
             .asDriver(onErrorJustReturn: [])
             .drive(banner.rx.items(dataSource: dataSource))
@@ -42,22 +47,16 @@ class BannerInfoViewController : BaseViewController<BannerInfoViewModelProtocol>
         
         banner.rx.modelSelected(BannerVO.self)
             .subscribe(onNext : {[weak self] bannerVO in
-                if let id = bannerVO.id {
-                    self?.viewModel.bannerTap.onNext(id)
-                }
+                self?.viewModel.bannerTap.onNext(bannerVO.id)
             })
             .disposed(by: disposeBag)
         
-        viewModel.bannerPageData
+        viewModel.shouldPushDetailBanner
             .drive(onNext : {[weak self] bannerVO in
-                let cellVC = BannerViewController(banner: bannerVO)
+                let cellVC = DetailBannerViewController(banner: bannerVO)
                 self?.navigationController?.pushViewController(cellVC, animated: true)
             })
             .disposed(by: disposeBag)
-    }
-    
-    override func setupDelegate() {
-        banner.delegate = self
     }
     
     public override func setupLayout() {

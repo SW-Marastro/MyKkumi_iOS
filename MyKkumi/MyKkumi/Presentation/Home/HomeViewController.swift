@@ -8,9 +8,8 @@ class HomeViewController: BaseViewController<HomeViewModelProtocol> {
     private var fetch : Bool = false
     private var posts : [PostVO] = []
     private var cursor : String?
-    private var banner : [BannerVO] = []
     
-    override public init() {
+    override init() {
         super.init()
     }
     
@@ -26,8 +25,8 @@ class HomeViewController: BaseViewController<HomeViewModelProtocol> {
         searchView.addSubview(searchButton)
         view.addSubview(notificationButton)
         view.addSubview(shoppingCartButton)
-        view.addSubview(makePost)
         view.addSubview(postTableView)
+        view.addSubview(makePost)
     }
     
     public override func setupBind(viewModel : HomeViewModelProtocol) {
@@ -35,25 +34,33 @@ class HomeViewController: BaseViewController<HomeViewModelProtocol> {
         
         self.viewModel = viewModel
         
-        self.rx.viewDidLoad.bind(to: viewModel.viewdidload).disposed(by: disposeBag)
+        self.rx.viewDidLoad
+            .bind(to: viewModel.viewdidload)
+            .disposed(by: disposeBag)
         
-        viewModel.showBanner
-            .emit(onNext: {[weak self] banners in
-                self?.banner = banners
+        viewModel.bannerDataOutput
+            .emit()
+            .disposed(by: disposeBag)
+        
+        self.viewModel.shouldPushBannerInfoView
+            .drive (onNext : {[weak self] in
+                let bannerInfoVC = BannerInfoViewController()
+                bannerInfoVC.setupBind(viewModel: BannerInfoViewModel())
+                bannerInfoVC.hidesBottomBarWhenPushed = true
+                self?.navigationController?.pushViewController(bannerInfoVC, animated: true)
             })
             .disposed(by: disposeBag)
         
-        viewModel.shouldPushBannerView
+        self.viewModel.shouldPushBannerView
             .drive(onNext : {[weak self] bannerVO in
-                let cellVC = BannerViewController(banner: bannerVO)
+                let cellVC = DetailBannerViewController(banner: bannerVO)
                 self?.navigationController?.pushViewController(cellVC, animated: true)
             })
             .disposed(by: disposeBag)
         
-        viewModel.shouldPushPostTableView
+        self.viewModel.showPostTableView
             .drive(onNext: { [weak self] postsVO in
-                print("posts : \(postsVO)")
-                postsVO.posts?.forEach {post in
+                postsVO.posts.forEach {post in
                     self?.posts.append(post)
                 }
                 self?.cursor = postsVO.cursor
@@ -236,17 +243,29 @@ extension HomeViewController : UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: HomeBannerCell.cellID, for: indexPath) as! HomeBannerCell
-            cell.bind(viewModel: viewModel, bannerData: banner)
+            
+            viewModel.deliveryBannerDetailViewModel
+                .emit(onNext: { viewModel in
+                    cell.bind(viewModel: viewModel)
+                })
+                .disposed(by: disposeBag)
+            
+            viewModel.bannerDataOutput
+                .emit(onNext : { banners in
+                    cell.setCellData(bannerData: banners)
+                })
+                .disposed(by: disposeBag)
+            
             return cell
         } else {
             if indexPath.row == 0 {
                 let cell = tableView.dequeueReusableCell(withIdentifier: PostTableCell.cellID, for: indexPath) as! PostTableCell
-                cell.bind(postVO: posts[indexPath.section])
+                cell.setCellData(postVO: posts[indexPath.section - 1])
                 cell.selectionStyle = .none
                 return cell
             } else {
                 let cell = tableView.dequeueReusableCell(withIdentifier: PostTableCellOption.cellID, for: indexPath) as! PostTableCellOption
-                cell.bind(postVO: posts[indexPath.section])
+                cell.setCellData(postVO: posts[indexPath.section - 1])
                 return cell
             }
         }
@@ -258,7 +277,7 @@ extension HomeViewController : UITableViewDelegate, UITableViewDataSource {
         
         if offsetY > contentHeight - scrollView.frame.height
         {
-            if !fetch
+            if !fetch && cursor != nil
             {
                 beginFetch()
                 fetch = false

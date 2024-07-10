@@ -9,6 +9,7 @@ import UIKit
 
 open class PostImageCollectionViewCell : UICollectionViewCell {
     public static let cellID = "PostImageCollectionViewCell"
+    var imageView : UIImageView = UIImageView(frame: .zero)
     
     override public init(frame: CGRect) {
         super.init(frame: frame)
@@ -31,8 +32,6 @@ open class PostImageCollectionViewCell : UICollectionViewCell {
             imageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
     }
-    
-    var imageView : UIImageView = UIImageView(frame: .zero)
     
     public required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

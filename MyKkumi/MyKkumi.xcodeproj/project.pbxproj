@@ -14,6 +14,11 @@
 		D21030632C2177E90059CACA /* BasicNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = D21030622C2177E90059CACA /* BasicNetwork.swift */; };
 		D21030662C2178530059CACA /* BasicProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D21030652C2178530059CACA /* BasicProtocol.swift */; };
 		D210306D2C21864B0059CACA /* GetTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D210306C2C21864B0059CACA /* GetTitle.swift */; };
+		D21FB5462C3BEE5700927905 /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D21FB5452C3BEE5700927905 /* TestView.swift */; };
+		D21FB5482C3BEE7F00927905 /* TestViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D21FB5472C3BEE7F00927905 /* TestViewModel.swift */; };
+		D21FB54A2C3D2B7700927905 /* PostCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D21FB5492C3D2B7700927905 /* PostCellViewModel.swift */; };
+		D21FB54D2C3E7ECD00927905 /* AuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D21FB54C2C3E7ECD00927905 /* AuthViewController.swift */; };
+		D21FB54F2C3E820100927905 /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D21FB54E2C3E820100927905 /* AuthViewModel.swift */; };
 		D230F9252C1D714C00C43797 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D230F9242C1D714C00C43797 /* AppDelegate.swift */; };
 		D230F9272C1D714C00C43797 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D230F9262C1D714C00C43797 /* SceneDelegate.swift */; };
 		D230F9292C1D714C00C43797 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D230F9282C1D714C00C43797 /* ViewController.swift */; };
@@ -24,6 +29,7 @@
 		D28346D72C3575ED0048CB2E /* UIViewController+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28346D62C3575ED0048CB2E /* UIViewController+Rx.swift */; };
 		D28346F72C37F6230048CB2E /* HomeBannerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28346F62C37F6230048CB2E /* HomeBannerCell.swift */; };
 		D28346FA2C38312A0048CB2E /* CountButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28346F92C38312A0048CB2E /* CountButton.swift */; };
+		D28347042C3BB1D50048CB2E /* BannerCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28347032C3BB1D50048CB2E /* BannerCellViewModel.swift */; };
 		D2ABCDCB2C2A66350035F7A1 /* BasicUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ABCDCA2C2A66350035F7A1 /* BasicUsecase.swift */; };
 		D2ABCDCE2C2A66910035F7A1 /* BasicRespository.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ABCDCD2C2A66910035F7A1 /* BasicRespository.swift */; };
 		D2ABCDD22C2A68940035F7A1 /* BasicDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ABCDD12C2A68940035F7A1 /* BasicDataSource.swift */; };
@@ -52,7 +58,7 @@
 		D2ABCE162C2D4BF50035F7A1 /* ImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ABCE152C2D4BF50035F7A1 /* ImageExtension.swift */; };
 		D2ABCE182C2D4E370035F7A1 /* DataAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ABCE172C2D4E370035F7A1 /* DataAssembly.swift */; };
 		D2ABCE1A2C2D4F590035F7A1 /* DomainAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ABCE192C2D4F590035F7A1 /* DomainAssembly.swift */; };
-		D2ABCE1C2C2D94EE0035F7A1 /* BannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ABCE1B2C2D94EE0035F7A1 /* BannerViewController.swift */; };
+		D2ABCE1C2C2D94EE0035F7A1 /* DetailBannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ABCE1B2C2D94EE0035F7A1 /* DetailBannerViewController.swift */; };
 		D2ABCE1E2C2EAB5D0035F7A1 /* BannerInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ABCE1D2C2EAB5D0035F7A1 /* BannerInfoViewController.swift */; };
 		D2ABCE222C3271B60035F7A1 /* BannerInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ABCE212C3271B60035F7A1 /* BannerInfoViewModel.swift */; };
 		D2ABCE272C33BFD00035F7A1 /* PostTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ABCE262C33BFD00035F7A1 /* PostTableView.swift */; };
@@ -99,6 +105,11 @@
 		D21030622C2177E90059CACA /* BasicNetwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicNetwork.swift; sourceTree = "<group>"; };
 		D21030652C2178530059CACA /* BasicProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicProtocol.swift; sourceTree = "<group>"; };
 		D210306C2C21864B0059CACA /* GetTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetTitle.swift; sourceTree = "<group>"; };
+		D21FB5452C3BEE5700927905 /* TestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
+		D21FB5472C3BEE7F00927905 /* TestViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestViewModel.swift; sourceTree = "<group>"; };
+		D21FB5492C3D2B7700927905 /* PostCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCellViewModel.swift; sourceTree = "<group>"; };
+		D21FB54C2C3E7ECD00927905 /* AuthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewController.swift; sourceTree = "<group>"; };
+		D21FB54E2C3E820100927905 /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
 		D230F9212C1D714C00C43797 /* MyKkumi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyKkumi.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D230F9242C1D714C00C43797 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D230F9262C1D714C00C43797 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -113,6 +124,7 @@
 		D28346D62C3575ED0048CB2E /* UIViewController+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Rx.swift"; sourceTree = "<group>"; };
 		D28346F62C37F6230048CB2E /* HomeBannerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeBannerCell.swift; sourceTree = "<group>"; };
 		D28346F92C38312A0048CB2E /* CountButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountButton.swift; sourceTree = "<group>"; };
+		D28347032C3BB1D50048CB2E /* BannerCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerCellViewModel.swift; sourceTree = "<group>"; };
 		D2ABCDCA2C2A66350035F7A1 /* BasicUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicUsecase.swift; sourceTree = "<group>"; };
 		D2ABCDCD2C2A66910035F7A1 /* BasicRespository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicRespository.swift; sourceTree = "<group>"; };
 		D2ABCDD12C2A68940035F7A1 /* BasicDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicDataSource.swift; sourceTree = "<group>"; };
@@ -141,7 +153,7 @@
 		D2ABCE152C2D4BF50035F7A1 /* ImageExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageExtension.swift; sourceTree = "<group>"; };
 		D2ABCE172C2D4E370035F7A1 /* DataAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataAssembly.swift; sourceTree = "<group>"; };
 		D2ABCE192C2D4F590035F7A1 /* DomainAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainAssembly.swift; sourceTree = "<group>"; };
-		D2ABCE1B2C2D94EE0035F7A1 /* BannerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerViewController.swift; sourceTree = "<group>"; };
+		D2ABCE1B2C2D94EE0035F7A1 /* DetailBannerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailBannerViewController.swift; sourceTree = "<group>"; };
 		D2ABCE1D2C2EAB5D0035F7A1 /* BannerInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerInfoViewController.swift; sourceTree = "<group>"; };
 		D2ABCE212C3271B60035F7A1 /* BannerInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerInfoViewModel.swift; sourceTree = "<group>"; };
 		D2ABCE262C33BFD00035F7A1 /* PostTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostTableView.swift; sourceTree = "<group>"; };
@@ -238,6 +250,15 @@
 				D21030652C2178530059CACA /* BasicProtocol.swift */,
 			);
 			path = Protocols;
+			sourceTree = "<group>";
+		};
+		D21FB54B2C3E7AB100927905 /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				D21FB54C2C3E7ECD00927905 /* AuthViewController.swift */,
+				D21FB54E2C3E820100927905 /* AuthViewModel.swift */,
+			);
+			path = Auth;
 			sourceTree = "<group>";
 		};
 		D230F9182C1D714C00C43797 = {
@@ -373,9 +394,13 @@
 			children = (
 				D2ABCDE42C2A9CED0035F7A1 /* HomeViewController.swift */,
 				D2ABCDEC2C2AAEA10035F7A1 /* HomeViewModel.swift */,
-				D2ABCE1B2C2D94EE0035F7A1 /* BannerViewController.swift */,
+				D2ABCE1B2C2D94EE0035F7A1 /* DetailBannerViewController.swift */,
 				D2ABCE1D2C2EAB5D0035F7A1 /* BannerInfoViewController.swift */,
 				D2ABCE212C3271B60035F7A1 /* BannerInfoViewModel.swift */,
+				D28347032C3BB1D50048CB2E /* BannerCellViewModel.swift */,
+				D21FB5452C3BEE5700927905 /* TestView.swift */,
+				D21FB5472C3BEE7F00927905 /* TestViewModel.swift */,
+				D21FB5492C3D2B7700927905 /* PostCellViewModel.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -550,6 +575,7 @@
 		D2E4594D2C1DB20A00DB0756 /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
+				D21FB54B2C3E7AB100927905 /* Auth */,
 				D2ABCDEE2C2AB2FC0035F7A1 /* Extension */,
 				D2E4594A2C1DB1F900DB0756 /* CommonUI */,
 				D2E459492C1DB1C800DB0756 /* Common */,
@@ -828,24 +854,29 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D21FB54A2C3D2B7700927905 /* PostCellViewModel.swift in Sources */,
 				D28346F72C37F6230048CB2E /* HomeBannerCell.swift in Sources */,
 				D2ABCE352C3427610035F7A1 /* PostDataSource.swift in Sources */,
 				D2ABCE2D2C33C53A0035F7A1 /* PostImageCollectionViewCell.swift in Sources */,
 				D2ABCE332C3424010035F7A1 /* PostVO.swift in Sources */,
 				D230F9292C1D714C00C43797 /* ViewController.swift in Sources */,
+				D28347042C3BB1D50048CB2E /* BannerCellViewModel.swift in Sources */,
 				D2ABCE3B2C3434140035F7A1 /* PostRespository.swift in Sources */,
 				D2ABCDE72C2A9D510035F7A1 /* AroundViewController.swift in Sources */,
 				D2ABCE372C3427E70035F7A1 /* Post.swift in Sources */,
 				D2ABCE272C33BFD00035F7A1 /* PostTableView.swift in Sources */,
 				D28346FA2C38312A0048CB2E /* CountButton.swift in Sources */,
 				D2ABCDFD2C2BFE370035F7A1 /* BannerCollectionView.swift in Sources */,
+				D21FB5482C3BEE7F00927905 /* TestViewModel.swift in Sources */,
 				D230F9252C1D714C00C43797 /* AppDelegate.swift in Sources */,
 				D2ABCE162C2D4BF50035F7A1 /* ImageExtension.swift in Sources */,
 				D2ABCDDA2C2A6D630035F7A1 /* BasicDataAssemply.swift in Sources */,
 				D2ABCE2B2C33C4D90035F7A1 /* PostImageCollectionView.swift in Sources */,
 				D2ABCE142C2D2F490035F7A1 /* NetworkConfiguration.swift in Sources */,
 				D2ABCDD22C2A68940035F7A1 /* BasicDataSource.swift in Sources */,
+				D21FB54F2C3E820100927905 /* AuthViewModel.swift in Sources */,
 				D2ABCDF92C2BE55B0035F7A1 /* BaseViewController.swift in Sources */,
+				D21FB54D2C3E7ECD00927905 /* AuthViewController.swift in Sources */,
 				D2ABCE312C33C64C0035F7A1 /* PostImageCollectionViewFlowLayout.swift in Sources */,
 				D2ABCDF22C2AB5470035F7A1 /* Colors.swift in Sources */,
 				D2ABCDCE2C2A66910035F7A1 /* BasicRespository.swift in Sources */,
@@ -855,6 +886,7 @@
 				D2ABCDFF2C2BFF330035F7A1 /* BannerCollectionCell.swift in Sources */,
 				D210306D2C21864B0059CACA /* GetTitle.swift in Sources */,
 				D21030662C2178530059CACA /* BasicProtocol.swift in Sources */,
+				D21FB5462C3BEE5700927905 /* TestView.swift in Sources */,
 				D2ABCE0C2C2D2D6A0035F7A1 /* BannerRepository.swift in Sources */,
 				D2ABCE0A2C2D26430035F7A1 /* BannerRepositoryProtocol.swift in Sources */,
 				D2E459542C1E1A6300DB0756 /* ViewModel.swift in Sources */,
@@ -879,7 +911,7 @@
 				D2ABCDEB2C2A9D8A0035F7A1 /* MypageViewController.swift in Sources */,
 				D2ABCE392C3433C10035F7A1 /* PostRespositoryProtocol.swift in Sources */,
 				D2ABCE182C2D4E370035F7A1 /* DataAssembly.swift in Sources */,
-				D2ABCE1C2C2D94EE0035F7A1 /* BannerViewController.swift in Sources */,
+				D2ABCE1C2C2D94EE0035F7A1 /* DetailBannerViewController.swift in Sources */,
 				D2ABCDD82C2A6AE10035F7A1 /* BasicAssembly.swift in Sources */,
 				D2ABCDD42C2A69D10035F7A1 /* BasicRepository.swift in Sources */,
 			);

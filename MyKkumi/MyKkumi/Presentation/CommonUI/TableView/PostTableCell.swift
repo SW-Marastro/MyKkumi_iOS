@@ -6,27 +6,37 @@
 //
 
 import UIKit
+import RxSwift
 
 open class PostTableCell : UITableViewCell {
     public static let cellID = "PostTableCell"
+    private let disposeBag = DisposeBag()
     private var images : [String] = []
+    private var viewModel : PostCellViewModelProtocol!
     
     public override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        initAttribute()
         setupHierarchy()
+        initAttribute()
         setupLayout()
     }
     
+    public func bind(viewModel : PostCellViewModelProtocol) {
+        self.viewModel = viewModel
+        
+        optionButton.rx.tap
+            .bind(to: viewModel.optionButtonTap)
+            .disposed(by: disposeBag)
+    }
+    
     //관련 Data Binding
-    public func bind(postVO : PostVO) {
-        if let urlString = postVO.writer?.profileImage {
-            profileImageView.load(url: URL(string: urlString)!, placeholder: "placeholder")
-        }
-        self.images = postVO.imageURL!
+    public func setCellData(postVO : PostVO) {
+        profileImageView.load(url: URL(string: postVO.writer.profileImage)!, placeholder: "placeholder")
+        self.images = postVO.imageURLs
         postImageCollection.reloadData()
         updateCountLabel()
-        categoryLabel.text = postVO.category! + "-" + postVO.subCategory!
+        nicknameLabel.text = postVO.writer.nickname
+        categoryLabel.text = postVO.category + "-" + postVO.subCategory
     }
     
     func initAttribute() {
@@ -51,10 +61,10 @@ open class PostTableCell : UITableViewCell {
     func setupHierarchy() {
         contentView.addSubview(mainStack)
         mainStack.addArrangedSubview(userProfileStack)
-        mainStack.addArrangedSubview(postInfoStack)
-        postInfoStack.addArrangedSubview(postImageView)
+        mainStack.addArrangedSubview(postImageView)
         postImageView.addSubview(postImageCollection)
         postImageView.addSubview(countImageLabel)
+        userProfileStack.addArrangedSubview(profileImageView)
         userProfileStack.addArrangedSubview(postInfoStack)
         userProfileStack.addArrangedSubview(optionButton)
         postInfoStack.addArrangedSubview(nicknameLabel)
@@ -70,60 +80,44 @@ open class PostTableCell : UITableViewCell {
             mainStack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
         
-        //userProfileStack
         NSLayoutConstraint.activate([
             userProfileStack.topAnchor.constraint(equalTo: mainStack.topAnchor),
             userProfileStack.leadingAnchor.constraint(equalTo: mainStack.leadingAnchor),
             userProfileStack.trailingAnchor.constraint(equalTo: mainStack.trailingAnchor)
         ])
         
-        //postImageStack
         NSLayoutConstraint.activate([
-            postImageStack.topAnchor.constraint(equalTo: userProfileStack.bottomAnchor, constant: 5),
-            postImageStack.leadingAnchor.constraint(equalTo: mainStack.leadingAnchor),
-            postImageStack.trailingAnchor.constraint(equalTo: mainStack.trailingAnchor),
-            postImageStack.bottomAnchor.constraint(equalTo: mainStack.bottomAnchor),
-        ])
-        
-        //profileImageView
-        NSLayoutConstraint.activate([
-            profileImageView.topAnchor.constraint(equalTo: userProfileStack.topAnchor),
             profileImageView.leadingAnchor.constraint(equalTo: userProfileStack.leadingAnchor, constant: 16),
-            profileImageView.widthAnchor.constraint(equalTo: postInfoStack.heightAnchor),
-            profileImageView.heightAnchor.constraint(equalTo: profileImageView.widthAnchor)
+            profileImageView.heightAnchor.constraint(equalToConstant: 50),
+            profileImageView.widthAnchor.constraint(equalTo: profileImageView.heightAnchor)
         ])
         
-        //postInfoStack
         NSLayoutConstraint.activate([
-            postInfoStack.topAnchor.constraint(equalTo: userProfileStack.topAnchor),
-            postInfoStack.leadingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: 4)
+            postInfoStack.leadingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: 4), // 동작 안함..
+            postInfoStack.trailingAnchor.constraint(equalTo: optionButton.leadingAnchor)
         ])
         
-        //optionButton
         NSLayoutConstraint.activate([
-            optionButton.trailingAnchor.constraint(equalTo: mainStack.trailingAnchor, constant: -16)
+            optionButton.topAnchor.constraint(equalTo: userProfileStack.topAnchor, constant: 20),
+            optionButton.trailingAnchor.constraint(equalTo: userProfileStack.trailingAnchor, constant: -16)
         ])
         
-        //emptyView
         NSLayoutConstraint.activate([
-            postImageView.topAnchor.constraint(equalTo: postInfoStack.topAnchor),
-            postImageView.leadingAnchor.constraint(equalTo: postInfoStack.leadingAnchor),
-            postImageView.trailingAnchor.constraint(equalTo: postInfoStack.trailingAnchor),
-            postImageView.bottomAnchor.constraint(equalTo: postInfoStack.bottomAnchor)
+            postImageView.heightAnchor.constraint(equalToConstant: 390),
+            postImageView.leadingAnchor.constraint(equalTo: mainStack.leadingAnchor),
+            postImageView.trailingAnchor.constraint(equalTo: mainStack.trailingAnchor)
         ])
         
-        //postImageCollection
         NSLayoutConstraint.activate([
-            postImageCollection.topAnchor.constraint(equalTo: postImageView.topAnchor),
             postImageCollection.leadingAnchor.constraint(equalTo: postImageView.leadingAnchor),
             postImageCollection.trailingAnchor.constraint(equalTo: postImageView.trailingAnchor),
+            postImageCollection.topAnchor.constraint(equalTo: postImageView.topAnchor),
             postImageCollection.bottomAnchor.constraint(equalTo: postImageView.bottomAnchor)
         ])
         
-        //countImageLavel
         NSLayoutConstraint.activate([
-            countImageLabel.topAnchor.constraint(equalTo: postImageCollection.topAnchor, constant: 5),
-            countImageLabel.trailingAnchor.constraint(equalTo: postImageCollection.trailingAnchor, constant: -5)
+            countImageLabel.topAnchor.constraint(equalTo: postImageView.topAnchor, constant: 8),
+            countImageLabel.trailingAnchor.constraint(equalTo: postImageView.trailingAnchor, constant: -8)
         ])
     }
     
@@ -156,14 +150,6 @@ open class PostTableCell : UITableViewCell {
         return view
     }()
     
-    let postImageStack : UIStackView = {
-        let view = UIStackView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.axis = .vertical
-        view.alignment = .center
-        return view
-    }()
-    
     let postImageView : UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -184,17 +170,14 @@ open class PostTableCellOption : UITableViewCell {
     
     public override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        initAttribute()
         setupHierarchy()
+        initAttribute()
         setupLayout()
     }
     
-    public func bind(postVO : PostVO) {
-        contentLabel.text = postVO.content!
-        let like = CountButton(image: "heart", text: "57")
-        let comment = CountButton(image: "chat", text: "2")
-        let bookmark = CountButton(image: "bookmark", text: "6")
-        contentLabel.text = postVO.writer!.nickname! + postVO.content!
+    public func setCellData(postVO : PostVO) {
+        contentLabel.text = postVO.content
+        contentLabel.text = postVO.writer.nickname + " " + postVO.content
         iconButtonStack.addArrangedSubview(like)
         iconButtonStack.addArrangedSubview(comment)
         iconButtonStack.addArrangedSubview(bookmark)
@@ -225,18 +208,8 @@ open class PostTableCellOption : UITableViewCell {
         
         NSLayoutConstraint.activate([
             iconButtonStack.topAnchor.constraint(equalTo: mainStack.topAnchor),
-            iconButtonStack.leadingAnchor.constraint(equalTo: mainStack.leadingAnchor, constant: 6),
-            iconButtonStack.trailingAnchor.constraint(equalTo: mainStack.trailingAnchor, constant: -6)
-        ])
-        
-        NSLayoutConstraint.activate([
-            shareButton.trailingAnchor.constraint(equalTo: iconButtonStack.trailingAnchor)
-        ])
-        
-        NSLayoutConstraint.activate([
-            contentLabel.topAnchor.constraint(equalTo: iconButtonStack.bottomAnchor),
-            contentLabel.leadingAnchor.constraint(equalTo: iconButtonStack.leadingAnchor),
-            contentLabel.trailingAnchor.constraint(equalTo: iconButtonStack.trailingAnchor)
+            iconButtonStack.leadingAnchor.constraint(equalTo: mainStack.leadingAnchor),
+            iconButtonStack.trailingAnchor.constraint(equalTo: mainStack.trailingAnchor)
         ])
     }
     
@@ -263,11 +236,14 @@ open class PostTableCellOption : UITableViewCell {
     let shareButton : UIButton = {
         let button = UIButton()
         button.setBackgroundImage(UIImage(named: "share"), for: .normal)
-        
         return button
     }()
     
     let contentLabel = UILabel()
+    
+    let like = CountButton(image: "heart", text: "57")
+    let comment = CountButton(image: "chat", text: "2")
+    let bookmark = CountButton(image: "bookmark", text: "6")
 }
 
 extension PostTableCell : UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {

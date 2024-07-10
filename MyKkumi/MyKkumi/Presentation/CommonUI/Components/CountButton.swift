@@ -10,9 +10,11 @@ import UIKit
 class CountButton : UIView {
     
     public init(image : String, text : String) {
+        super.init(frame: .zero)
         button.setBackgroundImage(UIImage(named : image), for: .normal)
         label.text = text
-        super.init(frame: .zero)
+        label.font = UIFont.systemFont(ofSize: 14)
+        setupLayout()
     }
     
     required public init?(coder: NSCoder) {
@@ -21,6 +23,7 @@ class CountButton : UIView {
     
     func setupLayout() {
         self.addSubview(mainStack)
+        self.translatesAutoresizingMaskIntoConstraints = false
         
         [button, label].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
