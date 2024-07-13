@@ -16,7 +16,7 @@ protocol TestviewModelProtocol {
 
 class TestViewModel  : TestviewModelProtocol {
     var viewdidLoad: RxSwift.PublishSubject<Void>
-    
+    var cursur : String?
     var getData: RxCocoa.Signal<Int>
     
     public init() {

@@ -18,8 +18,8 @@ public struct PostsVO: Codable {
     
     public init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
-        posts = try values.decodeIfPresent([PostVO].self, forKey: .posts)!
-        cursor = try values.decodeIfPresent(String.self, forKey: .cursor)!
+        posts = try values.decode([PostVO].self, forKey: .posts)
+        cursor = try values.decode(String.self, forKey: .cursor)
     }
 }
 
@@ -42,12 +42,12 @@ public struct PostVO: Codable {
     
     public init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
-        id = try values.decodeIfPresent(Int.self, forKey: .id)!
-        imageURLs = try values.decodeIfPresent([String].self, forKey: .imageURLs)!
-        category = try values.decodeIfPresent(String.self, forKey: .category)!
-        subCategory = try values.decodeIfPresent(String.self, forKey: .subCategory)!
-        writer = try values.decodeIfPresent(Writer.self, forKey: .writer)!
-        content = try values.decodeIfPresent(String.self, forKey: .content)!
+        id = try values.decode(Int.self, forKey: .id)
+        imageURLs = try values.decode([String].self, forKey: .imageURLs)
+        category = try values.decode(String.self, forKey: .category)
+        subCategory = try values.decode(String.self, forKey: .subCategory)
+        writer = try values.decode(Writer.self, forKey: .writer)
+        content = try values.decode(String.self, forKey: .content)
     }
 }
 

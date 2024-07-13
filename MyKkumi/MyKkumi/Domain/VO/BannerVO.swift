@@ -22,8 +22,8 @@ public struct BannerVO : Codable {
     
     public init(from decoder : Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
-        id = try values.decodeIfPresent(Int.self, forKey: .id)!
-        imageURL = try values.decodeIfPresent(String.self, forKey: .imageURL)!
+        id = try values.decode(Int.self, forKey: .id)
+        imageURL = try values.decode(String.self, forKey: .imageURL)
     }
 }
 
@@ -38,7 +38,7 @@ public struct BannerInfoVO : Codable {
     
     public init(from decoder : Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
-        id = try values.decodeIfPresent(Int.self, forKey: .id)!
-        imageURL = try values.decodeIfPresent(String.self, forKey: .imageURL)!
+        id = try values.decode(Int.self, forKey: .id)
+        imageURL = try values.decode(String.self, forKey: .imageURL)
     }
 }

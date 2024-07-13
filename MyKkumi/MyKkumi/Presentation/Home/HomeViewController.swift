@@ -6,8 +6,6 @@ import RxDataSources
 class HomeViewController: BaseViewController<HomeViewModelProtocol> {
     var viewModel: HomeViewModelProtocol!
     private var fetch : Bool = false
-    private var posts : [PostVO] = []
-    private var cursor : String?
     
     override init() {
         super.init()
@@ -58,12 +56,30 @@ class HomeViewController: BaseViewController<HomeViewModelProtocol> {
             })
             .disposed(by: disposeBag)
         
+        self.viewModel.getPostsData
+            .onNext(nil)
+        
+        self.viewModel.postObserve
+            .subscribe(onNext : { post in
+                self.viewModel.postRelay
+                    .accept(post)
+            })
+            .disposed(by: disposeBag)
+        
+        self.viewModel.deliverPost
+            .drive()
+            .disposed(by: disposeBag)
+        
+        self.viewModel.deliverPostCount
+            .drive()
+            .disposed(by: disposeBag)
+        
+        self.viewModel.deliverCursor
+            .drive()
+            .disposed(by: disposeBag)
+        
         self.viewModel.showPostTableView
-            .drive(onNext: { [weak self] postsVO in
-                postsVO.posts.forEach {post in
-                    self?.posts.append(post)
-                }
-                self?.cursor = postsVO.cursor
+            .drive(onNext: { [weak self] _ in
                 self?.postTableView.reloadData()
             })
             .disposed(by: disposeBag)
@@ -229,14 +245,22 @@ extension HomeViewController: UITextFieldDelegate {
 
 extension HomeViewController : UITableViewDelegate, UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
-        return posts.count + 1
+        return 2
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
             return 1
         }else {
-            return 2
+            var count : Int = 0
+            
+            viewModel.deliverPostCount
+                .drive(onNext : { postCount in
+                    count = postCount
+                })
+                .disposed(by: disposeBag)
+            
+            return count
         }
     }
     
@@ -244,7 +268,7 @@ extension HomeViewController : UITableViewDelegate, UITableViewDataSource {
         if indexPath.section == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: HomeBannerCell.cellID, for: indexPath) as! HomeBannerCell
             
-            viewModel.deliveryBannerDetailViewModel
+            viewModel.deliverBannerDetailViewModel
                 .emit(onNext: { viewModel in
                     cell.bind(viewModel: viewModel)
                 })
@@ -258,36 +282,51 @@ extension HomeViewController : UITableViewDelegate, UITableViewDataSource {
             
             return cell
         } else {
-            if indexPath.row == 0 {
-                let cell = tableView.dequeueReusableCell(withIdentifier: PostTableCell.cellID, for: indexPath) as! PostTableCell
-                cell.setCellData(postVO: posts[indexPath.section - 1])
-                cell.selectionStyle = .none
-                return cell
-            } else {
-                let cell = tableView.dequeueReusableCell(withIdentifier: PostTableCellOption.cellID, for: indexPath) as! PostTableCellOption
-                cell.setCellData(postVO: posts[indexPath.section - 1])
-                return cell
-            }
+            let cell = tableView.dequeueReusableCell(withIdentifier: PostTableCell.cellID, for: indexPath) as! PostTableCell
+            
+            viewModel.getPost
+                .onNext(indexPath.row)
+            
+            viewModel.deliverPost
+                .drive(onNext: { postVO in
+                    cell.setCellData(postVO: postVO)
+                })
+                .disposed(by: disposeBag)
+            cell.selectionStyle = .none
+            return cell
         }
     }
     
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let offsetY = scrollView.contentOffset.y
-        let contentHeight = scrollView.contentSize.height
+    func beginFetch( _ cursur : String?) {
+        let cursur = cursur
+        viewModel.getPostsData
+            .onNext(cursur)
+            
+        postTableView.reloadData()
+        fetch = true
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        let sectionIndex = tableView.numberOfSections - 1
+        let lastRow = tableView.numberOfRows(inSection: sectionIndex) - 1
         
-        if offsetY > contentHeight - scrollView.frame.height
-        {
-            if !fetch && cursor != nil
-            {
-                beginFetch()
+        print("section : \(indexPath.section), row : \(indexPath.row)")
+        print("section : \(sectionIndex), lastRow : \(lastRow)")
+        
+        if indexPath.section == sectionIndex && indexPath.row == lastRow {
+            var viewCursur : String = ""
+            viewModel.deliverCursor
+                .drive(onNext: { cursor in
+                    if cursor != "" {
+                        viewCursur = cursor!
+                    }
+                })
+                .disposed(by: disposeBag)
+            
+            if viewCursur != "" && !fetch {
+                beginFetch(viewCursur)
                 fetch = false
             }
         }
-    }
-    
-    func beginFetch() {
-        fetch = true
-        viewModel.getPostsData.onNext(cursor)
-        postTableView.reloadData()
     }
 }
