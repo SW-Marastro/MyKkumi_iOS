@@ -10,6 +10,7 @@
 		2EBDF12C48E4FB6E383A9E9A /* Pods_MyKkumi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A547AF2DE94455B170A30B21 /* Pods_MyKkumi.framework */; };
 		C7A6261FFAE1D0CA5DC9569A /* Pods_MyKkumiTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0BF70C9C9B019E1CDAB0985C /* Pods_MyKkumiTests.framework */; };
 		CEE63EDF48E74F388F0DB9F5 /* Pods_MyKkumi_MyKkumiUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07DFB17D7AB07B56C790B172 /* Pods_MyKkumi_MyKkumiUITests.framework */; };
+		D20BC2502C428EC9000AA8C9 /* ResultExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D20BC24F2C428EC9000AA8C9 /* ResultExtension.swift */; };
 		D21030602C1FC1900059CACA /* HelloWorld.swift in Sources */ = {isa = PBXBuildFile; fileRef = D210305F2C1FC1900059CACA /* HelloWorld.swift */; };
 		D21030632C2177E90059CACA /* BasicNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = D21030622C2177E90059CACA /* BasicNetwork.swift */; };
 		D21030662C2178530059CACA /* BasicProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D21030652C2178530059CACA /* BasicProtocol.swift */; };
@@ -101,6 +102,7 @@
 		3DC498AE771C65151C848D34 /* Pods-MyKkumi.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyKkumi.debug.xcconfig"; path = "Target Support Files/Pods-MyKkumi/Pods-MyKkumi.debug.xcconfig"; sourceTree = "<group>"; };
 		41C962447B851B4C15F4BDA8 /* Pods-MyKkumi-MyKkumiUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyKkumi-MyKkumiUITests.release.xcconfig"; path = "Target Support Files/Pods-MyKkumi-MyKkumiUITests/Pods-MyKkumi-MyKkumiUITests.release.xcconfig"; sourceTree = "<group>"; };
 		A547AF2DE94455B170A30B21 /* Pods_MyKkumi.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MyKkumi.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D20BC24F2C428EC9000AA8C9 /* ResultExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultExtension.swift; sourceTree = "<group>"; };
 		D210305F2C1FC1900059CACA /* HelloWorld.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelloWorld.swift; sourceTree = "<group>"; };
 		D21030622C2177E90059CACA /* BasicNetwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicNetwork.swift; sourceTree = "<group>"; };
 		D21030652C2178530059CACA /* BasicProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicProtocol.swift; sourceTree = "<group>"; };
@@ -434,6 +436,7 @@
 			children = (
 				D2ABCE152C2D4BF50035F7A1 /* ImageExtension.swift */,
 				D28346D62C3575ED0048CB2E /* UIViewController+Rx.swift */,
+				D20BC24F2C428EC9000AA8C9 /* ResultExtension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -896,6 +899,7 @@
 				D230F9272C1D714C00C43797 /* SceneDelegate.swift in Sources */,
 				D2ABCE1A2C2D4F590035F7A1 /* DomainAssembly.swift in Sources */,
 				D2ABCDE52C2A9CED0035F7A1 /* HomeViewController.swift in Sources */,
+				D20BC2502C428EC9000AA8C9 /* ResultExtension.swift in Sources */,
 				D2ABCE292C33C2560035F7A1 /* PostTableCell.swift in Sources */,
 				D2ABCE062C2D20110035F7A1 /* ErrorVO.swift in Sources */,
 				D2ABCE222C3271B60035F7A1 /* BannerInfoViewModel.swift in Sources */,

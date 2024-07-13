@@ -60,14 +60,7 @@ public class HomeViewModel : HomeViewModelProtocol {
             .share()
         
         self.bannerDataOutput = allBannerResult
-            .compactMap { result -> [BannerVO]? in
-                switch result {
-                case .success(let response) :
-                    return response.banners
-                case .failure(_) :
-                    return nil
-                }
-            }
+            .compactMap { $0.successValue()?.banners}
             .asSignal(onErrorSignalWith: .empty())
         
         let bannerResult = self.bannerDetailViewModel.bannerTap
@@ -81,12 +74,7 @@ public class HomeViewModel : HomeViewModelProtocol {
             .asDriver(onErrorJustReturn: ())
         
         self.shouldPushBannerView = bannerResult
-            .compactMap { result -> BannerVO? in
-                switch result {
-                case .success(let response) : return response
-                case .failure(_) : return nil
-                }
-            }
+            .compactMap { $0.successValue() }
             .asDriver(onErrorDriveWith: .empty())
         
         self.deliverBannerDetailViewModel = Single.just(bannerDetailViewModel)
@@ -100,27 +88,11 @@ public class HomeViewModel : HomeViewModelProtocol {
             .share()
                 
         self.cursur = allPostResult
-            .compactMap { result -> String? in
-                switch result {
-                case .success(let response) :
-                    return response.cursor
-                case .failure(_) :
-                    return nil
-                }
-            }
+            .compactMap { $0.successValue()?.cursor }
         
         self.postObserve = allPostResult
-            .compactMap { result -> [PostVO]? in
-                switch result {
-                case .success(let response) :
-                    return response.posts
-                case .failure(_) :
-                    return nil
-                }
-            }
+            .compactMap { $0.successValue()?.posts }
             .withLatestFrom(postRelay.asObservable()) { newPosts, currentPosts in
-                print(currentPosts)
-                print(newPosts)
                 return currentPosts + newPosts
             }
         
