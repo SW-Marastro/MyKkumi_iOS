@@ -24,7 +24,7 @@ class HomeViewController: BaseViewController<HomeViewModelProtocol> {
         view.addSubview(notificationButton)
         view.addSubview(shoppingCartButton)
         view.addSubview(postTableView)
-        view.addSubview(makePost)
+        view.addSubview(upLoadPostButton)
     }
     
     public override func setupBind(viewModel : HomeViewModelProtocol) {
@@ -36,6 +36,7 @@ class HomeViewController: BaseViewController<HomeViewModelProtocol> {
             .bind(to: viewModel.viewdidload)
             .disposed(by: disposeBag)
         
+        //MARK: BannerBinding
         viewModel.bannerDataOutput
             .emit()
             .disposed(by: disposeBag)
@@ -56,6 +57,7 @@ class HomeViewController: BaseViewController<HomeViewModelProtocol> {
             })
             .disposed(by: disposeBag)
         
+        //MARK: PostBinding
         self.viewModel.getPostsData
             .onNext(nil)
         
@@ -83,6 +85,20 @@ class HomeViewController: BaseViewController<HomeViewModelProtocol> {
                 self?.postTableView.reloadData()
             })
             .disposed(by: disposeBag)
+        
+        self.upLoadPostButton.rx.tap
+            .bind(to: viewModel.uploadPostButtonTap)
+            .disposed(by: disposeBag)
+        
+        self.viewModel.shouldPushUploadPostView
+            .drive(onNext: {[weak self] _ in
+                let authVC = AuthViewController()
+                authVC.setupBind(viewModel: AuthViewModel())
+                authVC.hidesBottomBarWhenPushed = true
+                self?.navigationController?.pushViewController(authVC, animated: true)
+            })
+            .disposed(by: disposeBag)
+        
     }
     
     public override func setupDelegate() {
@@ -153,7 +169,7 @@ class HomeViewController: BaseViewController<HomeViewModelProtocol> {
         return button
     }()
     
-    private lazy var makePost : UIButton = {
+    private lazy var upLoadPostButton : UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.GrayColor
@@ -219,10 +235,10 @@ class HomeViewController: BaseViewController<HomeViewModelProtocol> {
         
         //makePost Layout
         NSLayoutConstraint.activate([
-            makePost.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
-            makePost.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
-            makePost.heightAnchor.constraint(equalToConstant: 30),
-            makePost.widthAnchor.constraint(equalToConstant: 30)
+            upLoadPostButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            upLoadPostButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
+            upLoadPostButton.heightAnchor.constraint(equalToConstant: 30),
+            upLoadPostButton.widthAnchor.constraint(equalToConstant: 30)
         ])
         
         //PostTable Layout

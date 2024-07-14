@@ -23,6 +23,7 @@ public protocol HomeviewModelOutput {
     var shouldPushBannerInfoView : Driver<Void> { get } // 전체 베너보기 버튼 결과 전달
     
     var showPostTableView : Driver<Void> { get }
+    var shouldPushUploadPostView : Driver<Void> { get }
     var deliverCursor : Driver<String?> { get }
     var deliverPostCount : Driver<Int> { get }
     var deliverPost : Driver<PostVO> { get }
@@ -116,6 +117,9 @@ public class HomeViewModel : HomeViewModelProtocol {
                 return posts[index]
             }
             .asDriver(onErrorDriveWith: .empty())
+        
+        self.shouldPushUploadPostView = self.uploadPostButtonTap
+            .asDriver(onErrorDriveWith: .empty())
     }
     
     public var viewdidload: PublishSubject<Void>
@@ -133,6 +137,7 @@ public class HomeViewModel : HomeViewModelProtocol {
     public var postRelay : BehaviorRelay<[PostVO]>
     
     public var showPostTableView : Driver<Void>
+    public var shouldPushUploadPostView: Driver<Void>
     public var deliverCursor: Driver<String?>
     public var deliverPostCount: Driver<Int>
     public var deliverPost: Driver<PostVO>
