@@ -12,61 +12,59 @@ import RxSwift
 
 private let disposeBag = DisposeBag()
 
-public protocol BannerInfoViewModelProtocol {
-    var banners : Single<[BannerVO]> { get }//전체 배너 정보 view로 전달 -> output
-    var bannersData : Observable<Result<BannersVO, BannerError>> {get} //전체 배너 정보 받아옴 -> input
-    var bannerTap : PublishSubject<Int> {get} //각 cell이 tap된 경우 어떤 action할지 -> input 받아옴(어떤 배너 눌렸는지)
-    var bannerPageData : Driver<BannerVO>{get} // 눌린 배너 상세 정보 view로 전달
+public protocol BannerInfoViewModelInput {
+    var viewDidLoad : PublishSubject<Void> {get}
+    var bannerTap : PublishSubject<Int> { get }
+}
+
+public protocol BannerInfoViewOutput {
+    var deliverBannerData : Driver<[BannerVO]> { get }
+    var shouldPushDetailBanner : Driver<BannerVO> { get }
+}
+
+public protocol BannerInfoViewModelProtocol : BannerInfoViewOutput, BannerInfoViewModelInput{
+
 }
 
 public class BannerInfoViewModel : BannerInfoViewModelProtocol {
-    
     private let bannerUseCase : BannerUsecase
     
-    public init(bannerUseCase : BannerUsecase) {
+    public init(bannerUseCase : BannerUsecase = injector.resolve(BannerUsecase.self)) {
         self.bannerUseCase = bannerUseCase
+        self.viewDidLoad = PublishSubject<Void>()
         self.bannerTap = PublishSubject<Int>()
-        self.bannersData = bannerUseCase.getBanners()
-            .asObservable()
-            .catch{ error in
-                if let bannerError = error as? BannerError {
-                    return .just(.failure(bannerError))
-                } else {
-                    let errorVO = ErrorVO(errorCode: "unknown", message: "unknown error", detail: "unknown error")
-                    return .just(.failure(BannerError.unknownError(errorVO)))
-                }
-            }
-        self.banners = self.bannersData
-            .flatMap { result -> Single<[BannerVO]> in
-                switch result {
-                case .success(let bannersVO):
-                    return .just(bannersVO.banners)
-                case .failure(let error):
-                    return .error(error)
-                }
-            }
-            .asSingle()
-
-        self.bannerPageData = self.bannerTap
+        
+        let bannersDataResult = viewDidLoad
             .flatMap {
-                id in
-                bannerUseCase.getBanner(String(id))
-                    .asObservable()
-                    .flatMap { result -> Observable<BannerVO> in
-                        switch result {
-                        case .success(let bannerVO) :
-                            return Observable.just(bannerVO)
-                        case .failure(let error) :
-                            return Observable.error(error)
-                        }
-                    }
-                    .asDriver(onErrorDriveWith: .empty())
+                return bannerUseCase.getBanners()
+            }
+        
+        self.deliverBannerData = bannersDataResult
+            .compactMap { result -> [BannerVO]? in
+                switch result {
+                case .success(let response) : return response.banners
+                case .failure(_) : return nil
+                }
+            }
+            .asDriver(onErrorDriveWith: .empty())
+        
+        let detailBannerData = bannerTap
+            .flatMap {id in
+                return bannerUseCase.getBanner(String(id))
+            }
+        
+        self.shouldPushDetailBanner = detailBannerData
+            .compactMap {result -> BannerVO? in
+                switch result {
+                case .success(let response) : return response
+                case .failure(_) : return nil
+                }
             }
             .asDriver(onErrorDriveWith: .empty())
     }
     
-    public var banners: Single<[BannerVO]>
+    public var deliverBannerData: Driver<[BannerVO]>
+    public var shouldPushDetailBanner: Driver<BannerVO>
+    public var viewDidLoad: PublishSubject<Void>
     public var bannerTap: PublishSubject<Int>
-    public var bannersData: Observable<Result<BannersVO, BannerError>>
-    public var bannerPageData : Driver<BannerVO>
 }

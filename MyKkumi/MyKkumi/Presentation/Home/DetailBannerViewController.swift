@@ -9,9 +9,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-class BannerViewController : BaseViewController {
-    var banner : BannerVO?
-    
+class DetailBannerViewController : BaseViewController<Void> {
     private lazy var bannerImageView : UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -21,8 +19,8 @@ class BannerViewController : BaseViewController {
     }()
     
     init(banner: BannerVO) {
-        self.banner = banner
         super.init()
+        self.bannerImageView.load(url: URL(string: banner.imageURL)!, placeholder: "placeholder")
     }
     
     override func viewDidLoad() {
@@ -40,11 +38,5 @@ class BannerViewController : BaseViewController {
             bannerImageView.topAnchor.constraint(equalTo: view.topAnchor),
             bannerImageView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
-    }
-    
-    public override func setupBind() {
-        if let urlString = banner?.imageURL {
-            bannerImageView.load(url: URL(string: urlString)!, placeholder: "placeholder")
-        }
     }
 }
