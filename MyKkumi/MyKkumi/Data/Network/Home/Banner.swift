@@ -38,7 +38,7 @@ extension Banner : TargetType {
     }
     
     public var headers: [String : String]? {
-        return ["Content-Type" : "applicatino/json"]
+        return ["Content-Type" : "application/json"]
     }
     
     public var sampleData: Data {

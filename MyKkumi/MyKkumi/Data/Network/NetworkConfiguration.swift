@@ -6,9 +6,12 @@
 //
 
 enum NetworkConfiguration {
-    static let baseUrl = "http://dev.api.mykkumi.com/api/v1"
+    static let baseUrl = "https://dev-api.mykkumi.com/api/v1"
     
     //MARK: banners
     static let banners = "/banners"
     static let banner = "/banners/"
+    
+    //MARK: Post
+    static let getPost = "/posts"
 }

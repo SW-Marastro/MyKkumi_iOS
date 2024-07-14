@@ -14,5 +14,10 @@ public struct DomainAssembly : Assembly {
             let repository = resolver.resolve(BannerRepository.self)!
             return DefaultBannerUsecase(repository: repository)
         }
+        
+        container.register(PostUsecase.self) {resolver in
+            let repository = resolver.resolve(PostRespository.self)!
+            return DefaultPostUsecase(repository: repository)
+        }
     }
 }
