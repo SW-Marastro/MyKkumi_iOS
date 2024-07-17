@@ -23,7 +23,10 @@ class CollectCategoryViewController : BaseViewController<CollectCategoryViewMode
     }
     
     public override func setupHierarchy() {
-       
+        view.addSubview(mainStack)
+        mainStack.addArrangedSubview(buttonStack)
+        buttonStack.addArrangedSubview(skipButton)
+        buttonStack.addArrangedSubview(nextButton)
     }
     
     public override func setupBind(viewModel: CollectCategoryViewModelProtocol) {
@@ -37,5 +40,36 @@ class CollectCategoryViewController : BaseViewController<CollectCategoryViewMode
     public override func setupLayout() {
 
     }
+    
+    private var mainStack : UIStackView = {
+        let stack = UIStackView()
+        stack.axis = .vertical
+        stack.alignment = .center
+        return stack
+    }()
+    
+    private var buttonStack : UIStackView = {
+        let stack = UIStackView()
+        stack.axis = .vertical
+        stack.alignment = .center
+        return stack
+    }()
+    
+    private var skipButton : UIButton = {
+        let button = UIButton()
+        button.setTitle("건너뛰기", for: .normal)
+        button.setTitleColor(.gray, for: .normal)
+        button.backgroundColor = .white
+        return button
+    }()
+    
+    private var nextButton : UIButton = {
+        let button = UIButton()
+        button.setTitle("다음", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.backgroundColor = .blue
+        button.layer.cornerRadius = 10
+        return button
+    }()
 }
 

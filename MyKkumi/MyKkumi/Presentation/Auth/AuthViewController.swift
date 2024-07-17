@@ -32,11 +32,19 @@ class AuthViewController : BaseViewController<AuthViewModelProtocol>{
         self.viewModel = viewModel
         
         self.kakaoButton.rx.tap
-            .bind(to: viewModel.appleButtonTap)
+            .bind(to: viewModel.kakaoButtonTap)
             .disposed(by: disposeBag)
         
         self.appleButton.rx.controlEvent(.touchUpInside)
             .bind(to: viewModel.appleButtonTap)
+            .disposed(by: disposeBag)
+        
+        self.viewModel.kakaoSuccess
+            .drive(onNext : {_ in
+                let collectCategoryVC = CollectCategoryViewController()
+                collectCategoryVC.setupBind(viewModel: CollectCategoryViewModel())
+                self.navigationController?.pushViewController(collectCategoryVC, animated: true)
+            })
             .disposed(by: disposeBag)
     }
     

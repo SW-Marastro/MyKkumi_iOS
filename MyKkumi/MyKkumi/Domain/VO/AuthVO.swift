@@ -21,6 +21,11 @@ public struct AuthVO : Codable {
         refreshToken = try values.decode(String.self, forKey: .refreshToken)
         accessToken = try values.decode(String.self, forKey: .accessToken)
     }
+    
+    public init(refreshToken: String, accessToken: String) {
+        self.refreshToken = refreshToken
+        self.accessToken = accessToken
+    }
 }
 
 public struct OAuthToken {

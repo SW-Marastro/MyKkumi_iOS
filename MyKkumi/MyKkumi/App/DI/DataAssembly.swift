@@ -18,6 +18,10 @@ public struct DataAssembly : Assembly {
             return DefaultPostDataSource()
         }
         
+        container.register(AuthDataSource.self) {_ in
+            return DefaultAuthDataSource()
+        }
+        
         container.register(BannerRepository.self) {resolver in
             let dataSource = resolver.resolve(BannerDataSource.self)!
             return DefaultBannerRepository(dataSource: dataSource)
@@ -26,6 +30,11 @@ public struct DataAssembly : Assembly {
         container.register(PostRespository.self) {resolver in
             let dataSource = resolver.resolve(PostDataSource.self)!
             return DefaultPostRespository(dataSource: dataSource)
+        }
+        
+        container.register(AuthRepository.self) {resolver in
+            let dataSource = resolver.resolve(AuthDataSource.self)!
+            return DefaultAuthRepository(dataSource: dataSource)
         }
     }
 }

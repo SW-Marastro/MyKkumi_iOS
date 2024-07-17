@@ -25,8 +25,10 @@ protocol AuthViewModelProtocol : AuthViewModelInput, AuthViewModelOutput {
 
 class AuthViewModel : AuthViewModelProtocol {
     private let disposeBag = DisposeBag()
+    private let authUsecase : AuthUsecase
     
-    init() {
+    init(authUsecase : AuthUsecase = injector.resolve(AuthUsecase.self)) {
+        self.authUsecase = authUsecase
         self.appleButtonTap = PublishSubject<Void>()
         self.kakaoButtonTap  = PublishSubject<Void>()
         
@@ -35,8 +37,23 @@ class AuthViewModel : AuthViewModelProtocol {
             .asDriver(onErrorJustReturn: ())
         
         //Kakao Auth API 호출 필요
-        self.kakaoSuccess = self.kakaoButtonTap
-            .asDriver(onErrorJustReturn: ())
+        let kakaoResult = self.kakaoButtonTap
+            .flatMap {_ in
+                return authUsecase.kakaoAPICall()
+            }
+            .share()
+        
+        let kakaoSignin = kakaoResult
+            .compactMap{ $0.successValue()}
+            .flatMap { oAuth in
+                let auth = AuthVO(refreshToken: oAuth.refreshToken, accessToken: oAuth.accessToken)
+                return authUsecase.signinKakao(auth: auth)
+            }
+            .share()
+        
+        self.kakaoSuccess = kakaoSignin
+            .compactMap{ $0.successValue()}
+            .asDriver(onErrorDriveWith: .empty())
     }
     
     public var appleButtonTap: PublishSubject<Void>

@@ -61,27 +61,9 @@ class HomeViewController: BaseViewController<HomeViewModelProtocol> {
         self.viewModel.getPostsData
             .onNext(nil)
         
-        self.viewModel.postObserve
-            .subscribe(onNext : { post in
-                self.viewModel.postRelay
-                    .accept(post)
-            })
-            .disposed(by: disposeBag)
         
-        self.viewModel.deliverPost
-            .drive()
-            .disposed(by: disposeBag)
-        
-        self.viewModel.deliverPostCount
-            .drive()
-            .disposed(by: disposeBag)
-        
-        self.viewModel.deliverCursor
-            .drive()
-            .disposed(by: disposeBag)
-        
-        self.viewModel.showPostTableView
-            .drive(onNext: { [weak self] _ in
+        self.viewModel.shouldReloadPostTable
+            .emit(onNext: { [weak self] _ in
                 self?.postTableView.reloadData()
             })
             .disposed(by: disposeBag)
@@ -268,15 +250,7 @@ extension HomeViewController : UITableViewDelegate, UITableViewDataSource {
         if section == 0 {
             return 1
         }else {
-            var count : Int = 0
-            
-            viewModel.deliverPostCount
-                .drive(onNext : { postCount in
-                    count = postCount
-                })
-                .disposed(by: disposeBag)
-            
-            return count
+            return viewModel.postViewModels.value.count
         }
     }
     
@@ -284,7 +258,7 @@ extension HomeViewController : UITableViewDelegate, UITableViewDataSource {
         if indexPath.section == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: HomeBannerCell.cellID, for: indexPath) as! HomeBannerCell
             
-            viewModel.deliverBannerDetailViewModel
+            viewModel.deliverBannerViewModel
                 .emit(onNext: { viewModel in
                     cell.bind(viewModel: viewModel)
                 })
@@ -300,15 +274,7 @@ extension HomeViewController : UITableViewDelegate, UITableViewDataSource {
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: PostTableCell.cellID, for: indexPath) as! PostTableCell
             
-            viewModel.getPost
-                .onNext(indexPath.row)
-            
-            viewModel.deliverPost
-                .drive(onNext: { postVO in
-                    cell.setCellData(postVO: postVO)
-                })
-                .disposed(by: disposeBag)
-            cell.selectionStyle = .none
+            cell.bind(viewModel: viewModel.postViewModels.value[indexPath.row])
             return cell
         }
     }
@@ -327,19 +293,7 @@ extension HomeViewController : UITableViewDelegate, UITableViewDataSource {
         let lastRow = tableView.numberOfRows(inSection: sectionIndex) - 1
         
         if indexPath.section == sectionIndex && indexPath.row == lastRow {
-            var viewCursur : String = ""
-            viewModel.deliverCursor
-                .drive(onNext: { cursor in
-                    if cursor != "" {
-                        viewCursur = cursor!
-                    }
-                })
-                .disposed(by: disposeBag)
             
-            if viewCursur != "" && !fetch {
-                beginFetch(viewCursur)
-                fetch = false
-            }
         }
     }
 }

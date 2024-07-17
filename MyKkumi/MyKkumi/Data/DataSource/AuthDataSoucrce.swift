@@ -11,16 +11,18 @@ import Moya
 import KakaoSDKUser
 
 public protocol AuthDataSource {
-    func signinKakao(auth: AuthVO) -> Single<Result<AuthVO, AuthError>>
+    func signinKakao(auth: AuthVO) -> Single<Result<Bool, AuthError>>
     func kakaoAPICall() -> Single<Result<OAuthToken, AuthError>>
 }
 
 public class DefaultAuthDataSource : AuthDataSource {
-    public func signinKakao(auth: AuthVO) -> Single<Result<AuthVO, AuthError>> {
+    public func signinKakao(auth: AuthVO) -> Single<Result<Bool, AuthError>> {
         return authProvider.rx.request(.signinKakao(auth))
             .filterSuccessfulStatusCodes()
-            .map(AuthVO.self)
-            .map {.success($0)}
+            .map {_ in .success(true)}
+            .do(onSuccess : {_ in
+                //Keychain 넣는 부분
+            })
             .catch { error in
                 let customError : ErrorVO
                 if let moyaError = error as? MoyaError {

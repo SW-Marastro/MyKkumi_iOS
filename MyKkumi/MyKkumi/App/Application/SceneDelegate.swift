@@ -42,6 +42,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             
             items[3].title = "마이페이지"
                 }
+        
+        //keyChain에서 값 꺼내서 확인
         window = .init(windowScene: windowScence)
         window?.rootViewController = tabBarController
         window?.makeKeyAndVisible()
