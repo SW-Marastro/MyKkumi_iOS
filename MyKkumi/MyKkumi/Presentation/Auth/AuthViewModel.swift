@@ -30,10 +30,12 @@ class AuthViewModel : AuthViewModelProtocol {
         self.appleButtonTap = PublishSubject<Void>()
         self.kakaoButtonTap  = PublishSubject<Void>()
         
-        self.appleSuccess = appleButtonTap
+        //apple Auth API 호출 필요
+        self.appleSuccess = self.appleButtonTap
             .asDriver(onErrorJustReturn: ())
         
-        self.kakaoSuccess = kakaoButtonTap
+        //Kakao Auth API 호출 필요
+        self.kakaoSuccess = self.kakaoButtonTap
             .asDriver(onErrorJustReturn: ())
     }
     

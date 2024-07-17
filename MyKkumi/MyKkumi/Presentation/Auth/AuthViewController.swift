@@ -52,6 +52,7 @@ class AuthViewController : BaseViewController<AuthViewModelProtocol>{
         //AppleButton
         appleButton.center = view.center
         NSLayoutConstraint.activate([
+            appleButton.topAnchor.constraint(equalTo: mainStack.topAnchor, constant: 289),
             appleButton.leadingAnchor.constraint(equalTo: mainStack.leadingAnchor, constant: 33),
             appleButton.trailingAnchor.constraint(equalTo: mainStack.trailingAnchor, constant: -33)
         ])

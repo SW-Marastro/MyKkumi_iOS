@@ -326,9 +326,6 @@ extension HomeViewController : UITableViewDelegate, UITableViewDataSource {
         let sectionIndex = tableView.numberOfSections - 1
         let lastRow = tableView.numberOfRows(inSection: sectionIndex) - 1
         
-        print("section : \(indexPath.section), row : \(indexPath.row)")
-        print("section : \(sectionIndex), lastRow : \(lastRow)")
-        
         if indexPath.section == sectionIndex && indexPath.row == lastRow {
             var viewCursur : String = ""
             viewModel.deliverCursor
