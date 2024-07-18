@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import KakaoSDKAuth
 import Swinject
 
 public var injector : Injector = DependencyInjector(container: Container())
@@ -41,9 +42,19 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             
             items[3].title = "마이페이지"
                 }
+        
+        //keyChain에서 값 꺼내서 확인
         window = .init(windowScene: windowScence)
         window?.rootViewController = tabBarController
         window?.makeKeyAndVisible()
+    }
+    
+    func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
+        if let url = URLContexts.first?.url {
+            if (AuthApi.isKakaoTalkLoginUrl(url)) {
+                _ = AuthController.handleOpenUrl(url: url)
+            }
+        }
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

@@ -22,8 +22,10 @@ public protocol PostCellViewModelProtocol : PostCellViewModelInput, PostCellView
 }
 
 public class PostCellViewModel : PostCellViewModelProtocol {
+    private let post : PostVO
     
-    public init() {
+    public init(_ post : PostVO) {
+        self.post = post
         self.optionButtonTap = PublishSubject<Void>()
     }
     

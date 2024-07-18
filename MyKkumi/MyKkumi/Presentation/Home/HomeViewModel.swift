@@ -14,28 +14,24 @@ public protocol HomeViewModelInput {
     var postTap : PublishSubject<Int64> { get }
     var uploadPostButtonTap : PublishSubject<Void> { get }
     var getPostsData : BehaviorSubject<String?> { get }
-    var getPost : PublishSubject<Int> {get}
 }
 
 public protocol HomeviewModelOutput {
     var bannerDataOutput : Signal<[BannerVO]> { get }//전체 배너 정보 view로 전달 -> output
     var shouldPushBannerView : Driver<BannerVO>{ get } // 눌린 배너 상세 정보 view로 전달
     var shouldPushBannerInfoView : Driver<Void> { get } // 전체 베너보기 버튼 결과 전달
-    
-    var showPostTableView : Driver<Void> { get }
-    var deliverCursor : Driver<String?> { get }
-    var deliverPostCount : Driver<Int> { get }
-    var deliverPost : Driver<PostVO> { get }
-    var deliverBannerDetailViewModel : Signal<BannerCellViewModelProtocol> {get}
+    var shouldPushUploadPostView : Driver<Void> { get }
+    var deliverBannerViewModel : Signal<BannerCellViewModelProtocol> {get}
 }
 
 public protocol HomeViewModelProtocol : HomeviewModelOutput, HomeViewModelInput {
-    var cursur : Observable<String?> { get }
-    var postObserve : Observable<[PostVO]> { get }
-    var postRelay : BehaviorRelay<[PostVO]> { get }
+    var cursur : BehaviorSubject<String> { get }
+    var postViewModels : BehaviorRelay<[PostCellViewModelProtocol]> { get }
+    var shouldReloadPostTable : Signal<Void> { get }
 }
 
 public class HomeViewModel : HomeViewModelProtocol {
+    
     private let disposeBag = DisposeBag()
     private let bannerUsecase : BannerUsecase
     private let postUsecase : PostUsecase
@@ -47,10 +43,11 @@ public class HomeViewModel : HomeViewModelProtocol {
         self.viewdidload = PublishSubject<Void>()
         self.postTap = PublishSubject<Int64>()
         self.uploadPostButtonTap = PublishSubject<Void>()
-        self.getPost = PublishSubject<Int>()
         self.getPostsData = BehaviorSubject<String?>(value: nil)
-        self.deliverBannerDetailViewModel = Signal.empty()
-        self.postRelay = BehaviorRelay<[PostVO]>(value: [])
+        self.deliverBannerViewModel = Signal.empty()
+        self.cursur = BehaviorSubject<String>(value: "")
+        self.postViewModels = BehaviorRelay<[PostCellViewModelProtocol]>(value: [])
+        
 
         //MARK: Banner
         let allBannerResult = self.viewdidload
@@ -77,63 +74,72 @@ public class HomeViewModel : HomeViewModelProtocol {
             .compactMap { $0.successValue() }
             .asDriver(onErrorDriveWith: .empty())
         
-        self.deliverBannerDetailViewModel = Single.just(bannerDetailViewModel)
+        self.deliverBannerViewModel = Single.just(bannerDetailViewModel)
             .asSignal(onErrorSignalWith: .empty())
         
         //MARK: Post
+        
+        let initPostResult = self.viewdidload
+            .flatMap { _ in
+                return postUsecase.getPosts(nil)
+            }
+        
+        let initSuccessPost = initPostResult
+            .compactMap{ $0.successValue() }
+        
         let allPostResult = self.getPostsData
             .flatMap { cursur in
                 return postUsecase.getPosts(cursur)
             }
             .share()
-                
-        self.cursur = allPostResult
-            .compactMap { $0.successValue()?.cursor }
         
-        self.postObserve = allPostResult
-            .compactMap { $0.successValue()?.posts }
-            .withLatestFrom(postRelay.asObservable()) { newPosts, currentPosts in
-                return currentPosts + newPosts
-            }
+        let successAllPostResult = allPostResult
+            .compactMap{ $0.successValue() }
+     
         
-        self.deliverPostCount = self.postObserve
-            .map { posts in
-                return posts.count
-            }
+        self.shouldReloadPostTable = self.postViewModels
+            .map{_ in Void()}
+            .asSignal(onErrorSignalWith: .empty())
+        
+        self.shouldPushUploadPostView = self.uploadPostButtonTap
             .asDriver(onErrorDriveWith: .empty())
         
-        self.showPostTableView = allPostResult
-            .map { _ in
-                return ()
-            }
-            .asDriver(onErrorDriveWith: .empty())
-            
-        self.deliverCursor = self.cursur
-            .asDriver(onErrorDriveWith: .empty())
-
-        self.deliverPost = self.getPost
-            .withLatestFrom(self.postObserve) { index, posts in
-                return posts[index]
-            }
-            .asDriver(onErrorDriveWith: .empty())
+        initSuccessPost
+            .subscribe(onNext: {[weak self] result in
+                guard let self = self else {return}
+                self.cursur.onNext(result.cursor)
+                let tmpViewModel = result.posts.map { post in
+                    PostCellViewModel(post)
+                }
+                self.postViewModels.accept(tmpViewModel)
+            })
+            .disposed(by: disposeBag)
+        
+        successAllPostResult
+            .subscribe(onNext: {[weak self] result in
+                guard let self = self else { return }
+                self.cursur.onNext(result.cursor)
+                var tmpPostViewModels = self.postViewModels.value
+                result.posts.forEach { post in
+                    tmpPostViewModels.append(PostCellViewModel(post))
+                }
+                self.postViewModels.accept(tmpPostViewModels)
+            })
+            .disposed(by: disposeBag)
     }
     
     public var viewdidload: PublishSubject<Void>
     public var bannerDataOutput: Signal<[BannerVO]>
     public var shouldPushBannerView: Driver<BannerVO>
     public var shouldPushBannerInfoView: Driver<Void>
-    public var deliverBannerDetailViewModel: Signal<BannerCellViewModelProtocol>
+    public var deliverBannerViewModel: Signal<BannerCellViewModelProtocol>
     
-    public var getPost: PublishSubject<Int>
-    public var cursur: Observable<String?>
+    public var cursur: BehaviorSubject<String>
     public var postTap : PublishSubject<Int64>
     public var uploadPostButtonTap : PublishSubject<Void>
     public var getPostsData: BehaviorSubject<String?>
-    public var postObserve: Observable<[PostVO]>
-    public var postRelay : BehaviorRelay<[PostVO]>
     
-    public var showPostTableView : Driver<Void>
-    public var deliverCursor: Driver<String?>
-    public var deliverPostCount: Driver<Int>
-    public var deliverPost: Driver<PostVO>
+    public var shouldPushUploadPostView: Driver<Void>
+    public var postViewModels: BehaviorRelay<[any PostCellViewModelProtocol]>
+    public var shouldReloadPostTable: Signal<Void>
 }
