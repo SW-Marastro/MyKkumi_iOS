@@ -101,8 +101,14 @@ public class HomeViewModel : HomeViewModelProtocol {
             .map{_ in Void()}
             .asSignal(onErrorSignalWith: .empty())
         
+        self.uploadPostButtonTap
+            .subscribe(onNext: {
+                NotificationCenter.default.post(name : .showAuth, object : nil)
+            })
+            .disposed(by: disposeBag)
+        
         self.shouldPushUploadPostView = self.uploadPostButtonTap
-            .asDriver(onErrorDriveWith: .empty())
+            .asDriver(onErrorJustReturn: ())
         
         initSuccessPost
             .subscribe(onNext: {[weak self] result in

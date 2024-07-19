@@ -28,7 +28,7 @@ public class DefaultAuthDataSource : AuthDataSource {
                 if let moyaError = error as? MoyaError {
                     switch moyaError {
                     case .statusCode(let response) :
-                        if let error = try? JSONDecoder().decode(ErrorVO.self, from : response.data) {
+                        if (try? JSONDecoder().decode(ErrorVO.self, from : response.data)) != nil {
                             //✅ TODO: 에러 코드별 에러 정의
                             customError = ErrorVO(errorCode: "unknown", message: "UnknownError", detail: "unknownError in Default")
                             return .just(.failure(AuthError.unknownError(customError)))
