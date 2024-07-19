@@ -8,6 +8,6 @@
 import Foundation
 import RxSwift
 public protocol AuthRepository {
-    func signinKakao(auth: AuthVO) -> Single<Result<AuthVO, AuthError>>
+    func signinKakao(auth: AuthVO) -> Single<Result<Bool, AuthError>>
     func kakaoAPICall() -> Single<Result<OAuthToken, AuthError>>
 }

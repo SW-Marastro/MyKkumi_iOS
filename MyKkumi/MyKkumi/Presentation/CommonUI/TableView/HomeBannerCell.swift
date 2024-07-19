@@ -31,11 +31,6 @@ open class HomeBannerCell : UITableViewCell {
             .bind(to: viewModel.bannerTap)
             .disposed(by: disposeBag)
         
-//            .subscribe(onNext: { bannerVO in
-//                viewModel.bannerTap.onNext(bannerVO.id)
-//            })
-//            .disposed(by: disposeBag)
-        
         bannerPage.rx.tap
             .bind(to: viewModel.allBannerPageTap)
             .disposed(by: disposeBag)

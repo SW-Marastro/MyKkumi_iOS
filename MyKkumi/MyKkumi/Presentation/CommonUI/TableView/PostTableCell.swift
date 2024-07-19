@@ -27,6 +27,12 @@ open class PostTableCell : UITableViewCell {
         optionButton.rx.tap
             .bind(to: viewModel.optionButtonTap)
             .disposed(by: disposeBag)
+        
+        viewModel.setPostData
+            .drive(onNext : {[weak self] post in
+                self?.setCellData(postVO: post)
+            })
+            .disposed(by: disposeBag)
     }
     
     //관련 Data Binding

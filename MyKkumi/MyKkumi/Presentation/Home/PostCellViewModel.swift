@@ -14,7 +14,7 @@ public protocol PostCellViewModelInput {
 }
 
 public protocol PostCellViewModelOutput {
-    
+    var setPostData : Driver<PostVO> { get }
 }
 
 public protocol PostCellViewModelProtocol : PostCellViewModelInput, PostCellViewModelOutput {
@@ -27,7 +27,10 @@ public class PostCellViewModel : PostCellViewModelProtocol {
     public init(_ post : PostVO) {
         self.post = post
         self.optionButtonTap = PublishSubject<Void>()
+        
+        self.setPostData = Driver.just(post)
     }
     
     public var optionButtonTap: PublishSubject<Void>
+    public var setPostData: Driver<PostVO>
 }
