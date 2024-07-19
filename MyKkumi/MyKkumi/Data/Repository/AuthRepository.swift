@@ -15,7 +15,7 @@ public class DefaultAuthRepository : AuthRepository {
         self.dataSource = dataSource
     }
     
-    public func signinKakao(auth: AuthVO) -> Single<Result<AuthVO, AuthError>> {
+    public func signinKakao(auth: AuthVO) -> Single<Result<Bool, AuthError>> {
         return dataSource.signinKakao(auth: auth)
     }
     

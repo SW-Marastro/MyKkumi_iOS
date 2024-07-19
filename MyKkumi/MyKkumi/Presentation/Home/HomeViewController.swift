@@ -72,15 +72,6 @@ class HomeViewController: BaseViewController<HomeViewModelProtocol> {
             .bind(to: viewModel.uploadPostButtonTap)
             .disposed(by: disposeBag)
         
-        self.viewModel.shouldPushUploadPostView
-            .drive(onNext: {[weak self] _ in
-                let authVC = AuthViewController()
-                authVC.setupBind(viewModel: AuthViewModel())
-                authVC.hidesBottomBarWhenPushed = true
-                self?.navigationController?.pushViewController(authVC, animated: true)
-            })
-            .disposed(by: disposeBag)
-        
     }
     
     public override func setupDelegate() {

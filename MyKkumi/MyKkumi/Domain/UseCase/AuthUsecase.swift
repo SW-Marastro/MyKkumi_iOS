@@ -9,7 +9,7 @@ import Foundation
 import RxSwift
 
 public protocol AuthUsecase {
-    func signinKakao(auth: AuthVO) -> Single<Result<AuthVO, AuthError>>
+    func signinKakao(auth: AuthVO) -> Single<Result<Bool, AuthError>>
     func kakaoAPICall() -> Single<Result<OAuthToken, AuthError>>
 }
 
@@ -20,7 +20,7 @@ public final class DefaultAuthUsecase : AuthUsecase {
         self.repository = repository
     }
     
-    public func signinKakao(auth: AuthVO) -> Single<Result<AuthVO, AuthError>> {
+    public func signinKakao(auth: AuthVO) -> Single<Result<Bool, AuthError>> {
         //✅TODO: ServerToken KeyChain 등록 + KeyChain helper 생성
         return repository.signinKakao(auth: auth)
     }

@@ -27,6 +27,12 @@ open class PostTableCell : UITableViewCell {
         optionButton.rx.tap
             .bind(to: viewModel.optionButtonTap)
             .disposed(by: disposeBag)
+        
+        viewModel.setPostData
+            .drive(onNext : {[weak self] post in
+                self?.setCellData(postVO: post)
+            })
+            .disposed(by: disposeBag)
     }
     
     //관련 Data Binding
@@ -40,19 +46,7 @@ open class PostTableCell : UITableViewCell {
     }
     
     func initAttribute() {
-        profileImageView.translatesAutoresizingMaskIntoConstraints = false
-        nicknameLabel.translatesAutoresizingMaskIntoConstraints = false
-        categoryLabel.translatesAutoresizingMaskIntoConstraints = false
-        optionButton.translatesAutoresizingMaskIntoConstraints = false
-        countImageLabel.translatesAutoresizingMaskIntoConstraints = false
-        
-        profileImageView.contentMode = .scaleAspectFill
         profileImageView.layer.cornerRadius = profileImageView.frame.height/2
-        
-        nicknameLabel.font = UIFont.boldSystemFont(ofSize:17)
-        categoryLabel.font = UIFont.systemFont(ofSize: 17)
-        
-        optionButton.setBackgroundImage(UIImage(named: "threePoint"), for: .normal)
         
         postImageCollection.delegate = self
         postImageCollection.dataSource = self
@@ -72,53 +66,6 @@ open class PostTableCell : UITableViewCell {
     }
     
     func setupLayout() {
-        //mainStack
-        NSLayoutConstraint.activate([
-            mainStack.topAnchor.constraint(equalTo: contentView.topAnchor),
-            mainStack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            mainStack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            mainStack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
-        ])
-        
-        NSLayoutConstraint.activate([
-            userProfileStack.topAnchor.constraint(equalTo: mainStack.topAnchor),
-            userProfileStack.leadingAnchor.constraint(equalTo: mainStack.leadingAnchor),
-            userProfileStack.trailingAnchor.constraint(equalTo: mainStack.trailingAnchor)
-        ])
-        
-        NSLayoutConstraint.activate([
-            profileImageView.leadingAnchor.constraint(equalTo: userProfileStack.leadingAnchor, constant: 16),
-            profileImageView.heightAnchor.constraint(equalToConstant: 50),
-            profileImageView.widthAnchor.constraint(equalTo: profileImageView.heightAnchor)
-        ])
-        
-        NSLayoutConstraint.activate([
-            postInfoStack.leadingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: 4), // 동작 안함..
-            postInfoStack.trailingAnchor.constraint(equalTo: optionButton.leadingAnchor)
-        ])
-        
-        NSLayoutConstraint.activate([
-            optionButton.topAnchor.constraint(equalTo: userProfileStack.topAnchor, constant: 20),
-            optionButton.trailingAnchor.constraint(equalTo: userProfileStack.trailingAnchor, constant: -16)
-        ])
-        
-        NSLayoutConstraint.activate([
-            postImageView.heightAnchor.constraint(equalToConstant: 390),
-            postImageView.leadingAnchor.constraint(equalTo: mainStack.leadingAnchor),
-            postImageView.trailingAnchor.constraint(equalTo: mainStack.trailingAnchor)
-        ])
-        
-        NSLayoutConstraint.activate([
-            postImageCollection.leadingAnchor.constraint(equalTo: postImageView.leadingAnchor),
-            postImageCollection.trailingAnchor.constraint(equalTo: postImageView.trailingAnchor),
-            postImageCollection.topAnchor.constraint(equalTo: postImageView.topAnchor),
-            postImageCollection.bottomAnchor.constraint(equalTo: postImageView.bottomAnchor)
-        ])
-        
-        NSLayoutConstraint.activate([
-            countImageLabel.topAnchor.constraint(equalTo: postImageView.topAnchor, constant: 8),
-            countImageLabel.trailingAnchor.constraint(equalTo: postImageView.trailingAnchor, constant: -8)
-        ])
     }
     
     required public init?(coder: NSCoder) {
@@ -150,18 +97,67 @@ open class PostTableCell : UITableViewCell {
         return view
     }()
     
+    let ButtonStack : UIStackView = {
+        let view = UIStackView()
+        view.translatesAutoresizingMaskIntoConstraints  = false
+        view.axis = .horizontal
+        return view
+    }()
+    
+    let contentStack : UIStackView = {
+        let view = UIStackView()
+        view.translatesAutoresizingMaskIntoConstraints  = false
+        view.axis = .vertical
+        return view
+    }()
+    
     let postImageView : UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     
-    let profileImageView = UIImageView()
-    let nicknameLabel = UILabel()
-    let categoryLabel = UILabel()
-    let optionButton = UIButton()
-    let postImageCollection = PostImageCollectionView(frame: CGRect.zero, collectionViewLayout: PostImageCollectionViewFlowLayout())
-    let countImageLabel = UILabel()
+    let profileImageView : UIImageView = {
+        let view = UIImageView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.contentMode = .scaleAspectFill
+        view.layer.masksToBounds = true
+        return view
+    }()
+    
+    let nicknameLabel : UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont.boldSystemFont(ofSize: 17)
+        return label
+    }()
+    
+    let categoryLabel : UILabel = {
+       let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont.systemFont(ofSize: 17)
+        return label
+    }()
+    
+    let optionButton : UIButton = {
+        let button = UIButton()
+        button.setBackgroundImage(UIImage(named: "trheePoint"), for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
+    let postImageCollection : PostImageCollectionView = {
+        let collection = PostImageCollectionView(frame: CGRect.zero, collectionViewLayout: PostImageCollectionViewFlowLayout())
+        
+        return collection
+    }()
+    
+    let countImageLabel : UILabel = {
+       let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
 }
 
 
