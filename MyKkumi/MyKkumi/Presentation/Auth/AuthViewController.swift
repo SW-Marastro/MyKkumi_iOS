@@ -6,8 +6,10 @@
 //
 
 import Foundation
-import RxSwift
 import UIKit
+import RxSwift
+import RxCocoa
+import AuthenticationServices
 
 class AuthViewController : BaseViewController<AuthViewModelProtocol>{
     var viewModel: AuthViewModelProtocol!
@@ -21,37 +23,82 @@ class AuthViewController : BaseViewController<AuthViewModelProtocol>{
     }
     
     public override func setupHierarchy() {
-        view.addSubview(kakaoButton)
-        view.addSubview(appleButton)
+        view.addSubview(mainStack)
+        mainStack.addSubview(kakaoButton)
+        mainStack.addSubview(appleButton)
     }
     
     public override func setupBind(viewModel: AuthViewModelProtocol){
         self.viewModel = viewModel
+        
+        self.kakaoButton.rx.tap
+            .bind(to: viewModel.kakaoButtonTap)
+            .disposed(by: disposeBag)
+        
+        self.appleButton.rx.controlEvent(.touchUpInside)
+            .bind(to: viewModel.appleButtonTap)
+            .disposed(by: disposeBag)
+        
+        self.viewModel.kakaoSuccess
+            .drive(onNext : {_ in
+                let collectCategoryVC = CollectCategoryViewController()
+                collectCategoryVC.setupBind(viewModel: CollectCategoryViewModel())
+                self.navigationController?.pushViewController(collectCategoryVC, animated: true)
+            })
+            .disposed(by: disposeBag)
     }
     
     public override func setupLayout() {
+        //MainStack
+        NSLayoutConstraint.activate([
+            mainStack.topAnchor.constraint(equalTo: view.topAnchor),
+            mainStack.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            mainStack.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            mainStack.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+        ])
         
+        //AppleButton
+        appleButton.center = view.center
+        NSLayoutConstraint.activate([
+            appleButton.topAnchor.constraint(equalTo: mainStack.topAnchor, constant: 289),
+            appleButton.leadingAnchor.constraint(equalTo: mainStack.leadingAnchor, constant: 33),
+            appleButton.trailingAnchor.constraint(equalTo: mainStack.trailingAnchor, constant: -33)
+        ])
+        
+        NSLayoutConstraint.activate([
+            kakaoButton.topAnchor.constraint(equalTo: appleButton.bottomAnchor, constant: 11),
+            kakaoButton.leadingAnchor.constraint(equalTo: mainStack.leadingAnchor, constant: 33),
+            kakaoButton.trailingAnchor.constraint(equalTo: mainStack.trailingAnchor, constant: -33)
+        ])
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
     
+    private var mainStack : UIStackView  = {
+        let stack = UIStackView()
+        stack.axis = .vertical
+        stack.alignment = .center
+        stack.spacing = 10
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        return stack
+    }()
+    
     private var kakaoButton: UIButton = {
         let button = UIButton()
         button.setTitle("카카오 로그인", for: .normal)
+        button.setTitleColor(.black, for: .normal)
         button.backgroundColor = .yellow
         button.layer.cornerRadius = 10
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
     
-    private var appleButton: UIButton = {
-        let button = UIButton()
-        button.setTitle("Apple ID로그인", for: .normal)
-        button.backgroundColor = .gray
-        button.layer.cornerRadius = 10
+    private var appleButton : ASAuthorizationAppleIDButton = {
+        let button = ASAuthorizationAppleIDButton(authorizationButtonType: .signIn, authorizationButtonStyle: .black)
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.cornerRadius = 10
         return button
     }()
 }
