@@ -19,10 +19,17 @@ public class DefaultAuthDataSource : AuthDataSource {
     public func signinKakao(auth: AuthVO) -> Single<Result<Bool, AuthError>> {
         return authProvider.rx.request(.signinKakao(auth))
             .filterSuccessfulStatusCodes()
-            .map {_ in .success(true)}
-            .do(onSuccess : {_ in
-                //Keychain 넣는 부분
-            })
+            .map {response in
+                let tokens = try JSONDecoder().decode(AuthVO.self, from: response.data)
+                let accessTokenSaved = KeychainHelper.shared.save(tokens.accessToken.data(using: .utf8)!, service: "accessToken", account: "kakao")
+                let refreshTokenSaved = KeychainHelper.shared.save(tokens.refreshToken.data(using: .utf8)!, service: "refreshToken", account: "kakao")
+                
+                if accessTokenSaved && refreshTokenSaved {
+                    return .success(true)
+                } else {
+                    return .failure(AuthError.unknownError(ErrorVO(errorCode: "KeychainError", message: "KeychainError", detail: "KeychainError in Default")))
+                }
+            }
             .catch { error in
                 let customError : ErrorVO
                 if let moyaError = error as? MoyaError {

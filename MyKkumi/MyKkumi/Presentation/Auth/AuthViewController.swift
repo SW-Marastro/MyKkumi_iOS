@@ -40,10 +40,12 @@ class AuthViewController : BaseViewController<AuthViewModelProtocol>{
             .disposed(by: disposeBag)
         
         self.viewModel.kakaoSuccess
-            .drive(onNext : {_ in
-                let collectCategoryVC = CollectCategoryViewController()
-                collectCategoryVC.setupBind(viewModel: CollectCategoryViewModel())
-                self.navigationController?.pushViewController(collectCategoryVC, animated: true)
+            .drive(onNext : {result in
+                if result {
+                    let collectCategoryVC = CollectCategoryViewController()
+                    collectCategoryVC.setupBind(viewModel: CollectCategoryViewModel())
+                    self.navigationController?.pushViewController(collectCategoryVC, animated: true)
+                }
             })
             .disposed(by: disposeBag)
     }

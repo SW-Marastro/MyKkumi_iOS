@@ -7,6 +7,8 @@
 
 import Foundation
 import UIKit
+import RxSwift
+import RxCocoa
 
 extension UIImageView {
     func load(url: URL, placeholder : String) {
@@ -22,11 +24,18 @@ extension UIImageView {
         }
     }
 }
+extension Reactive where Base: UIImageView {
+    public var tapGesture: ControlEvent<UITapGestureRecognizer> {
+        let gesture = UITapGestureRecognizer()
+        base.addGestureRecognizer(gesture)
+        base.isUserInteractionEnabled = true
+        return ControlEvent(events: gesture.rx.event)
+    }
+}
 
 extension UITextField {
     func underline(viewSize : CGFloat, color : UIColor) {
         let border  = CALayer()
-        let widt = CGFloat(1)
         border.borderColor = color.cgColor
         border.frame = CGRect(x: 0, y: self.frame.size.height + 10 , width: self.frame.width, height: self.frame.size.height)
         self.layer.addSublayer(border)
