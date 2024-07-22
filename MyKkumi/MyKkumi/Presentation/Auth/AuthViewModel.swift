@@ -15,7 +15,7 @@ protocol AuthViewModelInput {
 }
 
 protocol AuthViewModelOutput {
-    var kakaoSuccess : Driver<Void> { get }
+    var kakaoSuccess : Driver<Bool> { get }
     var appleSuccess : Driver<Void> { get }
 }
 
@@ -59,5 +59,5 @@ class AuthViewModel : AuthViewModelProtocol {
     public var appleButtonTap: PublishSubject<Void>
     public var kakaoButtonTap: PublishSubject<Void>
     public var appleSuccess: Driver<Void>
-    public var kakaoSuccess: Driver<Void>
+    public var kakaoSuccess: Driver<Bool>
 }

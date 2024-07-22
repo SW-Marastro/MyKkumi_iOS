@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 import RxSwift
+import RxCocoa
 
 class MakeProfileViewController : BaseViewController<MakeProfileViewModelProtocol> {
     var viewModel : MakeProfileViewModelProtocol!
@@ -22,18 +23,26 @@ class MakeProfileViewController : BaseViewController<MakeProfileViewModelProtoco
     
     public override func setupHierarchy() {
         view.addSubview(mainStack)
-        mainStack.addArrangedSubview(completeButton)
-        mainStack.addArrangedSubview(nickNameStack)
-        mainStack.addArrangedSubview(profileImage)
+        mainStack.addSubview(profileImage)
+        mainStack.addSubview(nickNameStack)
+        mainStack.addSubview(completeButton)
         
-        nickNameStack.addArrangedSubview(nickNameInfoButton)
-        nickNameStack.addArrangedSubview(nickNameLabel)
-        nickNameStack.addArrangedSubview(nickNameTextField)
+        nickNameStack.addSubview(nickNameInfoButton)
+        nickNameStack.addSubview(nickNameLabel)
+        nickNameStack.addSubview(nickNameTextField)
     }
     
     public override func setupBind(viewModel: MakeProfileViewModelProtocol) {
         self.viewModel = viewModel
         
+        self.completeButton.rx.tap
+            .bind(to: self.viewModel.completeButtonTap)
+            .disposed(by: disposeBag)
+        
+        self.profileImage.rx.tapGesture
+            .map{_ in}
+            .bind(to: self.viewModel.profileImageTap)
+            .disposed(by: disposeBag)
     }
     
     public override func setupViewProperty() {
@@ -42,7 +51,54 @@ class MakeProfileViewController : BaseViewController<MakeProfileViewModelProtoco
     }
     
     public override func setupLayout() {
-
+        //mainStack
+        NSLayoutConstraint.activate([
+            mainStack.topAnchor.constraint(equalTo: view.topAnchor),
+            mainStack.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            mainStack.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            mainStack.leadingAnchor.constraint(equalTo: view.leadingAnchor)
+        ])
+        
+        //completButton
+        NSLayoutConstraint.activate([
+            completeButton.bottomAnchor.constraint(equalTo: mainStack.bottomAnchor, constant: -48),
+            completeButton.leadingAnchor.constraint(equalTo: mainStack.leadingAnchor, constant: 16),
+            completeButton.trailingAnchor.constraint(equalTo: mainStack.trailingAnchor, constant : -16)
+        ])
+        
+        //profileImage
+        NSLayoutConstraint.activate([
+            profileImage.centerYAnchor.constraint(equalTo: mainStack.centerYAnchor),
+            profileImage.centerXAnchor.constraint(equalTo: mainStack.centerXAnchor),
+            profileImage.widthAnchor.constraint(equalToConstant: 200),
+            profileImage.heightAnchor.constraint(equalToConstant: 200)
+        ])
+        
+        //nickNameStack
+        NSLayoutConstraint.activate([
+            nickNameStack.topAnchor.constraint(equalTo: profileImage.bottomAnchor, constant: 16),
+            nickNameStack.leadingAnchor.constraint(equalTo: mainStack.leadingAnchor, constant: 16),
+            nickNameStack.trailingAnchor.constraint(equalTo: mainStack.trailingAnchor, constant: -16)
+        ])
+        
+        //nickNameInfoButton
+        NSLayoutConstraint.activate([
+            nickNameInfoButton.widthAnchor.constraint(equalTo: nickNameLabel.heightAnchor),
+            nickNameInfoButton.heightAnchor.constraint(equalTo: nickNameLabel.heightAnchor),
+            nickNameInfoButton.leadingAnchor.constraint(equalTo: nickNameStack.leadingAnchor)
+        ])
+        
+        //nickNameLabel
+        NSLayoutConstraint.activate([
+            nickNameLabel.leadingAnchor.constraint(equalTo: nickNameInfoButton.trailingAnchor, constant: 8),
+        ])
+        
+        //nickNameTextField
+        NSLayoutConstraint.activate([
+            nickNameTextField.leadingAnchor.constraint(equalTo: nickNameLabel.trailingAnchor, constant: 8),
+            nickNameTextField.trailingAnchor.constraint(equalTo: nickNameStack.trailingAnchor),
+            nickNameTextField.heightAnchor.constraint(equalTo: nickNameLabel.heightAnchor),
+        ])
     }
     
     private var mainStack : UIStackView = {
@@ -79,7 +135,7 @@ class MakeProfileViewController : BaseViewController<MakeProfileViewModelProtoco
     private var nickNameTextField : UITextField = {
         let textField = UITextField()
         textField.translatesAutoresizingMaskIntoConstraints = false
-        textField.underline(viewSize: 1, color: .black)
+        textField.placeholder = "닉네임을 입력하세요"
         return textField
     }()
     
@@ -96,6 +152,7 @@ class MakeProfileViewController : BaseViewController<MakeProfileViewModelProtoco
         button.setTitle("완료", for: .normal)
         button.titleLabel?.textColor = .white
         button.backgroundColor = .blue
+        button.layer.cornerRadius = 10
         return button
     }()
 }

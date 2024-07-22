@@ -88,6 +88,10 @@
 		D2ED95442C4799A5004DA169 /* AuthUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ED95432C4799A5004DA169 /* AuthUsecase.swift */; };
 		D2ED95462C4A2414004DA169 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ED95452C4A2414004DA169 /* RootViewController.swift */; };
 		D2ED95482C4A273D004DA169 /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ED95472C4A273D004DA169 /* Notification.swift */; };
+		D2ED954C2C4CD79E004DA169 /* KeychainHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ED954B2C4CD79E004DA169 /* KeychainHelper.swift */; };
+		D2ED954F2C4E1B76004DA169 /* CategoryCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ED954E2C4E1B76004DA169 /* CategoryCollectionView.swift */; };
+		D2ED95512C4E1BB2004DA169 /* CategoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ED95502C4E1BB2004DA169 /* CategoryCollectionViewCell.swift */; };
+		D2ED95532C4E26E4004DA169 /* CategoryCollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ED95522C4E26E4004DA169 /* CategoryCollectionViewFlowLayout.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -196,6 +200,10 @@
 		D2ED95432C4799A5004DA169 /* AuthUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthUsecase.swift; sourceTree = "<group>"; };
 		D2ED95452C4A2414004DA169 /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		D2ED95472C4A273D004DA169 /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
+		D2ED954B2C4CD79E004DA169 /* KeychainHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainHelper.swift; sourceTree = "<group>"; };
+		D2ED954E2C4E1B76004DA169 /* CategoryCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCollectionView.swift; sourceTree = "<group>"; };
+		D2ED95502C4E1BB2004DA169 /* CategoryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCollectionViewCell.swift; sourceTree = "<group>"; };
+		D2ED95522C4E26E4004DA169 /* CategoryCollectionViewFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCollectionViewFlowLayout.swift; sourceTree = "<group>"; };
 		DD509B30BF78F2EF18546CC5 /* Pods-MyKkumiTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyKkumiTests.debug.xcconfig"; path = "Target Support Files/Pods-MyKkumiTests/Pods-MyKkumiTests.debug.xcconfig"; sourceTree = "<group>"; };
 		F6DC5A17030EFC69F83EACBA /* Pods-MyKkumi.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyKkumi.release.xcconfig"; path = "Target Support Files/Pods-MyKkumi/Pods-MyKkumi.release.xcconfig"; sourceTree = "<group>"; };
 		FC2461C807CEF6A2AC1EB837 /* Pods-MyKkumi-MyKkumiUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyKkumi-MyKkumiUITests.debug.xcconfig"; path = "Target Support Files/Pods-MyKkumi-MyKkumiUITests/Pods-MyKkumi-MyKkumiUITests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -266,7 +274,6 @@
 				D2ED953E2C46AC70004DA169 /* Auth */,
 				D2ABCE122C2D2F2D0035F7A1 /* Basic */,
 				D2ABCE0F2C2D2E920035F7A1 /* Home */,
-				D2ABCE132C2D2F490035F7A1 /* NetworkConfiguration.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -494,6 +501,7 @@
 		D2ABCDFB2C2BFE200035F7A1 /* CollectionView */ = {
 			isa = PBXGroup;
 			children = (
+				D2ED954D2C4E1B42004DA169 /* Category */,
 				D2ABCE2F2C33C6260035F7A1 /* Post */,
 				D2ABCE2E2C33C61C0035F7A1 /* Banner */,
 			);
@@ -591,10 +599,12 @@
 		D2E4594B2C1DB20000DB0756 /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				D2ABCE132C2D2F490035F7A1 /* NetworkConfiguration.swift */,
 				D2ABCDD02C2A683D0035F7A1 /* Repository */,
 				D2ABCDCF2C2A68360035F7A1 /* DataSource */,
 				D21030642C2178220059CACA /* Protocols */,
 				D21030612C2177C50059CACA /* Service */,
+				D2ED954B2C4CD79E004DA169 /* KeychainHelper.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -660,6 +670,16 @@
 				D2ED953C2C46A907004DA169 /* AuthService.swift */,
 			);
 			path = Auth;
+			sourceTree = "<group>";
+		};
+		D2ED954D2C4E1B42004DA169 /* Category */ = {
+			isa = PBXGroup;
+			children = (
+				D2ED954E2C4E1B76004DA169 /* CategoryCollectionView.swift */,
+				D2ED95502C4E1BB2004DA169 /* CategoryCollectionViewCell.swift */,
+				D2ED95522C4E26E4004DA169 /* CategoryCollectionViewFlowLayout.swift */,
+			);
+			path = Category;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -921,11 +941,13 @@
 				D2ED95422C46AF20004DA169 /* AuthRepositoryProtocol.swift in Sources */,
 				D230F9252C1D714C00C43797 /* AppDelegate.swift in Sources */,
 				D2ABCE162C2D4BF50035F7A1 /* Image+TextExtension.swift in Sources */,
+				D2ED954F2C4E1B76004DA169 /* CategoryCollectionView.swift in Sources */,
 				D2ABCDDA2C2A6D630035F7A1 /* BasicDataAssemply.swift in Sources */,
 				D2ABCE2B2C33C4D90035F7A1 /* PostImageCollectionView.swift in Sources */,
 				D2ED95372C44C804004DA169 /* MakeProfileViewModel.swift in Sources */,
 				D2ED95482C4A273D004DA169 /* Notification.swift in Sources */,
 				D2ABCE142C2D2F490035F7A1 /* NetworkConfiguration.swift in Sources */,
+				D2ED95532C4E26E4004DA169 /* CategoryCollectionViewFlowLayout.swift in Sources */,
 				D2ABCDD22C2A68940035F7A1 /* BasicDataSource.swift in Sources */,
 				D21FB54F2C3E820100927905 /* AuthViewModel.swift in Sources */,
 				D2ABCDF92C2BE55B0035F7A1 /* BaseViewController.swift in Sources */,
@@ -948,6 +970,7 @@
 				D2ABCDE92C2A9D6F0035F7A1 /* ShoppingViewController.swift in Sources */,
 				D2ABCDDC2C2A6E780035F7A1 /* DependencyInjector.swift in Sources */,
 				D21030632C2177E90059CACA /* BasicNetwork.swift in Sources */,
+				D2ED95512C4E1BB2004DA169 /* CategoryCollectionViewCell.swift in Sources */,
 				D230F9272C1D714C00C43797 /* SceneDelegate.swift in Sources */,
 				D2ABCE1A2C2D4F590035F7A1 /* DomainAssembly.swift in Sources */,
 				D2ABCDE52C2A9CED0035F7A1 /* HomeViewController.swift in Sources */,
@@ -966,6 +989,7 @@
 				D2ABCE112C2D2E9F0035F7A1 /* BannerService.swift in Sources */,
 				D2ABCDED2C2AAEA10035F7A1 /* HomeViewModel.swift in Sources */,
 				D2E4595C2C1E383D00DB0756 /* BasicCommon.swift in Sources */,
+				D2ED954C2C4CD79E004DA169 /* KeychainHelper.swift in Sources */,
 				D2ED95392C46A7FF004DA169 /* AuthDataSoucrce.swift in Sources */,
 				D2ABCE032C2D1E490035F7A1 /* BannerVO.swift in Sources */,
 				D2ABCDEB2C2A9D8A0035F7A1 /* MypageViewController.swift in Sources */,
