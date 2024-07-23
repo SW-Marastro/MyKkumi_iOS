@@ -16,5 +16,9 @@ enum NetworkConfiguration {
     static let getPost = "/posts"
     
     //MARK: Auth
-    static let sininKakao = "/signin/kakao"
+    static let signinKakao = "/signin/kakao"
+    static let signinApple = "/signin/apple"
+    static let getToken = "/signin/token"
+    static let patchUser = "/signin/users"
+    static let getUserData = "/signin/users/me"
 }

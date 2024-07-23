@@ -139,6 +139,7 @@
 		D230F9412C1D714E00C43797 /* MyKkumiUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MyKkumiUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D230F9452C1D714E00C43797 /* MyKkumiUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyKkumiUITests.swift; sourceTree = "<group>"; };
 		D230F9472C1D714E00C43797 /* MyKkumiUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyKkumiUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		D2828C392C4EEABB0036DFDD /* MyKkumi.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MyKkumi.entitlements; sourceTree = "<group>"; };
 		D28346D62C3575ED0048CB2E /* UIViewController+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Rx.swift"; sourceTree = "<group>"; };
 		D28346F62C37F6230048CB2E /* HomeBannerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeBannerCell.swift; sourceTree = "<group>"; };
 		D28346F92C38312A0048CB2E /* CountButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountButton.swift; sourceTree = "<group>"; };
@@ -324,6 +325,7 @@
 		D230F9232C1D714C00C43797 /* MyKkumi */ = {
 			isa = PBXGroup;
 			children = (
+				D2828C392C4EEABB0036DFDD /* MyKkumi.entitlements */,
 				D2E459502C1E140400DB0756 /* Resources */,
 				D2E4594D2C1DB20A00DB0756 /* Presentation */,
 				D2E4594C2C1DB20500DB0756 /* Domain */,
@@ -1160,6 +1162,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = MyKkumi/MyKkumi.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = Y7GS8T9LGZ;
@@ -1192,6 +1195,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = MyKkumi/MyKkumi.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = Y7GS8T9LGZ;

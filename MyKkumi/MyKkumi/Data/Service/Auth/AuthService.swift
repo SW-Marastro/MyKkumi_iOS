@@ -16,6 +16,10 @@ public enum AuthError : Error {
 
 public enum Auth {
     case signinKakao(AuthVO)
+    case signinApple(AppleAuth)
+    case getUserData
+    case patchUser(UserVO)
+    case getToken
 }
 
 extension Auth : TargetType {
@@ -23,19 +27,22 @@ extension Auth : TargetType {
     
     public var path : String {
         switch self {
-        case .signinKakao(_) : return NetworkConfiguration.sininKakao
+        case .signinKakao(_) : return NetworkConfiguration.signinKakao
+        case .signinApple(_) : return NetworkConfiguration.signinApple
         }
     }
     
     public var method : Moya.Method {
         switch self {
-        case .signinKakao(_) : return .post
+        case .signinKakao(_), .signinApple(_)  : return .post
         }
     }
     
     public var task : Task {
         switch self {
         case .signinKakao(let auth) :
+            return .requestJSONEncodable(auth)
+        case .signinApple(let auth) :
             return .requestJSONEncodable(auth)
         }
     }

@@ -13,9 +13,11 @@ import KakaoSDKUser
 public protocol AuthDataSource {
     func signinKakao(auth: AuthVO) -> Single<Result<Bool, AuthError>>
     func kakaoAPICall() -> Single<Result<OAuthToken, AuthError>>
+    func signinApple(_ auth : AppleAuth) -> Single<Result<Bool, AuthError>>
 }
 
 public class DefaultAuthDataSource : AuthDataSource {
+    
     public func signinKakao(auth: AuthVO) -> Single<Result<Bool, AuthError>> {
         return authProvider.rx.request(.signinKakao(auth))
             .filterSuccessfulStatusCodes()
@@ -89,5 +91,45 @@ public class DefaultAuthDataSource : AuthDataSource {
             }
             return Disposables.create()
         }
+    }
+    
+    public func signinApple(_ auth: AppleAuth) -> RxSwift.Single<Result<Bool, AuthError>> {
+        return authProvider.rx.request(.signinApple(auth))
+            .filterSuccessfulStatusCodes()
+            .map {response in
+                print(response)
+                let tokens = try JSONDecoder().decode(AuthVO.self, from: response.data)
+                let accessTokenSaved = KeychainHelper.shared.save(tokens.accessToken.data(using: .utf8)!, service: "accessToken", account: "apple")
+                let refreshTokenSaved = KeychainHelper.shared.save(tokens.refreshToken.data(using: .utf8)!, service: "refreshToken", account: "apple")
+                
+                if accessTokenSaved && refreshTokenSaved {
+                    return .success(true)
+                } else {
+                    return .failure(AuthError.unknownError(ErrorVO(errorCode: "KeychainError", message: "KeychainError", detail: "KeychainError in Default")))
+                }
+            }
+            .catch { error in
+                print(error)
+                let customError : ErrorVO
+                if let moyaError = error as? MoyaError {
+                    switch moyaError {
+                    case .statusCode(let response) :
+                        if (try? JSONDecoder().decode(ErrorVO.self, from : response.data)) != nil {
+                            //✅ TODO: 에러 코드별 에러 정의
+                            customError = ErrorVO(errorCode: "unknown", message: "UnknownError", detail: "unknownError in Default")
+                            return .just(.failure(AuthError.unknownError(customError)))
+                        } else {
+                            customError = ErrorVO(errorCode: "unknown", message: "UnknownError", detail: "unknownError in Default")
+                            return .just(.failure(AuthError.unknownError(customError)))
+                        }
+                    default :
+                        customError = ErrorVO(errorCode: "unknown", message: "UnknownError", detail: "unknownError in Default")
+                        return .just(.failure(AuthError.unknownError(customError)))
+                    }
+                } else {
+                    customError = ErrorVO(errorCode: "unknown", message: "UnknownError", detail: "unknownError in POST")
+                    return .just(.failure(AuthError.unknownError(customError)))
+                }
+            }
     }
 }
