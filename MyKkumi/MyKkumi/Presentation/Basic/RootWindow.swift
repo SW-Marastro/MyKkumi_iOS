@@ -8,20 +8,26 @@
 import Foundation
 import UIKit
 
-class RootViewController : UIViewController {
-    private var authController: UINavigationController?
+class RootWindow : UIWindow {
+    private var originalRootViewController: UIViewController?
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        setupObservers()
-        showTapbarController()
+    public override init(windowScene: UIWindowScene){
+       super.init(windowScene: windowScene)
+       self.setupObservers()
+       self.showTapbarController()
+   }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
+
+
     private func setupObservers() {
         NotificationCenter.default.addObserver(self, selector: #selector(showAuth), name: .showAuth, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(deleteAuth), name: .deleteAuth, object: nil)
     }
-    
+
     private func showTapbarController() {
         let homeVC = HomeViewController()
         homeVC.setupBind(viewModel: HomeViewModel())
@@ -35,37 +41,33 @@ class RootViewController : UIViewController {
         
         if let items = tabBarController.tabBar.items {
             items[0].title = "홈"
-            
             items[1].title = "둘러보기"
-            
             items[2].title = "쇼핑"
-            
             items[3].title = "마이페이지"
         }
         
-        addChild(tabBarController)
-        view.addSubview(tabBarController.view)
-        tabBarController.view.frame = view.bounds
-        tabBarController.didMove(toParent: self)
+        self.rootViewController = tabBarController
     }
-    
+
     @objc private func showAuth() {
+        guard !(rootViewController is AuthViewController) else { return }
+
+        // Save the current rootViewController
+        originalRootViewController = rootViewController
+        
         let auth = AuthViewController()
         auth.setupBind(viewModel: AuthViewModel())
-        self.authController = UINavigationController(rootViewController: auth)
-        addChild(authController!)
-        view.addSubview(authController!.view)
-        auth.view.frame = view.bounds
-        auth.didMove(toParent: self)
+        let authController = UINavigationController(rootViewController: auth)
+        
+        // Set the authController as the new rootViewController
+        self.rootViewController = authController
     }
-    
+
     @objc private func deleteAuth() {
-        guard let authController = self.authController else { return }
-        authController.willMove(toParent: nil)
-        authController.view.removeFromSuperview()
-        authController.removeFromParent()
-        self.authController = nil
+        guard let originalRootVC = originalRootViewController else { return }
+
+        // Restore the original rootViewController
+        self.rootViewController = originalRootVC
+        self.originalRootViewController = nil
     }
 }
-
-

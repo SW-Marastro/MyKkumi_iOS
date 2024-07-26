@@ -9,6 +9,7 @@ import Foundation
 import RxSwift
 
 public class DefaultAuthRepository : AuthRepository {
+    
     let dataSource : AuthDataSource
     
     public init(dataSource: AuthDataSource) {
@@ -21,5 +22,9 @@ public class DefaultAuthRepository : AuthRepository {
     
     public func kakaoAPICall() -> Single<Result<OAuthToken, AuthError>> {
         return dataSource.kakaoAPICall()
+    }
+    
+    public func siginApple(_ auth: AppleAuth) -> RxSwift.Single<Result<Bool, AuthError>> {
+        return dataSource.signinApple(auth)
     }
 }

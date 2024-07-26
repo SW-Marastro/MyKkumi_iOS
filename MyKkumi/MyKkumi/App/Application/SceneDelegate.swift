@@ -9,24 +9,20 @@ import UIKit
 import KakaoSDKAuth
 import Swinject
 
-public var injector : Injector = DependencyInjector(container: Container())
-
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
-    var window: UIWindow?
+    var window: RootWindow?
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScence = (scene as? UIWindowScene) else { return }
         
-        injector.assemble([BasicAssembly(),
+        DependencyInjector.shared.assemble([BasicAssembly(),
                           BasicDataAssembly(),
                           DataAssembly(),
                           DomainAssembly()])
         
         //keyChain에서 값 꺼내서 확인
-        let rootController = UINavigationController(rootViewController: RootViewController())
-        window = .init(windowScene: windowScence)
-        window?.rootViewController = rootController
+        window = RootWindow(windowScene: windowScence)
         window?.makeKeyAndVisible()
     }
     

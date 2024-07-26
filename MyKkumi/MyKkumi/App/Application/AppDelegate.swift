@@ -13,7 +13,7 @@ import Swinject
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        KakaoSDK.initSDK(appKey: "55d592206f0b04c3ea9856a84a02a293")
+        KakaoSDK.initSDK(appKey: NetworkConfiguration.kakaoKeyValue)
         return true
     }
 

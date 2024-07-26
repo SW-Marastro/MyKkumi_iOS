@@ -22,6 +22,10 @@ class AuthViewController : BaseViewController<AuthViewModelProtocol>{
         super.viewDidLoad()
     }
     
+//    override func viewDidDisappear(_ animated: Bool) {
+//        <#code#>
+//    }
+    
     public override func setupHierarchy() {
         view.addSubview(mainStack)
         mainStack.addSubview(kakaoButton)
@@ -35,10 +39,6 @@ class AuthViewController : BaseViewController<AuthViewModelProtocol>{
             .bind(to: viewModel.kakaoButtonTap)
             .disposed(by: disposeBag)
         
-        self.appleButton.rx.controlEvent(.touchUpInside)
-            .bind(to: viewModel.appleButtonTap)
-            .disposed(by: disposeBag)
-        
         self.viewModel.kakaoSuccess
             .drive(onNext : {result in
                 if result {
@@ -48,6 +48,36 @@ class AuthViewController : BaseViewController<AuthViewModelProtocol>{
                 }
             })
             .disposed(by: disposeBag)
+        
+        self.appleButton.rx.controlEvent(.touchUpInside)
+            .bind(to: viewModel.appleButtonTap)
+            .disposed(by: disposeBag)
+        
+        self.viewModel.startAppleSignInFlow
+            .drive(onNext : { _ in
+                self.startSignInWithAppleFlow()
+            })
+            .disposed(by: disposeBag)
+        
+        self.viewModel.appleSuccess
+            .drive(onNext : {result in
+                if result {
+                    let collectCategoryVC = CollectCategoryViewController()
+                    collectCategoryVC.setupBind(viewModel: CollectCategoryViewModel())
+                    self.navigationController?.pushViewController(collectCategoryVC, animated: true)
+                }
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    private func startSignInWithAppleFlow() {
+       let request = ASAuthorizationAppleIDProvider().createRequest()
+       request.requestedScopes = [.fullName, .email]
+       
+       let authorizationController = ASAuthorizationController(authorizationRequests: [request])
+       authorizationController.delegate = self
+       authorizationController.presentationContextProvider = self
+       authorizationController.performRequests()
     }
     
     public override func setupLayout() {
@@ -103,4 +133,26 @@ class AuthViewController : BaseViewController<AuthViewModelProtocol>{
         button.cornerRadius = 10
         return button
     }()
+}
+
+extension AuthViewController : ASAuthorizationControllerDelegate, ASAuthorizationControllerPresentationContextProviding {
+    func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
+        if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
+            if let userIdentifier = appleIDCredential.authorizationCode {
+                // ViewModel에 인증 결과 전달
+                viewModel.appleUserData
+                    .onNext(String(data: userIdentifier, encoding: .utf8) ?? "")
+            }
+        }
+    }
+    
+    func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
+        // ViewModel에 인증 오류 전달
+        viewModel.appleAuthError
+            .onNext(error)
+    }
+    
+    func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
+        return self.view.window!
+    }
 }

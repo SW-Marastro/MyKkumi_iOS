@@ -43,10 +43,51 @@ class MakeProfileViewController : BaseViewController<MakeProfileViewModelProtoco
             .map{_ in}
             .bind(to: self.viewModel.profileImageTap)
             .disposed(by: disposeBag)
+        
+        viewModel.sholudPushSelectAlert
+            .drive(onNext : {[weak self] _ in
+                let alert = UIAlertController(title : "프로필 사진 설정", message: "", preferredStyle: .actionSheet)
+                let library = UIAlertAction(title: "사진 보관함", style: .default) {_ in 
+                    self?.viewModel.libraryTap.onNext(())
+                }
+                let camera = UIAlertAction(title: "카메라", style: .default) {_ in
+                    self?.viewModel.cameraTap.onNext(())
+                }
+                let cancel = UIAlertAction(title: "취소", style: .cancel)
+                
+                alert.addAction(library)
+                alert.addAction(camera)
+                alert.addAction(cancel)
+                self?.present(alert, animated: true, completion: nil)
+            })
+            .disposed(by: disposeBag)
+        
+        viewModel.sholudPushImagePicker
+            .drive(onNext : {[weak self] result in
+                if result {
+                    let imagePicker = UIImagePickerController()
+                    imagePicker.delegate = self
+                    imagePicker.sourceType = .photoLibrary
+                    self?.present(imagePicker, animated : true, completion: nil)
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        viewModel.sholudPushCamera
+            .drive(onNext : {[weak self] result in
+                if result {
+                    let imagePicker = UIImagePickerController()
+                    imagePicker.delegate = self
+                    imagePicker.sourceType = .camera
+                    self?.present(imagePicker, animated: true, completion: nil)
+                }
+            })
+            .disposed(by: disposeBag)
     }
     
     public override func setupViewProperty() {
         profileImage.layer.cornerRadius = profileImage.frame.width / 2
+        profileImage.clipsToBounds = true
         nickNameLabel.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 20)
     }
     
@@ -155,4 +196,18 @@ class MakeProfileViewController : BaseViewController<MakeProfileViewModelProtoco
         button.layer.cornerRadius = 10
         return button
     }()
+}
+
+extension MakeProfileViewController : UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        if let selectedImage = info[.originalImage] as? UIImage {
+            profileImage.image = selectedImage
+            viewModel.imageData.accept(selectedImage)
+        }
+        dismiss(animated: true, completion: nil)
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        dismiss(animated: true, completion: nil)
+    }
 }

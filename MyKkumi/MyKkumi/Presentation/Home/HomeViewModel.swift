@@ -37,7 +37,7 @@ public class HomeViewModel : HomeViewModelProtocol {
     private let postUsecase : PostUsecase
     private let bannerDetailViewModel : BannerCellViewModelProtocol = BannerCellViewModel()
     
-    public init(bannerUsecase : BannerUsecase = injector.resolve(BannerUsecase.self), postUsecase : PostUsecase = injector.resolve(PostUsecase.self)) {
+    public init(bannerUsecase : BannerUsecase = DependencyInjector.shared.resolve(BannerUsecase.self), postUsecase : PostUsecase = DependencyInjector.shared.resolve(PostUsecase.self)) {
         self.bannerUsecase = bannerUsecase
         self.postUsecase = postUsecase
         self.viewdidload = PublishSubject<Void>()
