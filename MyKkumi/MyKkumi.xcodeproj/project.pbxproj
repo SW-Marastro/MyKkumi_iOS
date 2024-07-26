@@ -27,6 +27,7 @@
 		D230F93C2C1D714E00C43797 /* MyKkumiTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D230F93B2C1D714E00C43797 /* MyKkumiTests.swift */; };
 		D230F9462C1D714E00C43797 /* MyKkumiUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D230F9452C1D714E00C43797 /* MyKkumiUITests.swift */; };
 		D230F9482C1D714E00C43797 /* MyKkumiUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D230F9472C1D714E00C43797 /* MyKkumiUITestsLaunchTests.swift */; };
+		D2828C3B2C53A5100036DFDD /* RootWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2828C3A2C53A5100036DFDD /* RootWindow.swift */; };
 		D28346D72C3575ED0048CB2E /* UIViewController+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28346D62C3575ED0048CB2E /* UIViewController+Rx.swift */; };
 		D28346F72C37F6230048CB2E /* HomeBannerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28346F62C37F6230048CB2E /* HomeBannerCell.swift */; };
 		D28346FA2C38312A0048CB2E /* CountButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28346F92C38312A0048CB2E /* CountButton.swift */; };
@@ -86,7 +87,6 @@
 		D2ED95402C46AF0A004DA169 /* AuthRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ED953F2C46AF0A004DA169 /* AuthRepository.swift */; };
 		D2ED95422C46AF20004DA169 /* AuthRepositoryProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ED95412C46AF20004DA169 /* AuthRepositoryProtocol.swift */; };
 		D2ED95442C4799A5004DA169 /* AuthUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ED95432C4799A5004DA169 /* AuthUsecase.swift */; };
-		D2ED95462C4A2414004DA169 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ED95452C4A2414004DA169 /* RootViewController.swift */; };
 		D2ED95482C4A273D004DA169 /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ED95472C4A273D004DA169 /* Notification.swift */; };
 		D2ED954C2C4CD79E004DA169 /* KeychainHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ED954B2C4CD79E004DA169 /* KeychainHelper.swift */; };
 		D2ED954F2C4E1B76004DA169 /* CategoryCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ED954E2C4E1B76004DA169 /* CategoryCollectionView.swift */; };
@@ -140,6 +140,7 @@
 		D230F9452C1D714E00C43797 /* MyKkumiUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyKkumiUITests.swift; sourceTree = "<group>"; };
 		D230F9472C1D714E00C43797 /* MyKkumiUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyKkumiUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		D2828C392C4EEABB0036DFDD /* MyKkumi.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MyKkumi.entitlements; sourceTree = "<group>"; };
+		D2828C3A2C53A5100036DFDD /* RootWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootWindow.swift; sourceTree = "<group>"; };
 		D28346D62C3575ED0048CB2E /* UIViewController+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Rx.swift"; sourceTree = "<group>"; };
 		D28346F62C37F6230048CB2E /* HomeBannerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeBannerCell.swift; sourceTree = "<group>"; };
 		D28346F92C38312A0048CB2E /* CountButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountButton.swift; sourceTree = "<group>"; };
@@ -199,7 +200,6 @@
 		D2ED953F2C46AF0A004DA169 /* AuthRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthRepository.swift; sourceTree = "<group>"; };
 		D2ED95412C46AF20004DA169 /* AuthRepositoryProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthRepositoryProtocol.swift; sourceTree = "<group>"; };
 		D2ED95432C4799A5004DA169 /* AuthUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthUsecase.swift; sourceTree = "<group>"; };
-		D2ED95452C4A2414004DA169 /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		D2ED95472C4A273D004DA169 /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
 		D2ED954B2C4CD79E004DA169 /* KeychainHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainHelper.swift; sourceTree = "<group>"; };
 		D2ED954E2C4E1B76004DA169 /* CategoryCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCollectionView.swift; sourceTree = "<group>"; };
@@ -652,7 +652,7 @@
 			children = (
 				D2E459522C1E1A4600DB0756 /* ExampleView */,
 				D2E4594E2C1DB41500DB0756 /* LaunchScreen.storyboard */,
-				D2ED95452C4A2414004DA169 /* RootViewController.swift */,
+				D2828C3A2C53A5100036DFDD /* RootWindow.swift */,
 			);
 			path = Basic;
 			sourceTree = "<group>";
@@ -953,6 +953,7 @@
 				D2ABCDD22C2A68940035F7A1 /* BasicDataSource.swift in Sources */,
 				D21FB54F2C3E820100927905 /* AuthViewModel.swift in Sources */,
 				D2ABCDF92C2BE55B0035F7A1 /* BaseViewController.swift in Sources */,
+				D2828C3B2C53A5100036DFDD /* RootWindow.swift in Sources */,
 				D21FB54D2C3E7ECD00927905 /* AuthViewController.swift in Sources */,
 				D2ABCE312C33C64C0035F7A1 /* PostImageCollectionViewFlowLayout.swift in Sources */,
 				D2ED95442C4799A5004DA169 /* AuthUsecase.swift in Sources */,
@@ -964,7 +965,6 @@
 				D2ABCDFF2C2BFF330035F7A1 /* BannerCollectionCell.swift in Sources */,
 				D210306D2C21864B0059CACA /* GetTitle.swift in Sources */,
 				D21030662C2178530059CACA /* BasicProtocol.swift in Sources */,
-				D2ED95462C4A2414004DA169 /* RootViewController.swift in Sources */,
 				D21FB5462C3BEE5700927905 /* TestView.swift in Sources */,
 				D2ABCE0C2C2D2D6A0035F7A1 /* BannerRepository.swift in Sources */,
 				D2ABCE0A2C2D26430035F7A1 /* BannerRepositoryProtocol.swift in Sources */,
