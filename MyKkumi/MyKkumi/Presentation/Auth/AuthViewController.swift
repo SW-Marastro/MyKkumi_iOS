@@ -22,6 +22,10 @@ class AuthViewController : BaseViewController<AuthViewModelProtocol>{
         super.viewDidLoad()
     }
     
+//    override func viewDidDisappear(_ animated: Bool) {
+//        <#code#>
+//    }
+    
     public override func setupHierarchy() {
         view.addSubview(mainStack)
         mainStack.addSubview(kakaoButton)

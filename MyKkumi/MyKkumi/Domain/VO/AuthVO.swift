@@ -55,7 +55,7 @@ public struct AppleAuth : Codable {
     }
 }
 
-public static UserVO : Codable {
+public struct UserVO : Codable {
     let nickname : String?
     let email : String?
     let introduction : String?
@@ -81,5 +81,26 @@ public static UserVO : Codable {
         email = try values.decodeIfPresent(String.self, forKey: .email)
         introduction = try values.decodeIfPresent(String.self, forKey: .introduction)
         profilImage = try values.decodeIfPresent(String.self, forKey: .profilImage)
+    }
+}
+
+public struct PatchUserVO : Codable {
+    let nickname : String?
+    let introduction : String?
+    let profilImage : String?
+    let categoryIds : [Int]?
+    
+    enum CodingKeys : String, CodingKey {
+        case nickname
+        case introduction
+        case profilImage
+        case categoryIds
+    }
+    
+    public init(nickname: String?, introduction: String?, profilImage: String?, categoryIds: [Int]?) {
+        self.nickname = nickname
+        self.introduction = introduction
+        self.profilImage = profilImage
+        self.categoryIds = categoryIds
     }
 }

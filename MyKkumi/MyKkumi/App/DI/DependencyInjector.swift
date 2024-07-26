@@ -23,11 +23,11 @@ public typealias Injector = DependencyAssemblable & DependencyResolvable
 
 /// 의존성 주입을 담당하는 인젝터
 public final class DependencyInjector: Injector {
-    private let container: Container
+    private let container: Container = Container()
     
-    public init(container: Container) {
-        self.container = container
-    }
+    public static let shared = DependencyInjector()
+    
+    private init() {}
     
     public func assemble(_ assemblyList: [Assembly]) {
         assemblyList.forEach {

@@ -29,7 +29,7 @@ public protocol BannerInfoViewModelProtocol : BannerInfoViewOutput, BannerInfoVi
 public class BannerInfoViewModel : BannerInfoViewModelProtocol {
     private let bannerUseCase : BannerUsecase
     
-    public init(bannerUseCase : BannerUsecase = injector.resolve(BannerUsecase.self)) {
+    public init(bannerUseCase : BannerUsecase = DependencyInjector.shared.resolve(BannerUsecase.self)) {
         self.bannerUseCase = bannerUseCase
         self.viewDidLoad = PublishSubject<Void>()
         self.bannerTap = PublishSubject<Int>()

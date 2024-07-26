@@ -30,7 +30,7 @@ class AuthViewModel : AuthViewModelProtocol {
     private let disposeBag = DisposeBag()
     private let authUsecase : AuthUsecase
     
-    init(authUsecase : AuthUsecase = injector.resolve(AuthUsecase.self)) {
+    init(authUsecase : AuthUsecase = DependencyInjector.shared.resolve(AuthUsecase.self)) {
         self.authUsecase = authUsecase
         self.kakaoButtonTap = PublishSubject<Void>()
         self.appleButtonTap = PublishSubject<Void>()
