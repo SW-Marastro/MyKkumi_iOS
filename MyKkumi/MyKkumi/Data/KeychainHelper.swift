@@ -6,11 +6,10 @@ class KeychainHelper {
     
     private init() {}
     
-    func save(_ data: Data, service: String, account: String) -> Bool {
+    func save(_ data: Data, service: String) -> Bool {
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrService as String: service,
-            kSecAttrAccount as String: account,
             kSecValueData as String: data
         ]
         
@@ -20,11 +19,10 @@ class KeychainHelper {
         return status == errSecSuccess
     }
     
-    func load(service: String, account: String) -> Data? {
+    func load(service: String) -> Data? {
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrService as String: service,
-            kSecAttrAccount as String: account,
             kSecReturnData as String: kCFBooleanTrue!,
             kSecMatchLimit as String: kSecMatchLimitOne
         ]
@@ -39,11 +37,10 @@ class KeychainHelper {
         return nil
     }
     
-    func delete(service: String, account: String) {
+    func delete(service: String) {
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrService as String: service,
-            kSecAttrAccount as String: account
         ]
         
         SecItemDelete(query as CFDictionary)

@@ -8,6 +8,8 @@
 import Foundation
 import Moya
 
+let interceptor : RequestInterceptor =  NetworkInterceptor()
+let session = Session(interceptor : interceptor)
 public var authProvider = MoyaProvider<Auth>()
 
 public enum AuthError : Error {
@@ -18,8 +20,8 @@ public enum Auth {
     case signinKakao(AuthVO)
     case signinApple(AppleAuth)
     case getUserData
-   // case patchUser(PatchUserVO)
-    case getToken
+    case patchUser(PatchUserVO)
+    case getToken(String)
 }
 
 extension Auth : TargetType {
@@ -30,8 +32,8 @@ extension Auth : TargetType {
         case .signinKakao(_) : return NetworkConfiguration.signinKakao
         case .signinApple(_) : return NetworkConfiguration.signinApple
         case .getUserData : return NetworkConfiguration.getUserData
-        //case .patchUser(_) : return NetworkConfiguration.patchUser
-        case .getToken : return NetworkConfiguration.getToken
+        case .patchUser(_) : return NetworkConfiguration.patchUser
+        case .getToken(_) : return NetworkConfiguration.getToken
         }
     }
     
@@ -39,7 +41,7 @@ extension Auth : TargetType {
         switch self {
         case .getUserData : return .get
         case .signinKakao(_), .signinApple(_), .getToken  : return .post
-        //case .patchUser(_) : return .post
+        case .patchUser(_) : return .patch
         }
     }
     
@@ -51,37 +53,44 @@ extension Auth : TargetType {
             return .requestJSONEncodable(auth)
         case .getUserData :
             return .requestPlain
-//        case .patchUser(let user) :
-//            var multipartData = [MultipartFormData]()
-//                        
-//            if let nickname = user.nickname?.data(using: .utf8) {
-//                multipartData.append(MultipartFormData(provider: .data(nickname), name: "nickname"))
+        case .patchUser(let user) :
+            var multipartData = [MultipartFormData]()
+                        
+            if let nickname = user.nickname?.data(using: .utf8) {
+                multipartData.append(MultipartFormData(provider: .data(nickname), name: "nickname"))
+            }
+            
+//            if let profileImage = user.profilImageURL {
+//                multipartData.append(MultipartFormData(provider: .data(), name: "profileImage", fileName: "profile.jpg", mimeType: "image/jpeg"))
 //            }
-//            
-//            if let profileImage = user.profilImage {
-//                
-////                multipartData.append(MultipartFormData(provider: .data(imageData), name: "profileImage", fileName: "profile.jpg", mimeType: "image/jpeg"))
-//            }
-//            
-//            if let introduction = user.introduction?.data(using: .utf8) {
-//                multipartData.append(MultipartFormData(provider: .data(introduction), name: "introduction"))
-//            }
-//            
+            
+            if let introduction = user.introduction?.data(using: .utf8) {
+                multipartData.append(MultipartFormData(provider: .data(introduction), name: "introduction"))
+            }
+            
 //            if let categoryIds = user.categoryIds {
 //                for categoryId in categoryIds {
 //                    let categoryIdData = "\(categoryId)".data(using: .utf8)!
 //                    multipartData.append(MultipartFormData(provider: .data(categoryIdData), name: "categoryIds[]"))
 //                }
 //            }
-//            
-//            return .uploadMultipart(multipartData)
-        case .getToken :
-            return .requestPlain
+            
+            return .uploadMultipart(multipartData)
+        case .getToken(let refreshToken) :
+            return .requestJSONEncodable(refreshToken)
         }
     }
     
     public var headers : [String : String]? {
-        return ["Content-Type" : "application/json"]
+        switch self {
+        case .patchUser(_) :
+            let accessTokenData = KeychainHelper.shared.load(service: "accessToken")!
+            let accessToken = String(data: accessTokenData, encoding: .utf8)!
+            return ["Content-Type" : "application/json",
+                    "Authorization" : accessToken]
+        default :
+            return ["Content-Type" : "application/json"]
+        }
     }
     
     public var sampleData : Data {

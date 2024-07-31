@@ -101,13 +101,24 @@ public class HomeViewModel : HomeViewModelProtocol {
             .map{_ in Void()}
             .asSignal(onErrorSignalWith: .empty())
         
-        self.uploadPostButtonTap
-            .subscribe(onNext: {
-                NotificationCenter.default.post(name : .showAuth, object : nil)
-            })
-            .disposed(by: disposeBag)
+        let isLogined = self.uploadPostButtonTap
+            .flatMap{_ -> Observable<Bool> in
+                if KeychainHelper.shared.load(service: "accessToken") == nil {
+                    NotificationCenter.default.post(name : .showAuth, object: nil)
+                    return Observable.just(false)
+                }
+                return Observable.just(true)
+            }
         
-        self.shouldPushUploadPostView = self.uploadPostButtonTap
+//        self.uploadPostButtonTap
+//            .subscribe(onNext: {
+//                NotificationCenter.default.post(name : .showAuth, object : nil)
+//            })
+//            .disposed(by: disposeBag)
+        
+        self.shouldPushUploadPostView = isLogined
+            .filter{$0}
+            .map{_ in ()}
             .asDriver(onErrorJustReturn: ())
         
         initSuccessPost

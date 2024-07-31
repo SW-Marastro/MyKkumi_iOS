@@ -14,6 +14,7 @@ public protocol AuthDataSource {
     func signinKakao(auth: AuthVO) -> Single<Result<Bool, AuthError>>
     func kakaoAPICall() -> Single<Result<OAuthToken, AuthError>>
     func signinApple(_ auth : AppleAuth) -> Single<Result<Bool, AuthError>>
+    func patchUserData(_ user : PatchUserVO) -> Single<Result<UserVO, AuthError>>
 }
 
 public class DefaultAuthDataSource : AuthDataSource {
@@ -23,8 +24,8 @@ public class DefaultAuthDataSource : AuthDataSource {
             .filterSuccessfulStatusCodes()
             .map {response in
                 let tokens = try JSONDecoder().decode(AuthVO.self, from: response.data)
-                let accessTokenSaved = KeychainHelper.shared.save(tokens.accessToken.data(using: .utf8)!, service: "accessToken", account: "kakao")
-                let refreshTokenSaved = KeychainHelper.shared.save(tokens.refreshToken.data(using: .utf8)!, service: "refreshToken", account: "kakao")
+                let accessTokenSaved = KeychainHelper.shared.save(tokens.accessToken.data(using: .utf8)!, service: "accessToken")
+                let refreshTokenSaved = KeychainHelper.shared.save(tokens.refreshToken.data(using: .utf8)!, service: "refreshToken")
                 
                 if accessTokenSaved && refreshTokenSaved {
                     return .success(true)
@@ -99,8 +100,8 @@ public class DefaultAuthDataSource : AuthDataSource {
             .map {response in
                 print(response)
                 let tokens = try JSONDecoder().decode(AuthVO.self, from: response.data)
-                let accessTokenSaved = KeychainHelper.shared.save(tokens.accessToken.data(using: .utf8)!, service: "accessToken", account: "apple")
-                let refreshTokenSaved = KeychainHelper.shared.save(tokens.refreshToken.data(using: .utf8)!, service: "refreshToken", account: "apple")
+                let accessTokenSaved = KeychainHelper.shared.save(tokens.accessToken.data(using: .utf8)!, service: "accessToken")
+                let refreshTokenSaved = KeychainHelper.shared.save(tokens.refreshToken.data(using: .utf8)!, service: "refreshToken")
                 
                 if accessTokenSaved && refreshTokenSaved {
                     return .success(true)
@@ -130,6 +131,31 @@ public class DefaultAuthDataSource : AuthDataSource {
                     customError = ErrorVO(errorCode: "unknown", message: "UnknownError", detail: "unknownError in POST")
                     return .just(.failure(AuthError.unknownError(customError)))
                 }
+            }
+    }
+    
+    public func patchUserData(_ user: PatchUserVO) -> Single<Result<UserVO, AuthError>> {
+        return authProvider.rx.request(.patchUser(user))
+            .filterSuccessfulStatusCodes()
+            .map(UserVO.self)
+            .map{ .success($0) }
+            .catch {error in
+                let customError : ErrorVO
+                if let moyaError = error as? MoyaError {
+                    switch moyaError {
+                    case.statusCode(let response) :
+                        if let error = try? JSONDecoder().decode(ErrorVO.self, from : response.data) {
+                            customError = error
+                        } else {
+                            customError = ErrorVO(errorCode: "unknown", message: "Decoding Error in Error case", detail: "Error case decoding fail")
+                        }
+                    default :
+                        customError = ErrorVO(errorCode: "unknown", message: "Decoding Error in Error case", detail: "Error case decoding fail")
+                    }
+                } else {
+                    customError = ErrorVO(errorCode: "unknown", message: "Decoding Error in Error case", detail: "Error case decoding fail")
+                }
+                return .just(.failure(AuthError.unknownError(customError)))
             }
     }
 }

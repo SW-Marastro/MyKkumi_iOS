@@ -14,7 +14,7 @@ import AVFoundation
 protocol MakeProfileViewModelInput {
     var profileImageTap : PublishSubject<Void> { get }
     var infoIconPush : PublishSubject<Void> { get }
-    var completeButtonTap : PublishSubject<Void> { get }
+    var completeButtonTap : PublishSubject<PatchUserVO?> { get }
     var libraryTap : PublishSubject<Void> { get }
     var cameraTap : PublishSubject<Void> { get }
 }
@@ -23,22 +23,27 @@ protocol MakeProfileViewModelOutput {
     var sholudPushSelectAlert : Driver<Void> { get }
     var sholudPushImagePicker : Driver<Bool> { get }
     var sholudPushCamera : Driver<Bool> { get }
+    var sholudPopView : Driver<UserVO> { get }
 }
 
 protocol MakeProfileViewModelProtocol : MakeProfileViewModelInput, MakeProfileViewModelOutput {
     var imageData : BehaviorRelay<UIImage?> { get }
+    var nickName : BehaviorRelay<String?> { get }
 }
 
 class MakeProfileViewModel : MakeProfileViewModelProtocol {
     private let disposeBag = DisposeBag()
+    private let authUsecase : AuthUsecase
     
-    init() {
+    init(authUsecase : AuthUsecase = DependencyInjector.shared.resolve(AuthUsecase.self)) {
+        self.authUsecase = authUsecase
         self.profileImageTap = PublishSubject<Void>()
         self.infoIconPush = PublishSubject<Void>()
-        self.completeButtonTap = PublishSubject<Void>()
+        self.completeButtonTap = PublishSubject<PatchUserVO?>()
         self.libraryTap = PublishSubject<Void>()
         self.cameraTap = PublishSubject<Void>()
         self.imageData = BehaviorRelay<UIImage?>(value: nil)
+        self.nickName = BehaviorRelay<String?>(value : nil)
         
         self.sholudPushSelectAlert = self.profileImageTap
             .asDriver(onErrorDriveWith: .empty())
@@ -96,17 +101,29 @@ class MakeProfileViewModel : MakeProfileViewModelProtocol {
         
         self.sholudPushCamera = cameraAuth
             .asDriver(onErrorDriveWith: .empty())
+        
+        let patchUserResult = self.completeButtonTap
+            .flatMap{user in
+                return authUsecase.patchUserData(user!)
+            }
+            .share()
+        
+        self.sholudPopView = patchUserResult
+            .compactMap{ $0.successValue() }
+            .asDriver(onErrorDriveWith: .empty())
     }
     
     public var profileImageTap: PublishSubject<Void>
     public var infoIconPush: PublishSubject<Void>
-    public var completeButtonTap: PublishSubject<Void>
+    public var completeButtonTap: PublishSubject<PatchUserVO?>
     public var libraryTap: PublishSubject<Void>
     public var cameraTap: PublishSubject<Void>
     
     public var sholudPushSelectAlert: Driver<Void>
     public var sholudPushImagePicker: Driver<Bool>
     public var sholudPushCamera: Driver<Bool>
+    public var sholudPopView: Driver<UserVO>
     
     public var imageData: BehaviorRelay<UIImage?>
+    public var nickName: BehaviorRelay<String?>
 }

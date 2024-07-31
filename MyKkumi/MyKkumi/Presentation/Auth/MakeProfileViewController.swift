@@ -32,16 +32,38 @@ class MakeProfileViewController : BaseViewController<MakeProfileViewModelProtoco
         nickNameStack.addSubview(nickNameTextField)
     }
     
+    public override func setupDelegate() {
+        nickNameTextField.keyboardType = .default
+        nickNameTextField.returnKeyType = .done
+        nickNameTextField.isUserInteractionEnabled = true
+        nickNameTextField.delegate = self
+    }
+    
     public override func setupBind(viewModel: MakeProfileViewModelProtocol) {
         self.viewModel = viewModel
         
         self.completeButton.rx.tap
-            .bind(to: self.viewModel.completeButtonTap)
+            .map {_ in
+                let nickName = viewModel.nickName.value
+                let profileImage = viewModel.imageData.value
+                return PatchUserVO(nickname: nickName, introduction: nil, profilImage: nil, categoryIds: nil)
+            }
+            .bind(to: viewModel.completeButtonTap)
             .disposed(by: disposeBag)
         
         self.profileImage.rx.tapGesture
             .map{_ in}
             .bind(to: self.viewModel.profileImageTap)
+            .disposed(by: disposeBag)
+        
+        self.nickNameTextField.rx.text.orEmpty
+            .bind(to: self.viewModel.nickName)
+            .disposed(by: disposeBag)
+        
+        self.viewModel.sholudPopView
+            .drive(onNext : { _ in
+                NotificationCenter.default.post(name : .deleteAuth, object: nil)
+            })
             .disposed(by: disposeBag)
         
         viewModel.sholudPushSelectAlert
@@ -198,7 +220,7 @@ class MakeProfileViewController : BaseViewController<MakeProfileViewModelProtoco
     }()
 }
 
-extension MakeProfileViewController : UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+extension MakeProfileViewController : UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let selectedImage = info[.originalImage] as? UIImage {
             profileImage.image = selectedImage
@@ -209,5 +231,10 @@ extension MakeProfileViewController : UIImagePickerControllerDelegate, UINavigat
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         dismiss(animated: true, completion: nil)
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
 }
