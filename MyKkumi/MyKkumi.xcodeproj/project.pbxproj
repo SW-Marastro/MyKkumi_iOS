@@ -75,6 +75,8 @@
 		D2ABCE3B2C3434140035F7A1 /* PostRespository.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ABCE3A2C3434140035F7A1 /* PostRespository.swift */; };
 		D2ABCE3D2C3434F00035F7A1 /* PostUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ABCE3C2C3434F00035F7A1 /* PostUsecase.swift */; };
 		D2C79F272C58FF1200E41D8C /* RequestInterceptorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2C79F262C58FF1200E41D8C /* RequestInterceptorExtension.swift */; };
+		D2C79F2A2C5A1A7600E41D8C /* MakePostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2C79F292C5A1A7600E41D8C /* MakePostViewController.swift */; };
+		D2C79F2C2C5A1AB200E41D8C /* MakePostViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2C79F2B2C5A1AB200E41D8C /* MakePostViewModel.swift */; };
 		D2E4594F2C1DB41500DB0756 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D2E4594E2C1DB41500DB0756 /* LaunchScreen.storyboard */; };
 		D2E459542C1E1A6300DB0756 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2E459532C1E1A6300DB0756 /* ViewModel.swift */; };
 		D2E4595C2C1E383D00DB0756 /* BasicCommon.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2E4595B2C1E383D00DB0756 /* BasicCommon.swift */; };
@@ -189,6 +191,8 @@
 		D2ABCE3A2C3434140035F7A1 /* PostRespository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostRespository.swift; sourceTree = "<group>"; };
 		D2ABCE3C2C3434F00035F7A1 /* PostUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostUsecase.swift; sourceTree = "<group>"; };
 		D2C79F262C58FF1200E41D8C /* RequestInterceptorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestInterceptorExtension.swift; sourceTree = "<group>"; };
+		D2C79F292C5A1A7600E41D8C /* MakePostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakePostViewController.swift; sourceTree = "<group>"; };
+		D2C79F2B2C5A1AB200E41D8C /* MakePostViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakePostViewModel.swift; sourceTree = "<group>"; };
 		D2E4594E2C1DB41500DB0756 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D2E459532C1E1A6300DB0756 /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
 		D2E4595B2C1E383D00DB0756 /* BasicCommon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicCommon.swift; sourceTree = "<group>"; };
@@ -571,6 +575,15 @@
 			path = Post;
 			sourceTree = "<group>";
 		};
+		D2C79F282C5A1A2900E41D8C /* Post */ = {
+			isa = PBXGroup;
+			children = (
+				D2C79F292C5A1A7600E41D8C /* MakePostViewController.swift */,
+				D2C79F2B2C5A1AB200E41D8C /* MakePostViewModel.swift */,
+			);
+			path = Post;
+			sourceTree = "<group>";
+		};
 		D2E459482C1DB1C000DB0756 /* App */ = {
 			isa = PBXGroup;
 			children = (
@@ -628,6 +641,7 @@
 		D2E4594D2C1DB20A00DB0756 /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
+				D2C79F282C5A1A2900E41D8C /* Post */,
 				D21FB54B2C3E7AB100927905 /* Auth */,
 				D2ABCDEE2C2AB2FC0035F7A1 /* Extension */,
 				D2E4594A2C1DB1F900DB0756 /* CommonUI */,
@@ -944,6 +958,7 @@
 				D2ABCDFD2C2BFE370035F7A1 /* BannerCollectionView.swift in Sources */,
 				D21FB5482C3BEE7F00927905 /* TestViewModel.swift in Sources */,
 				D2ED95422C46AF20004DA169 /* AuthRepositoryProtocol.swift in Sources */,
+				D2C79F2C2C5A1AB200E41D8C /* MakePostViewModel.swift in Sources */,
 				D230F9252C1D714C00C43797 /* AppDelegate.swift in Sources */,
 				D2ABCE162C2D4BF50035F7A1 /* Image+TextExtension.swift in Sources */,
 				D2ED954F2C4E1B76004DA169 /* CategoryCollectionView.swift in Sources */,
@@ -963,6 +978,7 @@
 				D2ABCDF22C2AB5470035F7A1 /* Colors.swift in Sources */,
 				D2ABCDCE2C2A66910035F7A1 /* BasicRespository.swift in Sources */,
 				D2ABCE082C2D256B0035F7A1 /* BannerUsecase.swift in Sources */,
+				D2C79F2A2C5A1A7600E41D8C /* MakePostViewController.swift in Sources */,
 				D2ABCE0E2C2D2DB10035F7A1 /* BannerDataSource.swift in Sources */,
 				D2ABCDCB2C2A66350035F7A1 /* BasicUsecase.swift in Sources */,
 				D2C79F272C58FF1200E41D8C /* RequestInterceptorExtension.swift in Sources */,

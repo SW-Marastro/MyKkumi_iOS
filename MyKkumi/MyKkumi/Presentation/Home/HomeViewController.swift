@@ -72,6 +72,12 @@ class HomeViewController: BaseViewController<HomeViewModelProtocol> {
             .bind(to: viewModel.uploadPostButtonTap)
             .disposed(by: disposeBag)
         
+        self.viewModel.shouldPushUploadPostView
+            .drive(onNext : {[weak self] _ in
+                let makePostVC = MakePostViewController()
+                self?.navigationController?.pushViewController(makePostVC, animated: true)
+            })
+            .disposed(by: disposeBag)
     }
     
     public override func setupDelegate() {
