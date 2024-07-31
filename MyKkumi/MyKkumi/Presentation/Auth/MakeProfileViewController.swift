@@ -23,13 +23,13 @@ class MakeProfileViewController : BaseViewController<MakeProfileViewModelProtoco
     
     public override func setupHierarchy() {
         view.addSubview(mainStack)
-        mainStack.addSubview(profileImage)
-        mainStack.addSubview(nickNameStack)
-        mainStack.addSubview(completeButton)
+        mainStack.addArrangedSubview(profileImage)
+        mainStack.addArrangedSubview(nickNameStack)
+        mainStack.addArrangedSubview(completeButton)
         
-        nickNameStack.addSubview(nickNameInfoButton)
-        nickNameStack.addSubview(nickNameLabel)
-        nickNameStack.addSubview(nickNameTextField)
+        nickNameStack.addArrangedSubview(nickNameInfoButton)
+        nickNameStack.addArrangedSubview(nickNameLabel)
+        nickNameStack.addArrangedSubview(nickNameTextField)
     }
     
     public override func setupDelegate() {
@@ -148,7 +148,7 @@ class MakeProfileViewController : BaseViewController<MakeProfileViewModelProtoco
         NSLayoutConstraint.activate([
             nickNameInfoButton.widthAnchor.constraint(equalTo: nickNameLabel.heightAnchor),
             nickNameInfoButton.heightAnchor.constraint(equalTo: nickNameLabel.heightAnchor),
-            nickNameInfoButton.leadingAnchor.constraint(equalTo: nickNameStack.leadingAnchor)
+            nickNameInfoButton.leadingAnchor.constraint(equalTo: nickNameStack.leadingAnchor),
         ])
         
         //nickNameLabel

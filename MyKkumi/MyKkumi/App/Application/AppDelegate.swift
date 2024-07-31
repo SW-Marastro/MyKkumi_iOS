@@ -17,28 +17,34 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         KakaoSDK.initSDK(appKey: NetworkConfiguration.kakaoKeyValue)
-        if let refreshToken = KeychainHelper.shared.load(service: "refreshToken") {
+        if let refreshToken = KeychainHelper.shared.load(key: "refreshToken") {
             print("refreshToken : \(refreshToken)")
-            let reToken = String(data : refreshToken, encoding: .utf8)!
-            authProvider.rx.request(.getToken(reToken))
+            authProvider.rx.request(.refreshToken(refreshToken))
                 .filterSuccessfulStatusCodes()
                 .map { response in
                     let token = try JSONDecoder().decode(ReAccessToken.self, from: response.data)
                     return token.accessToken
                 }
                 .subscribe(onSuccess: { accessToken in
-                    let accessTokenData = accessToken.data(using: .utf8)!
-                    let accessTokenSave = KeychainHelper.shared.save(accessTokenData, service: "accessToken")
+                    let accessTokenSave = KeychainHelper.shared.save(accessToken, key: "accessToken")
                     if !accessTokenSave {
-                        KeychainHelper.shared.delete(service: "accessToken")
-                        KeychainHelper.shared.delete(service: "refreshToken")
+                        KeychainHelper.shared.delete(key: "accessToken")
+                        KeychainHelper.shared.delete(key: "refreshToken")
                     }
                 }, onFailure: {error in
-                    KeychainHelper.shared.delete(service: "accessToken")
-                    KeychainHelper.shared.delete(service: "refreshToken")
+                    KeychainHelper.shared.delete(key: "accessToken")
+                    KeychainHelper.shared.delete(key: "refreshToken")
                 })
                 .disposed(by: disposBag)
-                
+        } else {
+            let accessToken = KeychainHelper.shared.load(key: "accessToken")
+            let refreshToken = KeychainHelper.shared.load(key: "refreshToken")
+            print("accessToken : \(accessToken)")
+            print("refreshToken : \(refreshToken)")
+            
+            KeychainHelper.shared.delete(key: "accessToken")
+            
+            
         }
         
         return true

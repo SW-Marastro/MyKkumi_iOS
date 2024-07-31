@@ -21,7 +21,7 @@ public enum Auth {
     case signinApple(AppleAuth)
     case getUserData
     case patchUser(PatchUserVO)
-    case getToken(String)
+    case refreshToken(String)
 }
 
 extension Auth : TargetType {
@@ -33,14 +33,14 @@ extension Auth : TargetType {
         case .signinApple(_) : return NetworkConfiguration.signinApple
         case .getUserData : return NetworkConfiguration.getUserData
         case .patchUser(_) : return NetworkConfiguration.patchUser
-        case .getToken(_) : return NetworkConfiguration.getToken
+        case .refreshToken(_) : return NetworkConfiguration.getToken
         }
     }
     
     public var method : Moya.Method {
         switch self {
         case .getUserData : return .get
-        case .signinKakao(_), .signinApple(_), .getToken  : return .post
+        case .signinKakao(_), .signinApple(_), .refreshToken  : return .post
         case .patchUser(_) : return .patch
         }
     }
@@ -76,7 +76,7 @@ extension Auth : TargetType {
 //            }
             
             return .uploadMultipart(multipartData)
-        case .getToken(let refreshToken) :
+        case .refreshToken(let refreshToken) :
             return .requestJSONEncodable(refreshToken)
         }
     }
@@ -84,8 +84,7 @@ extension Auth : TargetType {
     public var headers : [String : String]? {
         switch self {
         case .patchUser(_) :
-            let accessTokenData = KeychainHelper.shared.load(service: "accessToken")!
-            let accessToken = String(data: accessTokenData, encoding: .utf8)!
+            let accessToken = KeychainHelper.shared.load(key: "accessToken")!
             return ["Content-Type" : "application/json",
                     "Authorization" : accessToken]
         default :

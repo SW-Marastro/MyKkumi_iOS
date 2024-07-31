@@ -24,8 +24,8 @@ public class DefaultAuthDataSource : AuthDataSource {
             .filterSuccessfulStatusCodes()
             .map {response in
                 let tokens = try JSONDecoder().decode(AuthVO.self, from: response.data)
-                let accessTokenSaved = KeychainHelper.shared.save(tokens.accessToken.data(using: .utf8)!, service: "accessToken")
-                let refreshTokenSaved = KeychainHelper.shared.save(tokens.refreshToken.data(using: .utf8)!, service: "refreshToken")
+                let accessTokenSaved = KeychainHelper.shared.save(tokens.accessToken, key: "accessToken")
+                let refreshTokenSaved = KeychainHelper.shared.save(tokens.refreshToken, key: "refreshToken")
                 
                 if accessTokenSaved && refreshTokenSaved {
                     return .success(true)
@@ -100,8 +100,8 @@ public class DefaultAuthDataSource : AuthDataSource {
             .map {response in
                 print(response)
                 let tokens = try JSONDecoder().decode(AuthVO.self, from: response.data)
-                let accessTokenSaved = KeychainHelper.shared.save(tokens.accessToken.data(using: .utf8)!, service: "accessToken")
-                let refreshTokenSaved = KeychainHelper.shared.save(tokens.refreshToken.data(using: .utf8)!, service: "refreshToken")
+                let accessTokenSaved = KeychainHelper.shared.save(tokens.accessToken, key: "accessToken")
+                let refreshTokenSaved = KeychainHelper.shared.save(tokens.refreshToken, key: "refreshToken")
                 
                 if accessTokenSaved && refreshTokenSaved {
                     return .success(true)

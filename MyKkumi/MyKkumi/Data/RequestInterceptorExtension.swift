@@ -16,12 +16,10 @@ class NetworkInterceptor : RequestInterceptor {
     
     public func adapt(_ urlRequest: URLRequest, for session: Session, completion: @escaping (Result<URLRequest, Error>) -> Void) {
         var urlRequest = urlRequest
-        var accessToken = ""
-        if let result = KeychainHelper.shared.load(service: "accessToken") {
-            accessToken = String(data : result, encoding: .utf8)!
+        if let accessToken = KeychainHelper.shared.load(key: "accessToken") {
+            urlRequest.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
         }
         urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        urlRequest.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
         completion(.success(urlRequest))
     }
 
@@ -44,13 +42,12 @@ class NetworkInterceptor : RequestInterceptor {
     }
     
     private func refreshAccessToken() -> Single<Bool> {
-        if let refreshData = KeychainHelper.shared.load(service: "refreshToken") {
-            let refreshToken = String(data: refreshData, encoding: .utf8)!
-            return authProvider.rx.request(.getToken(refreshToken))
+        if let refreshToken = KeychainHelper.shared.load(key: "refreshToken") {
+            return authProvider.rx.request(.refreshToken(refreshToken))
                 .filterSuccessfulStatusCodes()
                 .map { response in
                     let tokens = try JSONDecoder().decode(AuthVO.self, from: response.data)
-                    let accessTokenSaved = KeychainHelper.shared.save(tokens.accessToken.data(using: .utf8)!, service: "accessToken")
+                    let accessTokenSaved = KeychainHelper.shared.save(tokens.accessToken, key: "accessToken")
                     return accessTokenSaved
                 }
         } else {

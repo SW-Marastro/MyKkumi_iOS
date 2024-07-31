@@ -75,6 +75,7 @@ class HomeViewController: BaseViewController<HomeViewModelProtocol> {
         self.viewModel.shouldPushUploadPostView
             .drive(onNext : {[weak self] _ in
                 let makePostVC = MakePostViewController()
+                makePostVC.setupBind(viewModel: MakePostViewModel())
                 self?.navigationController?.pushViewController(makePostVC, animated: true)
             })
             .disposed(by: disposeBag)
@@ -270,7 +271,6 @@ extension HomeViewController : UITableViewDelegate, UITableViewDataSource {
             return cell
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: PostTableCell.cellID, for: indexPath) as! PostTableCell
-            
             cell.bind(viewModel: viewModel.postViewModels.value[indexPath.row])
             return cell
         }

@@ -38,7 +38,7 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
     }
     
     public override func setupBind(viewModel: MakePostViewModelProtocol) {
-        
+        self.viewModel = viewModel
     }
     
     override func setupLayout() {
@@ -70,6 +70,7 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
             buttonStack.trailingAnchor.constraint(equalTo: mainStack.trailingAnchor, constant: -12),
         ])
         
+        
         //contentTextField
         NSLayoutConstraint.activate([
             contentTextFiled.topAnchor.constraint(equalTo: buttonStack.bottomAnchor, constant: 12),
@@ -83,6 +84,8 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
             AIContentButton.trailingAnchor.constraint(equalTo: contentTextFiled.trailingAnchor, constant: -8),
             AIContentButton.bottomAnchor.constraint(equalTo: contentTextFiled.bottomAnchor, constant: -8)
         ])
+        
+        
     }
     
     private var mainStack : UIStackView = {
@@ -101,8 +104,10 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
     }()
     
     private var imageCollectionView : UICollectionView = {
-        let collectionView = UICollectionView()
+        let collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: PostImageCollectionViewFlowLayout())
         collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.register(SelectedImageCell.self, forCellWithReuseIdentifier: SelectedImageCell.cellID)
+        collectionView.register(AddImageCell.self, forCellWithReuseIdentifier: AddImageCell.cellID)
         return collectionView
     }()
     
@@ -147,11 +152,31 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
 
 extension MakePostViewController : UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        <#code#>
+        let imageCount = viewModel.selectedImageRelay.value.count
+        if imageCount == 10 {
+            return 10
+        } else {
+            return imageCount + 1
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        <#code#>
+        let imageCount = viewModel.selectedImageRelay.value.count
+        if imageCount == 10 {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SelectedImageCell.cellID, for: indexPath) as! SelectedImageCell
+            cell.imageView.image = viewModel.selectedImageRelay.value[indexPath.row]
+            return cell
+        } else {
+            if(indexPath.row == imageCount) {
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AddImageCell.cellID, for: indexPath) as! AddImageCell
+                return cell
+                
+            } else {
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SelectedImageCell.cellID, for: indexPath) as! SelectedImageCell
+                cell.imageView.image = viewModel.selectedImageRelay.value[indexPath.row]
+                return cell
+            }
+        }
     }
     
     
