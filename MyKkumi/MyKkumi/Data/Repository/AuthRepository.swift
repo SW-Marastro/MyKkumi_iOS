@@ -31,4 +31,8 @@ public class DefaultAuthRepository : AuthRepository {
     public func patchUserData(_ user: PatchUserVO) -> Single<Result<UserVO, AuthError>> {
         return dataSource.patchUserData(user)
     }
+    
+    public func refreshToken() {
+        dataSource.refreshToken()
+    }
 }

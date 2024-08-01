@@ -105,6 +105,10 @@ public struct PatchUserVO  {
     }
 }
 
+public struct RefreshToekn : Codable {
+    let refreshToken : String
+}
+
 public struct ReAccessToken : Codable {
     let accessToken : String
     

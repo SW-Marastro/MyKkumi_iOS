@@ -21,7 +21,7 @@ public enum Auth {
     case signinApple(AppleAuth)
     case getUserData
     case patchUser(PatchUserVO)
-    case refreshToken(String)
+    case refreshToken(RefreshToekn)
 }
 
 extension Auth : TargetType {

@@ -9,6 +9,8 @@ import Foundation
 import UIKit
 import RxSwift
 import RxCocoa
+import AVFoundation
+import PhotosUI
 
 class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
     var viewModel : MakePostViewModelProtocol!
@@ -22,14 +24,13 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
     }
     
     override func setupHierarchy() {
-        view.addSubview(mainStack)
-        mainStack.addSubview(imageCollectionView)
-        mainStack.addSubview(selectedImageView)
-        mainStack.addSubview(buttonStack)
-        buttonStack.addSubview(addPinButton)
-        buttonStack.addSubview(autoPinAddButton)
-        mainStack.addSubview(contentTextFiled)
-        mainStack.addSubview(AIContentButton)
+        view.addSubview(imageCollectionView)
+        view.addSubview(selectedImageView)
+        view.addSubview(buttonStack)
+        buttonStack.addArrangedSubview(autoPinAddButton)
+        buttonStack.addArrangedSubview(addPinButton)
+        view.addSubview(contentTextFiled)
+        view.addSubview(AIContentButton)
     }
     
     override func setupDelegate() {
@@ -39,61 +40,87 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
     
     public override func setupBind(viewModel: MakePostViewModelProtocol) {
         self.viewModel = viewModel
+        
+        self.viewModel.sholudPushSelectAlert
+            .drive(onNext: {[weak self] _ in
+                let alert = UIAlertController(title : "포스트 사진추가", message: "", preferredStyle: .actionSheet)
+                let library = UIAlertAction(title: "사진 보관함", style: .default) {_ in
+                    self?.viewModel.libraryTap.onNext(())
+                }
+                let camera = UIAlertAction(title: "카메라", style: .default) {_ in
+                    self?.viewModel.cameraTap.onNext(())
+                }
+                let cancel = UIAlertAction(title: "취소", style: .cancel)
+                
+                alert.addAction(library)
+                alert.addAction(camera)
+                alert.addAction(cancel)
+                self?.present(alert, animated: true, completion: nil)
+            })
+            .disposed(by: disposeBag)
+        
+        viewModel.sholudPushImagePicker
+            .drive(onNext : {[weak self] result in
+                if result {
+                    var configuration = PHPickerConfiguration()
+                    configuration.filter = .images
+                    configuration.selectionLimit = 10 - viewModel.selectedImageRelay.value.count
+                    let imagePicker = PHPickerViewController(configuration: configuration)
+                    imagePicker.delegate = self
+                    self?.present(imagePicker, animated : true, completion: nil)
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        viewModel.sholudPushCamera
+            .drive(onNext : {[weak self] result in
+                if result {
+                    let imagePicker = UIImagePickerController()
+                    imagePicker.delegate = self
+                    imagePicker.sourceType = .camera
+                    self?.present(imagePicker, animated: true, completion: nil)
+                }
+            })
+            .disposed(by: disposeBag)
     }
     
     override func setupLayout() {
-        //MainStack
+        //imageCollectionView
         NSLayoutConstraint.activate([
-            mainStack.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            mainStack.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            mainStack.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            mainStack.leadingAnchor.constraint(equalTo: view.leadingAnchor)
+            imageCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            imageCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 38),
+            imageCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -38),
+            imageCollectionView.heightAnchor.constraint(equalToConstant: 69)
         ])
         
-        //collectionView
-        NSLayoutConstraint.activate([
-            imageCollectionView.topAnchor.constraint(equalTo: mainStack.topAnchor),
-            imageCollectionView.trailingAnchor.constraint(equalTo: mainStack.trailingAnchor, constant: -12),
-            imageCollectionView.leadingAnchor.constraint(equalTo: mainStack.leadingAnchor, constant: 12)
-        ])
-        
-        //selectedImage
+        //selectedImageView
         NSLayoutConstraint.activate([
             selectedImageView.topAnchor.constraint(equalTo: imageCollectionView.bottomAnchor, constant: 15),
-            selectedImageView.leadingAnchor.constraint(equalTo: mainStack.leadingAnchor),
-            selectedImageView.trailingAnchor.constraint(equalTo: mainStack.trailingAnchor),
+            selectedImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 26),
+            selectedImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -26),
             selectedImageView.bottomAnchor.constraint(equalTo: buttonStack.topAnchor, constant: -12)
         ])
         
-        //ButtonStack
+        //buttonStack
         NSLayoutConstraint.activate([
-            buttonStack.trailingAnchor.constraint(equalTo: mainStack.trailingAnchor, constant: -12),
+            buttonStack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15),
+            buttonStack.bottomAnchor.constraint(equalTo: contentTextFiled.topAnchor, constant: -12)
         ])
         
-        
-        //contentTextField
+        //content
         NSLayoutConstraint.activate([
-            contentTextFiled.topAnchor.constraint(equalTo: buttonStack.bottomAnchor, constant: 12),
-            contentTextFiled.trailingAnchor.constraint(equalTo: mainStack.trailingAnchor),
-            contentTextFiled.bottomAnchor.constraint(equalTo: mainStack.bottomAnchor),
-            contentTextFiled.leadingAnchor.constraint(equalTo: mainStack.leadingAnchor)
+            contentTextFiled.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            contentTextFiled.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 14),
+            contentTextFiled.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -14),
+            contentTextFiled.heightAnchor.constraint(equalToConstant: 171)
         ])
         
-        //AIContentBUtton
+        //aibutton
         NSLayoutConstraint.activate([
             AIContentButton.trailingAnchor.constraint(equalTo: contentTextFiled.trailingAnchor, constant: -8),
             AIContentButton.bottomAnchor.constraint(equalTo: contentTextFiled.bottomAnchor, constant: -8)
         ])
-        
-        
     }
-    
-    private var mainStack : UIStackView = {
-        let stack = UIStackView()
-        stack.axis = .vertical
-        stack.translatesAutoresizingMaskIntoConstraints = false
-        return stack
-    }()
     
     private var buttonStack : UIStackView = {
         let stack = UIStackView()
@@ -120,6 +147,9 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
     private var addPinButton : UIButton = {
         let button = UIButton()
         button.setTitle("핀 추가", for: .normal)
+        button.setTitleColor(.black, for: .normal)
+        button.backgroundColor = UIColor(red: 217/255.0, green: 217/255.0, blue: 217/255.0, alpha: 1.0)
+
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -127,6 +157,8 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
     private var autoPinAddButton : UIButton = {
         let button = UIButton()
         button.setTitle("핀 자동 생성", for: .normal)
+        button.setTitleColor(.black, for: .normal)
+        button.backgroundColor = UIColor(red: 217/255.0, green: 217/255.0, blue: 217/255.0, alpha: 1.0)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -145,6 +177,8 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
     private var AIContentButton : UIButton = {
         let button = UIButton()
         button.setTitle("AI 글 작성", for: .normal)
+        button.setTitleColor(.black, for: .normal)
+        button.backgroundColor = UIColor(red: 217/255.0, green: 217/255.0, blue: 217/255.0, alpha: 1.0)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -169,8 +203,8 @@ extension MakePostViewController : UICollectionViewDelegate, UICollectionViewDat
         } else {
             if(indexPath.row == imageCount) {
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AddImageCell.cellID, for: indexPath) as! AddImageCell
+                cell.setBind(viewModel: viewModel.deliverAddImageViewModel.value)
                 return cell
-                
             } else {
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SelectedImageCell.cellID, for: indexPath) as! SelectedImageCell
                 cell.imageView.image = viewModel.selectedImageRelay.value[indexPath.row]
@@ -178,10 +212,36 @@ extension MakePostViewController : UICollectionViewDelegate, UICollectionViewDat
             }
         }
     }
-    
-    
 }
 
-extension MakePostViewController : UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+extension MakePostViewController : PHPickerViewControllerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+        picker.dismiss(animated: true, completion: nil)
+        
+        if !results.isEmpty {
+            var tmpImages = viewModel.selectedImageRelay.value
+            let dispatchGroup = DispatchGroup()
+            
+            for result in results {
+                let itemProvider = result.itemProvider
+                if itemProvider.canLoadObject(ofClass: UIImage.self) {
+                    dispatchGroup.enter()
+                    itemProvider.loadObject(ofClass: UIImage.self) {(image, error) in
+                        tmpImages.append(image as! UIImage)
+                        dispatchGroup.leave()
+                    }
+                }
+            }
+            
+            dispatchGroup.notify(queue: .main){
+                self.viewModel.selectedImageRelay.accept(tmpImages)
+                self.imageCollectionView.reloadData()
+                self.selectedImageView.image = tmpImages[0]
+            }
+        }
+    }
     
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        dismiss(animated: true, completion: nil)
+    }
 }

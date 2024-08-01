@@ -35,11 +35,14 @@ public class HomeViewModel : HomeViewModelProtocol {
     private let disposeBag = DisposeBag()
     private let bannerUsecase : BannerUsecase
     private let postUsecase : PostUsecase
+    private let authUsecase : AuthUsecase
     private let bannerDetailViewModel : BannerCellViewModelProtocol = BannerCellViewModel()
     
-    public init(bannerUsecase : BannerUsecase = DependencyInjector.shared.resolve(BannerUsecase.self), postUsecase : PostUsecase = DependencyInjector.shared.resolve(PostUsecase.self)) {
+    public init(bannerUsecase : BannerUsecase = DependencyInjector.shared.resolve(BannerUsecase.self), postUsecase : PostUsecase = DependencyInjector.shared.resolve(PostUsecase.self),
+                authUsecase : AuthUsecase = DependencyInjector.shared.resolve(AuthUsecase.self)) {
         self.bannerUsecase = bannerUsecase
         self.postUsecase = postUsecase
+        self.authUsecase = authUsecase
         self.viewdidload = PublishSubject<Void>()
         self.postTap = PublishSubject<Int64>()
         self.uploadPostButtonTap = PublishSubject<Void>()
@@ -55,6 +58,14 @@ public class HomeViewModel : HomeViewModelProtocol {
                 return bannerUsecase.getBanners()
             }
             .share()
+        
+        self.viewdidload
+            .subscribe(onNext: {
+                if KeychainHelper.shared.load(key: "refreshToken") != nil {
+                    authUsecase.refreshToken()
+                }
+            })
+            .disposed(by: disposeBag)
         
         self.bannerDataOutput = allBannerResult
             .compactMap { $0.successValue()?.banners}

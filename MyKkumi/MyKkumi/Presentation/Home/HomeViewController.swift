@@ -76,6 +76,7 @@ class HomeViewController: BaseViewController<HomeViewModelProtocol> {
             .drive(onNext : {[weak self] _ in
                 let makePostVC = MakePostViewController()
                 makePostVC.setupBind(viewModel: MakePostViewModel())
+                makePostVC.hidesBottomBarWhenPushed  = true
                 self?.navigationController?.pushViewController(makePostVC, animated: true)
             })
             .disposed(by: disposeBag)

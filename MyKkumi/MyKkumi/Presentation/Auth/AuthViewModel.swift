@@ -44,7 +44,6 @@ class AuthViewModel : AuthViewModelProtocol {
         let appleSignin = self.appleUserData
             .flatMap {authorizationCode in
                 let appleAuth = AppleAuth(authorizationCode: authorizationCode)
-                print(appleAuth)
                 return authUsecase.signinApple(appleAuth)
             }
             .share()

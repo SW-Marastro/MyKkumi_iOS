@@ -6,10 +6,11 @@
 //
 
 import UIKit
+import RxSwift
 
 open class SelectedImageCell : UICollectionViewCell {
     public static let cellID = "SelectedImageCell"
-    var imageView : UIImageView = UIImageView(frame: .zero)
+    var imageView : UIImageView = UIImageView()
     
     override public init(frame: CGRect) {
         super.init(frame: frame)
@@ -18,7 +19,7 @@ open class SelectedImageCell : UICollectionViewCell {
     }
     
     private func initAtrribute() {
-        
+        imageView.translatesAutoresizingMaskIntoConstraints = false
     }
     
     private func initUI() {
@@ -38,12 +39,22 @@ open class SelectedImageCell : UICollectionViewCell {
 
 open class AddImageCell : UICollectionViewCell {
     public static let cellID = "AddImageCell"
+    var disposedBag = DisposeBag()
+    var viewModel : AddImageViewModelProtocol!
     var addImageButton : UIButton = UIButton()
     
     override public init(frame: CGRect) {
         super.init(frame: frame)
         initAtrribute()
         initUI()
+    }
+    
+    public func setBind(viewModel : AddImageViewModelProtocol) {
+        self.viewModel = viewModel
+        
+        addImageButton.rx.tap
+            .bind(to: viewModel.addButtonTap)
+            .disposed(by: disposedBag)
     }
     
     private func initAtrribute() {

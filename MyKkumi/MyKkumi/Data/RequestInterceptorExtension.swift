@@ -43,7 +43,8 @@ class NetworkInterceptor : RequestInterceptor {
     
     private func refreshAccessToken() -> Single<Bool> {
         if let refreshToken = KeychainHelper.shared.load(key: "refreshToken") {
-            return authProvider.rx.request(.refreshToken(refreshToken))
+            let object = RefreshToekn(refreshToken: refreshToken)
+            return authProvider.rx.request(.refreshToken(object))
                 .filterSuccessfulStatusCodes()
                 .map { response in
                     let tokens = try JSONDecoder().decode(AuthVO.self, from: response.data)

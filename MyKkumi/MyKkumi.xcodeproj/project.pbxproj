@@ -78,6 +78,8 @@
 		D2C79F2A2C5A1A7600E41D8C /* MakePostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2C79F292C5A1A7600E41D8C /* MakePostViewController.swift */; };
 		D2C79F2C2C5A1AB200E41D8C /* MakePostViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2C79F2B2C5A1AB200E41D8C /* MakePostViewModel.swift */; };
 		D2C79F2E2C5A2D5000E41D8C /* SelectedImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2C79F2D2C5A2D5000E41D8C /* SelectedImageCell.swift */; };
+		D2C79F302C5A6FB200E41D8C /* SelectedImageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2C79F2F2C5A6FB200E41D8C /* SelectedImageViewModel.swift */; };
+		D2C79F322C5A70B700E41D8C /* AddImageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2C79F312C5A70B700E41D8C /* AddImageViewModel.swift */; };
 		D2E4594F2C1DB41500DB0756 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D2E4594E2C1DB41500DB0756 /* LaunchScreen.storyboard */; };
 		D2E459542C1E1A6300DB0756 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2E459532C1E1A6300DB0756 /* ViewModel.swift */; };
 		D2E4595C2C1E383D00DB0756 /* BasicCommon.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2E4595B2C1E383D00DB0756 /* BasicCommon.swift */; };
@@ -195,6 +197,8 @@
 		D2C79F292C5A1A7600E41D8C /* MakePostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakePostViewController.swift; sourceTree = "<group>"; };
 		D2C79F2B2C5A1AB200E41D8C /* MakePostViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakePostViewModel.swift; sourceTree = "<group>"; };
 		D2C79F2D2C5A2D5000E41D8C /* SelectedImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedImageCell.swift; sourceTree = "<group>"; };
+		D2C79F2F2C5A6FB200E41D8C /* SelectedImageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedImageViewModel.swift; sourceTree = "<group>"; };
+		D2C79F312C5A70B700E41D8C /* AddImageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddImageViewModel.swift; sourceTree = "<group>"; };
 		D2E4594E2C1DB41500DB0756 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D2E459532C1E1A6300DB0756 /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
 		D2E4595B2C1E383D00DB0756 /* BasicCommon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicCommon.swift; sourceTree = "<group>"; };
@@ -583,6 +587,8 @@
 			children = (
 				D2C79F292C5A1A7600E41D8C /* MakePostViewController.swift */,
 				D2C79F2B2C5A1AB200E41D8C /* MakePostViewModel.swift */,
+				D2C79F2F2C5A6FB200E41D8C /* SelectedImageViewModel.swift */,
+				D2C79F312C5A70B700E41D8C /* AddImageViewModel.swift */,
 			);
 			path = Post;
 			sourceTree = "<group>";
@@ -972,6 +978,7 @@
 				D2ABCE142C2D2F490035F7A1 /* NetworkConfiguration.swift in Sources */,
 				D2ED95532C4E26E4004DA169 /* CategoryCollectionViewFlowLayout.swift in Sources */,
 				D2ABCDD22C2A68940035F7A1 /* BasicDataSource.swift in Sources */,
+				D2C79F302C5A6FB200E41D8C /* SelectedImageViewModel.swift in Sources */,
 				D21FB54F2C3E820100927905 /* AuthViewModel.swift in Sources */,
 				D2ABCDF92C2BE55B0035F7A1 /* BaseViewController.swift in Sources */,
 				D2828C3B2C53A5100036DFDD /* RootWindow.swift in Sources */,
@@ -982,6 +989,7 @@
 				D2ABCDCE2C2A66910035F7A1 /* BasicRespository.swift in Sources */,
 				D2ABCE082C2D256B0035F7A1 /* BannerUsecase.swift in Sources */,
 				D2C79F2A2C5A1A7600E41D8C /* MakePostViewController.swift in Sources */,
+				D2C79F322C5A70B700E41D8C /* AddImageViewModel.swift in Sources */,
 				D2ABCE0E2C2D2DB10035F7A1 /* BannerDataSource.swift in Sources */,
 				D2ABCDCB2C2A66350035F7A1 /* BasicUsecase.swift in Sources */,
 				D2C79F272C58FF1200E41D8C /* RequestInterceptorExtension.swift in Sources */,
@@ -1193,6 +1201,8 @@
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MyKkumi/Resources/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "포스트 등록, 프로필 설정을 목적으로 마이꾸미의 회원님의 카메라에 대한 엑세스 권한을 요청합니다.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "포스트 등록, 프로필 설정을 목적으로 마이꾸미의 회원님의 사진 보관함에 대한 엑세스 권한을 요청합니다.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -1226,6 +1236,8 @@
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MyKkumi/Resources/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "포스트 등록, 프로필 설정을 목적으로 마이꾸미의 회원님의 카메라에 대한 엑세스 권한을 요청합니다.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "포스트 등록, 프로필 설정을 목적으로 마이꾸미의 회원님의 사진 보관함에 대한 엑세스 권한을 요청합니다.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";

@@ -12,4 +12,5 @@ public protocol AuthRepository {
     func kakaoAPICall() -> Single<Result<OAuthToken, AuthError>>
     func siginApple(_ auth : AppleAuth) -> Single<Result<Bool, AuthError>>
     func patchUserData(_ user : PatchUserVO) -> Single<Result<UserVO, AuthError>>
+    func refreshToken()
 }

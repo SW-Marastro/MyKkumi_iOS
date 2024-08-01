@@ -17,8 +17,6 @@ class KeychainHelper {
         
         let status = SecItemAdd(query, nil)
         
-        print("key : \(key) , status : \(status)")
-        
         return status == errSecSuccess
     }
     
