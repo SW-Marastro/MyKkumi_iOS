@@ -1,51 +1,46 @@
 //
-//  MakeProfileViewModel.swift
+//  MakePostViewModel.swift
 //  MyKkumi
 //
-//  Created by 최재혁 on 7/15/24.
+//  Created by 최재혁 on 7/31/24.
 //
 
 import Foundation
-import RxSwift
 import RxCocoa
+import RxSwift
 import Photos
 import AVFoundation
 
-protocol MakeProfileViewModelInput {
-    var profileImageTap : PublishSubject<Void> { get }
-    var infoIconPush : PublishSubject<Void> { get }
-    var completeButtonTap : PublishSubject<PatchUserVO?> { get }
-    var libraryTap : PublishSubject<Void> { get }
+public protocol MakePostViewModelInput {
     var cameraTap : PublishSubject<Void> { get }
+    var libraryTap : PublishSubject<Void> { get }
 }
 
-protocol MakeProfileViewModelOutput {
+public protocol MakePostViewModelOutput {
     var sholudPushSelectAlert : Driver<Void> { get }
     var sholudPushImagePicker : Driver<Bool> { get }
     var sholudPushCamera : Driver<Bool> { get }
-    var sholudPopView : Driver<UserVO> { get }
 }
 
-protocol MakeProfileViewModelProtocol : MakeProfileViewModelInput, MakeProfileViewModelOutput {
-    var imageData : BehaviorRelay<UIImage?> { get }
-    var nickName : BehaviorRelay<String?> { get }
+public protocol MakePostViewModelProtocol : MakePostViewModelOutput,  MakePostViewModelInput{
+    var selectedImageRelay : BehaviorRelay<[UIImage]>{ get }
+    var selectedImageViewModels : BehaviorRelay<[SelectedImageViewModelProtocol]> { get }
+    var deliverAddImageViewModel : BehaviorRelay<AddImageViewModelProtocol>{ get }
 }
 
-class MakeProfileViewModel : MakeProfileViewModelProtocol {
-    private let disposeBag = DisposeBag()
-    private let authUsecase : AuthUsecase
+public class MakePostViewModel : MakePostViewModelProtocol {
     
-    init(authUsecase : AuthUsecase = DependencyInjector.shared.resolve(AuthUsecase.self)) {
-        self.authUsecase = authUsecase
-        self.profileImageTap = PublishSubject<Void>()
-        self.infoIconPush = PublishSubject<Void>()
-        self.completeButtonTap = PublishSubject<PatchUserVO?>()
-        self.libraryTap = PublishSubject<Void>()
+    private let disposeBag = DisposeBag()
+    private let addImageViewModel = AddImageViewModel()
+    
+    public init() {
+        self.selectedImageRelay = BehaviorRelay<[UIImage]>(value: [])
+        self.selectedImageViewModels = BehaviorRelay<[SelectedImageViewModelProtocol]>(value: [])
+        self.deliverAddImageViewModel = BehaviorRelay<AddImageViewModelProtocol>(value: addImageViewModel)
         self.cameraTap = PublishSubject<Void>()
-        self.imageData = BehaviorRelay<UIImage?>(value: nil)
-        self.nickName = BehaviorRelay<String?>(value : nil)
+        self.libraryTap = PublishSubject<Void>()
         
-        self.sholudPushSelectAlert = self.profileImageTap
+        self.sholudPushSelectAlert = self.addImageViewModel.addButtonTap
             .asDriver(onErrorDriveWith: .empty())
         
         let libraryAuth = self.libraryTap
@@ -102,28 +97,26 @@ class MakeProfileViewModel : MakeProfileViewModelProtocol {
         self.sholudPushCamera = cameraAuth
             .asDriver(onErrorDriveWith: .empty())
         
-        let patchUserResult = self.completeButtonTap
-            .flatMap{user in
-                return authUsecase.patchUserData(user!)
-            }
-            .share()
-        
-        self.sholudPopView = patchUserResult
-            .compactMap{ $0.successValue() }
-            .asDriver(onErrorDriveWith: .empty())
+        self.selectedImageRelay
+            .subscribe(onNext: {[weak self] images in
+                guard let self = self else {return}
+                var tmpViewModel : [SelectedImageViewModelProtocol] = []
+                images.forEach { image in
+                    tmpViewModel.append(SelectedImageViewModel())
+                }
+                self.selectedImageViewModels.accept(tmpViewModel)
+            })
+            .disposed(by: disposeBag)
     }
     
-    public var profileImageTap: PublishSubject<Void>
-    public var infoIconPush: PublishSubject<Void>
-    public var completeButtonTap: PublishSubject<PatchUserVO?>
-    public var libraryTap: PublishSubject<Void>
-    public var cameraTap: PublishSubject<Void>
-    
     public var sholudPushSelectAlert: Driver<Void>
-    public var sholudPushImagePicker: Driver<Bool>
     public var sholudPushCamera: Driver<Bool>
-    public var sholudPopView: Driver<UserVO>
+    public var sholudPushImagePicker: Driver<Bool>
     
-    public var imageData: BehaviorRelay<UIImage?>
-    public var nickName: BehaviorRelay<String?>
+    public var cameraTap: PublishSubject<Void>
+    public var libraryTap: PublishSubject<Void>
+    
+    public var selectedImageRelay: BehaviorRelay<[UIImage]>
+    public var selectedImageViewModels: BehaviorRelay<[any SelectedImageViewModelProtocol]>
+    public var deliverAddImageViewModel: BehaviorRelay<any AddImageViewModelProtocol>
 }

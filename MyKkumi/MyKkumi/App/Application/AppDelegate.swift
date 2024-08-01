@@ -8,12 +8,16 @@
 import UIKit
 import KakaoSDKCommon
 import Swinject
+import RxSwift
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
+    
+    let disposBag = DisposeBag()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         KakaoSDK.initSDK(appKey: NetworkConfiguration.kakaoKeyValue)
+        
         return true
     }
 

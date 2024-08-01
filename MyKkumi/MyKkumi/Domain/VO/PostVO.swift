@@ -62,7 +62,7 @@ public struct Writer: Codable {
     
     public init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
-        profileImage = try values.decodeIfPresent(String.self, forKey: .profileImage)!
-        nickname = try values.decodeIfPresent(String.self, forKey: .nickname)!
+        profileImage = try values.decodeIfPresent(String.self, forKey: .profileImage) ?? "nullValue"
+        nickname = try values.decodeIfPresent(String.self, forKey: .nickname) ?? "nullValue"
     }
 }

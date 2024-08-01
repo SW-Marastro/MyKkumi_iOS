@@ -12,6 +12,8 @@ public protocol AuthUsecase {
     func signinKakao(auth: AuthVO) -> Single<Result<Bool, AuthError>>
     func kakaoAPICall() -> Single<Result<OAuthToken, AuthError>>
     func signinApple(_ auth : AppleAuth) -> Single<Result<Bool, AuthError>>
+    func patchUserData(_ user : PatchUserVO) -> Single<Result<UserVO, AuthError>>
+    func refreshToken()
 }
 
 public final class DefaultAuthUsecase : AuthUsecase {
@@ -33,5 +35,13 @@ public final class DefaultAuthUsecase : AuthUsecase {
     
     public func signinApple(_ auth: AppleAuth) -> RxSwift.Single<Result<Bool, AuthError>> {
         return repository.siginApple(auth)
+    }
+    
+    public func patchUserData(_ user: PatchUserVO) -> Single<Result<UserVO, AuthError>> {
+        return repository.patchUserData(user)
+    }
+    
+    public func refreshToken() {
+        repository.refreshToken()
     }
 }

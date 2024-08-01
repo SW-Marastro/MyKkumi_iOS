@@ -72,6 +72,14 @@ class HomeViewController: BaseViewController<HomeViewModelProtocol> {
             .bind(to: viewModel.uploadPostButtonTap)
             .disposed(by: disposeBag)
         
+        self.viewModel.shouldPushUploadPostView
+            .drive(onNext : {[weak self] _ in
+                let makePostVC = MakePostViewController()
+                makePostVC.setupBind(viewModel: MakePostViewModel())
+                makePostVC.hidesBottomBarWhenPushed  = true
+                self?.navigationController?.pushViewController(makePostVC, animated: true)
+            })
+            .disposed(by: disposeBag)
     }
     
     public override func setupDelegate() {
@@ -264,7 +272,6 @@ extension HomeViewController : UITableViewDelegate, UITableViewDataSource {
             return cell
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: PostTableCell.cellID, for: indexPath) as! PostTableCell
-            
             cell.bind(viewModel: viewModel.postViewModels.value[indexPath.row])
             return cell
         }

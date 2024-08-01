@@ -74,6 +74,12 @@
 		D2ABCE392C3433C10035F7A1 /* PostRespositoryProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ABCE382C3433C10035F7A1 /* PostRespositoryProtocol.swift */; };
 		D2ABCE3B2C3434140035F7A1 /* PostRespository.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ABCE3A2C3434140035F7A1 /* PostRespository.swift */; };
 		D2ABCE3D2C3434F00035F7A1 /* PostUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ABCE3C2C3434F00035F7A1 /* PostUsecase.swift */; };
+		D2C79F272C58FF1200E41D8C /* RequestInterceptorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2C79F262C58FF1200E41D8C /* RequestInterceptorExtension.swift */; };
+		D2C79F2A2C5A1A7600E41D8C /* MakePostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2C79F292C5A1A7600E41D8C /* MakePostViewController.swift */; };
+		D2C79F2C2C5A1AB200E41D8C /* MakePostViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2C79F2B2C5A1AB200E41D8C /* MakePostViewModel.swift */; };
+		D2C79F2E2C5A2D5000E41D8C /* SelectedImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2C79F2D2C5A2D5000E41D8C /* SelectedImageCell.swift */; };
+		D2C79F302C5A6FB200E41D8C /* SelectedImageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2C79F2F2C5A6FB200E41D8C /* SelectedImageViewModel.swift */; };
+		D2C79F322C5A70B700E41D8C /* AddImageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2C79F312C5A70B700E41D8C /* AddImageViewModel.swift */; };
 		D2E4594F2C1DB41500DB0756 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D2E4594E2C1DB41500DB0756 /* LaunchScreen.storyboard */; };
 		D2E459542C1E1A6300DB0756 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2E459532C1E1A6300DB0756 /* ViewModel.swift */; };
 		D2E4595C2C1E383D00DB0756 /* BasicCommon.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2E4595B2C1E383D00DB0756 /* BasicCommon.swift */; };
@@ -187,6 +193,12 @@
 		D2ABCE382C3433C10035F7A1 /* PostRespositoryProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostRespositoryProtocol.swift; sourceTree = "<group>"; };
 		D2ABCE3A2C3434140035F7A1 /* PostRespository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostRespository.swift; sourceTree = "<group>"; };
 		D2ABCE3C2C3434F00035F7A1 /* PostUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostUsecase.swift; sourceTree = "<group>"; };
+		D2C79F262C58FF1200E41D8C /* RequestInterceptorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestInterceptorExtension.swift; sourceTree = "<group>"; };
+		D2C79F292C5A1A7600E41D8C /* MakePostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakePostViewController.swift; sourceTree = "<group>"; };
+		D2C79F2B2C5A1AB200E41D8C /* MakePostViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakePostViewModel.swift; sourceTree = "<group>"; };
+		D2C79F2D2C5A2D5000E41D8C /* SelectedImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedImageCell.swift; sourceTree = "<group>"; };
+		D2C79F2F2C5A6FB200E41D8C /* SelectedImageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedImageViewModel.swift; sourceTree = "<group>"; };
+		D2C79F312C5A70B700E41D8C /* AddImageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddImageViewModel.swift; sourceTree = "<group>"; };
 		D2E4594E2C1DB41500DB0756 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D2E459532C1E1A6300DB0756 /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
 		D2E4595B2C1E383D00DB0756 /* BasicCommon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicCommon.swift; sourceTree = "<group>"; };
@@ -565,6 +577,18 @@
 				D2ABCE2A2C33C4D90035F7A1 /* PostImageCollectionView.swift */,
 				D2ABCE2C2C33C53A0035F7A1 /* PostImageCollectionViewCell.swift */,
 				D2ABCE302C33C64C0035F7A1 /* PostImageCollectionViewFlowLayout.swift */,
+				D2C79F2D2C5A2D5000E41D8C /* SelectedImageCell.swift */,
+			);
+			path = Post;
+			sourceTree = "<group>";
+		};
+		D2C79F282C5A1A2900E41D8C /* Post */ = {
+			isa = PBXGroup;
+			children = (
+				D2C79F292C5A1A7600E41D8C /* MakePostViewController.swift */,
+				D2C79F2B2C5A1AB200E41D8C /* MakePostViewModel.swift */,
+				D2C79F2F2C5A6FB200E41D8C /* SelectedImageViewModel.swift */,
+				D2C79F312C5A70B700E41D8C /* AddImageViewModel.swift */,
 			);
 			path = Post;
 			sourceTree = "<group>";
@@ -607,6 +631,7 @@
 				D21030642C2178220059CACA /* Protocols */,
 				D21030612C2177C50059CACA /* Service */,
 				D2ED954B2C4CD79E004DA169 /* KeychainHelper.swift */,
+				D2C79F262C58FF1200E41D8C /* RequestInterceptorExtension.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -625,6 +650,7 @@
 		D2E4594D2C1DB20A00DB0756 /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
+				D2C79F282C5A1A2900E41D8C /* Post */,
 				D21FB54B2C3E7AB100927905 /* Auth */,
 				D2ABCDEE2C2AB2FC0035F7A1 /* Extension */,
 				D2E4594A2C1DB1F900DB0756 /* CommonUI */,
@@ -941,6 +967,7 @@
 				D2ABCDFD2C2BFE370035F7A1 /* BannerCollectionView.swift in Sources */,
 				D21FB5482C3BEE7F00927905 /* TestViewModel.swift in Sources */,
 				D2ED95422C46AF20004DA169 /* AuthRepositoryProtocol.swift in Sources */,
+				D2C79F2C2C5A1AB200E41D8C /* MakePostViewModel.swift in Sources */,
 				D230F9252C1D714C00C43797 /* AppDelegate.swift in Sources */,
 				D2ABCE162C2D4BF50035F7A1 /* Image+TextExtension.swift in Sources */,
 				D2ED954F2C4E1B76004DA169 /* CategoryCollectionView.swift in Sources */,
@@ -951,6 +978,7 @@
 				D2ABCE142C2D2F490035F7A1 /* NetworkConfiguration.swift in Sources */,
 				D2ED95532C4E26E4004DA169 /* CategoryCollectionViewFlowLayout.swift in Sources */,
 				D2ABCDD22C2A68940035F7A1 /* BasicDataSource.swift in Sources */,
+				D2C79F302C5A6FB200E41D8C /* SelectedImageViewModel.swift in Sources */,
 				D21FB54F2C3E820100927905 /* AuthViewModel.swift in Sources */,
 				D2ABCDF92C2BE55B0035F7A1 /* BaseViewController.swift in Sources */,
 				D2828C3B2C53A5100036DFDD /* RootWindow.swift in Sources */,
@@ -960,8 +988,11 @@
 				D2ABCDF22C2AB5470035F7A1 /* Colors.swift in Sources */,
 				D2ABCDCE2C2A66910035F7A1 /* BasicRespository.swift in Sources */,
 				D2ABCE082C2D256B0035F7A1 /* BannerUsecase.swift in Sources */,
+				D2C79F2A2C5A1A7600E41D8C /* MakePostViewController.swift in Sources */,
+				D2C79F322C5A70B700E41D8C /* AddImageViewModel.swift in Sources */,
 				D2ABCE0E2C2D2DB10035F7A1 /* BannerDataSource.swift in Sources */,
 				D2ABCDCB2C2A66350035F7A1 /* BasicUsecase.swift in Sources */,
+				D2C79F272C58FF1200E41D8C /* RequestInterceptorExtension.swift in Sources */,
 				D2ABCDFF2C2BFF330035F7A1 /* BannerCollectionCell.swift in Sources */,
 				D210306D2C21864B0059CACA /* GetTitle.swift in Sources */,
 				D21030662C2178530059CACA /* BasicProtocol.swift in Sources */,
@@ -996,6 +1027,7 @@
 				D2ABCE032C2D1E490035F7A1 /* BannerVO.swift in Sources */,
 				D2ABCDEB2C2A9D8A0035F7A1 /* MypageViewController.swift in Sources */,
 				D2ABCE392C3433C10035F7A1 /* PostRespositoryProtocol.swift in Sources */,
+				D2C79F2E2C5A2D5000E41D8C /* SelectedImageCell.swift in Sources */,
 				D2ABCE182C2D4E370035F7A1 /* DataAssembly.swift in Sources */,
 				D2ABCE1C2C2D94EE0035F7A1 /* DetailBannerViewController.swift in Sources */,
 				D2ABCDD82C2A6AE10035F7A1 /* BasicAssembly.swift in Sources */,
@@ -1169,6 +1201,8 @@
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MyKkumi/Resources/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "포스트 등록, 프로필 설정을 목적으로 마이꾸미의 회원님의 카메라에 대한 엑세스 권한을 요청합니다.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "포스트 등록, 프로필 설정을 목적으로 마이꾸미의 회원님의 사진 보관함에 대한 엑세스 권한을 요청합니다.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -1202,6 +1236,8 @@
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MyKkumi/Resources/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "포스트 등록, 프로필 설정을 목적으로 마이꾸미의 회원님의 카메라에 대한 엑세스 권한을 요청합니다.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "포스트 등록, 프로필 설정을 목적으로 마이꾸미의 회원님의 사진 보관함에 대한 엑세스 권한을 요청합니다.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";

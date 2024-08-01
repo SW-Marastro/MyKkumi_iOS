@@ -35,11 +35,14 @@ public class HomeViewModel : HomeViewModelProtocol {
     private let disposeBag = DisposeBag()
     private let bannerUsecase : BannerUsecase
     private let postUsecase : PostUsecase
+    private let authUsecase : AuthUsecase
     private let bannerDetailViewModel : BannerCellViewModelProtocol = BannerCellViewModel()
     
-    public init(bannerUsecase : BannerUsecase = DependencyInjector.shared.resolve(BannerUsecase.self), postUsecase : PostUsecase = DependencyInjector.shared.resolve(PostUsecase.self)) {
+    public init(bannerUsecase : BannerUsecase = DependencyInjector.shared.resolve(BannerUsecase.self), postUsecase : PostUsecase = DependencyInjector.shared.resolve(PostUsecase.self),
+                authUsecase : AuthUsecase = DependencyInjector.shared.resolve(AuthUsecase.self)) {
         self.bannerUsecase = bannerUsecase
         self.postUsecase = postUsecase
+        self.authUsecase = authUsecase
         self.viewdidload = PublishSubject<Void>()
         self.postTap = PublishSubject<Int64>()
         self.uploadPostButtonTap = PublishSubject<Void>()
@@ -55,6 +58,14 @@ public class HomeViewModel : HomeViewModelProtocol {
                 return bannerUsecase.getBanners()
             }
             .share()
+        
+        self.viewdidload
+            .subscribe(onNext: {
+                if KeychainHelper.shared.load(key: "refreshToken") != nil {
+                    authUsecase.refreshToken()
+                }
+            })
+            .disposed(by: disposeBag)
         
         self.bannerDataOutput = allBannerResult
             .compactMap { $0.successValue()?.banners}
@@ -101,14 +112,24 @@ public class HomeViewModel : HomeViewModelProtocol {
             .map{_ in Void()}
             .asSignal(onErrorSignalWith: .empty())
         
-        self.uploadPostButtonTap
-            .subscribe(onNext: {
-                NotificationCenter.default.post(name : .showAuth, object : nil)
+        let isLogined = self.uploadPostButtonTap
+            .map { _ in
+                return KeychainHelper.shared.load(key: "accessToken") != nil
+            }
+        
+        isLogined
+            .filter { !$0 }
+            .subscribe(onNext: { _ in
+                NotificationCenter.default.post(name: .showAuth, object: nil)
             })
             .disposed(by: disposeBag)
         
-        self.shouldPushUploadPostView = self.uploadPostButtonTap
-            .asDriver(onErrorJustReturn: ())
+        self.shouldPushUploadPostView = isLogined
+            .filter { $0 }
+            .map {_ in
+                return Void()
+            }
+            .asDriver(onErrorDriveWith: .empty())
         
         initSuccessPost
             .subscribe(onNext: {[weak self] result in
@@ -132,6 +153,9 @@ public class HomeViewModel : HomeViewModelProtocol {
                 self.postViewModels.accept(tmpPostViewModels)
             })
             .disposed(by: disposeBag)
+        
+        //MARK: Post Tap
+        
     }
     
     public var viewdidload: PublishSubject<Void>

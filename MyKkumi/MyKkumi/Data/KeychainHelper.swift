@@ -6,46 +6,46 @@ class KeychainHelper {
     
     private init() {}
     
-    func save(_ data: Data, service: String, account: String) -> Bool {
-        let query: [String: Any] = [
-            kSecClass as String: kSecClassGenericPassword,
-            kSecAttrService as String: service,
-            kSecAttrAccount as String: account,
-            kSecValueData as String: data
+    func save(_ token: String, key: String) -> Bool {
+        let query : NSDictionary = [
+            kSecClass : kSecClassGenericPassword,
+            kSecAttrService : key,
+            kSecValueData : token.data(using: .utf8, allowLossyConversion : false)!
         ]
         
-        SecItemDelete(query as CFDictionary)
-        let status = SecItemAdd(query as CFDictionary, nil)
+        SecItemDelete(query)
+        
+        let status = SecItemAdd(query, nil)
         
         return status == errSecSuccess
     }
     
-    func load(service: String, account: String) -> Data? {
-        let query: [String: Any] = [
-            kSecClass as String: kSecClassGenericPassword,
-            kSecAttrService as String: service,
-            kSecAttrAccount as String: account,
-            kSecReturnData as String: kCFBooleanTrue!,
-            kSecMatchLimit as String: kSecMatchLimitOne
+    func load(key: String) -> String? {
+        let query: NSDictionary = [
+            kSecClass : kSecClassGenericPassword,
+            kSecAttrService : key,
+            kSecReturnAttributes : true,
+            kSecReturnData : true
         ]
         
-        var dataTypeRef: AnyObject?
-        let status: OSStatus = SecItemCopyMatching(query as CFDictionary, &dataTypeRef)
+        var dataTypeRef: CFTypeRef?
+        let status = SecItemCopyMatching(query , &dataTypeRef)
         
         if status == errSecSuccess {
-            return dataTypeRef as? Data
+            guard let checkedItem = dataTypeRef,
+                  let token = checkedItem[kSecValueData] as? Data else { return nil }
+            return String(data: token, encoding: String.Encoding.utf8)
         }
         
         return nil
     }
     
-    func delete(service: String, account: String) {
-        let query: [String: Any] = [
-            kSecClass as String: kSecClassGenericPassword,
-            kSecAttrService as String: service,
-            kSecAttrAccount as String: account
+    func delete(key: String) {
+        let query: NSDictionary = [
+            kSecClass : kSecClassGenericPassword,
+            kSecAttrService : key
         ]
         
-        SecItemDelete(query as CFDictionary)
+        SecItemDelete(query)
     }
 }

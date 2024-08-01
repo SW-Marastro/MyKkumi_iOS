@@ -57,7 +57,7 @@ public struct AppleAuth : Codable {
 
 public struct UserVO : Codable {
     let nickname : String?
-    let email : String?
+    let email : String
     let introduction : String?
     let profilImage : String?
     
@@ -68,7 +68,7 @@ public struct UserVO : Codable {
         case profilImage
     }
     
-    public init(nickname: String?, email: String?, introduction: String?, profilImage: String?) {
+    public init(nickname: String?, email: String, introduction: String?, profilImage: String?) {
         self.nickname = nickname
         self.email = email
         self.introduction = introduction
@@ -78,29 +78,42 @@ public struct UserVO : Codable {
     public init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         nickname = try values.decodeIfPresent(String.self, forKey: .nickname)
-        email = try values.decodeIfPresent(String.self, forKey: .email)
+        email = try values.decode(String.self, forKey: .email)
         introduction = try values.decodeIfPresent(String.self, forKey: .introduction)
         profilImage = try values.decodeIfPresent(String.self, forKey: .profilImage)
     }
 }
 
-public struct PatchUserVO : Codable {
+public struct PatchUserVO  {
     let nickname : String?
     let introduction : String?
-    let profilImage : String?
+    let profilImageURL : String?
     let categoryIds : [Int]?
     
     enum CodingKeys : String, CodingKey {
         case nickname
         case introduction
-        case profilImage
+        case profilImageURL = "profileImage"
         case categoryIds
     }
     
     public init(nickname: String?, introduction: String?, profilImage: String?, categoryIds: [Int]?) {
         self.nickname = nickname
         self.introduction = introduction
-        self.profilImage = profilImage
+        self.profilImageURL = profilImage
         self.categoryIds = categoryIds
     }
 }
+
+public struct RefreshToekn : Codable {
+    let refreshToken : String
+}
+
+public struct ReAccessToken : Codable {
+    let accessToken : String
+    
+    enum CodingKeys : String, CodingKey {
+        case accessToken
+    }
+}
+

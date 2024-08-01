@@ -14,17 +14,20 @@ public protocol AuthDataSource {
     func signinKakao(auth: AuthVO) -> Single<Result<Bool, AuthError>>
     func kakaoAPICall() -> Single<Result<OAuthToken, AuthError>>
     func signinApple(_ auth : AppleAuth) -> Single<Result<Bool, AuthError>>
+    func patchUserData(_ user : PatchUserVO) -> Single<Result<UserVO, AuthError>>
+    func refreshToken()
 }
 
 public class DefaultAuthDataSource : AuthDataSource {
+    private var disposeBag = DisposeBag()
     
     public func signinKakao(auth: AuthVO) -> Single<Result<Bool, AuthError>> {
         return authProvider.rx.request(.signinKakao(auth))
             .filterSuccessfulStatusCodes()
             .map {response in
                 let tokens = try JSONDecoder().decode(AuthVO.self, from: response.data)
-                let accessTokenSaved = KeychainHelper.shared.save(tokens.accessToken.data(using: .utf8)!, service: "accessToken", account: "kakao")
-                let refreshTokenSaved = KeychainHelper.shared.save(tokens.refreshToken.data(using: .utf8)!, service: "refreshToken", account: "kakao")
+                let accessTokenSaved = KeychainHelper.shared.save(tokens.accessToken, key: "accessToken")
+                let refreshTokenSaved = KeychainHelper.shared.save(tokens.refreshToken, key: "refreshToken")
                 
                 if accessTokenSaved && refreshTokenSaved {
                     return .success(true)
@@ -97,10 +100,9 @@ public class DefaultAuthDataSource : AuthDataSource {
         return authProvider.rx.request(.signinApple(auth))
             .filterSuccessfulStatusCodes()
             .map {response in
-                print(response)
                 let tokens = try JSONDecoder().decode(AuthVO.self, from: response.data)
-                let accessTokenSaved = KeychainHelper.shared.save(tokens.accessToken.data(using: .utf8)!, service: "accessToken", account: "apple")
-                let refreshTokenSaved = KeychainHelper.shared.save(tokens.refreshToken.data(using: .utf8)!, service: "refreshToken", account: "apple")
+                let accessTokenSaved = KeychainHelper.shared.save(tokens.accessToken, key: "accessToken")
+                let refreshTokenSaved = KeychainHelper.shared.save(tokens.refreshToken, key: "refreshToken")
                 
                 if accessTokenSaved && refreshTokenSaved {
                     return .success(true)
@@ -131,5 +133,53 @@ public class DefaultAuthDataSource : AuthDataSource {
                     return .just(.failure(AuthError.unknownError(customError)))
                 }
             }
+    }
+    
+    public func patchUserData(_ user: PatchUserVO) -> Single<Result<UserVO, AuthError>> {
+        return authProvider.rx.request(.patchUser(user))
+            .filterSuccessfulStatusCodes()
+            .map(UserVO.self)
+            .map{ .success($0) }
+            .catch {error in
+                let customError : ErrorVO
+                if let moyaError = error as? MoyaError {
+                    switch moyaError {
+                    case.statusCode(let response) :
+                        if let error = try? JSONDecoder().decode(ErrorVO.self, from : response.data) {
+                            customError = error
+                        } else {
+                            customError = ErrorVO(errorCode: "unknown", message: "Decoding Error in Error case", detail: "Error case decoding fail")
+                        }
+                    default :
+                        customError = ErrorVO(errorCode: "unknown", message: "Decoding Error in Error case", detail: "Error case decoding fail")
+                    }
+                } else {
+                    customError = ErrorVO(errorCode: "unknown", message: "Decoding Error in Error case", detail: "Error case decoding fail")
+                }
+                return .just(.failure(AuthError.unknownError(customError)))
+            }
+    }
+    
+    public func refreshToken() {
+        if let refreshToken = KeychainHelper.shared.load(key: "refreshToken") {
+            let object = RefreshToekn(refreshToken: refreshToken)
+            authProvider.rx.request(.refreshToken(object))
+                .filterSuccessfulStatusCodes()
+                .map { response in
+                    let token = try JSONDecoder().decode(ReAccessToken.self, from: response.data)
+                    return token.accessToken
+                }
+                .subscribe(onSuccess: { accessToken in
+                    let accessTokenSave = KeychainHelper.shared.save(accessToken, key: "accessToken")
+                    if !accessTokenSave {
+                        KeychainHelper.shared.delete(key: "accessToken")
+                        KeychainHelper.shared.delete(key: "refreshToken")
+                    }
+                }, onFailure: {error in
+                    KeychainHelper.shared.delete(key: "accessToken")
+                    KeychainHelper.shared.delete(key: "refreshToken")
+                })
+                .disposed(by: disposeBag)
+        }
     }
 }
