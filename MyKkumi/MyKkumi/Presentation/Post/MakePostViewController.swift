@@ -82,6 +82,14 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
                 }
             })
             .disposed(by: disposeBag)
+        
+        viewModel.deleteCellImage
+            .drive(onNext : {[weak self] result in
+                if result {
+                    self?.imageCollectionView.reloadData()
+                }
+            })
+            .disposed(by: disposeBag)
     }
     
     override func setupLayout() {
@@ -199,6 +207,7 @@ extension MakePostViewController : UICollectionViewDelegate, UICollectionViewDat
         if imageCount == 10 {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SelectedImageCell.cellID, for: indexPath) as! SelectedImageCell
             cell.imageView.image = viewModel.selectedImageRelay.value[indexPath.row]
+            cell.setBind(viewModel: viewModel.selectedImageViewModels.value[indexPath.row])
             return cell
         } else {
             if(indexPath.row == imageCount) {
@@ -208,6 +217,7 @@ extension MakePostViewController : UICollectionViewDelegate, UICollectionViewDat
             } else {
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SelectedImageCell.cellID, for: indexPath) as! SelectedImageCell
                 cell.imageView.image = viewModel.selectedImageRelay.value[indexPath.row]
+                cell.setBind(viewModel: viewModel.selectedImageViewModels.value[indexPath.row])
                 return cell
             }
         }

@@ -10,7 +10,10 @@ import RxSwift
 
 open class SelectedImageCell : UICollectionViewCell {
     public static let cellID = "SelectedImageCell"
+    var disposeBag = DisposeBag()
     var imageView : UIImageView = UIImageView()
+    var deleteButton : UIButton = UIButton()
+    var viewModel : SelectedImageViewModelProtocol!
     
     override public init(frame: CGRect) {
         super.init(frame: frame)
@@ -20,15 +23,38 @@ open class SelectedImageCell : UICollectionViewCell {
     
     private func initAtrribute() {
         imageView.translatesAutoresizingMaskIntoConstraints = false
+        deleteButton.translatesAutoresizingMaskIntoConstraints = false
+        deleteButton.setTitle("X", for: .normal)
+        deleteButton.setTitleColor(.black, for: .normal)
+        deleteButton.backgroundColor = .red
+    }
+    
+    public func setBind(viewModel : SelectedImageViewModelProtocol) {
+        self.viewModel = viewModel
+        
+        imageView.rx.tapGesture
+            .map{_ in}
+            .bind(to: viewModel.imageTap)
+            .disposed(by: disposeBag)
+        
+        deleteButton.rx.tap
+            .bind(to: viewModel.deleteButtonTap)
+            .disposed(by: disposeBag)
     }
     
     private func initUI() {
         contentView.addSubview(imageView)
+        contentView.addSubview(deleteButton)
         NSLayoutConstraint.activate([
             imageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             imageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             imageView.topAnchor.constraint(equalTo: contentView.topAnchor),
             imageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+        ])
+        
+        NSLayoutConstraint.activate([
+            deleteButton.topAnchor.constraint(equalTo: imageView.topAnchor),
+            deleteButton.trailingAnchor.constraint(equalTo: imageView.trailingAnchor)
         ])
     }
     
