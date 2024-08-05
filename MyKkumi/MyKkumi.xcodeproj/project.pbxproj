@@ -27,6 +27,7 @@
 		D230F93C2C1D714E00C43797 /* MyKkumiTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D230F93B2C1D714E00C43797 /* MyKkumiTests.swift */; };
 		D230F9462C1D714E00C43797 /* MyKkumiUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D230F9452C1D714E00C43797 /* MyKkumiUITests.swift */; };
 		D230F9482C1D714E00C43797 /* MyKkumiUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D230F9472C1D714E00C43797 /* MyKkumiUITestsLaunchTests.swift */; };
+		D2672BCC2C609271005B23A4 /* SelectedImageFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2672BCB2C609271005B23A4 /* SelectedImageFlowLayout.swift */; };
 		D2828C3B2C53A5100036DFDD /* RootWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2828C3A2C53A5100036DFDD /* RootWindow.swift */; };
 		D28346D72C3575ED0048CB2E /* UIViewController+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28346D62C3575ED0048CB2E /* UIViewController+Rx.swift */; };
 		D28346F72C37F6230048CB2E /* HomeBannerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28346F62C37F6230048CB2E /* HomeBannerCell.swift */; };
@@ -145,6 +146,7 @@
 		D230F9412C1D714E00C43797 /* MyKkumiUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MyKkumiUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D230F9452C1D714E00C43797 /* MyKkumiUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyKkumiUITests.swift; sourceTree = "<group>"; };
 		D230F9472C1D714E00C43797 /* MyKkumiUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyKkumiUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		D2672BCB2C609271005B23A4 /* SelectedImageFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedImageFlowLayout.swift; sourceTree = "<group>"; };
 		D2828C392C4EEABB0036DFDD /* MyKkumi.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MyKkumi.entitlements; sourceTree = "<group>"; };
 		D2828C3A2C53A5100036DFDD /* RootWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootWindow.swift; sourceTree = "<group>"; };
 		D28346D62C3575ED0048CB2E /* UIViewController+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Rx.swift"; sourceTree = "<group>"; };
@@ -578,6 +580,7 @@
 				D2ABCE2C2C33C53A0035F7A1 /* PostImageCollectionViewCell.swift */,
 				D2ABCE302C33C64C0035F7A1 /* PostImageCollectionViewFlowLayout.swift */,
 				D2C79F2D2C5A2D5000E41D8C /* SelectedImageCell.swift */,
+				D2672BCB2C609271005B23A4 /* SelectedImageFlowLayout.swift */,
 			);
 			path = Post;
 			sourceTree = "<group>";
@@ -1019,6 +1022,7 @@
 				D2ABCE3D2C3434F00035F7A1 /* PostUsecase.swift in Sources */,
 				D2ABCE1E2C2EAB5D0035F7A1 /* BannerInfoViewController.swift in Sources */,
 				D2ED95402C46AF0A004DA169 /* AuthRepository.swift in Sources */,
+				D2672BCC2C609271005B23A4 /* SelectedImageFlowLayout.swift in Sources */,
 				D2ABCE112C2D2E9F0035F7A1 /* BannerService.swift in Sources */,
 				D2ABCDED2C2AAEA10035F7A1 /* HomeViewModel.swift in Sources */,
 				D2E4595C2C1E383D00DB0756 /* BasicCommon.swift in Sources */,

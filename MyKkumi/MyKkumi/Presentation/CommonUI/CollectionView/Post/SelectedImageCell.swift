@@ -33,12 +33,26 @@ open class SelectedImageCell : UICollectionViewCell {
         self.viewModel = viewModel
         
         imageView.rx.tapGesture
-            .map{_ in}
+            .map{_ in viewModel.indexPathRow}
             .bind(to: viewModel.imageTap)
             .disposed(by: disposeBag)
         
         deleteButton.rx.tap
+            .map{_ in viewModel.indexPathRow}
             .bind(to: viewModel.deleteButtonTap)
+            .disposed(by: disposeBag)
+        
+        viewModel.selectedCell
+            .drive(onNext : {[weak self] _ in
+                self?.imageView.layer.borderWidth = 2.0
+                self?.imageView.layer.borderColor = UIColor.black.cgColor
+            })
+            .disposed(by: disposeBag)
+        
+        viewModel.unSelectedCell
+            .drive(onNext : {[weak self] _ in
+                self?.imageView.layer.borderWidth = 0.0
+            })
             .disposed(by: disposeBag)
     }
     

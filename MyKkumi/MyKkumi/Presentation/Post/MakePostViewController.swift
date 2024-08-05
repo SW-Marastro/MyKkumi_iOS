@@ -83,11 +83,23 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
             })
             .disposed(by: disposeBag)
         
+        viewModel.changeSelectedImage
+            .drive(onNext: {[weak self] _ in
+                self?.selectedImageView.image = viewModel.selectedImageRelay.value[viewModel.selectedImageIndex]
+            })
+            .disposed(by: disposeBag)
+        
         viewModel.deleteCellImage
-            .drive(onNext : {[weak self] result in
-                if result {
-                    self?.imageCollectionView.reloadData()
+            .drive(onNext: {[weak self] index in
+                guard let self = self else { return }
+                let indexPath = IndexPath(item : index, section : 0)
+                
+                if self.viewModel.selectedImageIndex >= 0 {
+                    self.selectedImageView.image = viewModel.selectedImageRelay.value[viewModel.selectedImageIndex]
                 }
+                self.imageCollectionView.performBatchUpdates({
+                    self.imageCollectionView.deleteItems(at: [indexPath])
+                }, completion: nil)
             })
             .disposed(by: disposeBag)
     }
@@ -139,7 +151,7 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
     }()
     
     private var imageCollectionView : UICollectionView = {
-        let collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: PostImageCollectionViewFlowLayout())
+        let collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: SelectedImageFlowLayout())
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.register(SelectedImageCell.self, forCellWithReuseIdentifier: SelectedImageCell.cellID)
         collectionView.register(AddImageCell.self, forCellWithReuseIdentifier: AddImageCell.cellID)
@@ -204,22 +216,20 @@ extension MakePostViewController : UICollectionViewDelegate, UICollectionViewDat
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let imageCount = viewModel.selectedImageRelay.value.count
-        if imageCount == 10 {
+        if indexPath.row == imageCount && imageCount < 10 {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AddImageCell.cellID, for: indexPath) as! AddImageCell
+            cell.setBind(viewModel: viewModel.deliverAddImageViewModel.value)
+            return cell
+        } else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SelectedImageCell.cellID, for: indexPath) as! SelectedImageCell
             cell.imageView.image = viewModel.selectedImageRelay.value[indexPath.row]
             cell.setBind(viewModel: viewModel.selectedImageViewModels.value[indexPath.row])
-            return cell
-        } else {
-            if(indexPath.row == imageCount) {
-                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AddImageCell.cellID, for: indexPath) as! AddImageCell
-                cell.setBind(viewModel: viewModel.deliverAddImageViewModel.value)
-                return cell
+            if indexPath.row == self.viewModel.selectedImageIndex {
+                cell.viewModel.imageTap.onNext(imageCount - 1)
             } else {
-                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SelectedImageCell.cellID, for: indexPath) as! SelectedImageCell
-                cell.imageView.image = viewModel.selectedImageRelay.value[indexPath.row]
-                cell.setBind(viewModel: viewModel.selectedImageViewModels.value[indexPath.row])
-                return cell
+                cell.viewModel.unSelectedCellInput.onNext(())
             }
+            return cell
         }
     }
 }
@@ -230,6 +240,7 @@ extension MakePostViewController : PHPickerViewControllerDelegate, UIImagePicker
         
         if !results.isEmpty {
             var tmpImages = viewModel.selectedImageRelay.value
+            let startInx = tmpImages.count
             let dispatchGroup = DispatchGroup()
             
             for result in results {
@@ -245,8 +256,12 @@ extension MakePostViewController : PHPickerViewControllerDelegate, UIImagePicker
             
             dispatchGroup.notify(queue: .main){
                 self.viewModel.selectedImageRelay.accept(tmpImages)
-                self.imageCollectionView.reloadData()
-                self.selectedImageView.image = tmpImages[0]
+                self.selectedImageView.image = tmpImages.last
+                
+                let newIndexPaths = (startInx..<tmpImages.count).map { IndexPath(item: $0, section: 0) }
+                self.imageCollectionView.performBatchUpdates({
+                    self.imageCollectionView.insertItems(at: newIndexPaths)
+                }, completion: nil)
             }
         }
     }
