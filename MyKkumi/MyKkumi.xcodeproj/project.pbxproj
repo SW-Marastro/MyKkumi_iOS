@@ -28,6 +28,10 @@
 		D230F9462C1D714E00C43797 /* MyKkumiUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D230F9452C1D714E00C43797 /* MyKkumiUITests.swift */; };
 		D230F9482C1D714E00C43797 /* MyKkumiUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D230F9472C1D714E00C43797 /* MyKkumiUITestsLaunchTests.swift */; };
 		D2672BCC2C609271005B23A4 /* SelectedImageFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2672BCB2C609271005B23A4 /* SelectedImageFlowLayout.swift */; };
+		D2672BCE2C61F196005B23A4 /* WritePostVO.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2672BCD2C61F196005B23A4 /* WritePostVO.swift */; };
+		D2672BD02C62B3D8005B23A4 /* PinInfoPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2672BCF2C62B3D8005B23A4 /* PinInfoPresentationController.swift */; };
+		D2672BD22C62B64B005B23A4 /* PinInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2672BD12C62B64B005B23A4 /* PinInfoViewModel.swift */; };
+		D2672BD42C62B723005B23A4 /* PinInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2672BD32C62B723005B23A4 /* PinInfoViewController.swift */; };
 		D2828C3B2C53A5100036DFDD /* RootWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2828C3A2C53A5100036DFDD /* RootWindow.swift */; };
 		D28346D72C3575ED0048CB2E /* UIViewController+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28346D62C3575ED0048CB2E /* UIViewController+Rx.swift */; };
 		D28346F72C37F6230048CB2E /* HomeBannerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28346F62C37F6230048CB2E /* HomeBannerCell.swift */; };
@@ -147,6 +151,10 @@
 		D230F9452C1D714E00C43797 /* MyKkumiUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyKkumiUITests.swift; sourceTree = "<group>"; };
 		D230F9472C1D714E00C43797 /* MyKkumiUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyKkumiUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		D2672BCB2C609271005B23A4 /* SelectedImageFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedImageFlowLayout.swift; sourceTree = "<group>"; };
+		D2672BCD2C61F196005B23A4 /* WritePostVO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WritePostVO.swift; sourceTree = "<group>"; };
+		D2672BCF2C62B3D8005B23A4 /* PinInfoPresentationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinInfoPresentationController.swift; sourceTree = "<group>"; };
+		D2672BD12C62B64B005B23A4 /* PinInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinInfoViewModel.swift; sourceTree = "<group>"; };
+		D2672BD32C62B723005B23A4 /* PinInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinInfoViewController.swift; sourceTree = "<group>"; };
 		D2828C392C4EEABB0036DFDD /* MyKkumi.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MyKkumi.entitlements; sourceTree = "<group>"; };
 		D2828C3A2C53A5100036DFDD /* RootWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootWindow.swift; sourceTree = "<group>"; };
 		D28346D62C3575ED0048CB2E /* UIViewController+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Rx.swift"; sourceTree = "<group>"; };
@@ -531,6 +539,7 @@
 				D2ABCE052C2D20110035F7A1 /* ErrorVO.swift */,
 				D2ABCE322C3424010035F7A1 /* PostVO.swift */,
 				D2ED953A2C46A80D004DA169 /* AuthVO.swift */,
+				D2672BCD2C61F196005B23A4 /* WritePostVO.swift */,
 			);
 			path = VO;
 			sourceTree = "<group>";
@@ -589,9 +598,12 @@
 			isa = PBXGroup;
 			children = (
 				D2C79F292C5A1A7600E41D8C /* MakePostViewController.swift */,
+				D2672BD32C62B723005B23A4 /* PinInfoViewController.swift */,
 				D2C79F2B2C5A1AB200E41D8C /* MakePostViewModel.swift */,
 				D2C79F2F2C5A6FB200E41D8C /* SelectedImageViewModel.swift */,
 				D2C79F312C5A70B700E41D8C /* AddImageViewModel.swift */,
+				D2672BCF2C62B3D8005B23A4 /* PinInfoPresentationController.swift */,
+				D2672BD12C62B64B005B23A4 /* PinInfoViewModel.swift */,
 			);
 			path = Post;
 			sourceTree = "<group>";
@@ -960,6 +972,7 @@
 				D2ED95312C440F3C004DA169 /* CollectCategoryViewController.swift in Sources */,
 				D230F9292C1D714C00C43797 /* ViewController.swift in Sources */,
 				D2ED953D2C46A907004DA169 /* AuthService.swift in Sources */,
+				D2672BCE2C61F196005B23A4 /* WritePostVO.swift in Sources */,
 				D28347042C3BB1D50048CB2E /* BannerCellViewModel.swift in Sources */,
 				D2ED95352C44C7F1004DA169 /* MakeProfileViewController.swift in Sources */,
 				D2ABCE3B2C3434140035F7A1 /* PostRespository.swift in Sources */,
@@ -1007,6 +1020,7 @@
 				D2ABCDDC2C2A6E780035F7A1 /* DependencyInjector.swift in Sources */,
 				D21030632C2177E90059CACA /* BasicNetwork.swift in Sources */,
 				D2ED95512C4E1BB2004DA169 /* CategoryCollectionViewCell.swift in Sources */,
+				D2672BD42C62B723005B23A4 /* PinInfoViewController.swift in Sources */,
 				D230F9272C1D714C00C43797 /* SceneDelegate.swift in Sources */,
 				D2ABCE1A2C2D4F590035F7A1 /* DomainAssembly.swift in Sources */,
 				D2ABCDE52C2A9CED0035F7A1 /* HomeViewController.swift in Sources */,
@@ -1016,6 +1030,7 @@
 				D2ED95332C440F4D004DA169 /* CollectCategoryViewModel.swift in Sources */,
 				D2ABCE062C2D20110035F7A1 /* ErrorVO.swift in Sources */,
 				D2ABCE222C3271B60035F7A1 /* BannerInfoViewModel.swift in Sources */,
+				D2672BD22C62B64B005B23A4 /* PinInfoViewModel.swift in Sources */,
 				D28346D72C3575ED0048CB2E /* UIViewController+Rx.swift in Sources */,
 				D21030602C1FC1900059CACA /* HelloWorld.swift in Sources */,
 				D2ABCE012C2C01880035F7A1 /* BannerCollectionViewFlowLayout.swift in Sources */,
@@ -1036,6 +1051,7 @@
 				D2ABCE1C2C2D94EE0035F7A1 /* DetailBannerViewController.swift in Sources */,
 				D2ABCDD82C2A6AE10035F7A1 /* BasicAssembly.swift in Sources */,
 				D2ABCDD42C2A69D10035F7A1 /* BasicRepository.swift in Sources */,
+				D2672BD02C62B3D8005B23A4 /* PinInfoPresentationController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

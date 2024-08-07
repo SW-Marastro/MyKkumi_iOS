@@ -21,11 +21,13 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        //self.navigationController?.isNavigationBarHidden = true
     }
     
     override func setupHierarchy() {
         view.addSubview(imageCollectionView)
-        view.addSubview(selectedImageView)
+        view.addSubview(selectedImageAndPin)
+        selectedImageAndPin.addSubview(selectedImageView)
         view.addSubview(buttonStack)
         buttonStack.addArrangedSubview(autoPinAddButton)
         buttonStack.addArrangedSubview(addPinButton)
@@ -59,7 +61,7 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
             })
             .disposed(by: disposeBag)
         
-        viewModel.sholudPushImagePicker
+        self.viewModel.sholudPushImagePicker
             .drive(onNext : {[weak self] result in
                 if result {
                     var configuration = PHPickerConfiguration()
@@ -72,7 +74,7 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
             })
             .disposed(by: disposeBag)
         
-        viewModel.sholudPushCamera
+        self.viewModel.sholudPushCamera
             .drive(onNext : {[weak self] result in
                 if result {
                     let imagePicker = UIImagePickerController()
@@ -83,25 +85,108 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
             })
             .disposed(by: disposeBag)
         
-        viewModel.changeSelectedImage
+        self.contentTextFiled.rx.text.changed
+            .bind(to: self.viewModel.contentInput)
+            .disposed(by: disposeBag)
+        
+        //MARK: ImageCellBind
+        self.viewModel.changeSelectedImage
             .drive(onNext: {[weak self] _ in
                 self?.selectedImageView.image = viewModel.selectedImageRelay.value[viewModel.selectedImageIndex]
             })
             .disposed(by: disposeBag)
         
-        viewModel.deleteCellImage
+        self.viewModel.deleteCellImage
             .drive(onNext: {[weak self] index in
                 guard let self = self else { return }
                 let indexPath = IndexPath(item : index, section : 0)
                 
                 if self.viewModel.selectedImageIndex >= 0 {
                     self.selectedImageView.image = viewModel.selectedImageRelay.value[viewModel.selectedImageIndex]
+                    
+                    calcurateXY()
                 }
                 self.imageCollectionView.performBatchUpdates({
                     self.imageCollectionView.deleteItems(at: [indexPath])
                 }, completion: nil)
             })
             .disposed(by: disposeBag)
+        
+        //MARK: Pin
+        self.addPinButton.rx.tap
+            .bind(to: viewModel.addPinButtonTap)
+            .disposed(by: disposeBag)
+        
+        self.viewModel.sholudPushPinOption
+            .drive(onNext: {[weak self] index in
+                let alert = UIAlertController(title : "핀 옵션", message: "", preferredStyle: .actionSheet)
+                let library = UIAlertAction(title: "핀 정보 추가", style: .default) {_ in
+                    self?.viewModel.modifyPinOptionButtonTap.onNext(index)
+                }
+                let camera = UIAlertAction(title: "핀 삭제", style: .default) {_ in
+                    self?.viewModel.deletePinButtonTap.onNext(index)
+                }
+                let cancel = UIAlertAction(title: "취소", style: .cancel)
+                
+                alert.addAction(library)
+                alert.addAction(camera)
+                alert.addAction(cancel)
+                self?.present(alert, animated: true, completion: nil)
+            })
+            .disposed(by: disposeBag)
+        
+        self.viewModel.sholudPushModifyPinInfo
+            .drive(onNext : {[weak self] index in
+                let pinInfoVC = PinInfoViewController()
+                let delegate = PinInfoPresentationControllerDelegate()
+                pinInfoVC.setupBind(viewModel: viewModel.deliverPinInfoViewModel.value)
+                pinInfoVC.transitioningDelegate = delegate
+                pinInfoVC.modalPresentationStyle = .custom
+                self?.present(pinInfoVC, animated: true, completion: nil)
+            })
+            .disposed(by: disposeBag)
+        
+        self.viewModel.dismissModifyInfo
+            .drive(onNext: {[weak self] _ in
+                self?.dismiss(animated: true)
+            })
+            .disposed(by: disposeBag)
+        
+        self.viewModel.addPin
+            .drive(onNext: {[weak self] _ in
+                guard let self = self else { return }
+                if viewModel.selectedImageIndex >= 0 {
+                    let pins = viewModel.pinsRelay.value[viewModel.selectedImageIndex]
+                    self.selectedImageAndPin.subviews.forEach{ subview in
+                        if let button = subview as? UIButton {
+                            button.removeFromSuperview()
+                        }
+                    }
+                    for index in (0..<pins.count) {
+                        let x = viewModel.imageSize.value.size.width * pins[index].positionX + viewModel.imageSize.value.origin.x
+                        let y = viewModel.imageSize.value.size.height * pins[index].positionY + viewModel.imageSize.value.origin.y
+
+                        let button = UIButton()
+                        self.selectedImageAndPin.addSubview(button)
+                        button.translatesAutoresizingMaskIntoConstraints = false
+                        button.backgroundColor = .blue
+                        button.layer.cornerRadius = 10
+                        button.heightAnchor.constraint(equalToConstant: 30).isActive = true
+                        button.widthAnchor.constraint(equalToConstant: 30).isActive = true
+                        button.leadingAnchor.constraint(equalTo: self.selectedImageView.leadingAnchor, constant: x).isActive = true
+                        button.topAnchor.constraint(equalTo: self.selectedImageView.topAnchor, constant: y).isActive = true
+                        button.tag = index
+                        let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture(_:)))
+                        button.addGestureRecognizer(panGesture)
+                        button.rx.tap
+                            .map{button.tag}
+                            .bind(to: viewModel.pinTap)
+                            .disposed(by: disposeBag)
+                    }
+                }
+            })
+            .disposed(by: disposeBag)
+            
     }
     
     override func setupLayout() {
@@ -115,10 +200,17 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
         
         //selectedImageView
         NSLayoutConstraint.activate([
-            selectedImageView.topAnchor.constraint(equalTo: imageCollectionView.bottomAnchor, constant: 15),
-            selectedImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 26),
-            selectedImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -26),
-            selectedImageView.bottomAnchor.constraint(equalTo: buttonStack.topAnchor, constant: -12)
+            selectedImageAndPin.topAnchor.constraint(equalTo: imageCollectionView.bottomAnchor, constant: 15),
+            selectedImageAndPin.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 26),
+            selectedImageAndPin.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -26),
+            selectedImageAndPin.bottomAnchor.constraint(equalTo: buttonStack.topAnchor, constant: -12)
+        ])
+        
+        NSLayoutConstraint.activate([
+            selectedImageView.topAnchor.constraint(equalTo: selectedImageAndPin.topAnchor),
+            selectedImageView.leadingAnchor.constraint(equalTo: selectedImageAndPin.leadingAnchor),
+            selectedImageView.trailingAnchor.constraint(equalTo: selectedImageAndPin.trailingAnchor),
+            selectedImageView.bottomAnchor.constraint(equalTo: selectedImageAndPin.bottomAnchor)
         ])
         
         //buttonStack
@@ -158,8 +250,15 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
         return collectionView
     }()
     
+    private var selectedImageAndPin : UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
     private var selectedImageView : UIImageView = {
         let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
@@ -202,6 +301,49 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
+    
+    private func calcurateXY() {
+        guard let image = self.selectedImageView.image else { return }
+        let imageViewSize = self.selectedImageView.bounds.size
+        let imageSize = image.size
+                
+        let scaleWidth = imageViewSize.width / imageSize.width
+        let scaleHeight = imageViewSize.height / imageSize.height
+        
+        var aspectRatio: CGFloat = 1.0
+        var scaledImageSize: CGSize = .zero
+        
+        aspectRatio = min(scaleWidth, scaleHeight)
+        scaledImageSize = CGSize(width: imageSize.width * aspectRatio, height: imageSize.height * aspectRatio)
+        
+        let imageX = (imageViewSize.width - scaledImageSize.width) / 2
+        let imageY = (imageViewSize.height - scaledImageSize.height) / 2
+        
+        viewModel.imageSize.accept(CGRect(x: imageX, y: imageY, width: scaledImageSize.width, height: scaledImageSize.height))
+    }
+    
+    @objc private func handlePanGesture(_ gesture : UIPanGestureRecognizer) {
+        guard let button = gesture.view as? UIButton else { return }
+        
+        let translation = gesture.translation(in: self.view)
+        
+        if gesture.state == .began || gesture.state == .changed {
+            let x = button.frame.origin.x + translation.x
+            let y = button.frame.origin.y + translation.y
+            let imageSize = viewModel.imageSize.value
+            
+            if x >= imageSize.origin.x && x < imageSize.origin.x + imageSize.size.width - button.frame.size.width && y >= imageSize.origin.y && y < imageSize.origin.y + imageSize.size.height - button.frame.size.height {
+                button.frame.origin = CGPoint(x : x, y : y)
+                gesture.setTranslation(.zero, in: self.view)
+            }
+        } else if gesture.state == .ended {
+            var values : [String : Any] = [:]
+            values["pId"] = button.tag
+            values["point"] = CGPoint(x: button.frame.origin.x , y: button.frame.origin.y)
+            self.viewModel.pinDragFinish
+                .onNext(values)
+        }
+    }
 }
 
 extension MakePostViewController : UICollectionViewDelegate, UICollectionViewDataSource {
@@ -257,6 +399,8 @@ extension MakePostViewController : PHPickerViewControllerDelegate, UIImagePicker
             dispatchGroup.notify(queue: .main){
                 self.viewModel.selectedImageRelay.accept(tmpImages)
                 self.selectedImageView.image = tmpImages.last
+                
+                self.calcurateXY()
                 
                 let newIndexPaths = (startInx..<tmpImages.count).map { IndexPath(item: $0, section: 0) }
                 self.imageCollectionView.performBatchUpdates({
