@@ -33,7 +33,7 @@ public protocol MakePostViewModelOutput {
     var deleteCellImage : Driver<Int> { get }
     var changeSelectedImage : Driver<Void> { get }
     var addPin : Driver<Void> { get }
-    var deletePin : Driver<Void> { get }
+    var deletePin : Driver<Int> { get }
     var sholudPushPinOption : Driver<Int> { get }
     var dismissModifyInfo : Driver<Void> { get }
 }
@@ -147,7 +147,6 @@ public class MakePostViewModel : MakePostViewModelProtocol {
         
         //MARK: PinSubject
         self.deletePin = self.deletePinButtonTap
-            .map{_ in }
             .asDriver(onErrorDriveWith: .empty())
         
         self.addPin = self.addPinButtonTap
@@ -195,7 +194,7 @@ public class MakePostViewModel : MakePostViewModelProtocol {
             .subscribe(onNext : {[weak self] index in
                 guard let self = self else { return }
                 var pinLinst = self.pinsRelay.value
-                pinLinst.remove(at: index)
+                pinLinst[self.selectedImageIndex].remove(at: index)
                 self.pinsRelay.accept(pinLinst)
             })
             .disposed(by: disposeBag)
@@ -329,7 +328,7 @@ public class MakePostViewModel : MakePostViewModelProtocol {
     public var deleteCellImage: Driver<Int>
     public var changeSelectedImage: Driver<Void>
     public var addPin: Driver<Void>
-    public var deletePin: Driver<Void>
+    public var deletePin: Driver<Int>
     public var sholudPushPinOption: Driver<Int>
     public var sholudPushModifyPinInfo: Driver<Int>
     public var dismissModifyInfo: Driver<Void>

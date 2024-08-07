@@ -186,6 +186,23 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
                 }
             })
             .disposed(by: disposeBag)
+        
+        self.viewModel.deletePin
+            .drive(onNext: {[weak self] index in
+                guard let self = self else {return}
+                if viewModel.selectedImageIndex >= 0 {
+                    self.selectedImageAndPin.subviews.forEach{ subview in
+                        if let button = subview as? UIButton {
+                            if button.tag == index {
+                                button.removeFromSuperview()
+                            } else if button.tag > index {
+                                button.tag = button.tag - 1
+                            }
+                        }
+                    }
+                }
+            })
+            .disposed(by: disposeBag)
             
     }
     
