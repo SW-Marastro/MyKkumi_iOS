@@ -25,25 +25,36 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
     }
     
     override func setupHierarchy() {
-        view.addSubview(imageCollectionView)
-        view.addSubview(selectedImageAndPin)
-        selectedImageAndPin.addSubview(selectedImageView)
         view.addSubview(buttonStack)
+        view.addSubview(imageScrollview)
+        view.addSubview(selectedImageScrollView)
+        imageScrollview.addSubview(imageScrollStackView)
+        selectedImageScrollView.addSubview(selectedImageStackView)
         buttonStack.addArrangedSubview(autoPinAddButton)
         buttonStack.addArrangedSubview(addPinButton)
-        view.addSubview(contentTextFiled)
+        view.addSubview(contentTextView)
         view.addSubview(AIContentButton)
     }
     
     override func setupDelegate() {
-        imageCollectionView.delegate = self
-        imageCollectionView.dataSource = self
+        self.selectedImageScrollView.delegate = self
     }
     
     public override func setupBind(viewModel: MakePostViewModelProtocol) {
         self.viewModel = viewModel
         
-        self.viewModel.sholudPushSelectAlert
+        self.rx.viewDidLoad
+            .bind(to: self.viewModel.viewdidLoad)
+            .disposed(by: disposeBag)
+        
+        self.viewModel.shouldDrawAddButton
+            .drive(onNext: {[weak self] _ in
+                guard let self = self else { return }
+                self.imageScrollStackView.addArrangedSubview(self.addButton)
+            })
+            .disposed(by: disposeBag)
+
+        self.viewModel.shouldPushSelectAlert
             .drive(onNext: {[weak self] _ in
                 let alert = UIAlertController(title : "포스트 사진추가", message: "", preferredStyle: .actionSheet)
                 let library = UIAlertAction(title: "사진 보관함", style: .default) {_ in
@@ -61,195 +72,151 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
             })
             .disposed(by: disposeBag)
         
-        self.viewModel.sholudPushImagePicker
-            .drive(onNext : {[weak self] result in
-                if result {
-                    var configuration = PHPickerConfiguration()
-                    configuration.filter = .images
-                    configuration.selectionLimit = 10 - viewModel.selectedImageRelay.value.count
-                    let imagePicker = PHPickerViewController(configuration: configuration)
-                    imagePicker.delegate = self
-                    self?.present(imagePicker, animated : true, completion: nil)
-                }
+        self.viewModel.shouldPushImagePicker
+            .drive(onNext : {[weak self] _ in
+                var configuration = PHPickerConfiguration()
+                configuration.filter = .images
+                configuration.selectionLimit = CountValues.MaxImageCount.value - viewModel.postImageRelay.value.count
+                let imagePicker = PHPickerViewController(configuration: configuration)
+                imagePicker.delegate = self
+                self?.present(imagePicker, animated : true, completion: nil)
             })
             .disposed(by: disposeBag)
         
-        self.viewModel.sholudPushCamera
-            .drive(onNext : {[weak self] result in
-                if result {
-                    let imagePicker = UIImagePickerController()
-                    imagePicker.delegate = self
-                    imagePicker.sourceType = .camera
-                    self?.present(imagePicker, animated: true, completion: nil)
-                }
+        self.viewModel.shouldPushCamera
+            .drive(onNext : {[weak self] _ in
+                let imagePicker = UIImagePickerController()
+                imagePicker.delegate = self
+                imagePicker.sourceType = .camera
+                self?.present(imagePicker, animated: true, completion: nil)
             })
             .disposed(by: disposeBag)
         
-        self.contentTextFiled.rx.text.changed
-            .bind(to: self.viewModel.contentInput)
-            .disposed(by: disposeBag)
-        
-        //MARK: ImageCellBind
-        self.viewModel.changeSelectedImage
-            .drive(onNext: {[weak self] _ in
-                self?.selectedImageView.image = viewModel.selectedImageRelay.value[viewModel.selectedImageIndex]
+        self.contentTextView.rx.text.orEmpty
+            .distinctUntilChanged()
+            .subscribe(onNext : {changedText in
+                self.viewModel.contentInput.onNext(changedText)
             })
             .disposed(by: disposeBag)
         
-        self.viewModel.deleteCellImage
-            .drive(onNext: {[weak self] index in
+        //MARK: Image
+        self.viewModel.sholudDrawImage
+            .drive(onNext : {[weak self] images in
                 guard let self = self else { return }
-                let indexPath = IndexPath(item : index, section : 0)
+                self.imageScrollStackView.subviews.forEach{ $0.removeFromSuperview()}
+                self.selectedImageStackView.subviews.forEach{ $0.removeFromSuperview()}
                 
-                if self.viewModel.selectedImageIndex >= 0 {
-                    self.selectedImageView.image = viewModel.selectedImageRelay.value[viewModel.selectedImageIndex]
-                    
-                    calcurateXY()
+                for image in images {
+                    let imageView = drawImage(image)
+                    self.drawSelectedView(for: image)
+                    self.imageScrollStackView.addArrangedSubview(imageView)
                 }
-                self.imageCollectionView.performBatchUpdates({
-                    self.imageCollectionView.deleteItems(at: [indexPath])
-                }, completion: nil)
-            })
-            .disposed(by: disposeBag)
-        
-        //MARK: Pin
-        self.addPinButton.rx.tap
-            .bind(to: viewModel.addPinButtonTap)
-            .disposed(by: disposeBag)
-        
-        self.viewModel.sholudPushPinOption
-            .drive(onNext: {[weak self] index in
-                let alert = UIAlertController(title : "핀 옵션", message: "", preferredStyle: .actionSheet)
-                let library = UIAlertAction(title: "핀 정보 추가", style: .default) {_ in
-                    self?.viewModel.modifyPinOptionButtonTap.onNext(index)
-                }
-                let camera = UIAlertAction(title: "핀 삭제", style: .default) {_ in
-                    self?.viewModel.deletePinButtonTap.onNext(index)
-                }
-                let cancel = UIAlertAction(title: "취소", style: .cancel)
                 
-                alert.addAction(library)
-                alert.addAction(camera)
-                alert.addAction(cancel)
-                self?.present(alert, animated: true, completion: nil)
+                if images.count < CountValues.MaxImageCount.value {
+                    self.imageScrollStackView.addArrangedSubview(addButton)
+                }
             })
             .disposed(by: disposeBag)
         
-        self.viewModel.sholudPushModifyPinInfo
-            .drive(onNext : {[weak self] index in
-                let pinInfoVC = PinInfoViewController()
-                let delegate = PinInfoPresentationControllerDelegate()
-                pinInfoVC.setupBind(viewModel: viewModel.deliverPinInfoViewModel.value)
-                pinInfoVC.transitioningDelegate = delegate
-                pinInfoVC.modalPresentationStyle = .custom
-                self?.present(pinInfoVC, animated: true, completion: nil)
-            })
-            .disposed(by: disposeBag)
-        
-        self.viewModel.dismissModifyInfo
-            .drive(onNext: {[weak self] _ in
-                self?.dismiss(animated: true)
-            })
-            .disposed(by: disposeBag)
-        
-        self.viewModel.addPin
-            .drive(onNext: {[weak self] _ in
+        self.viewModel.selectedImageUUID
+            .subscribe(onNext: {[weak self] uuid in
+                print(uuid)
                 guard let self = self else { return }
-                if viewModel.selectedImageIndex >= 0 {
-                    let pins = viewModel.pinsRelay.value[viewModel.selectedImageIndex]
-                    self.selectedImageAndPin.subviews.forEach{ subview in
-                        if let button = subview as? UIButton {
-                            button.removeFromSuperview()
-                        }
-                    }
-                    for index in (0..<pins.count) {
-                        let x = viewModel.imageSize.value.size.width * pins[index].positionX + viewModel.imageSize.value.origin.x
-                        let y = viewModel.imageSize.value.size.height * pins[index].positionY + viewModel.imageSize.value.origin.y
-
-                        let button = UIButton()
-                        self.selectedImageAndPin.addSubview(button)
-                        button.translatesAutoresizingMaskIntoConstraints = false
-                        button.backgroundColor = .blue
-                        button.layer.cornerRadius = 10
-                        button.heightAnchor.constraint(equalToConstant: 30).isActive = true
-                        button.widthAnchor.constraint(equalToConstant: 30).isActive = true
-                        button.leadingAnchor.constraint(equalTo: self.selectedImageView.leadingAnchor, constant: x).isActive = true
-                        button.topAnchor.constraint(equalTo: self.selectedImageView.topAnchor, constant: y).isActive = true
-                        button.tag = index
-                        let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture(_:)))
-                        button.addGestureRecognizer(panGesture)
-                        button.rx.tap
-                            .map{button.tag}
-                            .bind(to: viewModel.pinTap)
-                            .disposed(by: disposeBag)
-                    }
-                }
+                self.scrollToImage(with: uuid)
             })
             .disposed(by: disposeBag)
         
-        self.viewModel.deletePin
-            .drive(onNext: {[weak self] index in
-                guard let self = self else {return}
-                if viewModel.selectedImageIndex >= 0 {
-                    self.selectedImageAndPin.subviews.forEach{ subview in
-                        if let button = subview as? UIButton {
-                            if button.tag == index {
-                                button.removeFromSuperview()
-                            } else if button.tag > index {
-                                button.tag = button.tag - 1
-                            }
-                        }
-                    }
-                }
-            })
+        self.addButton.rx.tap
+            .bind(to: viewModel.addImageButtonTap)
             .disposed(by: disposeBag)
-            
     }
     
     override func setupLayout() {
-        //imageCollectionView
+        //imageScrollView
         NSLayoutConstraint.activate([
-            imageCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            imageCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 38),
-            imageCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -38),
-            imageCollectionView.heightAnchor.constraint(equalToConstant: 69)
-        ])
-        
-        //selectedImageView
-        NSLayoutConstraint.activate([
-            selectedImageAndPin.topAnchor.constraint(equalTo: imageCollectionView.bottomAnchor, constant: 15),
-            selectedImageAndPin.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 26),
-            selectedImageAndPin.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -26),
-            selectedImageAndPin.bottomAnchor.constraint(equalTo: buttonStack.topAnchor, constant: -12)
+            imageScrollview.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            imageScrollview.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 38),
+            imageScrollview.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -38),
+            imageScrollview.heightAnchor.constraint(equalToConstant: 69)
         ])
         
         NSLayoutConstraint.activate([
-            selectedImageView.topAnchor.constraint(equalTo: selectedImageAndPin.topAnchor),
-            selectedImageView.leadingAnchor.constraint(equalTo: selectedImageAndPin.leadingAnchor),
-            selectedImageView.trailingAnchor.constraint(equalTo: selectedImageAndPin.trailingAnchor),
-            selectedImageView.bottomAnchor.constraint(equalTo: selectedImageAndPin.bottomAnchor)
+            imageScrollStackView.heightAnchor.constraint(equalTo: imageScrollview.heightAnchor),
+            imageScrollStackView.topAnchor.constraint(equalTo: imageScrollview.topAnchor),
+            imageScrollStackView.leadingAnchor.constraint(equalTo: imageScrollview.leadingAnchor),
+            imageScrollStackView.trailingAnchor.constraint(equalTo: imageScrollview.trailingAnchor),
+            imageScrollStackView.bottomAnchor.constraint(equalTo: imageScrollview.bottomAnchor),
+        ])
+        
+        //selectedimage
+        NSLayoutConstraint.activate([
+            selectedImageScrollView.topAnchor.constraint(equalTo: imageScrollview.bottomAnchor, constant: 15),
+            selectedImageScrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 26),
+            selectedImageScrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -26),
+            selectedImageScrollView.bottomAnchor.constraint(equalTo: buttonStack.topAnchor, constant: -12)
+        ])
+        
+        NSLayoutConstraint.activate([
+            selectedImageStackView.topAnchor.constraint(equalTo: selectedImageScrollView.topAnchor),
+            selectedImageStackView.leadingAnchor.constraint(equalTo:selectedImageScrollView.leadingAnchor),
+            selectedImageStackView.trailingAnchor.constraint(equalTo:selectedImageScrollView.trailingAnchor),
+            selectedImageStackView.bottomAnchor.constraint(equalTo:selectedImageScrollView.bottomAnchor),
+            selectedImageStackView.heightAnchor.constraint(equalTo: selectedImageScrollView.heightAnchor)
         ])
         
         //buttonStack
         NSLayoutConstraint.activate([
             buttonStack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15),
-            buttonStack.bottomAnchor.constraint(equalTo: contentTextFiled.topAnchor, constant: -12)
+            buttonStack.bottomAnchor.constraint(equalTo: contentTextView.topAnchor, constant: -12)
+        ])
+        
+        NSLayoutConstraint.activate([
+            addPinButton.heightAnchor.constraint(equalToConstant: 32),
+            autoPinAddButton.heightAnchor.constraint(equalToConstant: 32)
         ])
         
         //content
         NSLayoutConstraint.activate([
-            contentTextFiled.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            contentTextFiled.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 14),
-            contentTextFiled.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -14),
-            contentTextFiled.heightAnchor.constraint(equalToConstant: 171)
+            contentTextView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            contentTextView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 14),
+            contentTextView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -14),
+            contentTextView.heightAnchor.constraint(equalToConstant: 171)
         ])
         
         //aibutton
         NSLayoutConstraint.activate([
-            AIContentButton.trailingAnchor.constraint(equalTo: contentTextFiled.trailingAnchor, constant: -8),
-            AIContentButton.bottomAnchor.constraint(equalTo: contentTextFiled.bottomAnchor, constant: -8)
+            AIContentButton.trailingAnchor.constraint(equalTo: contentTextView.trailingAnchor, constant: -8),
+            AIContentButton.bottomAnchor.constraint(equalTo: contentTextView.bottomAnchor, constant: -8)
         ])
     }
+    
+    private var imageScrollview : UIScrollView  = {
+        let scrollView = UIScrollView()
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        return scrollView
+    }()
+    
+    private var imageScrollStackView : UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.spacing = 6
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
+    
+    private var selectedImageScrollView : UIScrollView = {
+        let scrollView = UIScrollView()
+        scrollView.isPagingEnabled = true
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        return scrollView
+    }()
+    
+    private var selectedImageStackView : UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
     
     private var buttonStack : UIStackView = {
         let stack = UIStackView()
@@ -257,27 +224,6 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
         stack.spacing = 5
         stack.translatesAutoresizingMaskIntoConstraints = false
         return stack
-    }()
-    
-    private var imageCollectionView : UICollectionView = {
-        let collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: SelectedImageFlowLayout())
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.register(SelectedImageCell.self, forCellWithReuseIdentifier: SelectedImageCell.cellID)
-        collectionView.register(AddImageCell.self, forCellWithReuseIdentifier: AddImageCell.cellID)
-        return collectionView
-    }()
-    
-    private var selectedImageAndPin : UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-    
-    private var selectedImageView : UIImageView = {
-        let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFit
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        return imageView
     }()
     
     private var addPinButton : UIButton = {
@@ -299,7 +245,7 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
         return button
     }()
     
-    private var contentTextFiled : UITextView = {
+    private var contentTextView : UITextView = {
         let textView = UITextView()
         textView.keyboardType = .default
         textView.returnKeyType = .done
@@ -319,24 +265,33 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
         return button
     }()
     
+    private var addButton : UIButton = {
+        let button = UIButton()
+        button.setBackgroundImage(UIImage(named: "chat"), for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.heightAnchor.constraint(equalToConstant: 69).isActive = true
+        button.widthAnchor.constraint(equalToConstant: 69).isActive = true
+        return button
+    }()
+    
     private func calcurateXY() {
-        guard let image = self.selectedImageView.image else { return }
-        let imageViewSize = self.selectedImageView.bounds.size
-        let imageSize = image.size
-                
-        let scaleWidth = imageViewSize.width / imageSize.width
-        let scaleHeight = imageViewSize.height / imageSize.height
-        
-        var aspectRatio: CGFloat = 1.0
-        var scaledImageSize: CGSize = .zero
-        
-        aspectRatio = min(scaleWidth, scaleHeight)
-        scaledImageSize = CGSize(width: imageSize.width * aspectRatio, height: imageSize.height * aspectRatio)
-        
-        let imageX = (imageViewSize.width - scaledImageSize.width) / 2
-        let imageY = (imageViewSize.height - scaledImageSize.height) / 2
-        
-        viewModel.imageSize.accept(CGRect(x: imageX, y: imageY, width: scaledImageSize.width, height: scaledImageSize.height))
+//        guard let image = self.selectedImageView.image else { return }
+//        let imageViewSize = self.selectedImageView.bounds.size
+//        let imageSize = image.size
+//                
+//        let scaleWidth = imageViewSize.width / imageSize.width
+//        let scaleHeight = imageViewSize.height / imageSize.height
+//        
+//        var aspectRatio: CGFloat = 1.0
+//        var scaledImageSize: CGSize = .zero
+//        
+//        aspectRatio = min(scaleWidth, scaleHeight)
+//        scaledImageSize = CGSize(width: imageSize.width * aspectRatio, height: imageSize.height * aspectRatio)
+//        
+//        let imageX = (imageViewSize.width - scaledImageSize.width) / 2
+//        let imageY = (imageViewSize.height - scaledImageSize.height) / 2
+//        
+//        viewModel.imageSize.accept(CGRect(x: imageX, y: imageY, width: scaledImageSize.width, height: scaledImageSize.height))
     }
     
     @objc private func handlePanGesture(_ gesture : UIPanGestureRecognizer) {
@@ -347,48 +302,128 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
         if gesture.state == .began || gesture.state == .changed {
             let x = button.frame.origin.x + translation.x
             let y = button.frame.origin.y + translation.y
-            let imageSize = viewModel.imageSize.value
-            
-            if x >= imageSize.origin.x && x < imageSize.origin.x + imageSize.size.width - button.frame.size.width && y >= imageSize.origin.y && y < imageSize.origin.y + imageSize.size.height - button.frame.size.height {
-                button.frame.origin = CGPoint(x : x, y : y)
-                gesture.setTranslation(.zero, in: self.view)
-            }
+//            let imageSize = viewModel.imageSize.value
+//            
+//            if x >= imageSize.origin.x &&
+//                x < imageSize.origin.x + imageSize.size.width - button.frame.size.width &&
+//                y >= imageSize.origin.y &&
+//                y < imageSize.origin.y + imageSize.size.height - button.frame.size.height {
+//                button.frame.origin = CGPoint(x : x, y : y)
+//                gesture.setTranslation(.zero, in: self.view)
+//            }
         } else if gesture.state == .ended {
             var values : [String : Any] = [:]
             values["pId"] = button.tag
             values["point"] = CGPoint(x: button.frame.origin.x , y: button.frame.origin.y)
-            self.viewModel.pinDragFinish
-                .onNext(values)
+            //self.viewModel.pinDragFinish
+               // .onNext(values)
+        }
+    }
+    
+    func drawImage(_ imageInfo : PostImageStruct) -> UIView {
+        let view : UIView = {
+            let view = UIView()
+            view.translatesAutoresizingMaskIntoConstraints = false
+            return view
+        }()
+        
+        let deleteButton : UIButton = {
+            let button = UIButton()
+            button.translatesAutoresizingMaskIntoConstraints = false
+            button.setTitle("X", for: .normal)
+            button.backgroundColor = .red
+            return button
+        }()
+        
+        let imageView : UIImageView = {
+            let imageView = UIImageView()
+            imageView.translatesAutoresizingMaskIntoConstraints = false
+            imageView.contentMode = .scaleAspectFill
+            imageView.load(url: URL(string: imageInfo.imageUrl)!, placeholder: "heart")
+            return imageView
+        }()
+        
+        deleteButton.rx.tap
+            .subscribe(onNext: {[weak self] _ in
+                guard let self = self else { return }
+                self.viewModel.deleteImage.onNext(imageInfo.UUID)
+            })
+            .disposed(by: disposeBag)
+        
+        imageView.rx.tapGesture
+            .subscribe(onNext : {[weak self] _ in
+                guard let self = self else { return }
+                self.viewModel.selectedImageUUID.accept(imageInfo.UUID)
+            })
+            .disposed(by: disposeBag)
+        
+        view.addSubview(deleteButton)
+        view.addSubview(imageView)
+        view.bringSubviewToFront(deleteButton)
+        
+        NSLayoutConstraint.activate([
+            view.heightAnchor.constraint(equalToConstant: 69),
+            view.widthAnchor.constraint(equalToConstant: 69),
+            
+            imageView.topAnchor.constraint(equalTo: view.topAnchor),
+            imageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            imageView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            imageView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            
+            deleteButton.topAnchor.constraint(equalTo: imageView.topAnchor),
+            deleteButton.trailingAnchor.constraint(equalTo: imageView.trailingAnchor)
+        ])
+        
+        return view
+    }
+    
+    private func drawSelectedView(for imageInfo: PostImageStruct) {
+        let selectedImageAndPin: UIView = {
+            let view = UIView()
+            view.translatesAutoresizingMaskIntoConstraints = false
+            return view
+        }()
+        
+        let selectedImageView: UIImageView = {
+            let imageView = UIImageView()
+            imageView.contentMode = .scaleAspectFit
+            imageView.translatesAutoresizingMaskIntoConstraints = false
+            imageView.load(url: URL(string: imageInfo.imageUrl)!, placeholder: "heart")
+            imageView.uuidString = imageInfo.UUID // Use hash value as a tag to identify
+            return imageView
+        }()
+        
+        selectedImageAndPin.addSubview(selectedImageView)
+        selectedImageStackView.addArrangedSubview(selectedImageAndPin)
+        
+        NSLayoutConstraint.activate([
+            selectedImageAndPin.widthAnchor.constraint(equalTo: selectedImageScrollView.widthAnchor),
+            selectedImageAndPin.heightAnchor.constraint(equalTo: selectedImageStackView.heightAnchor),
+            
+            selectedImageView.topAnchor.constraint(equalTo: selectedImageAndPin.topAnchor),
+            selectedImageView.leadingAnchor.constraint(equalTo: selectedImageAndPin.leadingAnchor),
+            selectedImageView.trailingAnchor.constraint(equalTo: selectedImageAndPin.trailingAnchor),
+            selectedImageView.bottomAnchor.constraint(equalTo: selectedImageAndPin.bottomAnchor)
+        ])
+    }
+    
+    private func scrollToImage(with uuid: String) {
+        if let imageView = selectedImageStackView.arrangedSubviews.compactMap({ $0.subviews.first as? UIImageView }).first(where: { $0.uuidString == uuid }) {
+            
+            if let index = selectedImageStackView.arrangedSubviews.firstIndex(of: imageView.superview!) {
+                let xOffset = CGFloat(index) * selectedImageScrollView.frame.width
+                selectedImageScrollView.setContentOffset(CGPoint(x: xOffset, y: 0), animated: true)
+            }
         }
     }
 }
 
-extension MakePostViewController : UICollectionViewDelegate, UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        let imageCount = viewModel.selectedImageRelay.value.count
-        if imageCount == 10 {
-            return 10
-        } else {
-            return imageCount + 1
-        }
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let imageCount = viewModel.selectedImageRelay.value.count
-        if indexPath.row == imageCount && imageCount < 10 {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AddImageCell.cellID, for: indexPath) as! AddImageCell
-            cell.setBind(viewModel: viewModel.deliverAddImageViewModel.value)
-            return cell
-        } else {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SelectedImageCell.cellID, for: indexPath) as! SelectedImageCell
-            cell.imageView.image = viewModel.selectedImageRelay.value[indexPath.row]
-            cell.setBind(viewModel: viewModel.selectedImageViewModels.value[indexPath.row])
-            if indexPath.row == self.viewModel.selectedImageIndex {
-                cell.viewModel.imageTap.onNext(imageCount - 1)
-            } else {
-                cell.viewModel.unSelectedCellInput.onNext(())
-            }
-            return cell
+extension MakePostViewController : UIScrollViewDelegate {
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        let pageIndex = Int(scrollView.contentOffset.x / scrollView.frame.width)
+        guard let imageView = selectedImageStackView.arrangedSubviews[pageIndex].subviews.first as? UIImageView else { return }
+        if let uuid = imageView.uuidString {
+            viewModel.selectedImageUUID.accept(uuid)
         }
     }
 }
@@ -398,8 +433,7 @@ extension MakePostViewController : PHPickerViewControllerDelegate, UIImagePicker
         picker.dismiss(animated: true, completion: nil)
         
         if !results.isEmpty {
-            var tmpImages = viewModel.selectedImageRelay.value
-            let startInx = tmpImages.count
+            var tmpImages : [UIImage] = []
             let dispatchGroup = DispatchGroup()
             
             for result in results {
@@ -414,15 +448,8 @@ extension MakePostViewController : PHPickerViewControllerDelegate, UIImagePicker
             }
             
             dispatchGroup.notify(queue: .main){
-                self.viewModel.selectedImageRelay.accept(tmpImages)
-                self.selectedImageView.image = tmpImages.last
-                
+                self.viewModel.imagesInput.onNext(tmpImages)
                 self.calcurateXY()
-                
-                let newIndexPaths = (startInx..<tmpImages.count).map { IndexPath(item: $0, section: 0) }
-                self.imageCollectionView.performBatchUpdates({
-                    self.imageCollectionView.insertItems(at: newIndexPaths)
-                }, completion: nil)
             }
         }
     }

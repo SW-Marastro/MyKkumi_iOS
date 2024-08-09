@@ -16,10 +16,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScence = (scene as? UIWindowScene) else { return }
         
-        DependencyInjector.shared.assemble([BasicAssembly(),
-                          BasicDataAssembly(),
+        DependencyInjector.shared.assemble([
                           DataAssembly(),
-                          DomainAssembly()])
+                          DomainAssembly()
+        ])
         
         //keyChain에서 값 꺼내서 확인
         window = RootWindow(windowScene: windowScence)

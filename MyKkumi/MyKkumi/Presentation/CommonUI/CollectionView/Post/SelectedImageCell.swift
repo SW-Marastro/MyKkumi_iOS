@@ -32,15 +32,15 @@ open class SelectedImageCell : UICollectionViewCell {
     public func setBind(viewModel : SelectedImageViewModelProtocol) {
         self.viewModel = viewModel
         
-        imageView.rx.tapGesture
-            .map{_ in viewModel.indexPathRow}
-            .bind(to: viewModel.imageTap)
-            .disposed(by: disposeBag)
-        
-        deleteButton.rx.tap
-            .map{_ in viewModel.indexPathRow}
-            .bind(to: viewModel.deleteButtonTap)
-            .disposed(by: disposeBag)
+//        imageView.rx.tapGesture
+//            .map{_ in viewModel.indexPathRow}
+//            .bind(to: viewModel.imageTap)
+//            .disposed(by: disposeBag)
+//        
+//        deleteButton.rx.tap
+//            .map{_ in viewModel.indexPathRow}
+//            .bind(to: viewModel.deleteButtonTap)
+//            .disposed(by: disposeBag)
         
         viewModel.selectedCell
             .drive(onNext : {[weak self] _ in

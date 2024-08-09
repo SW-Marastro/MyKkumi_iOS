@@ -8,8 +8,6 @@
 import Foundation
 import Moya
 
-let interceptor : RequestInterceptor =  NetworkInterceptor()
-let session = Session(interceptor : interceptor)
 public var authProvider = MoyaProvider<Auth>()
 
 public enum AuthError : Error {

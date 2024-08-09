@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct WritePostVO : Codable {
+public struct MakePostVO : Codable {
     let subCategoryId : Int
     var content : String?
     var images : [Image]
@@ -35,7 +35,7 @@ public struct ProductInfo : Codable {
     var url : String
 }
 
-public struct WritePostResponse : Codable {
+public struct MakePostResponse : Codable {
     let postId : Int
     
     enum CodingKeys : String, CodingKey {
@@ -45,5 +45,18 @@ public struct WritePostResponse : Codable {
     public init(from decoder : Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         postId =  try values.decode(Int.self , forKey: .postId)
+    }
+}
+
+public struct PreSignedUrlVO : Codable {
+    let url : String
+    
+    enum CodingKeys : String, CodingKey {
+        case url
+    }
+    
+    public init(from decoder : Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        url = try values.decode(String.self, forKey: .url)
     }
 }

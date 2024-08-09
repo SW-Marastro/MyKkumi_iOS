@@ -19,7 +19,7 @@ class NetworkInterceptor : RequestInterceptor {
         if let accessToken = KeychainHelper.shared.load(key: "accessToken") {
             urlRequest.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
         }
-        urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        //urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
         completion(.success(urlRequest))
     }
 
@@ -56,3 +56,6 @@ class NetworkInterceptor : RequestInterceptor {
         }
     }
 }
+
+let interceptor : RequestInterceptor =  NetworkInterceptor()
+let session = Session(interceptor : interceptor)
