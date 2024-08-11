@@ -17,13 +17,15 @@ class PinInfoViewController : BaseViewController<PinInfoViewModelProtocol> {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .black.withAlphaComponent(0.3)
     }
     
     override func setupHierarchy() {
-        view.addSubview(productNameStack)
-        view.addSubview(purchaseInfoStack)
-        view.addSubview(cancelButton)
-        view.addSubview(saveButton)
+        view.addSubview(emptyView)
+        emptyView.addSubview(productNameStack)
+        emptyView.addSubview(purchaseInfoStack)
+        emptyView.addSubview(cancelButton)
+        emptyView.addSubview(saveButton)
         productNameStack.addArrangedSubview(productNameLabel)
         productNameStack.addArrangedSubview(productNameTextField)
         purchaseInfoStack.addArrangedSubview(purchaseInfoLabel)
@@ -34,12 +36,12 @@ class PinInfoViewController : BaseViewController<PinInfoViewModelProtocol> {
         self.viewModel = viewModel
         
         self.cancelButton.rx.tap
-            .map{ self.viewModel.index }
+            .map{ self.viewModel.uuId }
             .bind(to: viewModel.cancelButtonTap)
             .disposed(by: disposeBag)
         
         self.saveButton.rx.tap
-            .map { self.viewModel.index }
+            .map { self.viewModel.uuId }
             .bind(to: viewModel.saveButtonTap)
             .disposed(by: disposeBag)
         
@@ -50,27 +52,41 @@ class PinInfoViewController : BaseViewController<PinInfoViewModelProtocol> {
         self.purchaseTextField.rx.text.orEmpty
             .bind(to: self.viewModel.purchaseInfo)
             .disposed(by: disposeBag)
+        
+        self.viewModel.sholudDismiss
+            .drive(onNext: {[weak self] _ in
+                self?.dismiss(animated: true)
+            })
+            .disposed(by: disposeBag)
     }
     
     override func setupLayout() {
+        //EmptyView
+        NSLayoutConstraint.activate([
+            emptyView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            emptyView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            emptyView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            emptyView.heightAnchor.constraint(equalToConstant: 155)
+        ])
+        
         //ProductName
         NSLayoutConstraint.activate([
-            productNameStack.topAnchor.constraint(equalTo: view.topAnchor, constant: 32),
-            productNameStack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 86),
-            productNameStack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -86)
+            productNameStack.topAnchor.constraint(equalTo: emptyView.topAnchor, constant: 32),
+            productNameStack.leadingAnchor.constraint(equalTo: emptyView.leadingAnchor, constant: 86),
+            productNameStack.trailingAnchor.constraint(equalTo: emptyView.trailingAnchor, constant: -86)
         ])
         
         //PurchaseInfo
         NSLayoutConstraint.activate([
             purchaseInfoStack.topAnchor.constraint(equalTo: productNameStack.bottomAnchor, constant: 10),
-            purchaseInfoStack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 86),
-            purchaseInfoStack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -86)
+            purchaseInfoStack.leadingAnchor.constraint(equalTo: emptyView.leadingAnchor, constant: 86),
+            purchaseInfoStack.trailingAnchor.constraint(equalTo: emptyView.trailingAnchor, constant: -86)
         ])
         
         //Buttons
         NSLayoutConstraint.activate([
-            cancelButton.topAnchor.constraint(equalTo: purchaseInfoStack.topAnchor, constant: 26),
-            cancelButton.leadingAnchor.constraint(equalTo: view.leadingAnchor,constant: 27),
+            cancelButton.topAnchor.constraint(equalTo: purchaseInfoStack.bottomAnchor, constant: 13),
+            cancelButton.leadingAnchor.constraint(equalTo: emptyView.leadingAnchor,constant: 27),
             cancelButton.heightAnchor.constraint(equalToConstant: 32),
             cancelButton.widthAnchor.constraint(equalToConstant: 167)
         ])
@@ -82,6 +98,13 @@ class PinInfoViewController : BaseViewController<PinInfoViewModelProtocol> {
             saveButton.widthAnchor.constraint(equalToConstant: 167)
         ])
     }
+    
+    private var emptyView : UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .white
+        return view
+    }()
     
     private var productNameStack : UIStackView  = {
         let stack = UIStackView()

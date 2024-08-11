@@ -120,7 +120,6 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
         
         self.viewModel.selectedImageUUID
             .subscribe(onNext: {[weak self] uuid in
-                print(uuid)
                 guard let self = self else { return }
                 self.scrollToImage(with: uuid)
             })
@@ -199,6 +198,16 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
                self?.present(alert, animated: true, completion: nil)
            })
            .disposed(by: disposeBag)
+        
+        self.viewModel.sholudPresentModifyPin
+            .drive(onNext : {[weak self] _ in
+                guard let self = self else { return }
+                let pinInfoVC = PinInfoViewController()
+                pinInfoVC.modalPresentationStyle = .overFullScreen
+                pinInfoVC.setupBind(viewModel: self.viewModel.deliverPinInfoViewModel.value)
+                self.present(pinInfoVC, animated: true)
+            })
+            .disposed(by: disposeBag)
     }
     
     override func setupLayout() {

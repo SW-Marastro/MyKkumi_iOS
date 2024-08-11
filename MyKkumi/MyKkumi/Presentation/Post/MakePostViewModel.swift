@@ -49,12 +49,14 @@ public protocol MakePostViewModelProtocol : MakePostViewModelOutput,  MakePostVi
     var selectedImageUUID : BehaviorRelay<String> { get }
     var pinInfoRelay : BehaviorRelay<[String : [PinInfoStrcut]]> { get }
     var selectedImageSize : BehaviorRelay<CGRect> { get }
+    var deliverPinInfoViewModel : BehaviorRelay<PinInfoViewModelProtocol> { get }
 }
  
 public class MakePostViewModel : MakePostViewModelProtocol {
     
     private let disposeBag = DisposeBag()
     private let makePostUsecase : MakePostUseCase
+    private let pinInfoViewModel  = PinInfoViewModel("nil")
     
     public init(makePostUsecase : MakePostUseCase = DependencyInjector.shared.resolve(MakePostUseCase.self)) {
         self.makePostUsecase = makePostUsecase
@@ -78,6 +80,7 @@ public class MakePostViewModel : MakePostViewModelProtocol {
         self.selectedImageUUID = BehaviorRelay<String>(value: "nil")
         self.pinInfoRelay = BehaviorRelay<[String : [PinInfoStrcut]]>(value: [:])
         self.selectedImageSize = BehaviorRelay<CGRect>(value: CGRect())
+        self.deliverPinInfoViewModel = BehaviorRelay<PinInfoViewModelProtocol>(value: pinInfoViewModel)
         
         self.shouldDrawAddButton = self.viewdidLoad
             .asDriver(onErrorDriveWith: .empty())
@@ -256,6 +259,31 @@ public class MakePostViewModel : MakePostViewModelProtocol {
             })
             .disposed(by: disposeBag)
         
+        self.modifyPinOptionButtonTap
+            .subscribe(onNext: {[weak self] uuId in
+                guard let self = self else { return }
+                self.pinInfoViewModel.uuId = uuId
+                self.deliverPinInfoViewModel.accept(self.pinInfoViewModel)
+            })
+            .disposed(by: disposeBag)
+        
+        self.pinInfoViewModel.saveButtonTap
+            .subscribe(onNext: {[weak self] uuId in
+                guard let self = self else { return }
+                var pinInfo = self.pinInfoRelay.value
+                if let pins = pinInfo[self.selectedImageUUID.value] {
+                    for (index, pin) in pins.enumerated() {
+                        if pin.UUID == uuId {
+                            let productName = pinInfoViewModel.productName.value
+                            let purchaseInfo = pinInfoViewModel.purchaseInfo.value
+                            let productInfo : ProductInfo = ProductInfo(name: productName, url: purchaseInfo)
+                            pinInfo[self.selectedImageUUID.value]![index].pin.productInfo = productInfo
+                        }
+                    }
+                }
+                self.pinInfoRelay.accept(pinInfo)
+            })
+            .disposed(by: disposeBag)
     }
 
     public var addImageButtonTap: PublishSubject<Void>
@@ -286,6 +314,7 @@ public class MakePostViewModel : MakePostViewModelProtocol {
     public var selectedImageUUID: BehaviorRelay<String>
     public var pinInfoRelay: BehaviorRelay<[String : [PinInfoStrcut]]>
     public var selectedImageSize: BehaviorRelay<CGRect>
+    public var deliverPinInfoViewModel: BehaviorRelay<any PinInfoViewModelProtocol>
 }
 
 public struct ImageData {
