@@ -199,7 +199,7 @@ public class MakePostViewModel : MakePostViewModelProtocol {
             .subscribe(onNext : {[weak self] _ in
                 guard let self = self else { return }
                 var tmpPins = self.pinInfoRelay.value
-                var nowImageUuid = self.selectedImageUUID.value
+                let nowImageUuid = self.selectedImageUUID.value
                 
                 if let pins = tmpPins[nowImageUuid] {
                     if pins.count < CountValues.MaxPinCount.value {
