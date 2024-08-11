@@ -129,6 +129,76 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
         self.addButton.rx.tap
             .bind(to: viewModel.addImageButtonTap)
             .disposed(by: disposeBag)
+        
+        //MARK: Pin
+        self.addPinButton.rx.tap
+            .bind(to: self.viewModel.addPinButtonTap)
+            .disposed(by: disposeBag)
+        
+        self.viewModel.pinInfoRelay
+            .subscribe(onNext: {[weak self] pinMap in
+                guard let self = self else { return }
+                let selectedImageUUID = viewModel.selectedImageUUID.value
+                if let pins = pinMap[selectedImageUUID] {
+                    let uuid = self.viewModel.selectedImageUUID.value
+                    var selectedImageView : UIView!//pin을 수정할 view
+                    for view in selectedImageStackView.arrangedSubviews {
+                        if let imageview = view.subviews.first as? UIImageView, imageview.uuidString == uuid {
+                            selectedImageView = view
+                        }
+                    }
+                    selectedImageView.subviews.forEach{ subview in
+                        if let button = subview as? UIButton {
+                            button.removeFromSuperview()
+                        }
+                    }
+                    
+                    for pin in pins {
+                        let x = viewModel.selectedImageSize.value.size.width * pin.pin.positionX + viewModel.selectedImageSize.value.origin.x
+                        let y = viewModel.selectedImageSize.value.size.height * pin.pin.positionY + viewModel.selectedImageSize.value.origin.y
+                        
+                        let button = UIButton()
+                        selectedImageView.addSubview(button)
+                        button.translatesAutoresizingMaskIntoConstraints = false
+                        button.backgroundColor = .blue
+                        button.layer.cornerRadius = 10
+                        button.heightAnchor.constraint(equalToConstant: 30).isActive = true
+                        button.widthAnchor.constraint(equalToConstant: 30).isActive = true
+                        button.leadingAnchor.constraint(equalTo: selectedImageView.leadingAnchor, constant: x).isActive = true
+                        button.topAnchor.constraint(equalTo: selectedImageView.topAnchor, constant: y).isActive = true
+                        button.uuidString = pin.UUID
+                        let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture(_:)))
+                        button.addGestureRecognizer(panGesture)
+                        
+                        button.rx.tap
+                            .subscribe(onNext: {[weak self] _ in
+                                guard let self = self else { return }
+                                self.viewModel.pinTap.onNext(pin.UUID)
+                            })
+                            .disposed(by: disposeBag)
+                    }
+                }
+                
+            })
+            .disposed(by: disposeBag)
+        
+        self.viewModel.sholudPushPinOption
+           .drive(onNext: {[weak self] uuId in
+               let alert = UIAlertController(title : "핀 옵션", message: "", preferredStyle: .actionSheet)
+               let library = UIAlertAction(title: "핀 정보 추가", style: .default) {_ in
+                   self?.viewModel.modifyPinOptionButtonTap.onNext(uuId)
+               }
+               let camera = UIAlertAction(title: "핀 삭제", style: .default) {_ in
+                   self?.viewModel.deletePinButtonTap.onNext(uuId)
+               }
+               let cancel = UIAlertAction(title: "취소", style: .cancel)
+               
+               alert.addAction(library)
+               alert.addAction(camera)
+               alert.addAction(cancel)
+               self?.present(alert, animated: true, completion: nil)
+           })
+           .disposed(by: disposeBag)
     }
     
     override func setupLayout() {
@@ -275,23 +345,31 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
     }()
     
     private func calcurateXY() {
-//        guard let image = self.selectedImageView.image else { return }
-//        let imageViewSize = self.selectedImageView.bounds.size
-//        let imageSize = image.size
-//                
-//        let scaleWidth = imageViewSize.width / imageSize.width
-//        let scaleHeight = imageViewSize.height / imageSize.height
-//        
-//        var aspectRatio: CGFloat = 1.0
-//        var scaledImageSize: CGSize = .zero
-//        
-//        aspectRatio = min(scaleWidth, scaleHeight)
-//        scaledImageSize = CGSize(width: imageSize.width * aspectRatio, height: imageSize.height * aspectRatio)
-//        
-//        let imageX = (imageViewSize.width - scaledImageSize.width) / 2
-//        let imageY = (imageViewSize.height - scaledImageSize.height) / 2
-//        
-//        viewModel.imageSize.accept(CGRect(x: imageX, y: imageY, width: scaledImageSize.width, height: scaledImageSize.height))
+        let uuid = self.viewModel.selectedImageUUID.value
+        var selectedImageView : UIImageView!
+        for view in selectedImageStackView.arrangedSubviews {
+            if let imageview = view.subviews.first as? UIImageView, imageview.uuidString == uuid {
+                selectedImageView = imageview
+            }
+        }
+        
+        guard let image = selectedImageView.image else { return }
+        let imageViewSize = selectedImageView.bounds.size
+        let imageSize = image.size
+        
+        let scaleWidth = imageViewSize.width / imageSize.width
+        let scaleHeight = imageViewSize.height / imageSize.height
+        
+        var aspectRatio: CGFloat = 1.0
+        var scaledImageSize: CGSize = .zero
+        
+        aspectRatio = min(scaleWidth, scaleHeight)
+        scaledImageSize = CGSize(width: imageSize.width * aspectRatio, height: imageSize.height * aspectRatio)
+        
+        let imageX = (imageViewSize.width - scaledImageSize.width) / 2
+        let imageY = (imageViewSize.height - scaledImageSize.height) / 2
+        
+        viewModel.selectedImageSize.accept(CGRect(x: imageX, y: imageY, width: scaledImageSize.width, height: scaledImageSize.height))
     }
     
     @objc private func handlePanGesture(_ gesture : UIPanGestureRecognizer) {
@@ -302,21 +380,21 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
         if gesture.state == .began || gesture.state == .changed {
             let x = button.frame.origin.x + translation.x
             let y = button.frame.origin.y + translation.y
-//            let imageSize = viewModel.imageSize.value
-//            
-//            if x >= imageSize.origin.x &&
-//                x < imageSize.origin.x + imageSize.size.width - button.frame.size.width &&
-//                y >= imageSize.origin.y &&
-//                y < imageSize.origin.y + imageSize.size.height - button.frame.size.height {
-//                button.frame.origin = CGPoint(x : x, y : y)
-//                gesture.setTranslation(.zero, in: self.view)
-//            }
+            let imageSize = viewModel.selectedImageSize.value
+            
+            if x >= imageSize.origin.x &&
+                x < imageSize.origin.x + imageSize.size.width - button.frame.size.width &&
+                y >= imageSize.origin.y &&
+                y < imageSize.origin.y + imageSize.size.height - button.frame.size.height {
+                button.frame.origin = CGPoint(x : x, y : y)
+                gesture.setTranslation(.zero, in: self.view)
+            }
         } else if gesture.state == .ended {
             var values : [String : Any] = [:]
-            values["pId"] = button.tag
+            values["uuId"] = button.uuidString
             values["point"] = CGPoint(x: button.frame.origin.x , y: button.frame.origin.y)
-            //self.viewModel.pinDragFinish
-               // .onNext(values)
+            self.viewModel.pinDragFinish
+                .onNext(values)
         }
     }
     
@@ -388,7 +466,9 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
             let imageView = UIImageView()
             imageView.contentMode = .scaleAspectFit
             imageView.translatesAutoresizingMaskIntoConstraints = false
-            imageView.load(url: URL(string: imageInfo.imageUrl)!, placeholder: "heart")
+            imageView.load(url: URL(string: imageInfo.imageUrl)!, placeholder: "heart") {[weak self] _ in
+                self?.calcurateXY()
+            }
             imageView.uuidString = imageInfo.UUID // Use hash value as a tag to identify
             return imageView
         }()
@@ -414,6 +494,8 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
                 let xOffset = CGFloat(index) * selectedImageScrollView.frame.width
                 selectedImageScrollView.setContentOffset(CGPoint(x: xOffset, y: 0), animated: true)
             }
+            
+            calcurateXY()
         }
     }
 }
@@ -449,7 +531,6 @@ extension MakePostViewController : PHPickerViewControllerDelegate, UIImagePicker
             
             dispatchGroup.notify(queue: .main){
                 self.viewModel.imagesInput.onNext(tmpImages)
-                self.calcurateXY()
             }
         }
     }

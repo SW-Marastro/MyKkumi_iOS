@@ -11,6 +11,7 @@ enum CountValues {
     case MaxImageCount
     case MaxContentCount
     case MaxHashTagCount
+    case MaxPinCount
 }
 
 extension CountValues {
@@ -22,6 +23,8 @@ extension CountValues {
             return 2000
         case .MaxHashTagCount : 
             return 20
+        case .MaxPinCount :
+            return 10
         }
     }
 }

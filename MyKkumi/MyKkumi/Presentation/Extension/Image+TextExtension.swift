@@ -13,15 +13,25 @@ import RxCocoa
 private var uuidKey: UInt8 = 0
 
 extension UIImageView {
-    func load(url: URL, placeholder : String) {
+    func load(url: URL, placeholder: String, completion: ((UIImage?) -> Void)? = nil) {
+        // 플레이스홀더 이미지를 설정
         self.image = UIImage(named: placeholder)
+        
         DispatchQueue.global().async { [weak self] in
-            if let data = try? Data(contentsOf: url) {
-                if let image = UIImage(data: data) {
-                    DispatchQueue.main.async {
-                        self?.image = image
-                    }
+            var loadedImage: UIImage? = nil
+            
+            // URL에서 데이터를 로드하고 이미지로 변환
+            if let data = try? Data(contentsOf: url), let image = UIImage(data: data) {
+                loadedImage = image
+                
+                DispatchQueue.main.async {
+                    self?.image = image
                 }
+            }
+            
+            // Main Queue에서 completion handler 호출
+            DispatchQueue.main.async {
+                completion?(loadedImage)
             }
         }
     }
@@ -76,5 +86,16 @@ extension UITextField {
         border.borderColor = color.cgColor
         border.frame = CGRect(x: 0, y: self.frame.size.height + 10 , width: self.frame.width, height: self.frame.size.height)
         self.layer.addSublayer(border)
+    }
+}
+
+extension UIButton {
+    var uuidString: String? {
+        get {
+            return objc_getAssociatedObject(self, &uuidKey) as? String
+        }
+        set {
+            objc_setAssociatedObject(self, &uuidKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        }
     }
 }

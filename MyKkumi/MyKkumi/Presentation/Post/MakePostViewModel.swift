@@ -23,6 +23,13 @@ public protocol MakePostViewModelInput {
     var imagesInput : PublishSubject<[UIImage]> { get }
     var putImagesInServer : PublishSubject<[ImageData]> { get }
     var deleteImage : PublishSubject<String> { get }
+    
+    //Pins
+    var addPinButtonTap : PublishSubject<Void> { get }
+    var pinTap : PublishSubject<String> { get }
+    var pinDragFinish : PublishSubject<[String: Any]> { get }
+    var modifyPinOptionButtonTap : PublishSubject<String> { get }
+    var deletePinButtonTap : PublishSubject<String> { get }
 }
 
 public protocol MakePostViewModelOutput {
@@ -32,12 +39,16 @@ public protocol MakePostViewModelOutput {
     var sholudDrawImage : Driver<[PostImageStruct]> { get }
     var sholudDrawSelectedImage : Driver<String> { get }
     var shouldDrawAddButton : Driver<Void> { get }
+    var sholudPushPinOption : Driver<String> { get }
+    var sholudPresentModifyPin : Driver<String> { get }
 }
 
 public protocol MakePostViewModelProtocol : MakePostViewModelOutput,  MakePostViewModelInput{
     var contentRelay : BehaviorRelay<String> { get }
     var postImageRelay : BehaviorRelay<[PostImageStruct]> { get }
     var selectedImageUUID : BehaviorRelay<String> { get }
+    var pinInfoRelay : BehaviorRelay<[String : [PinInfoStrcut]]> { get }
+    var selectedImageSize : BehaviorRelay<CGRect> { get }
 }
  
 public class MakePostViewModel : MakePostViewModelProtocol {
@@ -56,10 +67,17 @@ public class MakePostViewModel : MakePostViewModelProtocol {
         self.putImagesInServer = PublishSubject<[ImageData]>()
         self.viewdidLoad = PublishSubject<Void>()
         self.deleteImage = PublishSubject<String>()
+        self.addPinButtonTap = PublishSubject<Void>()
+        self.pinTap = PublishSubject<String>()
+        self.pinDragFinish = PublishSubject<[String : Any]>()
+        self.modifyPinOptionButtonTap = PublishSubject<String>()
+        self.deletePinButtonTap = PublishSubject<String>()
         
         self.contentRelay = BehaviorRelay<String>(value: "")
         self.postImageRelay = BehaviorRelay<[PostImageStruct]>(value: [])
         self.selectedImageUUID = BehaviorRelay<String>(value: "nil")
+        self.pinInfoRelay = BehaviorRelay<[String : [PinInfoStrcut]]>(value: [:])
+        self.selectedImageSize = BehaviorRelay<CGRect>(value: CGRect())
         
         self.shouldDrawAddButton = self.viewdidLoad
             .asDriver(onErrorDriveWith: .empty())
@@ -77,6 +95,12 @@ public class MakePostViewModel : MakePostViewModelProtocol {
             .asDriver(onErrorDriveWith: .empty())
         
         self.sholudDrawSelectedImage = self.selectedImageUUID
+            .asDriver(onErrorDriveWith: .empty())
+        
+        self.sholudPushPinOption = self.pinTap
+            .asDriver(onErrorDriveWith: .empty())
+        
+        self.sholudPresentModifyPin = self.modifyPinOptionButtonTap
             .asDriver(onErrorDriveWith: .empty())
         
         self.imagesInput
@@ -171,6 +195,67 @@ public class MakePostViewModel : MakePostViewModelProtocol {
             })
             .disposed(by: disposeBag)
         
+        self.addPinButtonTap
+            .subscribe(onNext : {[weak self] _ in
+                guard let self = self else { return }
+                var tmpPins = self.pinInfoRelay.value
+                var nowImageUuid = self.selectedImageUUID.value
+                
+                if let pins = tmpPins[nowImageUuid] {
+                    if pins.count < CountValues.MaxPinCount.value {
+                        let uuid = UUID().uuidString + "button"
+                        let pin = Pin(positionX: 0.5, positionY: 0.5)
+                        let pinInfo = PinInfoStrcut(UUID: uuid, pin: pin)
+                        tmpPins[nowImageUuid]!.append(pinInfo)
+                        self.pinInfoRelay.accept(tmpPins)
+                    }
+                } else {
+                    var newArray : [PinInfoStrcut] = []
+                    let uuid = UUID().uuidString + "button"
+                    let pin = Pin(positionX: 0.5, positionY: 0.5)
+                    let pinInfo = PinInfoStrcut(UUID: uuid, pin: pin)
+                    newArray.append(pinInfo)
+                    tmpPins[nowImageUuid] = newArray
+                    self.pinInfoRelay.accept(tmpPins)
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        self.pinDragFinish
+            .subscribe(onNext: {[weak self] value in
+                guard let self = self else { return }
+                let uuId = value["uuId"] as! String
+                let point = value["point"] as! CGPoint
+                
+                var pinInfo = self.pinInfoRelay.value
+                if let pins = pinInfo[self.selectedImageUUID.value] {
+                    for (index, pin) in pins.enumerated() {
+                        if pin.UUID == uuId {
+                            pinInfo[self.selectedImageUUID.value]![index].pin.positionX = (point.x - self.selectedImageSize.value.origin.x) / self.selectedImageSize.value.size.width
+                            pinInfo[self.selectedImageUUID.value]![index].pin.positionY = (point.y - self.selectedImageSize.value.origin.y) / self.selectedImageSize.value.size.height
+                        }
+                    }
+                }
+                self.pinInfoRelay.accept(pinInfo)
+            })
+            .disposed(by: disposeBag)
+        
+        self.deletePinButtonTap
+            .subscribe(onNext: {[weak self] uuId in
+                guard let self = self else { return }
+                
+                var pinInfo = self.pinInfoRelay.value
+                if let pins = pinInfo[self.selectedImageUUID.value] {
+                    for (index, pin) in pins.enumerated() {
+                        if pin.UUID == uuId {
+                            pinInfo[self.selectedImageUUID.value]!.remove(at: index)
+                        }
+                    }
+                }
+                self.pinInfoRelay.accept(pinInfo)
+            })
+            .disposed(by: disposeBag)
+        
     }
 
     public var addImageButtonTap: PublishSubject<Void>
@@ -181,6 +266,11 @@ public class MakePostViewModel : MakePostViewModelProtocol {
     public var putImagesInServer: PublishSubject<[ImageData]>
     public var viewdidLoad: PublishSubject<Void>
     public var deleteImage: PublishSubject<String>
+    public var addPinButtonTap: PublishSubject<Void>
+    public var pinTap: PublishSubject<String>
+    public var pinDragFinish: PublishSubject<[String : Any]>
+    public var modifyPinOptionButtonTap: PublishSubject<String>
+    public var deletePinButtonTap: PublishSubject<String>
     
     public var shouldPushCamera: Driver<Void>
     public var shouldPushImagePicker: Driver<Void>
@@ -188,10 +278,14 @@ public class MakePostViewModel : MakePostViewModelProtocol {
     public var shouldDrawAddButton: Driver<Void>
     public var sholudDrawImage: Driver<[PostImageStruct]>
     public var sholudDrawSelectedImage: Driver<String>
+    public var sholudPushPinOption: Driver<String>
+    public var sholudPresentModifyPin: Driver<String>
     
     public var contentRelay: BehaviorRelay<String>
     public var postImageRelay: BehaviorRelay<[PostImageStruct]>
     public var selectedImageUUID: BehaviorRelay<String>
+    public var pinInfoRelay: BehaviorRelay<[String : [PinInfoStrcut]]>
+    public var selectedImageSize: BehaviorRelay<CGRect>
 }
 
 public struct ImageData {

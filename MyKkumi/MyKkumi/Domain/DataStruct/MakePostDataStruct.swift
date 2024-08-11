@@ -14,6 +14,6 @@ public struct PostImageStruct {
 }
 
 public struct PinInfoStrcut {
-    let UUID : String
-    var pin : Pin
+    let UUID : String //PinButton
+    var pin : Pin //PinInformation
 }
