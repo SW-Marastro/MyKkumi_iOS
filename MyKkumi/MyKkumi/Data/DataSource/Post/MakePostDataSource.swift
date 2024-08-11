@@ -43,7 +43,7 @@ public class DefaultMakePostDataSource : MakePostDataSource {
     }
     
     public func putImage(url: String, image: Data) -> Single<Result<Bool, MakePostError>> {
-        return makePostProvider.rx.request(.putImage(url: url, image: image))
+        return putImageToBucketProvider.rx.request(.putImage(url: url, image: image))
             .filterSuccessfulStatusCodes()
             .map{_ in .success(true)}
             .catch { _ in

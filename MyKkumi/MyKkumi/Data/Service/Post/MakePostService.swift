@@ -26,13 +26,18 @@ public enum MakePost {
 }
 
 extension MakePost : TargetType {
-    public var baseURL: URL { return URL(string : NetworkConfiguration.baseUrl)!}
+    public var baseURL: URL {
+        switch self {
+        case .putImage(let url, _) : return URL(string: url)!
+        default : return URL(string : NetworkConfiguration.baseUrl)!
+        }
+    }
     
     public var path: String {
         switch self {
         case .getCategory : return NetworkConfiguration.getCategory
         case .getPresignedURL : return NetworkConfiguration.getPresignedURL
-        case .putImage(let url, _) : return url
+        case .putImage(let url, _) : return ""
         case .uploadPost : return NetworkConfiguration.uploadPost
         case .deletePost(let postid) : return NetworkConfiguration.deletePost + postid
         }

@@ -113,33 +113,33 @@ public class MakePostViewModel : MakePostViewModelProtocol {
             .subscribe(onNext : {[weak self] imageDatas in
                 guard let self = self else { return }
                 var tmpInfo = self.postImageRelay.value
+                let dispatchGroup = DispatchGroup()
+                
                 for imageData in imageDatas {
-//                    makePostUsecase.putImage(url: imageData.url, image: imageData.data)
-//                        .subscribe(onSuccess: { result in
-//                            if case let .success(check) = result {
-//                                if check {
-//                                    let uuId = UUID().uuidString + ".jpeg"
-//                                    let imageUrl = imageData.url
-//                                    let postImage = PostImageStruct(UUID: uuId, imageUrl: imageUrl)
-//                                    print(postImage)
-//                                    postImages.append(postImage)
-//                                }
-//                            }
-//                        }, onFailure: { error in
-//                            print("Error corrured : \(error)")
-//                        })
-//                        .disposed(by: self.disposeBag)
-                    let uuId = UUID().uuidString + ".jpeg"
-                    let imageUrl = imageData.url.components(separatedBy: "?").first!
-                    let postImage = PostImageStruct(UUID: uuId, imageUrl: imageUrl)
-                    print(uuId)
-                    tmpInfo.append(postImage)
+                    dispatchGroup.enter()
+                    makePostUsecase.putImage(url: imageData.url, image: imageData.data)
+                        .subscribe(onSuccess: { result in
+                            if case let .success(check) = result {
+                                if check {
+                                    let uuId = UUID().uuidString + ".jpeg"
+                                    let imageUrl = imageData.url.components(separatedBy: "?").first!
+                                    let postImage = PostImageStruct(UUID: uuId, imageUrl: imageUrl)
+                                    tmpInfo.append(postImage)
+                                }
+                            }
+                            dispatchGroup.leave()
+                        }, onFailure: { error in
+                            print("Error corrured : \(error)")
+                            dispatchGroup.leave()
+                        })
+                        .disposed(by: self.disposeBag)
                 }
                 
-                self.postImageRelay.accept(tmpInfo)
-                
-                if let lastimage = tmpInfo.last {
-                    self.selectedImageUUID.accept(lastimage.UUID)
+                dispatchGroup.notify(queue: .main) {
+                    self.postImageRelay.accept(tmpInfo)
+                    if let lastimage = tmpInfo.last {
+                        self.selectedImageUUID.accept(lastimage.UUID)
+                    }
                 }
             })
             .disposed(by: disposeBag)

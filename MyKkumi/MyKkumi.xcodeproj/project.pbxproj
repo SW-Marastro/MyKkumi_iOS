@@ -40,6 +40,7 @@
 		D2672C402C64D679005B23A4 /* MakePostUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2672C3F2C64D679005B23A4 /* MakePostUseCase.swift */; };
 		D2672C422C64EE52005B23A4 /* AppValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2672C412C64EE52005B23A4 /* AppValues.swift */; };
 		D2672C462C651682005B23A4 /* MakePostDataStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2672C452C651682005B23A4 /* MakePostDataStruct.swift */; };
+		D2672C482C661A5B005B23A4 /* PutImageToBucketService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2672C472C661A5B005B23A4 /* PutImageToBucketService.swift */; };
 		D2828C3B2C53A5100036DFDD /* RootWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2828C3A2C53A5100036DFDD /* RootWindow.swift */; };
 		D28346D72C3575ED0048CB2E /* UIViewController+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28346D62C3575ED0048CB2E /* UIViewController+Rx.swift */; };
 		D28346F72C37F6230048CB2E /* HomeBannerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28346F62C37F6230048CB2E /* HomeBannerCell.swift */; };
@@ -169,6 +170,7 @@
 		D2672C3F2C64D679005B23A4 /* MakePostUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakePostUseCase.swift; sourceTree = "<group>"; };
 		D2672C412C64EE52005B23A4 /* AppValues.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppValues.swift; sourceTree = "<group>"; };
 		D2672C452C651682005B23A4 /* MakePostDataStruct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakePostDataStruct.swift; sourceTree = "<group>"; };
+		D2672C472C661A5B005B23A4 /* PutImageToBucketService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PutImageToBucketService.swift; sourceTree = "<group>"; };
 		D2828C392C4EEABB0036DFDD /* MyKkumi.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MyKkumi.entitlements; sourceTree = "<group>"; };
 		D2828C3A2C53A5100036DFDD /* RootWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootWindow.swift; sourceTree = "<group>"; };
 		D28346D62C3575ED0048CB2E /* UIViewController+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Rx.swift"; sourceTree = "<group>"; };
@@ -391,6 +393,7 @@
 			isa = PBXGroup;
 			children = (
 				D2672C252C64BB0E005B23A4 /* MakePostService.swift */,
+				D2672C472C661A5B005B23A4 /* PutImageToBucketService.swift */,
 			);
 			path = Post;
 			sourceTree = "<group>";
@@ -1148,6 +1151,7 @@
 				D2ED95482C4A273D004DA169 /* Notification.swift in Sources */,
 				D2ABCE142C2D2F490035F7A1 /* NetworkConfiguration.swift in Sources */,
 				D2ED95532C4E26E4004DA169 /* CategoryCollectionViewFlowLayout.swift in Sources */,
+				D2672C482C661A5B005B23A4 /* PutImageToBucketService.swift in Sources */,
 				D2ABCDD22C2A68940035F7A1 /* BasicDataSource.swift in Sources */,
 				D2C79F302C5A6FB200E41D8C /* SelectedImageViewModel.swift in Sources */,
 				D21FB54F2C3E820100927905 /* AuthViewModel.swift in Sources */,
