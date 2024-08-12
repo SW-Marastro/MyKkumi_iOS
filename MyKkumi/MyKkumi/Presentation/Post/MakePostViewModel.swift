@@ -18,6 +18,7 @@ public protocol MakePostViewModelInput {
     var libraryTap : PublishSubject<Void> { get }
     var cameraTap : PublishSubject<Void> { get }
     var contentInput : PublishSubject<String> { get }
+    var overChar : PublishSubject<Void> { get }
     
     //Images
     var imagesInput : PublishSubject<[UIImage]> { get }
@@ -41,6 +42,7 @@ public protocol MakePostViewModelOutput {
     var shouldDrawAddButton : Driver<Void> { get }
     var sholudPushPinOption : Driver<String> { get }
     var sholudPresentModifyPin : Driver<String> { get }
+    var sholudAlertOverChar : Driver<Void> { get }
 }
 
 public protocol MakePostViewModelProtocol : MakePostViewModelOutput,  MakePostViewModelInput{
@@ -74,6 +76,7 @@ public class MakePostViewModel : MakePostViewModelProtocol {
         self.pinDragFinish = PublishSubject<[String : Any]>()
         self.modifyPinOptionButtonTap = PublishSubject<String>()
         self.deletePinButtonTap = PublishSubject<String>()
+        self.overChar = PublishSubject<Void>()
         
         self.contentRelay = BehaviorRelay<String>(value: "")
         self.postImageRelay = BehaviorRelay<[PostImageStruct]>(value: [])
@@ -104,6 +107,9 @@ public class MakePostViewModel : MakePostViewModelProtocol {
             .asDriver(onErrorDriveWith: .empty())
         
         self.sholudPresentModifyPin = self.modifyPinOptionButtonTap
+            .asDriver(onErrorDriveWith: .empty())
+        
+        self.sholudAlertOverChar = self.overChar
             .asDriver(onErrorDriveWith: .empty())
         
         self.imagesInput
@@ -284,6 +290,31 @@ public class MakePostViewModel : MakePostViewModelProtocol {
                 self.pinInfoRelay.accept(pinInfo)
             })
             .disposed(by: disposeBag)
+        
+        self.contentInput
+            .subscribe(onNext: {[weak self] value in
+                guard let self = self else { return }
+                var hashCount : Int = 0
+                print(value)
+                if value.count > CountValues.MaxContentCount.value {
+                    self.overChar.onNext(())
+                    return
+                }
+                
+                if value.hasPrefix("#") {
+                    hashCount = 1
+                }
+                
+                let componets = value.components(separatedBy: "#")
+                hashCount += (componets.count - 1)
+                if hashCount > CountValues.MaxHashTagCount.value {
+                    self.overChar.onNext(())
+                    return
+                }
+                
+                contentRelay.accept(value)
+            })
+            .disposed(by: disposeBag)
     }
 
     public var addImageButtonTap: PublishSubject<Void>
@@ -299,6 +330,7 @@ public class MakePostViewModel : MakePostViewModelProtocol {
     public var pinDragFinish: PublishSubject<[String : Any]>
     public var modifyPinOptionButtonTap: PublishSubject<String>
     public var deletePinButtonTap: PublishSubject<String>
+    public var overChar: PublishSubject<Void>
     
     public var shouldPushCamera: Driver<Void>
     public var shouldPushImagePicker: Driver<Void>
@@ -308,6 +340,7 @@ public class MakePostViewModel : MakePostViewModelProtocol {
     public var sholudDrawSelectedImage: Driver<String>
     public var sholudPushPinOption: Driver<String>
     public var sholudPresentModifyPin: Driver<String>
+    public var sholudAlertOverChar: Driver<Void>
     
     public var contentRelay: BehaviorRelay<String>
     public var postImageRelay: BehaviorRelay<[PostImageStruct]>

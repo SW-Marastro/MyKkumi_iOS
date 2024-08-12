@@ -21,7 +21,7 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //self.navigationController?.isNavigationBarHidden = true
+        self.navigationController?.isNavigationBarHidden = true
     }
     
     override func setupHierarchy() {
@@ -94,10 +94,18 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
         
         self.contentTextView.rx.text.orEmpty
             .distinctUntilChanged()
-            .subscribe(onNext : {changedText in
-                self.viewModel.contentInput.onNext(changedText)
+            .bind(to: viewModel.contentInput)
+            .disposed(by: disposeBag)
+        
+        self.viewModel.sholudAlertOverChar
+            .drive(onNext: {[weak self] _ in
+                guard let self = self else { return }
+                let alert = UIAlertController(title: "Error", message: "글은 2000자 입력 가능하면 해시태그는 20개 까지 가능합니다.", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
             })
             .disposed(by: disposeBag)
+        
         
         //MARK: Image
         self.viewModel.sholudDrawImage
@@ -546,5 +554,25 @@ extension MakePostViewController : PHPickerViewControllerDelegate, UIImagePicker
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         dismiss(animated: true, completion: nil)
+    }
+}
+
+extension MakePostViewController : UITextViewDelegate {
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        let currentText = textView.text ?? ""
+
+        guard let stringRange = Range(range, in: currentText) else { return false }
+        let updatedText = currentText.replacingCharacters(in: stringRange, with: text)
+
+        let isLengthValid = updatedText.count <= 2000
+        var hashCount : Int = 0
+        if currentText.hasPrefix("#") {
+            hashCount = 1
+        }
+        let componets = currentText.components(separatedBy: "#")
+        hashCount += (componets.count - 1)
+        let isHashCountValid = hashCount <= 20
+
+        return isLengthValid && isHashCountValid
     }
 }
