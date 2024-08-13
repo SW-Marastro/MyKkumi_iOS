@@ -32,7 +32,6 @@ protocol MakeProfileViewModelProtocol : MakeProfileViewModelInput, MakeProfileVi
 }
 
 class MakeProfileViewModel : MakeProfileViewModelProtocol {
-    private let disposeBag = DisposeBag()
     private let authUsecase : AuthUsecase
     
     init(authUsecase : AuthUsecase = DependencyInjector.shared.resolve(AuthUsecase.self)) {

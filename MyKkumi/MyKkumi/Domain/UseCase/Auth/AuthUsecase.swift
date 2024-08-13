@@ -33,7 +33,7 @@ public final class DefaultAuthUsecase : AuthUsecase {
         return repository.kakaoAPICall()
     }
     
-    public func signinApple(_ auth: AppleAuth) -> RxSwift.Single<Result<Bool, AuthError>> {
+    public func signinApple(_ auth: AppleAuth) -> Single<Result<Bool, AuthError>> {
         return repository.siginApple(auth)
     }
     
