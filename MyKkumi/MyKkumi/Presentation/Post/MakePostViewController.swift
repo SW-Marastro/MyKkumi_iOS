@@ -4,7 +4,6 @@
 //
 //  Created by 최재혁 on 7/31/24.
 //
-
 import Foundation
 import UIKit
 import RxSwift
@@ -28,6 +27,9 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
         view.addSubview(buttonStack)
         view.addSubview(imageScrollview)
         view.addSubview(selectedImageScrollView)
+        view.addSubview(customNavBar)
+        customNavBar.addSubview(backButton)
+        customNavBar.addSubview(saveButton)
         imageScrollview.addSubview(imageScrollStackView)
         selectedImageScrollView.addSubview(selectedImageStackView)
         buttonStack.addArrangedSubview(autoPinAddButton)
@@ -130,6 +132,7 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
             .subscribe(onNext: {[weak self] uuid in
                 guard let self = self else { return }
                 self.scrollToImage(with: uuid)
+                self.viewModel.pinInfoRelay.accept(self.viewModel.pinInfoRelay.value)
             })
             .disposed(by: disposeBag)
         
@@ -146,6 +149,7 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
             .subscribe(onNext: {[weak self] pinMap in
                 guard let self = self else { return }
                 let selectedImageUUID = viewModel.selectedImageUUID.value
+                if selectedImageUUID == "nil" { return }
                 if let pins = pinMap[selectedImageUUID] {
                     let uuid = self.viewModel.selectedImageUUID.value
                     var selectedImageView : UIView!//pin을 수정할 view
@@ -163,6 +167,10 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
                     for pin in pins {
                         let x = viewModel.selectedImageSize.value.size.width * pin.pin.positionX + viewModel.selectedImageSize.value.origin.x
                         let y = viewModel.selectedImageSize.value.size.height * pin.pin.positionY + viewModel.selectedImageSize.value.origin.y
+                        
+                        if pin.pin.productInfo == nil {
+                            self.viewModel.modifyPinOptionButtonTap.onNext(pin.UUID)
+                        }
                         
                         let button = UIButton()
                         selectedImageView.addSubview(button)
@@ -216,12 +224,37 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
                 self.present(pinInfoVC, animated: true)
             })
             .disposed(by: disposeBag)
+        
+        //MARK: NavBar
+        self.backButton.rx.tap
+            .bind(to: self.viewModel.backButtontap)
+            .disposed(by: disposeBag)
+        
+        self.saveButton.rx.tap
+            .bind(to: self.viewModel.saveButtonTap)
+            .disposed(by: disposeBag)
+        
+        self.viewModel.dismissVC
+            .drive(onNext: {[weak self] _ in
+                self?.navigationController?.popViewController(animated: true)
+            })
+            .disposed(by: disposeBag)
+        
+        self.viewModel.sholudPresentCategory
+            .drive(onNext : {[weak self] _ in
+                guard let self = self else { return }
+                let category = PostCategoryViewController()
+                category.setupBind(viewModel: self.viewModel.deliverCategoryViewModel.value)
+                category.modalPresentationStyle = .overFullScreen
+                self.present(category, animated: true)
+            })
+            .disposed(by: disposeBag)
     }
     
     override func setupLayout() {
         //imageScrollView
         NSLayoutConstraint.activate([
-            imageScrollview.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            imageScrollview.topAnchor.constraint(equalTo: customNavBar.bottomAnchor),
             imageScrollview.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 38),
             imageScrollview.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -38),
             imageScrollview.heightAnchor.constraint(equalToConstant: 69)
@@ -274,6 +307,26 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
         NSLayoutConstraint.activate([
             AIContentButton.trailingAnchor.constraint(equalTo: contentTextView.trailingAnchor, constant: -8),
             AIContentButton.bottomAnchor.constraint(equalTo: contentTextView.bottomAnchor, constant: -8)
+        ])
+        
+        //CustomNavBar
+        NSLayoutConstraint.activate([
+            customNavBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            customNavBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            customNavBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            customNavBar.heightAnchor.constraint(equalToConstant: 65)
+        ])
+        
+        NSLayoutConstraint.activate([
+            backButton.leadingAnchor.constraint(equalTo: customNavBar.leadingAnchor, constant: 14),
+            backButton.centerYAnchor.constraint(equalTo: customNavBar.centerYAnchor),
+            backButton.heightAnchor.constraint(equalToConstant: 15),
+            backButton.widthAnchor.constraint(equalTo: backButton.heightAnchor)
+        ])
+        
+        NSLayoutConstraint.activate([
+            saveButton.trailingAnchor.constraint(equalTo: customNavBar.trailingAnchor, constant: -14),
+            saveButton.centerYAnchor.constraint(equalTo: customNavBar.centerYAnchor),
         ])
     }
     
@@ -358,6 +411,27 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.heightAnchor.constraint(equalToConstant: 69).isActive = true
         button.widthAnchor.constraint(equalToConstant: 69).isActive = true
+        return button
+    }()
+    
+    private var customNavBar : UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    private var backButton : UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setImage(UIImage(named: "back"), for: .normal)
+        return button
+    }()
+    
+    private var saveButton : UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle("등록", for: .normal)
+        button.setTitleColor(.black, for: .normal)
         return button
     }()
     

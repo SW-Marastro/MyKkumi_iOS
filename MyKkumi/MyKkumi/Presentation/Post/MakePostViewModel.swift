@@ -31,6 +31,10 @@ public protocol MakePostViewModelInput {
     var pinDragFinish : PublishSubject<[String: Any]> { get }
     var modifyPinOptionButtonTap : PublishSubject<String> { get }
     var deletePinButtonTap : PublishSubject<String> { get }
+    
+    //navBar
+    var backButtontap : PublishSubject<Void> { get }
+    var saveButtonTap : PublishSubject<Void> { get }
 }
 
 public protocol MakePostViewModelOutput {
@@ -43,6 +47,8 @@ public protocol MakePostViewModelOutput {
     var sholudPushPinOption : Driver<String> { get }
     var sholudPresentModifyPin : Driver<String> { get }
     var sholudAlertOverChar : Driver<Void> { get }
+    var dismissVC : Driver<Void> { get }
+    var sholudPresentCategory : Driver<Void> { get }
 }
 
 public protocol MakePostViewModelProtocol : MakePostViewModelOutput,  MakePostViewModelInput{
@@ -52,6 +58,8 @@ public protocol MakePostViewModelProtocol : MakePostViewModelOutput,  MakePostVi
     var pinInfoRelay : BehaviorRelay<[String : [PinInfoStrcut]]> { get }
     var selectedImageSize : BehaviorRelay<CGRect> { get }
     var deliverPinInfoViewModel : BehaviorRelay<PinInfoViewModelProtocol> { get }
+    var deliverCategoryViewModel : BehaviorRelay<PostCategoryViewModelProtocol> { get }
+    var subCategories : BehaviorRelay<Int> { get }
 }
  
 public class MakePostViewModel : MakePostViewModelProtocol {
@@ -59,6 +67,7 @@ public class MakePostViewModel : MakePostViewModelProtocol {
     private let disposeBag = DisposeBag()
     private let makePostUsecase : MakePostUseCase
     private let pinInfoViewModel  = PinInfoViewModel("nil")
+    private let postCategoryViewModel = PostCategoryViewModel()
     
     public init(makePostUsecase : MakePostUseCase = DependencyInjector.shared.resolve(MakePostUseCase.self)) {
         self.makePostUsecase = makePostUsecase
@@ -77,6 +86,8 @@ public class MakePostViewModel : MakePostViewModelProtocol {
         self.modifyPinOptionButtonTap = PublishSubject<String>()
         self.deletePinButtonTap = PublishSubject<String>()
         self.overChar = PublishSubject<Void>()
+        self.saveButtonTap = PublishSubject<Void>()
+        self.backButtontap = PublishSubject<Void>()
         
         self.contentRelay = BehaviorRelay<String>(value: "")
         self.postImageRelay = BehaviorRelay<[PostImageStruct]>(value: [])
@@ -84,6 +95,8 @@ public class MakePostViewModel : MakePostViewModelProtocol {
         self.pinInfoRelay = BehaviorRelay<[String : [PinInfoStrcut]]>(value: [:])
         self.selectedImageSize = BehaviorRelay<CGRect>(value: CGRect())
         self.deliverPinInfoViewModel = BehaviorRelay<PinInfoViewModelProtocol>(value: pinInfoViewModel)
+        self.deliverCategoryViewModel = BehaviorRelay<PostCategoryViewModelProtocol>(value : postCategoryViewModel)
+        self.subCategories = BehaviorRelay<Int>(value: 0)
         
         self.shouldDrawAddButton = self.viewdidLoad
             .asDriver(onErrorDriveWith: .empty())
@@ -110,6 +123,12 @@ public class MakePostViewModel : MakePostViewModelProtocol {
             .asDriver(onErrorDriveWith: .empty())
         
         self.sholudAlertOverChar = self.overChar
+            .asDriver(onErrorDriveWith: .empty())
+        
+        self.dismissVC = self.backButtontap
+            .asDriver(onErrorDriveWith: .empty())
+        
+        self.sholudPresentCategory = self.saveButtonTap
             .asDriver(onErrorDriveWith: .empty())
         
         self.imagesInput
@@ -147,6 +166,7 @@ public class MakePostViewModel : MakePostViewModelProtocol {
                 guard let self = self else { return }
                 var tmpInfo = self.postImageRelay.value
                 let dispatchGroup = DispatchGroup()
+                var pinInfo = self.pinInfoRelay.value
                 
                 for imageData in imageDatas {
                     dispatchGroup.enter()
@@ -172,6 +192,7 @@ public class MakePostViewModel : MakePostViewModelProtocol {
                     self.postImageRelay.accept(tmpInfo)
                     if let lastimage = tmpInfo.last {
                         self.selectedImageUUID.accept(lastimage.UUID)
+                        self.pinInfoRelay.accept(pinInfo)
                     }
                 }
             })
@@ -277,6 +298,10 @@ public class MakePostViewModel : MakePostViewModelProtocol {
             .subscribe(onNext: {[weak self] uuId in
                 guard let self = self else { return }
                 var pinInfo = self.pinInfoRelay.value
+                if pinInfoViewModel.productName.value == "" {
+                    self.pinInfoViewModel.alertNameBlankInput.onNext(Void())
+                    return
+                }
                 if let pins = pinInfo[self.selectedImageUUID.value] {
                     for (index, pin) in pins.enumerated() {
                         if pin.UUID == uuId {
@@ -287,6 +312,7 @@ public class MakePostViewModel : MakePostViewModelProtocol {
                         }
                     }
                 }
+                self.pinInfoViewModel.saveCompleteInput.onNext(uuId)
                 self.pinInfoRelay.accept(pinInfo)
             })
             .disposed(by: disposeBag)
@@ -315,6 +341,43 @@ public class MakePostViewModel : MakePostViewModelProtocol {
                 contentRelay.accept(value)
             })
             .disposed(by: disposeBag)
+        
+        self.postCategoryViewModel.categoryButtonTap
+            .subscribe(onNext: {[weak self] id in
+                guard let self = self else {return}
+                self.subCategories.accept(id)
+            })
+            .disposed(by: disposeBag)
+        
+        let saveResult = self.postCategoryViewModel.completeButtonTap
+            .flatMap {[weak self] _ in
+                if let self = self {
+                    let subCategoryId = self.subCategories.value
+                    let content = self.contentRelay.value
+                    let imagesUrl = self.postImageRelay.value
+                    let pinInfo = self.pinInfoRelay.value
+                    var images : [Image] = []
+                    for image in imagesUrl {
+                        let pins = pinInfo[image.UUID]?.compactMap{$0.pin}
+                        let url = image.imageUrl
+                        let tmpImage = Image(url: url, pins: pins!)
+                        images.append(tmpImage)
+                    }
+                    
+                    let makePostVO = MakePostVO(subCategoryId: subCategoryId, content: content, images: images)
+                    
+                    return makePostUsecase.uploadPost(makePostVO)
+                }
+                
+                return Single.error(MakePostError.unknownError(ErrorVO(errorCode: "self error", message: "아직 생성되지 않았음", detail: "guard let self error")))
+            }
+            .share()
+        
+        self.postCategoryViewModel.dismissView = saveResult
+            .compactMap { $0.successValue()}
+            .asDriver(onErrorDriveWith: .empty())
+        
+        
     }
 
     public var addImageButtonTap: PublishSubject<Void>
@@ -331,6 +394,8 @@ public class MakePostViewModel : MakePostViewModelProtocol {
     public var modifyPinOptionButtonTap: PublishSubject<String>
     public var deletePinButtonTap: PublishSubject<String>
     public var overChar: PublishSubject<Void>
+    public var backButtontap: PublishSubject<Void>
+    public var saveButtonTap: PublishSubject<Void>
     
     public var shouldPushCamera: Driver<Void>
     public var shouldPushImagePicker: Driver<Void>
@@ -341,13 +406,17 @@ public class MakePostViewModel : MakePostViewModelProtocol {
     public var sholudPushPinOption: Driver<String>
     public var sholudPresentModifyPin: Driver<String>
     public var sholudAlertOverChar: Driver<Void>
-    
+    public var dismissVC: Driver<Void>
+    public var sholudPresentCategory: Driver<Void>
+
     public var contentRelay: BehaviorRelay<String>
     public var postImageRelay: BehaviorRelay<[PostImageStruct]>
     public var selectedImageUUID: BehaviorRelay<String>
     public var pinInfoRelay: BehaviorRelay<[String : [PinInfoStrcut]]>
     public var selectedImageSize: BehaviorRelay<CGRect>
     public var deliverPinInfoViewModel: BehaviorRelay<any PinInfoViewModelProtocol>
+    public var deliverCategoryViewModel: BehaviorRelay<any PostCategoryViewModelProtocol>
+    public var subCategories: BehaviorRelay<Int>
 }
 
 public struct ImageData {
