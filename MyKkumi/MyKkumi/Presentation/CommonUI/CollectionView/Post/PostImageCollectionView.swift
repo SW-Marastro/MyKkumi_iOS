@@ -15,7 +15,7 @@ open class PostImageCollectionView : UICollectionView {
     }
     
     private func initAttribute() {
-        self.backgroundColor = Colors.GrayColor
+        self.backgroundColor = AppColor.neutral100.color
         self.layer.masksToBounds = false
         self.register(PostImageCollectionViewCell.self, forCellWithReuseIdentifier: PostImageCollectionViewCell.cellID)
         self.showsHorizontalScrollIndicator = false

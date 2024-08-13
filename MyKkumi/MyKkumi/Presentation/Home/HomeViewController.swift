@@ -103,7 +103,7 @@ class HomeViewController: BaseViewController<HomeViewModelProtocol> {
     private lazy var searchView : UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Colors.GrayColor
+        view.backgroundColor = AppColor.neutral100.color
         view.layer.cornerRadius = 10
         
         return view
@@ -117,7 +117,7 @@ class HomeViewController: BaseViewController<HomeViewModelProtocol> {
         textfield.placeholder = "마이구미 통합검색"
         textfield.clearButtonMode = .always
         textfield.clearsOnBeginEditing = false
-        textfield.backgroundColor = Colors.GrayColor
+        textfield.backgroundColor = AppColor.neutral100.color
         textfield.layer.cornerRadius = 8
         textfield.delegate = self
         return textfield
@@ -153,7 +153,7 @@ class HomeViewController: BaseViewController<HomeViewModelProtocol> {
     private lazy var upLoadPostButton : UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Colors.GrayColor
+        button.backgroundColor = AppColor.neutral100.color
         button.setBackgroundImage(UIImage(named: "makePost"), for: .normal)
         return button
     }()

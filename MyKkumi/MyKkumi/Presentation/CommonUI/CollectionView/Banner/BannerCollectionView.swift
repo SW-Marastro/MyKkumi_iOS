@@ -15,7 +15,7 @@ open class BannerCollectionView : UICollectionView {
     }
     
     private func initAttribute() {
-        self.backgroundColor = Colors.GrayColor
+        self.backgroundColor = AppColor.neutral100.color
         self.layer.masksToBounds = false
         self.layer.cornerRadius = 10
         self.register(BannerCollectionCell.self, forCellWithReuseIdentifier: BannerCollectionCell.cellID)

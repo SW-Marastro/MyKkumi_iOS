@@ -58,6 +58,21 @@ class PinInfoViewController : BaseViewController<PinInfoViewModelProtocol> {
                 self?.dismiss(animated: true)
             })
             .disposed(by: disposeBag)
+        
+        self.viewModel.saveComplete
+            .drive(onNext: {[weak self] _ in
+                self?.dismiss(animated: true)
+            })
+            .disposed(by: disposeBag)
+        
+        self.viewModel.alertNameBlank
+            .drive(onNext: {[weak self] _ in
+                guard let self = self else { return }
+                let alert = UIAlertController(title: "Error", message: "제품 이름을 입력하지 않았습니다.", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+            })
+            .disposed(by: disposeBag)
     }
     
     override func setupLayout() {
