@@ -61,10 +61,6 @@ class HomeViewController: BaseViewController<HomeViewModelProtocol> {
             })
             .disposed(by: disposeBag)
         
-        self.upLoadPostButton.rx.tap
-            .bind(to: viewModel.uploadPostButtonTap)
-            .disposed(by: disposeBag)
-        
         self.viewModel.shouldPushUploadPostView
             .drive(onNext : {[weak self] _ in
                 let makePostVC = MakePostViewController()
@@ -112,14 +108,6 @@ class HomeViewController: BaseViewController<HomeViewModelProtocol> {
         button.backgroundColor = .white
         button.setBackgroundImage(UIImage(named: "Notify"), for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
-    
-    private lazy var upLoadPostButton : UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = AppColor.neutral100.color
-        button.setBackgroundImage(UIImage(named: "makePost"), for: .normal)
         return button
     }()
     

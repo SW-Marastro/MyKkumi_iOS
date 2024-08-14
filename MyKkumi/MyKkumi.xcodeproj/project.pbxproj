@@ -70,6 +70,7 @@
 		D28346FA2C38312A0048CB2E /* CountButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28346F92C38312A0048CB2E /* CountButton.swift */; };
 		D28347042C3BB1D50048CB2E /* BannerCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28347032C3BB1D50048CB2E /* BannerCellViewModel.swift */; };
 		D2AB22942C6C83CC00027027 /* CustomTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2AB22932C6C83CC00027027 /* CustomTabBarController.swift */; };
+		D2AB22962C6C8CA200027027 /* CustomTabbarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2AB22952C6C8CA200027027 /* CustomTabbarViewModel.swift */; };
 		D2ABCDCB2C2A66350035F7A1 /* BasicUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ABCDCA2C2A66350035F7A1 /* BasicUsecase.swift */; };
 		D2ABCDCE2C2A66910035F7A1 /* BasicRespository.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ABCDCD2C2A66910035F7A1 /* BasicRespository.swift */; };
 		D2ABCDD22C2A68940035F7A1 /* BasicDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ABCDD12C2A68940035F7A1 /* BasicDataSource.swift */; };
@@ -205,6 +206,7 @@
 		D28346F92C38312A0048CB2E /* CountButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountButton.swift; sourceTree = "<group>"; };
 		D28347032C3BB1D50048CB2E /* BannerCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerCellViewModel.swift; sourceTree = "<group>"; };
 		D2AB22932C6C83CC00027027 /* CustomTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBarController.swift; sourceTree = "<group>"; };
+		D2AB22952C6C8CA200027027 /* CustomTabbarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabbarViewModel.swift; sourceTree = "<group>"; };
 		D2ABCDCA2C2A66350035F7A1 /* BasicUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicUsecase.swift; sourceTree = "<group>"; };
 		D2ABCDCD2C2A66910035F7A1 /* BasicRespository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicRespository.swift; sourceTree = "<group>"; };
 		D2ABCDD12C2A68940035F7A1 /* BasicDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicDataSource.swift; sourceTree = "<group>"; };
@@ -591,6 +593,7 @@
 			isa = PBXGroup;
 			children = (
 				D2AB22932C6C83CC00027027 /* CustomTabBarController.swift */,
+				D2AB22952C6C8CA200027027 /* CustomTabbarViewModel.swift */,
 			);
 			path = Tapbar;
 			sourceTree = "<group>";
@@ -1254,6 +1257,7 @@
 				D2ABCE292C33C2560035F7A1 /* PostTableCell.swift in Sources */,
 				D2ED95332C440F4D004DA169 /* CollectCategoryViewModel.swift in Sources */,
 				D2672C612C6B2B6B005B23A4 /* Typograpy.swift in Sources */,
+				D2AB22962C6C8CA200027027 /* CustomTabbarViewModel.swift in Sources */,
 				D2ABCE062C2D20110035F7A1 /* ErrorVO.swift in Sources */,
 				D2ABCE222C3271B60035F7A1 /* BannerInfoViewModel.swift in Sources */,
 				D2672BD22C62B64B005B23A4 /* PinInfoViewModel.swift in Sources */,
