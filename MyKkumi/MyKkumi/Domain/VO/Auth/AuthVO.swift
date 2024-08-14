@@ -84,7 +84,7 @@ public struct UserVO : Codable {
     }
 }
 
-public struct PatchUserVO  {
+public struct PatchUserVO : Codable  {
     let nickname : String?
     let introduction : String?
     let profilImageURL : String?

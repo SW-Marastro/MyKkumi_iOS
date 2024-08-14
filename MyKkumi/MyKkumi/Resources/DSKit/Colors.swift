@@ -19,27 +19,29 @@ enum AppColor {
     case caution
     case negative
     case information
+    case kakao
 
     var color: UIColor {
         switch self {
-        case .black: return UIColor(red: 0, green: 0, blue: 0, alpha: 1)
-        case .white: return UIColor(red: 1, green: 1, blue: 1, alpha: 1)
-        case .primary: return UIColor(red: 0.071, green: 0.839, blue: 0.890, alpha: 1)
-        case .secondary: return UIColor(red: 1.000, green: 0.953, blue: 0.576, alpha: 1)
-        case .neutral900: return UIColor(red: 0.071, green: 0.078, blue: 0.090, alpha: 1)
-        case .neutral800: return UIColor(red: 0.165, green: 0.173, blue: 0.204, alpha: 1)
-        case .neutral700: return UIColor(red: 0.247, green: 0.259, blue: 0.314, alpha: 1)
-        case .neutral600: return UIColor(red: 0.341, green: 0.361, blue: 0.420, alpha: 1)
-        case .neutral500: return UIColor(red: 0.486, green: 0.514, blue: 0.580, alpha: 1)
-        case .neutral400: return UIColor(red: 0.635, green: 0.659, blue: 0.718, alpha: 1)
-        case .neutral300: return UIColor(red: 0.765, green: 0.784, blue: 0.831, alpha: 1)
-        case .neutral200: return UIColor(red: 0.863, green: 0.875, blue: 0.906, alpha: 1)
-        case .neutral100: return UIColor(red: 0.925, green: 0.933, blue: 0.953, alpha: 1)
-        case .neutral50: return UIColor(red: 0.973, green: 0.976, blue: 0.984, alpha: 1)
-        case .positive: return UIColor(red: 0, green: 0.886, blue: 0.459, alpha: 1)
-        case .caution: return UIColor(red: 1.000, green: 0.588, blue: 0.102, alpha: 1)
-        case .negative: return UIColor(red: 1.000, green: 0.145, blue: 0.090, alpha: 1)
-        case .information: return UIColor(red: 0.075, green: 0.333, blue: 1.000, alpha: 1)
+        case .black: return UIColor(hex: "000000")
+        case .white: return UIColor(hex: "FFFFFF")
+        case .primary: return UIColor(hex: "12D6E3")
+        case .secondary: return UIColor(hex: "FFF493")
+        case .neutral900: return UIColor(hex: "131417")
+        case .neutral800: return UIColor(hex: "2A2C34")
+        case .neutral700: return UIColor(hex: "3F4350")
+        case .neutral600: return UIColor(hex: "575C6B")
+        case .neutral500: return UIColor(hex: "7C8394")
+        case .neutral400: return UIColor(hex: "A2A8B7")
+        case .neutral300: return UIColor(hex: "C3C8D4")
+        case .neutral200: return UIColor(hex: "DCDFE7")
+        case .neutral100: return UIColor(hex: "ECEEF4")
+        case .neutral50: return UIColor(hex: "F8F9FB")
+        case .positive: return UIColor(hex: "00E275")
+        case .caution: return UIColor(hex: "FF961A")
+        case .negative: return UIColor(hex: "FF2517")
+        case .information: return UIColor(hex: "1355FF")
+        case .kakao : return UIColor(hex : "FEE500")
         }
     }
 }

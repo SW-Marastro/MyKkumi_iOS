@@ -52,28 +52,7 @@ extension Auth : TargetType {
         case .getUserData :
             return .requestPlain
         case .patchUser(let user) :
-            var multipartData = [MultipartFormData]()
-                        
-            if let nickname = user.nickname?.data(using: .utf8) {
-                multipartData.append(MultipartFormData(provider: .data(nickname), name: "nickname"))
-            }
-            
-//            if let profileImage = user.profilImageURL {
-//                multipartData.append(MultipartFormData(provider: .data(), name: "profileImage", fileName: "profile.jpg", mimeType: "image/jpeg"))
-//            }
-            
-            if let introduction = user.introduction?.data(using: .utf8) {
-                multipartData.append(MultipartFormData(provider: .data(introduction), name: "introduction"))
-            }
-            
-//            if let categoryIds = user.categoryIds {
-//                for categoryId in categoryIds {
-//                    let categoryIdData = "\(categoryId)".data(using: .utf8)!
-//                    multipartData.append(MultipartFormData(provider: .data(categoryIdData), name: "categoryIds[]"))
-//                }
-//            }
-            
-            return .uploadMultipart(multipartData)
+            return .requestJSONEncodable(user)
         case .refreshToken(let refreshToken) :
             return .requestJSONEncodable(refreshToken)
         }
@@ -82,7 +61,8 @@ extension Auth : TargetType {
     public var headers : [String : String]? {
         switch self {
         case .patchUser(_) :
-            let accessToken = KeychainHelper.shared.load(key: "accessToken")!
+            var accessToken = KeychainHelper.shared.load(key: "accessToken")!
+            accessToken = "Bearer " + accessToken
             return ["Content-Type" : "application/json",
                     "Authorization" : accessToken]
         default :

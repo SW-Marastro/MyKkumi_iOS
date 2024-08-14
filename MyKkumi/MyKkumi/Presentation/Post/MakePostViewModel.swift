@@ -178,6 +178,7 @@ public class MakePostViewModel : MakePostViewModelProtocol {
                                     let imageUrl = imageData.url.components(separatedBy: "?").first!
                                     let postImage = PostImageStruct(UUID: uuId, imageUrl: imageUrl)
                                     tmpInfo.append(postImage)
+                                    pinInfo[uuId] = []
                                 }
                             }
                             dispatchGroup.leave()

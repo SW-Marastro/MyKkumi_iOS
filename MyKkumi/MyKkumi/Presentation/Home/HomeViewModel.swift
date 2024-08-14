@@ -118,14 +118,14 @@ public class HomeViewModel : HomeViewModelProtocol {
             }
         
         isLogined
-            .filter { !$0 }
+            .filter { $0 }
             .subscribe(onNext: { _ in
                 NotificationCenter.default.post(name: .showAuth, object: nil)
             })
             .disposed(by: disposeBag)
         
         self.shouldPushUploadPostView = isLogined
-            .filter { $0 }
+            .filter { !$0 }
             .map {_ in
                 return Void()
             }
