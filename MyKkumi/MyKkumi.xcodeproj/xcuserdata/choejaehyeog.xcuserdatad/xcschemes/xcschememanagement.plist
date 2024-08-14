@@ -4,10 +4,37 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>MyKkumi.xcscheme_^#shared#^_</key>
+		<key>MyKkumi-Production.xcscheme_^#shared#^_</key>
 		<dict>
+			<key>isShown</key>
+			<true/>
 			<key>orderHint</key>
 			<integer>17</integer>
+		</dict>
+		<key>MyKkumi_Dev.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>isShown</key>
+			<true/>
+			<key>orderHint</key>
+			<integer>19</integer>
+		</dict>
+	</dict>
+	<key>SuppressBuildableAutocreation</key>
+	<dict>
+		<key>D230F9202C1D714C00C43797</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>D230F9362C1D714E00C43797</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>D230F9402C1D714E00C43797</key>
+		<dict>
+			<key>primary</key>
+			<true/>
 		</dict>
 	</dict>
 </dict>

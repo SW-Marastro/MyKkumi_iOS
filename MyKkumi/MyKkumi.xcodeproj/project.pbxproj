@@ -205,8 +205,10 @@
 		D28346F62C37F6230048CB2E /* HomeBannerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeBannerCell.swift; sourceTree = "<group>"; };
 		D28346F92C38312A0048CB2E /* CountButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountButton.swift; sourceTree = "<group>"; };
 		D28347032C3BB1D50048CB2E /* BannerCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerCellViewModel.swift; sourceTree = "<group>"; };
-		D2AB22932C6C83CC00027027 /* CustomTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBarController.swift; sourceTree = "<group>"; };
-		D2AB22952C6C8CA200027027 /* CustomTabbarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabbarViewModel.swift; sourceTree = "<group>"; };
+
+		D2AB22982C6CCF2800027027 /* DevConfig.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = DevConfig.xcconfig; sourceTree = "<group>"; };
+		D2AB22992C6CCF3800027027 /* ProductionConfig.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = ProductionConfig.xcconfig; sourceTree = "<group>"; };
+
 		D2ABCDCA2C2A66350035F7A1 /* BasicUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicUsecase.swift; sourceTree = "<group>"; };
 		D2ABCDCD2C2A66910035F7A1 /* BasicRespository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicRespository.swift; sourceTree = "<group>"; };
 		D2ABCDD12C2A68940035F7A1 /* BasicDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicDataSource.swift; sourceTree = "<group>"; };
@@ -388,6 +390,7 @@
 		D230F9232C1D714C00C43797 /* MyKkumi */ = {
 			isa = PBXGroup;
 			children = (
+				D2AB22972C6CCEFC00027027 /* Configurations */,
 				D2828C392C4EEABB0036DFDD /* MyKkumi.entitlements */,
 				D2E459502C1E140400DB0756 /* Resources */,
 				D2E4594D2C1DB20A00DB0756 /* Presentation */,
@@ -589,13 +592,15 @@
 			path = Components;
 			sourceTree = "<group>";
 		};
-		D2AB22922C6C837200027027 /* Tapbar */ = {
+
+		D2AB22972C6CCEFC00027027 /* Configurations */ = {
 			isa = PBXGroup;
 			children = (
-				D2AB22932C6C83CC00027027 /* CustomTabBarController.swift */,
-				D2AB22952C6C8CA200027027 /* CustomTabbarViewModel.swift */,
+				D2AB22982C6CCF2800027027 /* DevConfig.xcconfig */,
+				D2AB22992C6CCF3800027027 /* ProductionConfig.xcconfig */,
 			);
-			path = Tapbar;
+			path = Configurations;
+
 			sourceTree = "<group>";
 		};
 		D2ABCDC82C2A5C600035F7A1 /* BasicModel */ = {
@@ -1373,6 +1378,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				KAKAO_NATIVE_KEY = "$(KAKAO_NATIVE_KEY)";
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -1430,6 +1436,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				KAKAO_NATIVE_KEY = "$(KAKAO_NATIVE_KEY)";
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -1441,7 +1448,7 @@
 		};
 		D230F94C2C1D714E00C43797 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3DC498AE771C65151C848D34 /* Pods-MyKkumi.debug.xcconfig */;
+			baseConfigurationReference = D2AB22982C6CCF2800027027 /* DevConfig.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -1453,6 +1460,7 @@
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MyKkumi/Resources/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "$(APP_NAME)";
 				INFOPLIST_KEY_NSCameraUsageDescription = "포스트 등록, 프로필 설정을 목적으로 마이꾸미의 회원님의 카메라에 대한 엑세스 권한을 요청합니다.";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "포스트 등록, 프로필 설정을 목적으로 마이꾸미의 회원님의 사진 보관함에 대한 엑세스 권한을 요청합니다.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -1465,7 +1473,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.MyKkumi.MyKkumi;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(BUNDLE_ID)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -1476,7 +1484,7 @@
 		};
 		D230F94D2C1D714E00C43797 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F6DC5A17030EFC69F83EACBA /* Pods-MyKkumi.release.xcconfig */;
+			baseConfigurationReference = D2AB22992C6CCF3800027027 /* ProductionConfig.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -1488,6 +1496,7 @@
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MyKkumi/Resources/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "$(APP_NAME)";
 				INFOPLIST_KEY_NSCameraUsageDescription = "포스트 등록, 프로필 설정을 목적으로 마이꾸미의 회원님의 카메라에 대한 엑세스 권한을 요청합니다.";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "포스트 등록, 프로필 설정을 목적으로 마이꾸미의 회원님의 사진 보관함에 대한 엑세스 권한을 요청합니다.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -1500,7 +1509,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.MyKkumi.MyKkumi;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(BUNDLE_ID)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
