@@ -17,14 +17,11 @@ class HomeViewController: BaseViewController<HomeViewModelProtocol> {
     }
     
     public override func setupHierarchy() {
-        view.addSubview(hamburgurButton)
-        view.addSubview(searchView)
-        searchView.addSubview(searchText)
-        searchView.addSubview(searchButton)
-        view.addSubview(notificationButton)
-        view.addSubview(shoppingCartButton)
+        view.addSubview(infoView)
         view.addSubview(postTableView)
-        view.addSubview(upLoadPostButton)
+        infoView.addSubview(homeLabel)
+        infoView.addSubview(searchButton)
+        infoView.addSubview(notificationButton)
     }
     
     public override func setupBind(viewModel : HomeViewModelProtocol) {
@@ -68,10 +65,6 @@ class HomeViewController: BaseViewController<HomeViewModelProtocol> {
             })
             .disposed(by: disposeBag)
         
-        self.upLoadPostButton.rx.tap
-            .bind(to: viewModel.uploadPostButtonTap)
-            .disposed(by: disposeBag)
-        
         self.viewModel.shouldPushUploadPostView
             .drive(onNext : {[weak self] _ in
                 let makePostVC = MakePostViewController()
@@ -91,43 +84,59 @@ class HomeViewController: BaseViewController<HomeViewModelProtocol> {
         super.didReceiveMemoryWarning()
     }
     
-    private lazy var hamburgurButton: UIButton = {
-        let button = UIButton()
-        button.isEnabled = true
-        button.backgroundColor = .white
-        button.setBackgroundImage(UIImage(named: "Hamburgur"), for: .normal)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
+    public override func setupLayout() {
+        //MARK: TopView
+        NSLayoutConstraint.activate([
+            infoView.topAnchor.constraint(equalTo: view.topAnchor, constant: 44),
+            infoView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            infoView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            infoView.heightAnchor.constraint(equalToConstant: 53)
+        ])
+        
+        NSLayoutConstraint.activate([
+            homeLabel.topAnchor.constraint(equalTo: infoView.topAnchor, constant: 12),
+            homeLabel.leadingAnchor.constraint(equalTo: infoView.leadingAnchor, constant: 16)
+        ])
+        
+        NSLayoutConstraint.activate([
+            notificationButton.topAnchor.constraint(equalTo: infoView.topAnchor, constant: 15),
+            notificationButton.trailingAnchor.constraint(equalTo: infoView.trailingAnchor, constant: -20),
+            notificationButton.heightAnchor.constraint(equalToConstant: 24),
+            notificationButton.widthAnchor.constraint(equalToConstant: 24)
+        ])
+        
+        NSLayoutConstraint.activate([
+            searchButton.topAnchor.constraint(equalTo: infoView.topAnchor, constant: 15),
+            searchButton.trailingAnchor.constraint(equalTo: notificationButton.leadingAnchor, constant: -16)
+        ])
+        
+        NSLayoutConstraint.activate([
+            postTableView.topAnchor.constraint(equalTo: infoView.bottomAnchor, constant: 8),
+            postTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            postTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            postTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+    }
     
-    private lazy var searchView : UIView = {
+    private let infoView : UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = AppColor.neutral100.color
-        view.layer.cornerRadius = 10
-        
         return view
     }()
     
-    private lazy var searchText: UITextField = {
-        let textfield = UITextField()
-        textfield.translatesAutoresizingMaskIntoConstraints = false
-        textfield.autocapitalizationType = .none
-        textfield.autocorrectionType = .no
-        textfield.placeholder = "마이구미 통합검색"
-        textfield.clearButtonMode = .always
-        textfield.clearsOnBeginEditing = false
-        textfield.backgroundColor = AppColor.neutral100.color
-        textfield.layer.cornerRadius = 8
-        textfield.delegate = self
-        return textfield
+    private let homeLabel : UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "MYKKUMI"
+        label.font = Typography.chab.font()
+        label.textColor = AppColor.primary.color
+        return label
     }()
     
     private lazy var searchButton: UIButton = {
         let button = UIButton()
         button.isEnabled = true
-        button.backgroundColor = .white
-        button.setBackgroundImage(UIImage(named: "Search"), for: .normal)
+        button.setBackgroundImage(AppImage.searchButton.image, for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -135,26 +144,8 @@ class HomeViewController: BaseViewController<HomeViewModelProtocol> {
     private lazy var notificationButton: UIButton = {
         let button = UIButton()
         button.isEnabled = true
-        button.backgroundColor = .white
-        button.setBackgroundImage(UIImage(named: "Notify"), for: .normal)
+        button.setBackgroundImage(AppImage.notificationButton.image, for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
-    
-    private lazy var shoppingCartButton: UIButton = {
-        let button = UIButton()
-        button.isEnabled = true
-        button.backgroundColor = .white
-        button.setBackgroundImage(UIImage(named: "ShoppingCart"), for: .normal)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
-    
-    private lazy var upLoadPostButton : UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = AppColor.neutral100.color
-        button.setBackgroundImage(UIImage(named: "makePost"), for: .normal)
         return button
     }()
     
@@ -164,72 +155,6 @@ class HomeViewController: BaseViewController<HomeViewModelProtocol> {
         tableView.rowHeight = UITableView.automaticDimension
         return tableView
     }()
-    
-    public override func setupLayout() {
-        // hamburgerButton Layout
-        NSLayoutConstraint.activate([
-            hamburgurButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            hamburgurButton.centerYAnchor.constraint(equalTo: searchView.centerYAnchor),
-            hamburgurButton.widthAnchor.constraint(equalToConstant: 24),
-            hamburgurButton.heightAnchor.constraint(equalToConstant: 24)
-        ])
-        
-        // searchView Layout
-        NSLayoutConstraint.activate([
-            searchView.leadingAnchor.constraint(equalTo: hamburgurButton.trailingAnchor, constant: 8),
-            searchView.trailingAnchor.constraint(equalTo: notificationButton.leadingAnchor, constant: -8),
-            searchView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 8),
-            searchView.heightAnchor.constraint(equalToConstant: 36)
-        ])
-        
-        // searchText Layout
-        NSLayoutConstraint.activate([
-            searchText.leadingAnchor.constraint(equalTo: searchButton.trailingAnchor, constant: 8),
-            searchText.trailingAnchor.constraint(equalTo: searchView.trailingAnchor, constant: -8),
-            searchText.topAnchor.constraint(equalTo: searchView.topAnchor, constant: 0),
-            searchText.bottomAnchor.constraint(equalTo: searchView.bottomAnchor, constant: 0)
-        ])
-        
-        // searchButton Layout
-        NSLayoutConstraint.activate([
-            searchButton.leadingAnchor.constraint(equalTo: searchView.leadingAnchor, constant: 8),
-            searchButton.centerYAnchor.constraint(equalTo: searchView.centerYAnchor),
-            searchButton.widthAnchor.constraint(equalToConstant: 24),
-            searchButton.heightAnchor.constraint(equalToConstant: 24)
-        ])
-        
-        // notificationButton Layout
-        NSLayoutConstraint.activate([
-            notificationButton.trailingAnchor.constraint(equalTo: shoppingCartButton.leadingAnchor, constant: -8),
-            notificationButton.centerYAnchor.constraint(equalTo: searchView.centerYAnchor),
-            notificationButton.widthAnchor.constraint(equalToConstant: 24),
-            notificationButton.heightAnchor.constraint(equalToConstant: 24)
-        ])
-        
-        // shoppingCart Layout
-        NSLayoutConstraint.activate([
-            shoppingCartButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            shoppingCartButton.centerYAnchor.constraint(equalTo: searchView.centerYAnchor),
-            shoppingCartButton.widthAnchor.constraint(equalToConstant: 24),
-            shoppingCartButton.heightAnchor.constraint(equalToConstant: 24)
-        ])
-        
-        //makePost Layout
-        NSLayoutConstraint.activate([
-            upLoadPostButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
-            upLoadPostButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
-            upLoadPostButton.heightAnchor.constraint(equalToConstant: 30),
-            upLoadPostButton.widthAnchor.constraint(equalToConstant: 30)
-        ])
-        
-        //PostTable Layout
-        NSLayoutConstraint.activate([
-            postTableView.topAnchor.constraint(equalTo: searchView.bottomAnchor, constant: 10),
-            postTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0),
-            postTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor,constant: 0),
-            postTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0)
-        ])
-    }
 }
 
 extension HomeViewController: UITextFieldDelegate {

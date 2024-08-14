@@ -20,6 +20,7 @@ class AuthViewController : BaseViewController<AuthViewModelProtocol>{
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationController?.isNavigationBarHidden = true
     }
     
 //    override func viewDidDisappear(_ animated: Bool) {
@@ -27,9 +28,17 @@ class AuthViewController : BaseViewController<AuthViewModelProtocol>{
 //    }
     
     public override func setupHierarchy() {
-        view.addSubview(mainStack)
-        mainStack.addSubview(kakaoButton)
-        mainStack.addSubview(appleButton)
+        view.addSubview(customNavBar)
+        view.addSubview(authLabel)
+        view.addSubview(authImage)
+        view.addSubview(kakaoBackGroundView)
+        view.addSubview(appleButton)
+        customNavBar.addSubview(backButton)
+        kakaoBackGroundView.addSubview(kakaoButton)
+        kakaoBackGroundView.addSubview(kakaoLabel)
+        kakaoBackGroundView.addSubview(kakaoSimbol)
+        
+        kakaoBackGroundView.bringSubviewToFront(kakaoButton)
     }
     
     public override func setupBind(viewModel: AuthViewModelProtocol){
@@ -68,6 +77,10 @@ class AuthViewController : BaseViewController<AuthViewModelProtocol>{
                 }
             })
             .disposed(by: disposeBag)
+        
+        self.backButton.rx.tap
+            .bind(to: viewModel.backButtonTap)
+            .disposed(by: disposeBag)
     }
     
     private func startSignInWithAppleFlow() {
@@ -81,26 +94,72 @@ class AuthViewController : BaseViewController<AuthViewModelProtocol>{
     }
     
     public override func setupLayout() {
-        //MainStack
-        NSLayoutConstraint.activate([
-            mainStack.topAnchor.constraint(equalTo: view.topAnchor),
-            mainStack.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            mainStack.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            mainStack.trailingAnchor.constraint(equalTo: view.trailingAnchor)
-        ])
         
-        //AppleButton
-        appleButton.center = view.center
         NSLayoutConstraint.activate([
-            appleButton.topAnchor.constraint(equalTo: mainStack.topAnchor, constant: 289),
-            appleButton.leadingAnchor.constraint(equalTo: mainStack.leadingAnchor, constant: 33),
-            appleButton.trailingAnchor.constraint(equalTo: mainStack.trailingAnchor, constant: -33)
+            authLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 160),
+            authLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ])
         
         NSLayoutConstraint.activate([
-            kakaoButton.topAnchor.constraint(equalTo: appleButton.bottomAnchor, constant: 11),
-            kakaoButton.leadingAnchor.constraint(equalTo: mainStack.leadingAnchor, constant: 33),
-            kakaoButton.trailingAnchor.constraint(equalTo: mainStack.trailingAnchor, constant: -33)
+            authImage.topAnchor.constraint(equalTo: authLabel.bottomAnchor, constant: 12),
+            authImage.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            authImage.widthAnchor.constraint(equalToConstant: 160),
+            authImage.heightAnchor.constraint(equalToConstant: 188)
+        ])
+        
+        //MARK: LoginButton
+        NSLayoutConstraint.activate([
+            kakaoBackGroundView.topAnchor.constraint(equalTo: authImage.bottomAnchor, constant: 80),
+            kakaoBackGroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            kakaoBackGroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            kakaoBackGroundView.heightAnchor.constraint(equalToConstant: 54)
+        ])
+        
+        NSLayoutConstraint.activate([
+            kakaoSimbol.topAnchor.constraint(equalTo: kakaoBackGroundView.topAnchor, constant: 15),
+            kakaoSimbol.leadingAnchor.constraint(equalTo: kakaoBackGroundView.leadingAnchor, constant: 16),
+            kakaoSimbol.widthAnchor.constraint(equalToConstant: 24),
+            kakaoSimbol.heightAnchor.constraint(equalToConstant: 24)
+        ])
+        
+        NSLayoutConstraint.activate([
+            kakaoLabel.topAnchor.constraint(equalTo: kakaoBackGroundView.topAnchor, constant: 15),
+            kakaoLabel.centerXAnchor.constraint(equalTo: kakaoBackGroundView.centerXAnchor)
+        ])
+        
+        NSLayoutConstraint.activate([
+            kakaoButton.leadingAnchor.constraint(equalTo: kakaoBackGroundView.leadingAnchor),
+            kakaoButton.topAnchor.constraint(equalTo: kakaoBackGroundView.topAnchor),
+            kakaoButton.bottomAnchor.constraint(equalTo: kakaoBackGroundView.bottomAnchor),
+            kakaoButton.trailingAnchor.constraint(equalTo: kakaoBackGroundView.trailingAnchor)
+        ])
+        
+        NSLayoutConstraint.activate([
+            kakaoBackGroundView.topAnchor.constraint(equalTo: authImage.bottomAnchor, constant: 80),
+            kakaoBackGroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            kakaoBackGroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            kakaoBackGroundView.heightAnchor.constraint(equalToConstant: 54)
+        ])
+        
+        NSLayoutConstraint.activate([
+            appleButton.topAnchor.constraint(equalTo: kakaoButton.bottomAnchor, constant: 16),
+            appleButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            appleButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            appleButton.heightAnchor.constraint(equalToConstant: 54)
+        ])
+        
+        NSLayoutConstraint.activate([
+            customNavBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            customNavBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            customNavBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            customNavBar.heightAnchor.constraint(equalToConstant: 65)
+        ])
+        
+        NSLayoutConstraint.activate([
+            backButton.leadingAnchor.constraint(equalTo: customNavBar.leadingAnchor, constant: 14),
+            backButton.centerYAnchor.constraint(equalTo: customNavBar.centerYAnchor),
+            backButton.heightAnchor.constraint(equalToConstant: 15),
+            backButton.widthAnchor.constraint(equalTo: backButton.heightAnchor)
         ])
     }
     
@@ -108,21 +167,59 @@ class AuthViewController : BaseViewController<AuthViewModelProtocol>{
         super.didReceiveMemoryWarning()
     }
     
-    private var mainStack : UIStackView  = {
-        let stack = UIStackView()
-        stack.axis = .vertical
-        stack.alignment = .center
-        stack.spacing = 10
-        stack.translatesAutoresizingMaskIntoConstraints = false
-        return stack
+    private var authLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textAlignment = .center  // 전체 레이블의 텍스트 정렬을 중앙으로 설정
+        label.numberOfLines = 0
+
+        // NSAttributedString 설정
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.alignment = .center  // NSAttributedString의 텍스트 정렬을 중앙으로 설정
+        paragraphStyle.lineHeightMultiple = 1.4
+
+        var attributes = Typography.gmarketSansBold.attributes
+        attributes[.paragraphStyle] = paragraphStyle  // paragraphStyle 속성을 추가
+
+        let attributedString = NSAttributedString(string: "취미생활 꿀템이 궁금하다면\n마이꾸미에서!", attributes: attributes)
+        label.attributedText = attributedString
+        label.textColor = AppColor.primary.color
+        return label
+    }()
+
+    
+    private var authImage : UIImageView = {
+       let image = UIImageView()
+        image.translatesAutoresizingMaskIntoConstraints = false
+        image.image = AppImage.launch.image
+        return image
+    }()
+    
+    private var kakaoBackGroundView : UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = AppColor.kakao.color
+        view.layer.cornerRadius = 10
+        return view
+    }()
+    
+    private var kakaoSimbol : UIImageView = {
+        let image = UIImageView()
+        image.translatesAutoresizingMaskIntoConstraints = false
+        image.image = AppImage.kakaoSimbol.image
+        return image
+    }()
+    
+    private var kakaoLabel : UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textAlignment = .center
+        label.attributedText = NSAttributedString(string:"카카오 ID로 로그인", attributes: Typography.body15SemiBold.attributes)
+        return label
     }()
     
     private var kakaoButton: UIButton = {
         let button = UIButton()
-        button.setTitle("카카오 로그인", for: .normal)
-        button.setTitleColor(.black, for: .normal)
-        button.backgroundColor = .yellow
-        button.layer.cornerRadius = 10
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -131,6 +228,19 @@ class AuthViewController : BaseViewController<AuthViewModelProtocol>{
         let button = ASAuthorizationAppleIDButton(authorizationButtonType: .signIn, authorizationButtonStyle: .black)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.cornerRadius = 10
+        return button
+    }()
+    
+    private var customNavBar : UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    private var backButton : UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setImage(UIImage(named: "back"), for: .normal)
         return button
     }()
 }

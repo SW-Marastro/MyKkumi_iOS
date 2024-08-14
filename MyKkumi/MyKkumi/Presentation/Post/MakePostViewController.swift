@@ -508,7 +508,7 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
             let imageView = UIImageView()
             imageView.translatesAutoresizingMaskIntoConstraints = false
             imageView.contentMode = .scaleAspectFit
-            imageView.load(url: URL(string: imageInfo.imageUrl)!, placeholder: "heart")
+            imageView.load(url: URL(string: imageInfo.imageUrl)!)
             return imageView
         }()
         
@@ -550,6 +550,7 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
         let selectedImageAndPin: UIView = {
             let view = UIView()
             view.translatesAutoresizingMaskIntoConstraints = false
+            view.backgroundColor = AppColor.neutral50.color
             return view
         }()
         
@@ -557,7 +558,7 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
             let imageView = UIImageView()
             imageView.contentMode = .scaleAspectFit
             imageView.translatesAutoresizingMaskIntoConstraints = false
-            imageView.load(url: URL(string: imageInfo.imageUrl)!, placeholder: "heart") {[weak self] _ in
+            imageView.load(url: URL(string: imageInfo.imageUrl)!) {[weak self] _ in
                 self?.calcurateXY()
             }
             imageView.uuidString = imageInfo.UUID // Use hash value as a tag to identify

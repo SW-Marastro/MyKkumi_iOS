@@ -13,9 +13,8 @@ import RxCocoa
 private var uuidKey: UInt8 = 0
 
 extension UIImageView {
-    func load(url: URL, placeholder: String, completion: ((UIImage?) -> Void)? = nil) {
+    func load(url: URL, completion: ((UIImage?) -> Void)? = nil) {
         // 플레이스홀더 이미지를 설정
-        self.image = UIImage(named: placeholder)
         
         DispatchQueue.global().async { [weak self] in
             var loadedImage: UIImage? = nil
@@ -68,6 +67,19 @@ extension UIImage {
         return renderer.image { _ in
             self.draw(in: CGRect(origin: .zero, size: newSize))
         }
+    }
+}
+
+extension UIColor {
+    convenience init(hex: String, alpha: CGFloat = 1.0) {
+        let scanner = Scanner(string: hex)
+        scanner.scanLocation = 0
+        var rgbValue: UInt64 = 0
+        scanner.scanHexInt64(&rgbValue)
+        let r = CGFloat((rgbValue & 0xff0000) >> 16) / 255.0
+        let g = CGFloat((rgbValue & 0xff00) >> 8) / 255.0
+        let b = CGFloat(rgbValue & 0xff) / 255.0
+        self.init(red: r, green: g, blue: b, alpha: alpha)
     }
 }
 

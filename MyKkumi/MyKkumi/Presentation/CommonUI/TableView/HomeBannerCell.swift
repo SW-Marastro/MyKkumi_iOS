@@ -11,8 +11,6 @@ import RxDataSources
 
 open class HomeBannerCell : UITableViewCell {
     public static let cellID = "HomeBannerCell"
-    private var currentIndex = 0
-    private var autoScrollTimer : Timer?
     private var disposeBag = DisposeBag()
     var viewModel : BannerCellViewModelProtocol!
     
@@ -20,99 +18,116 @@ open class HomeBannerCell : UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         initUI()
         initAttribute()
-        setupDelegate()
     }
     
     public func bind(viewModel : BannerCellViewModelProtocol) {
         self.viewModel = viewModel
         
-        banner.rx.modelSelected(BannerVO.self)
-            .map { $0.id }
-            .bind(to: viewModel.bannerTap)
-            .disposed(by: disposeBag)
-        
-        bannerPage.rx.tap
-            .bind(to: viewModel.allBannerPageTap)
+        self.bannerPage.rx.tap
+            .bind(to: viewModel.bannerPageTap)
             .disposed(by: disposeBag)
     }
     
     public func setCellData(bannerData : [BannerVO]) {
-        banner.dataSource = nil
-        let dataSource = RxCollectionViewSectionedReloadDataSource<SectionModel<String, BannerVO>>(configureCell: { (_, collectionView, indexPath, bannerVO) -> UICollectionViewCell in
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: BannerCollectionCellVertical.cellID, for: indexPath) as! BannerCollectionCellVertical
-            cell.imageView.load(url: URL(string: bannerVO.imageURL)!, placeholder: "placeholder")
-            return cell
-        })
-        
-        Observable.just(bannerData)
-            .map { [SectionModel(model: "Section 1", items: $0)] }
-            .asDriver(onErrorJustReturn: [])
-            .drive(banner.rx.items(dataSource: dataSource))
-            .disposed(by: disposeBag)
-        
-        setupAutoScroll()
-        updateIndex()
+        for banner in bannerData {
+            let bannerView : UIView = {
+                let view = UIView()
+                view.translatesAutoresizingMaskIntoConstraints = false
+                view.backgroundColor = AppColor.neutral50.color
+                return view
+            }()
+            
+            let button : UIButton = {
+                let button = UIButton()
+                button.tag = banner.id
+                button.translatesAutoresizingMaskIntoConstraints = false
+                return button
+            }()
+            
+            let imageView : UIImageView = {
+                let image = UIImageView()
+                image.translatesAutoresizingMaskIntoConstraints = false
+                image.load(url: URL(string : banner.imageURL)!)
+                return image
+            }()
+            
+            button.rx.tap
+                .map{ button.tag }
+                .subscribe(onNext: {[weak self] tag in
+                    guard let self = self else { return }
+                    self.viewModel.bannerCellTap.onNext(tag)
+                })
+                .disposed(by: disposeBag)
+
+            bannerView.addSubview(button)
+            bannerView.addSubview(imageView)
+            
+            bannerStackView.addArrangedSubview(bannerView)
+            
+            NSLayoutConstraint.activate([
+                bannerView.topAnchor.constraint(equalTo: bannerStackView.topAnchor),
+                bannerView.leadingAnchor.constraint(equalTo: bannerStackView.leadingAnchor),
+                bannerView.trailingAnchor.constraint(equalTo: bannerStackView.trailingAnchor),
+                bannerView.bottomAnchor.constraint(equalTo: bannerStackView.bottomAnchor)
+            ])
+            
+            NSLayoutConstraint.activate([
+                button.topAnchor.constraint(equalTo: bannerView.topAnchor),
+                button.leadingAnchor.constraint(equalTo: bannerView.leadingAnchor),
+                button.trailingAnchor.constraint(equalTo: bannerView.trailingAnchor),
+                button.bottomAnchor.constraint(equalTo: bannerView.bottomAnchor)
+            ])
+            
+            NSLayoutConstraint.activate([
+                imageView.topAnchor.constraint(equalTo: bannerView.topAnchor),
+                imageView.leadingAnchor.constraint(equalTo: bannerView.leadingAnchor),
+                imageView.trailingAnchor.constraint(equalTo: bannerView.trailingAnchor),
+                imageView.bottomAnchor.constraint(equalTo: bannerView.bottomAnchor)
+            ])
+        }
     }
     
     private func initUI() {
-        contentView.addSubview(mainStack)
-        mainStack.addArrangedSubview(emptyView)
-        emptyView.addSubview(banner)
-        emptyView.addSubview(bannerPage)
-        emptyView.bringSubviewToFront(bannerPage)
-    }
-    
-    private func setupDelegate() {
-        banner.delegate = self
+        self.contentView.addSubview(emptyView)
+        self.emptyView.addSubview(bannerScrollView)
+        self.emptyView.addSubview(bannerPage)
+        self.bannerScrollView.addSubview(bannerStackView)
     }
     
     private func initAttribute() {
         self.selectionStyle = .none
         
-        // mainStack 제약 조건
-       NSLayoutConstraint.activate([
-           mainStack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-           mainStack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-           mainStack.topAnchor.constraint(equalTo: contentView.topAnchor),
-           mainStack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
-       ])
-       
-       // emptyView 제약 조건
-       NSLayoutConstraint.activate([
-           emptyView.leadingAnchor.constraint(equalTo: mainStack.leadingAnchor),
-           emptyView.trailingAnchor.constraint(equalTo: mainStack.trailingAnchor),
-           emptyView.heightAnchor.constraint(equalToConstant: 128) // 높이 설정
-       ])
-       
-       // banner 제약 조건
-       NSLayoutConstraint.activate([
-           banner.leadingAnchor.constraint(equalTo: emptyView.leadingAnchor, constant: 16),
-           banner.trailingAnchor.constraint(equalTo: emptyView.trailingAnchor, constant: -16),
-           banner.topAnchor.constraint(equalTo: emptyView.topAnchor),
-           banner.bottomAnchor.constraint(equalTo: emptyView.bottomAnchor, constant: -8)
-       ])
-       
-       // bannerPage 제약 조건
-       NSLayoutConstraint.activate([
-           bannerPage.trailingAnchor.constraint(equalTo: banner.trailingAnchor, constant: -8),
-           bannerPage.bottomAnchor.constraint(equalTo: banner.bottomAnchor, constant: -8),
-           bannerPage.widthAnchor.constraint(equalToConstant: 50),
-           bannerPage.heightAnchor.constraint(equalToConstant: 24)
-       ])
+        NSLayoutConstraint.activate([
+            emptyView.topAnchor.constraint(equalTo: self.contentView.topAnchor),
+            emptyView.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 16),
+            emptyView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -16),
+            emptyView.heightAnchor.constraint(equalToConstant: 100)
+        ])
+        
+        NSLayoutConstraint.activate([
+            bannerScrollView.topAnchor.constraint(equalTo: emptyView.topAnchor),
+            bannerScrollView.leadingAnchor.constraint(equalTo: emptyView.leadingAnchor),
+            bannerScrollView.trailingAnchor.constraint(equalTo: emptyView.trailingAnchor),
+            bannerScrollView.bottomAnchor.constraint(equalTo: emptyView.bottomAnchor)
+        ])
+        
+        NSLayoutConstraint.activate([
+            bannerStackView.topAnchor.constraint(equalTo: bannerScrollView.topAnchor),
+            bannerStackView.leadingAnchor.constraint(equalTo: bannerScrollView.leadingAnchor),
+            bannerStackView.trailingAnchor.constraint(equalTo: bannerScrollView.trailingAnchor),
+            bannerStackView.bottomAnchor.constraint(equalTo: bannerScrollView.bottomAnchor),
+            bannerStackView.heightAnchor.constraint(equalTo: bannerScrollView.heightAnchor)
+        ])
+        
+        NSLayoutConstraint.activate([
+            bannerPage.trailingAnchor.constraint(equalTo: emptyView.trailingAnchor, constant: -12),
+            bannerPage.bottomAnchor.constraint(equalTo: emptyView.bottomAnchor, constant: -12)
+        ])
     }
     
     required public init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    let mainStack: UIStackView = {
-        let view = UIStackView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.axis = .vertical
-        view.alignment = .center
-        
-        return view
-    }()
     
     let emptyView : UIView = {
         let view = UIView()
@@ -120,70 +135,29 @@ open class HomeBannerCell : UITableViewCell {
         return view
     }()
     
-    let banner : BannerCollectionView = {
-        let collectionView = BannerCollectionView(frame: CGRect.zero, collectionViewLayout: BannerCollectionViewFlowLayout())
-        collectionView.layer.cornerRadius = 10
-        return collectionView
+    let bannerScrollView : UIScrollView = {
+        let scroll = UIScrollView()
+        scroll.translatesAutoresizingMaskIntoConstraints = false
+        scroll.isPagingEnabled = true
+        return scroll
+    }()
+    
+    let bannerStackView : UIStackView = {
+        let stack = UIStackView()
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        stack.axis = .horizontal
+        return stack
     }()
     
     let bannerPage : UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = UIColor(white: 0, alpha: 0.5)
-        button.setTitleColor(.white, for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 12)
+        button.backgroundColor = AppColor.neutral500.color
+        button.setTitleColor(AppColor.white.color, for: .normal)
+        button.titleLabel?.font = Typography.caption12Medium.font()
         button.titleLabel?.textAlignment = .center
-        button.layer.cornerRadius = 5
+        button.layer.cornerRadius = 999
         button.clipsToBounds = true
         return button
     }()
-}
-
-extension HomeBannerCell : UICollectionViewDelegateFlowLayout, UIScrollViewDelegate {
-    // 셀 크기를 CollectionView 크기와 동일하게 설정
-    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: collectionView.bounds.width, height: collectionView.bounds.height)
-    }
-    //셀 수동으로 움직일시 currentIndex 조절
-    public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        updateIndex()
-        setupAutoScroll()
-    }
-    
-    private func updateIndex() {
-        let visibleRect = CGRect(origin: banner.contentOffset, size: banner.bounds.size)
-        let visiblePoint = CGPoint(x: visibleRect.midX, y: visibleRect.midY)
-        if let visibleIndexPath = banner.indexPathForItem(at: visiblePoint) {
-            currentIndex = visibleIndexPath.item
-            updatePageIndex(totalItems: banner.numberOfItems(inSection: 0))
-        }
-    }
-    
-    
-    public func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
-        updateIndex()
-    }
-    
-    private func updatePageIndex(totalItems : Int) {
-        bannerPage.setTitle( "\(currentIndex + 1) / \(totalItems)", for: .normal)
-    }
-    
-    private func setupAutoScroll() {
-        stopAutoScrollTimer()
-        autoScrollTimer = Timer.scheduledTimer(withTimeInterval: 3, repeats: true) {(Timer) in
-            self.moveToNextCell()}
-    }
-    
-    private func stopAutoScrollTimer() {
-        autoScrollTimer?.invalidate()
-        autoScrollTimer = nil
-    }
-    
-    private func moveToNextCell() {
-        let itemCount = banner.numberOfItems(inSection: 0)
-        if itemCount == 0 { return }
-        currentIndex = (currentIndex + 1) % itemCount
-        let indexPath = IndexPath(item: currentIndex, section: 0)
-        banner.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
-    }
 }

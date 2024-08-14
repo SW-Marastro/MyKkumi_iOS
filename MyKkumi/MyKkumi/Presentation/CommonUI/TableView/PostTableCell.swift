@@ -37,7 +37,7 @@ open class PostTableCell : UITableViewCell {
     
     //관련 Data Binding
     public func setCellData(postVO : PostVO) {
-        profileImageView.load(url: URL(string: postVO.writer.profileImage)!, placeholder: "placeholder")
+        profileImageView.load(url: URL(string: postVO.writer.profileImage)!)
         self.images = postVO.imageURLs
         postImageCollection.reloadData()
         updateCountLabel()
@@ -253,7 +253,7 @@ extension PostTableCell : UICollectionViewDelegate, UICollectionViewDataSource, 
     
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PostImageCollectionViewCell.cellID, for: indexPath) as! PostImageCollectionViewCell
-        cell.imageView.load(url: URL(string: images[indexPath.item])!, placeholder: "placeholder")
+        cell.imageView.load(url: URL(string: images[indexPath.item])!)
         return cell
     }
     

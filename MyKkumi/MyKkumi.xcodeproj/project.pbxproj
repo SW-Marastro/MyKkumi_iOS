@@ -57,11 +57,20 @@
 		D2672C632C6B2B6B005B23A4 /* Typograpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2672C602C6B2B6B005B23A4 /* Typograpy.swift */; };
 		D2672C642C6B2C6B005B23A4 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ABCDF12C2AB5470035F7A1 /* Colors.swift */; };
 		D2672C652C6B2C6B005B23A4 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ABCDF12C2AB5470035F7A1 /* Colors.swift */; };
+		D2672C672C6B4236005B23A4 /* Images.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2672C662C6B4236005B23A4 /* Images.swift */; };
+		D2672C692C6B4546005B23A4 /* chab.otf in Resources */ = {isa = PBXBuildFile; fileRef = D2672C682C6B4546005B23A4 /* chab.otf */; };
+		D2672C6A2C6B4546005B23A4 /* chab.otf in Resources */ = {isa = PBXBuildFile; fileRef = D2672C682C6B4546005B23A4 /* chab.otf */; };
+		D2672C6B2C6B4546005B23A4 /* chab.otf in Resources */ = {isa = PBXBuildFile; fileRef = D2672C682C6B4546005B23A4 /* chab.otf */; };
+		D2672C6D2C6B47B4005B23A4 /* GmarketSansBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = D2672C6C2C6B47B4005B23A4 /* GmarketSansBold.otf */; };
+		D2672C6E2C6B47B4005B23A4 /* GmarketSansBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = D2672C6C2C6B47B4005B23A4 /* GmarketSansBold.otf */; };
+		D2672C6F2C6B47B4005B23A4 /* GmarketSansBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = D2672C6C2C6B47B4005B23A4 /* GmarketSansBold.otf */; };
 		D2828C3B2C53A5100036DFDD /* RootWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2828C3A2C53A5100036DFDD /* RootWindow.swift */; };
 		D28346D72C3575ED0048CB2E /* UIViewController+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28346D62C3575ED0048CB2E /* UIViewController+Rx.swift */; };
 		D28346F72C37F6230048CB2E /* HomeBannerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28346F62C37F6230048CB2E /* HomeBannerCell.swift */; };
 		D28346FA2C38312A0048CB2E /* CountButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28346F92C38312A0048CB2E /* CountButton.swift */; };
 		D28347042C3BB1D50048CB2E /* BannerCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28347032C3BB1D50048CB2E /* BannerCellViewModel.swift */; };
+		D2AB22942C6C83CC00027027 /* CustomTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2AB22932C6C83CC00027027 /* CustomTabBarController.swift */; };
+		D2AB22962C6C8CA200027027 /* CustomTabbarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2AB22952C6C8CA200027027 /* CustomTabbarViewModel.swift */; };
 		D2ABCDCB2C2A66350035F7A1 /* BasicUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ABCDCA2C2A66350035F7A1 /* BasicUsecase.swift */; };
 		D2ABCDCE2C2A66910035F7A1 /* BasicRespository.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ABCDCD2C2A66910035F7A1 /* BasicRespository.swift */; };
 		D2ABCDD22C2A68940035F7A1 /* BasicDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ABCDD12C2A68940035F7A1 /* BasicDataSource.swift */; };
@@ -187,14 +196,19 @@
 		D2672C502C6B2A8D005B23A4 /* Pretendard-SemiBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-SemiBold.otf"; sourceTree = "<group>"; };
 		D2672C512C6B2A8D005B23A4 /* Pretendard-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Medium.otf"; sourceTree = "<group>"; };
 		D2672C602C6B2B6B005B23A4 /* Typograpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Typograpy.swift; sourceTree = "<group>"; };
+		D2672C662C6B4236005B23A4 /* Images.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Images.swift; sourceTree = "<group>"; };
+		D2672C682C6B4546005B23A4 /* chab.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = chab.otf; sourceTree = "<group>"; };
+		D2672C6C2C6B47B4005B23A4 /* GmarketSansBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = GmarketSansBold.otf; sourceTree = "<group>"; };
 		D2828C392C4EEABB0036DFDD /* MyKkumi.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MyKkumi.entitlements; sourceTree = "<group>"; };
 		D2828C3A2C53A5100036DFDD /* RootWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootWindow.swift; sourceTree = "<group>"; };
 		D28346D62C3575ED0048CB2E /* UIViewController+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Rx.swift"; sourceTree = "<group>"; };
 		D28346F62C37F6230048CB2E /* HomeBannerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeBannerCell.swift; sourceTree = "<group>"; };
 		D28346F92C38312A0048CB2E /* CountButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountButton.swift; sourceTree = "<group>"; };
 		D28347032C3BB1D50048CB2E /* BannerCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerCellViewModel.swift; sourceTree = "<group>"; };
+
 		D2AB22982C6CCF2800027027 /* DevConfig.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = DevConfig.xcconfig; sourceTree = "<group>"; };
 		D2AB22992C6CCF3800027027 /* ProductionConfig.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = ProductionConfig.xcconfig; sourceTree = "<group>"; };
+
 		D2ABCDCA2C2A66350035F7A1 /* BasicUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicUsecase.swift; sourceTree = "<group>"; };
 		D2ABCDCD2C2A66910035F7A1 /* BasicRespository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicRespository.swift; sourceTree = "<group>"; };
 		D2ABCDD12C2A68940035F7A1 /* BasicDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicDataSource.swift; sourceTree = "<group>"; };
@@ -550,6 +564,8 @@
 		D2672C4D2C6B2A24005B23A4 /* Font */ = {
 			isa = PBXGroup;
 			children = (
+				D2672C6C2C6B47B4005B23A4 /* GmarketSansBold.otf */,
+				D2672C682C6B4546005B23A4 /* chab.otf */,
 				D2672C4E2C6B2A8D005B23A4 /* Pretendard-Bold.otf */,
 				D2672C512C6B2A8D005B23A4 /* Pretendard-Medium.otf */,
 				D2672C4F2C6B2A8D005B23A4 /* Pretendard-Regular.otf */,
@@ -563,6 +579,7 @@
 			children = (
 				D2ABCDF12C2AB5470035F7A1 /* Colors.swift */,
 				D2672C602C6B2B6B005B23A4 /* Typograpy.swift */,
+				D2672C662C6B4236005B23A4 /* Images.swift */,
 			);
 			path = DSKit;
 			sourceTree = "<group>";
@@ -575,6 +592,7 @@
 			path = Components;
 			sourceTree = "<group>";
 		};
+
 		D2AB22972C6CCEFC00027027 /* Configurations */ = {
 			isa = PBXGroup;
 			children = (
@@ -582,6 +600,7 @@
 				D2AB22992C6CCF3800027027 /* ProductionConfig.xcconfig */,
 			);
 			path = Configurations;
+
 			sourceTree = "<group>";
 		};
 		D2ABCDC82C2A5C600035F7A1 /* BasicModel */ = {
@@ -824,6 +843,7 @@
 		D2E4594A2C1DB1F900DB0756 /* CommonUI */ = {
 			isa = PBXGroup;
 			children = (
+				D2AB22922C6C837200027027 /* Tapbar */,
 				D28346F82C38310F0048CB2E /* Components */,
 				D2ABCE252C33BFC20035F7A1 /* TableView */,
 				D2ABCDFB2C2BFE200035F7A1 /* CollectionView */,
@@ -1024,8 +1044,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D2672C692C6B4546005B23A4 /* chab.otf in Resources */,
 				D2E4594F2C1DB41500DB0756 /* LaunchScreen.storyboard in Resources */,
 				D2672C552C6B2A8D005B23A4 /* Pretendard-Regular.otf in Resources */,
+				D2672C6D2C6B47B4005B23A4 /* GmarketSansBold.otf in Resources */,
 				D2672C582C6B2A8D005B23A4 /* Pretendard-SemiBold.otf in Resources */,
 				D2672C522C6B2A8D005B23A4 /* Pretendard-Bold.otf in Resources */,
 				D230F92E2C1D714D00C43797 /* Assets.xcassets in Resources */,
@@ -1037,6 +1059,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D2672C6A2C6B4546005B23A4 /* chab.otf in Resources */,
+				D2672C6E2C6B47B4005B23A4 /* GmarketSansBold.otf in Resources */,
 				D2672C592C6B2A8D005B23A4 /* Pretendard-SemiBold.otf in Resources */,
 				D2672C532C6B2A8D005B23A4 /* Pretendard-Bold.otf in Resources */,
 				D2672C562C6B2A8D005B23A4 /* Pretendard-Regular.otf in Resources */,
@@ -1048,6 +1072,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D2672C6B2C6B4546005B23A4 /* chab.otf in Resources */,
+				D2672C6F2C6B47B4005B23A4 /* GmarketSansBold.otf in Resources */,
 				D2672C5A2C6B2A8D005B23A4 /* Pretendard-SemiBold.otf in Resources */,
 				D2672C542C6B2A8D005B23A4 /* Pretendard-Bold.otf in Resources */,
 				D2672C572C6B2A8D005B23A4 /* Pretendard-Regular.otf in Resources */,
@@ -1226,14 +1252,17 @@
 				D21030632C2177E90059CACA /* BasicNetwork.swift in Sources */,
 				D2ED95512C4E1BB2004DA169 /* CategoryCollectionViewCell.swift in Sources */,
 				D2672BD42C62B723005B23A4 /* PinInfoViewController.swift in Sources */,
+				D2672C672C6B4236005B23A4 /* Images.swift in Sources */,
 				D230F9272C1D714C00C43797 /* SceneDelegate.swift in Sources */,
 				D2ABCE1A2C2D4F590035F7A1 /* DomainAssembly.swift in Sources */,
 				D2ABCDE52C2A9CED0035F7A1 /* HomeViewController.swift in Sources */,
+				D2AB22942C6C83CC00027027 /* CustomTabBarController.swift in Sources */,
 				D2ED953B2C46A80D004DA169 /* AuthVO.swift in Sources */,
 				D20BC2502C428EC9000AA8C9 /* ResultExtension.swift in Sources */,
 				D2ABCE292C33C2560035F7A1 /* PostTableCell.swift in Sources */,
 				D2ED95332C440F4D004DA169 /* CollectCategoryViewModel.swift in Sources */,
 				D2672C612C6B2B6B005B23A4 /* Typograpy.swift in Sources */,
+				D2AB22962C6C8CA200027027 /* CustomTabbarViewModel.swift in Sources */,
 				D2ABCE062C2D20110035F7A1 /* ErrorVO.swift in Sources */,
 				D2ABCE222C3271B60035F7A1 /* BannerInfoViewModel.swift in Sources */,
 				D2672BD22C62B64B005B23A4 /* PinInfoViewModel.swift in Sources */,

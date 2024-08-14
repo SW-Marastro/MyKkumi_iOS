@@ -22,14 +22,23 @@ class MakeProfileViewController : BaseViewController<MakeProfileViewModelProtoco
     }
     
     public override func setupHierarchy() {
-        view.addSubview(mainStack)
-        mainStack.addArrangedSubview(profileImage)
-        mainStack.addArrangedSubview(nickNameStack)
-        mainStack.addArrangedSubview(completeButton)
+        view.addSubview(pleaseWriteNickname)
+        view.addSubview(profileLabel)
+        view.addSubview(profileImage)
+        view.addSubview(profileImageChangeButton)
+        view.addSubview(nickNameLabel)
+        view.addSubview(nickNameView)
+        view.addSubview(conditionFistView)
+        view.addSubview(conditionSecondView)
+        view.addSubview(completeButton)
         
-        nickNameStack.addArrangedSubview(nickNameInfoButton)
-        nickNameStack.addArrangedSubview(nickNameLabel)
-        nickNameStack.addArrangedSubview(nickNameTextField)
+        conditionFistView.addSubview(firstElliipse)
+        conditionFistView.addSubview(firstConditionLabel)
+        conditionSecondView.addSubview(SecondElliipse)
+        conditionSecondView.addSubview(secondConditionLabel)
+        
+        nickNameView.addSubview(nickNameTextField)
+        nickNameView.addSubview(nickNameCancelButton)
     }
     
     public override func setupDelegate() {
@@ -45,19 +54,43 @@ class MakeProfileViewController : BaseViewController<MakeProfileViewModelProtoco
         self.completeButton.rx.tap
             .map {_ in
                 let nickName = viewModel.nickName.value
-                let profileImage = viewModel.imageData.value
-                return PatchUserVO(nickname: nickName, introduction: nil, profilImage: nil, categoryIds: nil)
+                let profileImageUrl = viewModel.imageUrl.value
+                let categoryList = viewModel.categoryList.value
+                return PatchUserVO(nickname: nickName, introduction: nil, profilImage: profileImageUrl, categoryIds: categoryList)
             }
             .bind(to: viewModel.completeButtonTap)
             .disposed(by: disposeBag)
         
-        self.profileImage.rx.tapGesture
-            .map{_ in}
+        self.profileImageChangeButton.rx.tap
             .bind(to: self.viewModel.profileImageTap)
             .disposed(by: disposeBag)
         
         self.nickNameTextField.rx.text.orEmpty
-            .bind(to: self.viewModel.nickName)
+            .bind(to: self.viewModel.nickNameInput)
+            .disposed(by: disposeBag)
+        
+        self.viewModel.nickName
+            .subscribe(onNext : {[weak self] nickname in
+                guard let self = self else { return }
+                if nickname == "" || nickname!.count < 3 || nickname!.count > 16 {
+                    if nickname!.count > 16 {
+                        self.nickNameTextField.isEnabled = false
+                    } else {
+                        self.nickNameTextField.isEnabled = true
+                    }
+                    completeButton.backgroundColor = AppColor.neutral50.color
+                    completeButton.isEnabled = false
+                    let attributedString = NSMutableAttributedString(string : "완료", attributes: Typography.body15SemiBold.attributes)
+                    attributedString.addAttribute(.foregroundColor, value: AppColor.neutral300.color, range: NSRange(location: 0, length: attributedString.length))
+                    completeButton.setAttributedTitle(attributedString, for: .normal)
+                } else {
+                    completeButton.backgroundColor = AppColor.primary.color
+                    completeButton.isEnabled = true
+                    let attributedString = NSMutableAttributedString(string : "완료", attributes: Typography.body15SemiBold.attributes)
+                    attributedString.addAttribute(.foregroundColor, value: AppColor.white.color, range: NSRange(location: 0, length: attributedString.length))
+                    completeButton.setAttributedTitle(attributedString, for: .normal)
+                }
+            })
             .disposed(by: disposeBag)
         
         self.viewModel.sholudPopView
@@ -105,117 +138,256 @@ class MakeProfileViewController : BaseViewController<MakeProfileViewModelProtoco
                 }
             })
             .disposed(by: disposeBag)
+        
+        self.nickNameCancelButton.rx.tap
+            .bind(to: self.viewModel.deleteButtonTap)
+            .disposed(by: disposeBag)
+        
+        self.viewModel.deleteTextField
+            .drive(onNext: {[weak self] _ in
+                guard let self = self else { return }
+                self.nickNameTextField.text = ""
+                self.viewModel.nickName.accept("")
+            })
+            .disposed(by: disposeBag)
     }
     
     public override func setupViewProperty() {
         profileImage.layer.cornerRadius = profileImage.frame.width / 2
         profileImage.clipsToBounds = true
-        nickNameLabel.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 20)
     }
     
     public override func setupLayout() {
-        //mainStack
         NSLayoutConstraint.activate([
-            mainStack.topAnchor.constraint(equalTo: view.topAnchor),
-            mainStack.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            mainStack.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            mainStack.leadingAnchor.constraint(equalTo: view.leadingAnchor)
+            pleaseWriteNickname.topAnchor.constraint(equalTo: view.topAnchor, constant: 84),
+            pleaseWriteNickname.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20)
         ])
         
-        //completButton
+        //MARK: profile
         NSLayoutConstraint.activate([
-            completeButton.bottomAnchor.constraint(equalTo: mainStack.bottomAnchor, constant: -48),
-            completeButton.leadingAnchor.constraint(equalTo: mainStack.leadingAnchor, constant: 16),
-            completeButton.trailingAnchor.constraint(equalTo: mainStack.trailingAnchor, constant : -16)
+            profileLabel.topAnchor.constraint(equalTo: pleaseWriteNickname.bottomAnchor, constant: 40),
+            profileLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20)
         ])
         
-        //profileImage
         NSLayoutConstraint.activate([
-            profileImage.centerYAnchor.constraint(equalTo: mainStack.centerYAnchor),
-            profileImage.centerXAnchor.constraint(equalTo: mainStack.centerXAnchor),
-            profileImage.widthAnchor.constraint(equalToConstant: 200),
-            profileImage.heightAnchor.constraint(equalToConstant: 200)
+            profileImage.topAnchor.constraint(equalTo: profileLabel.bottomAnchor, constant: 12),
+            profileImage.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            profileImage.heightAnchor.constraint(equalToConstant: 88),
+            profileImage.widthAnchor.constraint(equalToConstant: 88)
         ])
         
-        //nickNameStack
         NSLayoutConstraint.activate([
-            nickNameStack.topAnchor.constraint(equalTo: profileImage.bottomAnchor, constant: 16),
-            nickNameStack.leadingAnchor.constraint(equalTo: mainStack.leadingAnchor, constant: 16),
-            nickNameStack.trailingAnchor.constraint(equalTo: mainStack.trailingAnchor, constant: -16)
+            profileImageChangeButton.topAnchor.constraint(equalTo: profileImage.bottomAnchor, constant: 24),
+            profileImageChangeButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            profileImageChangeButton.heightAnchor.constraint(equalToConstant: 44),
+            profileImageChangeButton.widthAnchor.constraint(equalToConstant: 136)
         ])
         
-        //nickNameInfoButton
+        //MARK: nickname
         NSLayoutConstraint.activate([
-            nickNameInfoButton.widthAnchor.constraint(equalTo: nickNameLabel.heightAnchor),
-            nickNameInfoButton.heightAnchor.constraint(equalTo: nickNameLabel.heightAnchor),
-            nickNameInfoButton.leadingAnchor.constraint(equalTo: nickNameStack.leadingAnchor),
+            nickNameLabel.topAnchor.constraint(equalTo: profileImageChangeButton.bottomAnchor, constant: 40),
+            nickNameLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20)
         ])
         
-        //nickNameLabel
         NSLayoutConstraint.activate([
-            nickNameLabel.leadingAnchor.constraint(equalTo: nickNameInfoButton.trailingAnchor, constant: 8),
+            nickNameView.topAnchor.constraint(equalTo: nickNameLabel.bottomAnchor, constant: 12),
+            nickNameView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            nickNameView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            nickNameView.heightAnchor.constraint(equalToConstant: 49)
         ])
         
-        //nickNameTextField
         NSLayoutConstraint.activate([
-            nickNameTextField.leadingAnchor.constraint(equalTo: nickNameLabel.trailingAnchor, constant: 8),
-            nickNameTextField.trailingAnchor.constraint(equalTo: nickNameStack.trailingAnchor),
-            nickNameTextField.heightAnchor.constraint(equalTo: nickNameLabel.heightAnchor),
+            nickNameTextField.topAnchor.constraint(equalTo: nickNameView.topAnchor),
+            nickNameTextField.leadingAnchor.constraint(equalTo: nickNameView.leadingAnchor, constant: 16),
+            nickNameTextField.trailingAnchor.constraint(equalTo: nickNameView.trailingAnchor),
+            nickNameTextField.bottomAnchor.constraint(equalTo: nickNameView.bottomAnchor)
         ])
+        
+        NSLayoutConstraint.activate([
+            nickNameCancelButton.topAnchor.constraint(equalTo: nickNameView.topAnchor, constant: 12),
+            nickNameCancelButton.trailingAnchor.constraint(equalTo: nickNameView.trailingAnchor, constant: -13),
+            nickNameCancelButton.heightAnchor.constraint(equalToConstant: 24),
+            nickNameCancelButton.widthAnchor.constraint(equalToConstant: 24)
+        ])
+        
+        NSLayoutConstraint.activate([
+            conditionFistView.topAnchor.constraint(equalTo: nickNameView.bottomAnchor, constant: 12),
+            conditionFistView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 36),
+            conditionFistView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            conditionFistView.heightAnchor.constraint(equalToConstant: 18)
+        ])
+        
+        NSLayoutConstraint.activate([
+            firstElliipse.leadingAnchor.constraint(equalTo: conditionFistView.leadingAnchor),
+            firstElliipse.centerYAnchor.constraint(equalTo: conditionFistView.centerYAnchor),
+            firstElliipse.heightAnchor.constraint(equalToConstant: 4),
+            firstElliipse.widthAnchor.constraint(equalToConstant: 4),
+        ])
+        
+        NSLayoutConstraint.activate([
+            firstConditionLabel.leadingAnchor.constraint(equalTo: firstElliipse.trailingAnchor, constant: 7)
+        ])
+        
+        NSLayoutConstraint.activate([
+            conditionSecondView.topAnchor.constraint(equalTo: conditionFistView.bottomAnchor),
+            conditionSecondView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 36),
+            conditionSecondView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            conditionSecondView.heightAnchor.constraint(equalToConstant: 18)
+        ])
+        
+        NSLayoutConstraint.activate([
+            SecondElliipse.leadingAnchor.constraint(equalTo: conditionSecondView.leadingAnchor),
+            SecondElliipse.centerYAnchor.constraint(equalTo: conditionSecondView.centerYAnchor),
+            SecondElliipse.heightAnchor.constraint(equalToConstant: 4),
+            SecondElliipse.widthAnchor.constraint(equalToConstant: 4),
+        ])
+        
+        NSLayoutConstraint.activate([
+            secondConditionLabel.leadingAnchor.constraint(equalTo: SecondElliipse.trailingAnchor, constant: 7)
+        ])
+        
+        NSLayoutConstraint.activate([
+            completeButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -44),
+            completeButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            completeButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            completeButton.heightAnchor.constraint(equalToConstant: 54)
+        ])
+        
     }
     
-    private var mainStack : UIStackView = {
-        let stack = UIStackView()
-        stack.translatesAutoresizingMaskIntoConstraints = false
-        stack.axis = .vertical
-        stack.alignment = .center
-        return stack
+    private var pleaseWriteNickname : UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.numberOfLines = 0
+        label.attributedText = NSAttributedString(string: "마이꾸미에 사용하실\n닉네임을 작성해주세요", attributes: Typography.heading20Bold.attributes)
+        label.textColor = AppColor.neutral900.color
+        return label
     }()
     
-    private var nickNameStack : UIStackView = {
-        let stack = UIStackView()
-        stack.translatesAutoresizingMaskIntoConstraints = false
-        stack.axis = .horizontal
-        stack.alignment = .center
-        return stack
+    private var profileLabel : UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.attributedText = NSAttributedString(string: "프로필 사진", attributes: Typography.body15SemiBold.attributes)
+        label.textColor = AppColor.neutral900.color
+        return label
     }()
     
-    //✅ TODO: 버튼 홀드 RX연결 위한 과정 필요함
-    private var nickNameInfoButton : UIButton = {
+    private var profileImage : UIImageView = {
+        let image = UIImageView()
+        image.translatesAutoresizingMaskIntoConstraints = false
+        image.image = AppImage.profile.image
+        image.layer.cornerRadius = image.frame.width / 2
+        image.clipsToBounds = true
+        return image
+    }()
+    
+    private var profileImageChangeButton : UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setBackgroundImage(UIImage(named: "InfoCircle"), for: .normal)
+        button.setAttributedTitle(NSAttributedString(string: "프로필 이미지 변경", attributes: Typography.body13SemiBold.attributes), for: .normal)
+        button.layer.cornerRadius = 12
+        button.backgroundColor = AppColor.secondary.color
         return button
     }()
     
     private var nickNameLabel : UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "닉네임"
+        label.attributedText = NSAttributedString(string: "닉네임", attributes: Typography.body15SemiBold.attributes)
+        label.textColor = AppColor.neutral900.color
         return label
     }()
     
-    private var nickNameTextField : UITextField = {
+    private var nickNameView : UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.layer.cornerRadius = 12
+        view.layer.borderWidth = 1
+        view.layer.borderColor = AppColor.neutral200.color.cgColor
+        view.layer.masksToBounds = true
+        return view
+    }()
+    
+    private var nickNameTextField: UITextField = {
         let textField = UITextField()
         textField.translatesAutoresizingMaskIntoConstraints = false
-        textField.placeholder = "닉네임을 입력하세요"
+        textField.attributedPlaceholder = NSAttributedString(string: "닉네임을 작성해주세요", attributes: Typography.body14Medium.attributes)
         return textField
     }()
     
-    private var profileImage : UIImageView = {
+    private var nickNameCancelButton : UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setImage(AppImage.cancel.image, for: .normal)
+        return button
+    }()
+    
+    private var conditionFistView : UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    private var firstElliipse : UIImageView = {
         let image = UIImageView()
         image.translatesAutoresizingMaskIntoConstraints = false
-        image.image = UIImage(named: "ProfileImage")
+        image.contentMode = .scaleAspectFill
+        image.image = AppImage.ellipse.image
         return image
+    }()
+
+    private var firstConditionLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        
+        // NSMutableAttributedString을 사용하여 텍스트 색상을 포함한 속성 추가
+        let attributes = Typography.caption12Medium.attributes
+        var attributedString = NSMutableAttributedString(string: "한글/영문/숫자/특수문자 모두 가능해요", attributes: attributes)
+        
+        // 텍스트 색상 추가
+        attributedString.addAttribute(.foregroundColor, value: AppColor.neutral300.color, range: NSRange(location: 0, length: attributedString.length))
+        
+        label.attributedText = attributedString
+        return label
+    }()
+    
+    private var conditionSecondView : UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    private var SecondElliipse : UIImageView = {
+        let image = UIImageView()
+        image.translatesAutoresizingMaskIntoConstraints = false
+        image.contentMode = .scaleAspectFill
+        image.image = AppImage.ellipse.image
+        return image
+    }()
+
+    private var secondConditionLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        
+        // NSMutableAttributedString을 사용하여 텍스트 색상을 포함한 속성 추가
+        let attributes = Typography.caption12Medium.attributes
+        var attributedString = NSMutableAttributedString(string: "최소 3자 ~ 최대 16자로 적어주세요", attributes: attributes)
+        
+        // 텍스트 색상 추가
+        attributedString.addAttribute(.foregroundColor, value: AppColor.neutral300.color, range: NSRange(location: 0, length: attributedString.length))
+        
+        label.attributedText = attributedString
+        return label
     }()
     
     private var completeButton : UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("완료", for: .normal)
-        button.titleLabel?.textColor = .white
-        button.backgroundColor = .blue
-        button.layer.cornerRadius = 10
+        let attributedString = NSMutableAttributedString(string : "완료", attributes: Typography.body15SemiBold.attributes)
+        attributedString.addAttribute(.foregroundColor, value: AppColor.neutral300, range: NSRange(location: 0, length: attributedString.length))
+        button.setAttributedTitle(attributedString, for: .normal)
+        button.backgroundColor = AppColor.neutral50.color
+        button.layer.cornerRadius = 12
         return button
     }()
 }
