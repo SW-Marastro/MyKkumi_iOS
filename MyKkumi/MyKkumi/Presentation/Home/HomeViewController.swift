@@ -13,7 +13,7 @@ class HomeViewController: BaseViewController<HomeViewModelProtocol> {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //self.navigationController?.setNavigationBarHidden(true, animated: false)
+        self.navigationController?.setNavigationBarHidden(true, animated: false)
     }
     
     public override func setupHierarchy() {
@@ -87,7 +87,7 @@ class HomeViewController: BaseViewController<HomeViewModelProtocol> {
     public override func setupLayout() {
         //MARK: TopView
         NSLayoutConstraint.activate([
-            infoView.topAnchor.constraint(equalTo: view.topAnchor, constant: 44),
+            infoView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             infoView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             infoView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             infoView.heightAnchor.constraint(equalToConstant: 53)
@@ -151,8 +151,6 @@ class HomeViewController: BaseViewController<HomeViewModelProtocol> {
     
     public lazy var postTableView : PostTableView = {
         let tableView = PostTableView()
-        tableView.estimatedRowHeight = 50
-        tableView.rowHeight = UITableView.automaticDimension
         return tableView
     }()
 }
@@ -167,19 +165,22 @@ extension HomeViewController: UITextFieldDelegate {
 
 extension HomeViewController : UITableViewDelegate, UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
+        return 1
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section == 0 {
-            return 1
-        }else {
-            return viewModel.postViewModels.value.count
+        return viewModel.postViewModels.value.count + 1
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if indexPath.row == 0 {
+            return 100
         }
+        return UITableView.automaticDimension
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.section == 0 {
+        if indexPath.row == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: HomeBannerCell.cellID, for: indexPath) as! HomeBannerCell
             
             viewModel.deliverBannerViewModel
@@ -197,7 +198,7 @@ extension HomeViewController : UITableViewDelegate, UITableViewDataSource {
             return cell
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: PostTableCell.cellID, for: indexPath) as! PostTableCell
-            cell.bind(viewModel: viewModel.postViewModels.value[indexPath.row])
+            cell.bind(viewModel: viewModel.postViewModels.value[indexPath.row-1])
             return cell
         }
     }

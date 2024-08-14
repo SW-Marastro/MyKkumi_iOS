@@ -25,6 +25,7 @@ enum AppImage {
     case mypageSelected
     case notificationButton
     case searchButton
+    case back
     
     var image : UIImage {
         return self.getImage()
@@ -66,6 +67,8 @@ enum AppImage {
             return UIImage(named : "NotificationButton")!
         case .searchButton :
             return UIImage(named : "SearchButton")!
+        case .back :
+            return UIImage(named : "back")!
             
         }
     }

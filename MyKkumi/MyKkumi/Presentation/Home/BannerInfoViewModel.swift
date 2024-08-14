@@ -15,11 +15,13 @@ private let disposeBag = DisposeBag()
 public protocol BannerInfoViewModelInput {
     var viewDidLoad : PublishSubject<Void> {get}
     var bannerTap : PublishSubject<Int> { get }
+    var backButtonTap : PublishSubject<Void> { get }
 }
 
 public protocol BannerInfoViewOutput {
     var deliverBannerData : Driver<[BannerVO]> { get }
     var shouldPushDetailBanner : Driver<BannerVO> { get }
+    var shouldPopView : Driver<Void> { get }
 }
 
 public protocol BannerInfoViewModelProtocol : BannerInfoViewOutput, BannerInfoViewModelInput{
@@ -33,6 +35,10 @@ public class BannerInfoViewModel : BannerInfoViewModelProtocol {
         self.bannerUseCase = bannerUseCase
         self.viewDidLoad = PublishSubject<Void>()
         self.bannerTap = PublishSubject<Int>()
+        self.backButtonTap = PublishSubject<Void>()
+        
+        self.shouldPopView = self.backButtonTap
+            .asDriver(onErrorDriveWith: .empty())
         
         let bannersDataResult = viewDidLoad
             .flatMap {
@@ -65,6 +71,9 @@ public class BannerInfoViewModel : BannerInfoViewModelProtocol {
     
     public var deliverBannerData: Driver<[BannerVO]>
     public var shouldPushDetailBanner: Driver<BannerVO>
+    public var shouldPopView: Driver<Void>
+    
     public var viewDidLoad: PublishSubject<Void>
     public var bannerTap: PublishSubject<Int>
+    public var backButtonTap: PublishSubject<Void>
 }
