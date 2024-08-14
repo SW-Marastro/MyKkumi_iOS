@@ -22,12 +22,12 @@ public protocol HomeviewModelOutput {
     var shouldPushBannerInfoView : Driver<Void> { get } // 전체 베너보기 버튼 결과 전달
     var shouldPushUploadPostView : Driver<Void> { get }
     var deliverBannerViewModel : Signal<BannerCellViewModelProtocol> {get}
+    var shouldReloadPostTable : Signal<Void> { get }
 }
 
 public protocol HomeViewModelProtocol : HomeviewModelOutput, HomeViewModelInput {
     var cursur : BehaviorSubject<String> { get }
     var postViewModels : BehaviorRelay<[PostCellViewModelProtocol]> { get }
-    var shouldReloadPostTable : Signal<Void> { get }
 }
 
 public class HomeViewModel : HomeViewModelProtocol {
@@ -71,14 +71,14 @@ public class HomeViewModel : HomeViewModelProtocol {
             .compactMap { $0.successValue()?.banners}
             .asSignal(onErrorSignalWith: .empty())
         
-        let bannerResult = self.bannerDetailViewModel.bannerPageTap
+        let bannerResult = self.bannerDetailViewModel.bannerCellTap
             .flatMap {id in
                 return bannerUsecase.getBanner(String(id))
             }
             .share()
         
         self.shouldPushBannerInfoView = self.bannerDetailViewModel
-            .allBannerPageTap
+            .bannerPageTap
             .asDriver(onErrorJustReturn: ())
         
         self.shouldPushBannerView = bannerResult

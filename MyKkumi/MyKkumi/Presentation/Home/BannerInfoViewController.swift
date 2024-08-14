@@ -35,7 +35,7 @@ class BannerInfoViewController : BaseViewController<BannerInfoViewModelProtocol>
         
         let dataSource = RxCollectionViewSectionedReloadDataSource<SectionModel<String, BannerVO>>(configureCell: { (_, collectionView, indexPath, bannerVO) -> UICollectionViewCell in
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: BannerCollectionCellVertical.cellID, for: indexPath) as! BannerCollectionCellVertical
-            cell.imageView.load(url: URL(string: bannerVO.imageURL)!, placeholder: "placeholder")
+            cell.imageView.load(url: URL(string: bannerVO.imageURL)!)
             return cell
         })
         

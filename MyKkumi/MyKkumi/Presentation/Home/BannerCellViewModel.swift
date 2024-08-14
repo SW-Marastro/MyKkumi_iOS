@@ -10,7 +10,8 @@ import RxSwift
 import RxCocoa
 
 public protocol BannerCellViewModelInput {
-    var bannerPageTap : PublishSubject<Int> { get }
+    var bannerCellTap : PublishSubject<Int> { get }
+    var bannerPageTap : PublishSubject<Void> { get }
 }
 
 public protocol BannerCellViewModelOutput {
@@ -24,8 +25,10 @@ public protocol BannerCellViewModelProtocol : BannerCellViewModelInput, BannerCe
 public class BannerCellViewModel : BannerCellViewModelProtocol {
     
     public init() {
-        self.bannerPageTap = PublishSubject<Int>()
+        self.bannerCellTap = PublishSubject<Int>()
+        self.bannerPageTap = PublishSubject<Void>()
     }
     
-    public var bannerPageTap: PublishSubject<Int>
+    public var bannerCellTap: PublishSubject<Int>
+    public var bannerPageTap: PublishSubject<Void>
 }

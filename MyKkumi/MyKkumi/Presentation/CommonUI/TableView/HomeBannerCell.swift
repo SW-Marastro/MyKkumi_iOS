@@ -11,8 +11,6 @@ import RxDataSources
 
 open class HomeBannerCell : UITableViewCell {
     public static let cellID = "HomeBannerCell"
-    private var currentIndex = 0
-    private var autoScrollTimer : Timer?
     private var disposeBag = DisposeBag()
     var viewModel : BannerCellViewModelProtocol!
     
@@ -25,7 +23,9 @@ open class HomeBannerCell : UITableViewCell {
     public func bind(viewModel : BannerCellViewModelProtocol) {
         self.viewModel = viewModel
         
-        
+        self.bannerPage.rx.tap
+            .bind(to: viewModel.bannerPageTap)
+            .disposed(by: disposeBag)
     }
     
     public func setCellData(bannerData : [BannerVO]) {
@@ -55,7 +55,7 @@ open class HomeBannerCell : UITableViewCell {
                 .map{ button.tag }
                 .subscribe(onNext: {[weak self] tag in
                     guard let self = self else { return }
-                    self.viewModel.bannerPageTap.onNext(tag)
+                    self.viewModel.bannerCellTap.onNext(tag)
                 })
                 .disposed(by: disposeBag)
 

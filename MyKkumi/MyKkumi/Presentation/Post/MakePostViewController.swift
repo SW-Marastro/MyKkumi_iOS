@@ -508,7 +508,7 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
             let imageView = UIImageView()
             imageView.translatesAutoresizingMaskIntoConstraints = false
             imageView.contentMode = .scaleAspectFit
-            imageView.load(url: URL(string: imageInfo.imageUrl)!, placeholder: "heart")
+            imageView.load(url: URL(string: imageInfo.imageUrl)!)
             return imageView
         }()
         

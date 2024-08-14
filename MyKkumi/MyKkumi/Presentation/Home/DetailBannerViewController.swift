@@ -20,7 +20,7 @@ class DetailBannerViewController : BaseViewController<Void> {
     
     init(banner: BannerVO) {
         super.init()
-        self.bannerImageView.load(url: URL(string: banner.imageURL)!, placeholder: "placeholder")
+        self.bannerImageView.load(url: URL(string: banner.imageURL)!)
     }
     
     override func viewDidLoad() {
