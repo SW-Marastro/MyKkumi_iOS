@@ -13,9 +13,8 @@ import RxCocoa
 private var uuidKey: UInt8 = 0
 
 extension UIImageView {
-    func load(url: URL, placeholder: String, completion: ((UIImage?) -> Void)? = nil) {
+    func load(url: URL, completion: ((UIImage?) -> Void)? = nil) {
         // 플레이스홀더 이미지를 설정
-        self.image = UIImage(named: placeholder)
         
         DispatchQueue.global().async { [weak self] in
             var loadedImage: UIImage? = nil

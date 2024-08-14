@@ -10,12 +10,11 @@ import RxSwift
 import RxCocoa
 
 public protocol BannerCellViewModelInput {
-    var bannerTap : PublishSubject<Int> {get} //어떤 배너 눌렸는지 input
-    var allBannerPageTap : PublishSubject<Void> { get }
+    var bannerPageTap : PublishSubject<Int> { get }
 }
 
 public protocol BannerCellViewModelOutput {
-    var testOutput : Signal <Int> {get}
+    
 }
 
 public protocol BannerCellViewModelProtocol : BannerCellViewModelInput, BannerCellViewModelOutput {
@@ -23,18 +22,10 @@ public protocol BannerCellViewModelProtocol : BannerCellViewModelInput, BannerCe
 }
 
 public class BannerCellViewModel : BannerCellViewModelProtocol {
-    public var testOutput: RxCocoa.Signal<Int>
-    
     
     public init() {
-        self.bannerTap = PublishSubject<Int>()
-        self.allBannerPageTap = PublishSubject<Void>()
-        
-        testOutput = allBannerPageTap
-            .map {10}
-            .asSignal(onErrorSignalWith: .empty())
+        self.bannerPageTap = PublishSubject<Int>()
     }
     
-    public var bannerTap: PublishSubject<Int>
-    public var allBannerPageTap: PublishSubject<Void>
+    public var bannerPageTap: PublishSubject<Int>
 }

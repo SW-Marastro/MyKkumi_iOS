@@ -17,7 +17,11 @@ class HomeViewController: BaseViewController<HomeViewModelProtocol> {
     }
     
     public override func setupHierarchy() {
-        
+        view.addSubview(infoView)
+        view.addSubview(postTableView)
+        infoView.addSubview(homeLabel)
+        infoView.addSubview(searchButton)
+        infoView.addSubview(notificationButton)
     }
     
     public override func setupBind(viewModel : HomeViewModelProtocol) {
@@ -81,23 +85,58 @@ class HomeViewController: BaseViewController<HomeViewModelProtocol> {
     }
     
     public override func setupLayout() {
+        //MARK: TopView
+        NSLayoutConstraint.activate([
+            infoView.topAnchor.constraint(equalTo: view.topAnchor, constant: 44),
+            infoView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            infoView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            infoView.heightAnchor.constraint(equalToConstant: 53)
+        ])
         
+        NSLayoutConstraint.activate([
+            homeLabel.topAnchor.constraint(equalTo: infoView.topAnchor, constant: 12),
+            homeLabel.leadingAnchor.constraint(equalTo: infoView.leadingAnchor, constant: 16)
+        ])
+        
+        NSLayoutConstraint.activate([
+            notificationButton.topAnchor.constraint(equalTo: infoView.topAnchor, constant: 15),
+            notificationButton.trailingAnchor.constraint(equalTo: infoView.trailingAnchor, constant: -20),
+            notificationButton.heightAnchor.constraint(equalToConstant: 24),
+            notificationButton.widthAnchor.constraint(equalToConstant: 24)
+        ])
+        
+        NSLayoutConstraint.activate([
+            searchButton.topAnchor.constraint(equalTo: infoView.topAnchor, constant: 15),
+            searchButton.trailingAnchor.constraint(equalTo: notificationButton.leadingAnchor, constant: -16)
+        ])
+        
+        NSLayoutConstraint.activate([
+            postTableView.topAnchor.constraint(equalTo: infoView.bottomAnchor, constant: 8),
+            postTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            postTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            postTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
     }
     
-    private lazy var searchView : UIView = {
+    private let infoView : UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = AppColor.neutral100.color
-        view.layer.cornerRadius = 10
-        
         return view
+    }()
+    
+    private let homeLabel : UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "MYKKUMI"
+        label.font = Typography.chab.font()
+        label.textColor = AppColor.primary.color
+        return label
     }()
     
     private lazy var searchButton: UIButton = {
         let button = UIButton()
         button.isEnabled = true
-        button.backgroundColor = .white
-        button.setBackgroundImage(UIImage(named: "Search"), for: .normal)
+        button.setBackgroundImage(AppImage.searchButton.image, for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -105,8 +144,7 @@ class HomeViewController: BaseViewController<HomeViewModelProtocol> {
     private lazy var notificationButton: UIButton = {
         let button = UIButton()
         button.isEnabled = true
-        button.backgroundColor = .white
-        button.setBackgroundImage(UIImage(named: "Notify"), for: .normal)
+        button.setBackgroundImage(AppImage.notificationButton.image, for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()

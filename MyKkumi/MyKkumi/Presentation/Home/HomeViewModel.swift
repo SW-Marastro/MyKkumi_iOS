@@ -71,7 +71,7 @@ public class HomeViewModel : HomeViewModelProtocol {
             .compactMap { $0.successValue()?.banners}
             .asSignal(onErrorSignalWith: .empty())
         
-        let bannerResult = self.bannerDetailViewModel.bannerTap
+        let bannerResult = self.bannerDetailViewModel.bannerPageTap
             .flatMap {id in
                 return bannerUsecase.getBanner(String(id))
             }

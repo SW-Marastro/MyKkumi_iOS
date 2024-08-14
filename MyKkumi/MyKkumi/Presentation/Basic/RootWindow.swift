@@ -12,10 +12,17 @@ class RootWindow : UIWindow {
     private var originalRootViewController: UIViewController?
     
     public override init(windowScene: UIWindowScene){
-       super.init(windowScene: windowScene)
-       self.setupObservers()
-       self.showTapbarController()
-   }
+        super.init(windowScene: windowScene)
+        self.setupObservers()
+        self.showTapbarController()
+        
+//        for family in UIFont.familyNames {
+//            print(family)
+//            for names in UIFont.fontNames(forFamilyName: family) {
+//                print("== \(names)")
+//            }
+//        }
+    }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

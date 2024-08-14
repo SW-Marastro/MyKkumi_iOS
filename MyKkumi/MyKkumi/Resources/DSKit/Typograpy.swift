@@ -26,7 +26,7 @@ enum Typography {
     case body13Medium
     case caption12Medium
     case caption11Medium
-    case chap
+    case chab
     case gmarketSansBold
     
     var attributes: [NSAttributedString.Key: Any] {
@@ -83,7 +83,7 @@ enum Typography {
            case .caption11Medium:
                paragraphStyle.minimumLineHeight = 11*1.4
                paragraphStyle.maximumLineHeight = 11*1.4
-           case .chap :
+           case .chab :
                paragraphStyle.minimumLineHeight = 24*1.4
                paragraphStyle.maximumLineHeight = 24*1.4
            }
@@ -128,8 +128,8 @@ enum Typography {
             return UIFont(name: "Pretendard-Medium", size: 12)!
         case .caption11Medium:
             return UIFont(name: "Pretendard-Medium", size: 11)!
-        case .chap :
-            return UIFont(name : "chap", size: 24)!
+        case .chab :
+            return UIFont(name : "LOTTERIACHAB", size: 20)!
         case .gmarketSansBold :
             return UIFont(name : "GmarketSansBold", size: 18)!
         }
