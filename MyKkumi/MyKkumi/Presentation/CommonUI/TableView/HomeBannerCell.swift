@@ -35,9 +35,13 @@ open class HomeBannerCell : UITableViewCell {
     public func setCellData(bannerData : [BannerVO]) {
         self.bannerData = [bannerData.last!] + bannerData + [bannerData.first!]
         
-        for banner in self.bannerData {
-            addBanner(banner)
+        for banner in (0...self.bannerData.count - 2) {
+            addBanner(self.bannerData[banner])
         }
+        
+        addBannerEvent()
+        
+        addBanner(self.bannerData.last!)
         
         // 첫 번째 페이지로 설정
         bannerScrollView.contentOffset = CGPoint(x: bannerScrollView.frame.width, y: 0)
@@ -56,7 +60,12 @@ open class HomeBannerCell : UITableViewCell {
     }
     
     private func setupButtonLabel() {
-        self.bannerPage.setTitle("\(currentPage + 1)/\(self.bannerData.count-2)", for: .normal)
+        if currentPage == self.bannerData.count - 2 {
+            self.bannerPage.isHidden = true
+        } else {
+            self.bannerPage.isHidden = false
+            self.bannerPage.setTitle("\(currentPage + 1)/\(self.bannerData.count-2)", for: .normal)
+        }
     }
     
     @objc private func scrollToNextPage() {
@@ -142,7 +151,7 @@ open class HomeBannerCell : UITableViewCell {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = AppColor.neutral500.color
         button.setTitleColor(AppColor.white.color, for: .normal)
-        button.titleLabel?.font = Typography.caption12Medium.font()
+        button.titleLabel?.font = Typography.caption12Medium(color: AppColor.neutral900).font()
         button.titleLabel?.textAlignment = .center
         button.layer.cornerRadius = 12
         button.clipsToBounds = true
@@ -206,6 +215,63 @@ open class HomeBannerCell : UITableViewCell {
             imageView.bottomAnchor.constraint(equalTo: bannerView.bottomAnchor)
         ])
     }
+    
+    func addBannerEvent( ) {
+        let bannerView : UIView = {
+            let view = UIView()
+            view.translatesAutoresizingMaskIntoConstraints = false
+            view.backgroundColor = AppColor.primary.color
+            view.layer.cornerRadius = 12
+            return view
+        }()
+        
+        let button : UIButton = {
+            let button = UIButton()
+            button.layer.cornerRadius = 15
+            button.translatesAutoresizingMaskIntoConstraints = false
+            button.backgroundColor = AppColor.secondary.color
+            button.setAttributedTitle(NSAttributedString(string: "이벤트 모두 보기", attributes: Typography.body14SemiBold(color: AppColor.neutral900).attributes), for: .normal)
+            return button
+        }()
+        
+        let label : UILabel = {
+            let label = UILabel()
+            label.text = "더 많은 이벤트가 있어요!"
+            label.font = Typography.body15SemiBold(color: AppColor.neutral900).font()
+            label.textColor  = AppColor.white.color
+            label.translatesAutoresizingMaskIntoConstraints = false
+            return label
+        }()
+
+        button.rx.tap
+            .subscribe(onNext: {[weak self] tag in
+                guard let self = self else { return }
+                self.viewModel.bannerPageTap.onNext(Void())
+            })
+            .disposed(by: disposeBag)
+
+        bannerView.addSubview(button)
+        bannerView.addSubview(label)
+        
+        bannerStackView.addArrangedSubview(bannerView)
+        
+        NSLayoutConstraint.activate([
+            bannerView.widthAnchor.constraint(equalTo: bannerScrollView.widthAnchor),
+            bannerView.heightAnchor.constraint(equalTo: bannerScrollView.heightAnchor)
+        ])
+        
+        NSLayoutConstraint.activate([
+            button.topAnchor.constraint(equalTo: bannerView.topAnchor, constant: 50),
+            button.leadingAnchor.constraint(equalTo: bannerView.leadingAnchor, constant: (self.contentView.frame.width - 116 - 24) / 2 ),
+            button.widthAnchor.constraint(equalToConstant: 116),
+            button.heightAnchor.constraint(equalToConstant: 29)
+        ])
+        
+        NSLayoutConstraint.activate([
+            label.bottomAnchor.constraint(equalTo: button.topAnchor, constant: -12),
+            label.centerXAnchor.constraint(equalTo: bannerView.centerXAnchor)
+        ])
+    }
 }
 
 extension HomeBannerCell : UIScrollViewDelegate {
@@ -214,8 +280,8 @@ extension HomeBannerCell : UIScrollViewDelegate {
         
         if currentPage == -1 {
             scrollView.setContentOffset(CGPoint(x: CGFloat(bannerData.count - 2) * scrollView.frame.width, y: 0), animated: false)
-            currentPage = bannerData.count - 3
-        } else if currentPage == bannerData.count - 2 {
+            currentPage = bannerData.count - 2
+        } else if currentPage == self.bannerData.count - 1 {
             scrollView.setContentOffset(CGPoint(x: scrollView.frame.width, y: 0), animated: false)
             currentPage = 0
         }
@@ -226,7 +292,7 @@ extension HomeBannerCell : UIScrollViewDelegate {
     }
 
     public func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
-        if currentPage == bannerData.count - 2 {
+        if currentPage == bannerData.count - 1 {
             scrollView.setContentOffset(CGPoint(x: scrollView.frame.width, y: 0), animated: false)
             currentPage = 0
         }

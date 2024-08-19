@@ -323,7 +323,7 @@ public class MakePostViewModel : MakePostViewModelProtocol {
                 guard let self = self else { return }
                 var hashCount : Int = 0
                 print(value)
-                if value.count > CountValues.MaxContentCount.value {
+                if value.count > CountValues.MaxMakePostContentCount.value {
                     self.overChar.onNext(())
                     return
                 }

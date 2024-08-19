@@ -9,9 +9,10 @@ import Foundation
 
 enum CountValues {
     case MaxImageCount
-    case MaxContentCount
+    case MaxMakePostContentCount
     case MaxHashTagCount
     case MaxPinCount
+    case MaxPostContentCount
 }
 
 extension CountValues {
@@ -19,12 +20,14 @@ extension CountValues {
         switch self {
         case .MaxImageCount :
             return 10
-        case .MaxContentCount :
+        case .MaxMakePostContentCount :
             return 2000
         case .MaxHashTagCount : 
             return 20
         case .MaxPinCount :
             return 10
+        case .MaxPostContentCount :
+            return 50
         }
     }
 }

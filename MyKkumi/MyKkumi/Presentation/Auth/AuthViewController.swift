@@ -178,7 +178,7 @@ class AuthViewController : BaseViewController<AuthViewModelProtocol>{
         paragraphStyle.alignment = .center  // NSAttributedString의 텍스트 정렬을 중앙으로 설정
         paragraphStyle.lineHeightMultiple = 1.4
 
-        var attributes = Typography.gmarketSansBold.attributes
+        var attributes = Typography.gmarketSansBold(color: AppColor.neutral900).attributes
         attributes[.paragraphStyle] = paragraphStyle  // paragraphStyle 속성을 추가
 
         let attributedString = NSAttributedString(string: "취미생활 꿀템이 궁금하다면\n마이꾸미에서!", attributes: attributes)
@@ -214,7 +214,7 @@ class AuthViewController : BaseViewController<AuthViewModelProtocol>{
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
-        label.attributedText = NSAttributedString(string:"카카오 ID로 로그인", attributes: Typography.body15SemiBold.attributes)
+        label.attributedText = NSAttributedString(string:"카카오 ID로 로그인", attributes: Typography.body15SemiBold(color: AppColor.neutral900).attributes)
         return label
     }()
     

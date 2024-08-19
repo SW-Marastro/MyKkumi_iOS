@@ -84,7 +84,7 @@ class CollectCategoryViewController : BaseViewController<CollectCategoryViewMode
                     let label : UILabel = {
                         let label = UILabel()
                         label.translatesAutoresizingMaskIntoConstraints = false
-                        label.attributedText = NSAttributedString(string: category.name, attributes: Typography.heading18Bold.attributes)
+                        label.attributedText = NSAttributedString(string: category.name, attributes: Typography.heading18Bold(color: AppColor.neutral900).attributes)
                         label.textColor = AppColor.neutral900.color
                         return label
                     }()
@@ -136,7 +136,7 @@ class CollectCategoryViewController : BaseViewController<CollectCategoryViewMode
                             paragraphStyle.alignment = .center
                             paragraphStyle.lineHeightMultiple = 1.4
 
-                            var attributes = Typography.body13Medium.attributes
+                            var attributes = Typography.body13Medium(color: AppColor.neutral900).attributes
                             attributes[.paragraphStyle] = paragraphStyle
                             label.attributedText = NSAttributedString(string: subcategory.name, attributes: attributes)
                             return label
@@ -227,7 +227,7 @@ class CollectCategoryViewController : BaseViewController<CollectCategoryViewMode
     
     private var selectCategoryLabel : UILabel = {
         let label = UILabel()
-        label.attributedText = NSAttributedString(string: "관심있는 취미를 선택해주세요", attributes: Typography.heading20Bold.attributes)
+        label.attributedText = NSAttributedString(string: "관심있는 취미를 선택해주세요", attributes: Typography.heading20Bold(color: AppColor.neutral900).attributes)
         label.textColor = AppColor.neutral900.color
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -260,7 +260,7 @@ class CollectCategoryViewController : BaseViewController<CollectCategoryViewMode
     
     private var skipButton : UIButton = {
         let button = UIButton()
-        button.setAttributedTitle(NSAttributedString(string: "건너뛰기", attributes: Typography.body15SemiBold.attributes), for: .normal)
+        button.setAttributedTitle(NSAttributedString(string: "건너뛰기", attributes: Typography.body15SemiBold(color: AppColor.neutral900).attributes), for: .normal)
         button.setTitleColor(AppColor.neutral700.color, for: .normal)
         button.backgroundColor = AppColor.neutral50.color
         button.layer.cornerRadius = 12
@@ -270,7 +270,7 @@ class CollectCategoryViewController : BaseViewController<CollectCategoryViewMode
     
     private var nextButton : UIButton = {
         let button = UIButton()
-        button.setAttributedTitle(NSAttributedString(string: "다음", attributes: Typography.body15SemiBold.attributes), for: .normal)
+        button.setAttributedTitle(NSAttributedString(string: "다음", attributes: Typography.body15SemiBold(color: AppColor.neutral900).attributes), for: .normal)
         button.setTitleColor(AppColor.white.color, for: .normal)
         button.backgroundColor = AppColor.primary.color
         button.layer.cornerRadius = 12

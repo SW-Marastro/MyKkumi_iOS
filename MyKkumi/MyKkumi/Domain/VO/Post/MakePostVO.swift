@@ -32,7 +32,7 @@ public struct Pin : Codable {
 
 public struct ProductInfo : Codable {
     var name : String
-    var url : String
+    var url : String?
 }
 
 public struct MakePostResponse : Codable {

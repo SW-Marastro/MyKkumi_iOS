@@ -128,7 +128,7 @@ class HomeViewController: BaseViewController<HomeViewModelProtocol> {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "MYKKUMI"
-        label.font = Typography.chab.font()
+        label.font = Typography.chab(color: AppColor.primary).font()
         label.textColor = AppColor.primary.color
         return label
     }()
@@ -151,6 +151,7 @@ class HomeViewController: BaseViewController<HomeViewModelProtocol> {
     
     public lazy var postTableView : PostTableView = {
         let tableView = PostTableView()
+        tableView.translatesAutoresizingMaskIntoConstraints = false
         return tableView
     }()
 }

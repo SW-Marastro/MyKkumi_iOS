@@ -10,7 +10,7 @@ import RxCocoa
 import RxSwift
 
 public protocol PostCellViewModelInput {
-    var optionButtonTap : PublishSubject<Void> { get }
+    
 }
 
 public protocol PostCellViewModelOutput {
@@ -18,7 +18,7 @@ public protocol PostCellViewModelOutput {
 }
 
 public protocol PostCellViewModelProtocol : PostCellViewModelInput, PostCellViewModelOutput {
-    
+    var showedImage : BehaviorRelay<Int> { get }
 }
 
 public class PostCellViewModel : PostCellViewModelProtocol {
@@ -26,11 +26,11 @@ public class PostCellViewModel : PostCellViewModelProtocol {
     
     public init(_ post : PostVO) {
         self.post = post
-        self.optionButtonTap = PublishSubject<Void>()
+        self.showedImage = BehaviorRelay<Int> (value: 0)
         
         self.setPostData = Driver.just(post)
     }
     
-    public var optionButtonTap: PublishSubject<Void>
     public var setPostData: Driver<PostVO>
+    public var showedImage: BehaviorRelay<Int>
 }
