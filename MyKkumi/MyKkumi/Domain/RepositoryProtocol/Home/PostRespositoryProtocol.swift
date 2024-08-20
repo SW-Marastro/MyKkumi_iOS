@@ -10,4 +10,5 @@ import RxSwift
 
 public protocol PostRespository {
     func getPosts(_ cursor : String?) -> Single<Result<PostsVO, PostError>>
+    func reportPost(_ id : Int) -> Single<Result<String, PostError>>
 }

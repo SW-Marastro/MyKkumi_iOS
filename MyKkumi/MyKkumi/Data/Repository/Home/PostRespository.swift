@@ -19,4 +19,8 @@ public class DefaultPostRespository : PostRespository {
     public func getPosts(_ cursor : String?) -> Single<Result<PostsVO, PostError>> {
         return dataSource.getPosts(cursor)
     }
+    
+    public func reportPost(_ id: Int) -> Single<Result<String, PostError>> {
+        return dataSource.reportPost(id)
+    }
 }

@@ -69,6 +69,8 @@
 		D28346F72C37F6230048CB2E /* HomeBannerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28346F62C37F6230048CB2E /* HomeBannerCell.swift */; };
 		D28346FA2C38312A0048CB2E /* CountButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28346F92C38312A0048CB2E /* CountButton.swift */; };
 		D28347042C3BB1D50048CB2E /* BannerCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28347032C3BB1D50048CB2E /* BannerCellViewModel.swift */; };
+		D2911AE42C72FB9E00D1BABC /* CustomTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2911AE32C72FB9E00D1BABC /* CustomTabBarController.swift */; };
+		D2911AE62C72FDD100D1BABC /* CustomTabbarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2911AE52C72FDD100D1BABC /* CustomTabbarViewModel.swift */; };
 		D2AB22942C6C83CC00027027 /* (null) in Sources */ = {isa = PBXBuildFile; };
 		D2AB22962C6C8CA200027027 /* (null) in Sources */ = {isa = PBXBuildFile; };
 		D2AB229B2C6E0C8300027027 /* UILabelExtention+RichText.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2AB229A2C6E0C8300027027 /* UILabelExtention+RichText.swift */; };
@@ -206,6 +208,8 @@
 		D28346F62C37F6230048CB2E /* HomeBannerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeBannerCell.swift; sourceTree = "<group>"; };
 		D28346F92C38312A0048CB2E /* CountButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountButton.swift; sourceTree = "<group>"; };
 		D28347032C3BB1D50048CB2E /* BannerCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerCellViewModel.swift; sourceTree = "<group>"; };
+		D2911AE32C72FB9E00D1BABC /* CustomTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBarController.swift; sourceTree = "<group>"; };
+		D2911AE52C72FDD100D1BABC /* CustomTabbarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabbarViewModel.swift; sourceTree = "<group>"; };
 		D2AB22982C6CCF2800027027 /* DevConfig.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = DevConfig.xcconfig; sourceTree = "<group>"; };
 		D2AB22992C6CCF3800027027 /* ProductionConfig.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = ProductionConfig.xcconfig; sourceTree = "<group>"; };
 		D2AB229A2C6E0C8300027027 /* UILabelExtention+RichText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabelExtention+RichText.swift"; sourceTree = "<group>"; };
@@ -592,6 +596,15 @@
 			path = Components;
 			sourceTree = "<group>";
 		};
+		D2911AE22C72FB8800D1BABC /* TabBar */ = {
+			isa = PBXGroup;
+			children = (
+				D2911AE32C72FB9E00D1BABC /* CustomTabBarController.swift */,
+				D2911AE52C72FDD100D1BABC /* CustomTabbarViewModel.swift */,
+			);
+			path = TabBar;
+			sourceTree = "<group>";
+		};
 		D2AB22972C6CCEFC00027027 /* Configurations */ = {
 			isa = PBXGroup;
 			children = (
@@ -842,6 +855,7 @@
 		D2E4594A2C1DB1F900DB0756 /* CommonUI */ = {
 			isa = PBXGroup;
 			children = (
+				D2911AE22C72FB8800D1BABC /* TabBar */,
 				D28346F82C38310F0048CB2E /* Components */,
 				D2ABCE252C33BFC20035F7A1 /* TableView */,
 				D2ABCDFB2C2BFE200035F7A1 /* CollectionView */,
@@ -1191,6 +1205,7 @@
 			files = (
 				D21FB54A2C3D2B7700927905 /* PostCellViewModel.swift in Sources */,
 				D28346F72C37F6230048CB2E /* HomeBannerCell.swift in Sources */,
+				D2911AE42C72FB9E00D1BABC /* CustomTabBarController.swift in Sources */,
 				D2ABCE352C3427610035F7A1 /* PostDataSource.swift in Sources */,
 				D2ABCE2D2C33C53A0035F7A1 /* PostImageCollectionViewCell.swift in Sources */,
 				D2ABCE332C3424010035F7A1 /* PostVO.swift in Sources */,
@@ -1220,6 +1235,7 @@
 				D2ED95482C4A273D004DA169 /* Notification.swift in Sources */,
 				D2ABCE142C2D2F490035F7A1 /* NetworkConfiguration.swift in Sources */,
 				D2ED95532C4E26E4004DA169 /* CategoryCollectionViewFlowLayout.swift in Sources */,
+				D2911AE62C72FDD100D1BABC /* CustomTabbarViewModel.swift in Sources */,
 				D2672C482C661A5B005B23A4 /* PutImageToBucketService.swift in Sources */,
 				D2ABCDD22C2A68940035F7A1 /* BasicDataSource.swift in Sources */,
 				D21FB54F2C3E820100927905 /* AuthViewModel.swift in Sources */,

@@ -55,22 +55,40 @@ class HomeViewController: BaseViewController<HomeViewModelProtocol> {
             .disposed(by: disposeBag)
         
         //MARK: PostBinding
-        self.viewModel.getPostsData
-            .onNext(nil)
-        
-        
         self.viewModel.shouldReloadPostTable
             .emit(onNext: { [weak self] _ in
                 self?.postTableView.reloadData()
+                self?.fetch = false
             })
             .disposed(by: disposeBag)
         
-        self.viewModel.shouldPushUploadPostView
-            .drive(onNext : {[weak self] _ in
-                let makePostVC = MakePostViewController()
-                makePostVC.setupBind(viewModel: MakePostViewModel())
-                makePostVC.hidesBottomBarWhenPushed  = true
-                self?.navigationController?.pushViewController(makePostVC, animated: true)
+        self.viewModel.shouldPushReport
+            .drive(onNext: {[weak self] id in
+                guard let self = self else { return }
+                
+                let alert = UIAlertController(title : "포스트를 신고하시겠습니까?", message: "", preferredStyle: .actionSheet)
+                let report = UIAlertAction(title: "포스트 신고", style: .default) {_ in
+                    self.viewModel.postReported.onNext(id)
+                }
+
+                let cancel = UIAlertAction(title: "취소", style: .cancel)
+                
+                alert.addAction(report)
+                alert.addAction(cancel)
+                self.present(alert, animated: true, completion: nil)
+            })
+            .disposed(by: disposeBag)
+        
+        self.viewModel.shouldPushReportCompleteAlert
+            .drive(onNext: {[weak self] _ in
+                guard let self = self else { return }
+                
+                let alert = UIAlertController(title : "포스트 신고가 완료되었습니다.", message: "", preferredStyle: .alert)
+                let complete = UIAlertAction(title: "완료", style: .default)
+
+                
+                alert.addAction(complete)
+                self.present(alert, animated: true, completion: nil)
             })
             .disposed(by: disposeBag)
     }
@@ -208,8 +226,7 @@ extension HomeViewController : UITableViewDelegate, UITableViewDataSource {
         let cursur = cursur
         viewModel.getPostsData
             .onNext(cursur)
-            
-        postTableView.reloadData()
+        
         fetch = true
     }
     
@@ -218,7 +235,9 @@ extension HomeViewController : UITableViewDelegate, UITableViewDataSource {
         let lastRow = tableView.numberOfRows(inSection: sectionIndex) - 1
         
         if indexPath.section == sectionIndex && indexPath.row == lastRow {
-            
+            if(viewModel.cursur.value != "" && !fetch) {
+                beginFetch(viewModel.cursur.value)
+            }
         }
     }
 }

@@ -10,7 +10,7 @@ import RxSwift
 
 open class PostTableCell : UITableViewCell {
     public static let cellID = "PostTableCell"
-    private let disposeBag = DisposeBag()
+    private var disposeBag = DisposeBag()
     private var viewModel : PostCellViewModelProtocol!
     
     public override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -20,11 +20,13 @@ open class PostTableCell : UITableViewCell {
     public func bind(viewModel : PostCellViewModelProtocol) {
         self.viewModel = viewModel
         
-        self.viewModel.setPostData
-            .drive(onNext: {[weak self] postVo in
-                self?.setCellData(postVO: postVo)
-            })
-            .disposed(by: disposeBag)
+        self.contentView.subviews.forEach { $0.removeFromSuperview() }
+        self.dotView.arrangedSubviews.forEach { $0.removeFromSuperview() }
+        self.postImageStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
+        
+        self.disposeBag = DisposeBag()
+        
+        setCellData(postVO: viewModel.post.value)
         
         self.viewModel.showedImage
             .subscribe(onNext: {[weak self] idx in
@@ -38,6 +40,11 @@ open class PostTableCell : UITableViewCell {
                 }
             })
             .disposed(by: disposeBag)
+        
+        self.reportPostButton.rx.tap
+            .map{ self.viewModel.post.value.id }
+            .bind(to: self.viewModel.reportButtonTap)
+            .disposed(by: disposeBag)
     }
     
     //관련 Data Binding
@@ -45,9 +52,13 @@ open class PostTableCell : UITableViewCell {
         setupHierarchy()
         
         if let imageurl = postVO.writer.profileImage {
-            profileImageView.load(url: URL(string: imageurl)!)
+            if imageurl == "nullValue" {
+                profileImageView.image = AppImage.profile.image
+            } else {
+                profileImageView.load(url: URL(string: imageurl)!)
+            }
         } else {
-            profileImageView.image = AppImage.appLogo.image
+            profileImageView.image = AppImage.profile.image
         }
         
         let category = postVO.category + " > \(postVO.subCategory)"
@@ -277,6 +288,7 @@ open class PostTableCell : UITableViewCell {
         view.contentMode = .scaleAspectFill
         view.layer.cornerRadius = 24
         view.layer.masksToBounds = true
+        view.image = AppImage.profile.image
         return view
     }()
     

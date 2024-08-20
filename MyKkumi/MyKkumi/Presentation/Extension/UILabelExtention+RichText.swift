@@ -8,16 +8,32 @@
 import Foundation
 import UIKit
 
+private var originalContentKey : UInt8 = 0
+
 extension UILabel {
+    
+    var originalContent: [ContentVO]? {
+        get {
+            return objc_getAssociatedObject(self, &originalContentKey) as? [ContentVO]
+        }
+        set {
+            objc_setAssociatedObject(self, &originalContentKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        }
+    }
+    
     func setTextWithMore(content: [ContentVO]) {
         let richText = createRichText(from: content)
-        let maxLength = CountValues.MaxPostContentCount.value
-        
-        if richText.length > maxLength {
-            let truncatedText = richText.attributedSubstring(from: NSRange(location: 0, length: maxLength))
-            var attributes = Typography.body14SemiBold(color: AppColor.neutral900).attributes
-            attributes[.link] = "moreTapped"
-            let moreText = NSAttributedString(string: "...더보기", attributes: attributes)
+        self.originalContent = content
+
+        if richText.length > CountValues.MaxPostContentCount.value {
+            let truncatedText = richText.attributedSubstring(from: NSRange(location: 0, length: CountValues.MaxPostContentCount.value))
+            let font = Typography.body14SemiBold(color: AppColor.neutral900).font()
+            let moreAttributes: [NSAttributedString.Key: Any] = [
+                .link: "moreTapped",
+                .foregroundColor: AppColor.neutral900.color,
+                .font: font
+            ]
+            let moreText = NSAttributedString(string: "...더보기", attributes: moreAttributes)
             
             let combinedText = NSMutableAttributedString()
             combinedText.append(truncatedText)
@@ -34,10 +50,8 @@ extension UILabel {
     @objc private func handleTapOnMore() {
         guard let currentText = self.attributedText else { return }
         
-        if let content = currentText.string.split(separator: " ").map({ String($0) }) as? [ContentVO] {
-            let fullText = createRichText(from: content)
-            self.attributedText = fullText
-        }
+        let fullText = createRichText(from: originalContent ?? [])
+        self.attributedText = fullText
     }
 }
 
@@ -55,10 +69,12 @@ func createRichText(from content: [ContentVO]) -> NSAttributedString {
             
         case .hashtag:
             // 해시태그 속성
-            var attributeDict: [NSAttributedString.Key: Any] = [
-                .foregroundColor: UIColor(hex: item.color ?? "#000000")
-            ]
-            
+            var attributeDict: [NSAttributedString.Key: Any] = [:]
+
+            if let color = item.color {
+                attributeDict[.foregroundColor] = AppColor.hash.color
+            }
+
             if let link = item.linkUrl, let url = URL(string: link) {
                 attributeDict[.link] = url
             }

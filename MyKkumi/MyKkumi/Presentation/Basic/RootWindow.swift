@@ -29,22 +29,33 @@ class RootWindow : UIWindow {
     }
 
     private func showTapbarController() {
+        let tabBarController = CustomTabBarController()
+        tabBarController.delegate = self
+        
         let homeVC = HomeViewController()
         homeVC.setupBind(viewModel: HomeViewModel())
         let homeViewController = UINavigationController(rootViewController: homeVC)
+        homeViewController.tabBarItem = UITabBarItem(title: nil, image: AppImage.homeSelected.image, tag: 0)
+        
         let aroundViewController = UINavigationController(rootViewController: AroundViewController())
+        aroundViewController.tabBarItem = UITabBarItem(title: nil, image: AppImage.browseUnselected.image, tag: 1)
+        
+        let makepostVC = MakePostViewController()
+        makepostVC.setupBind(viewModel: MakePostViewModel())
+        makepostVC.hidesBottomBarWhenPushed = true
+        makepostVC.tabBarItem = UITabBarItem(title: nil, image: AppImage.addPostButton.image, tag: 2)
+        
         let shoppingViewController = UINavigationController(rootViewController: ShoppingViewController())
+        shoppingViewController.tabBarItem = UITabBarItem(title: nil, image: AppImage.shoppingUnselected.image, tag: 3)
+        
         let mypageViewController = UINavigationController(rootViewController: MypageViewController())
+        mypageViewController.tabBarItem = UITabBarItem(title: nil, image: AppImage.mypageUnselected.image, tag: 4)
         
-        let tabBarController = UITabBarController()
-        tabBarController.setViewControllers([homeViewController, aroundViewController, shoppingViewController, mypageViewController], animated: true)
+        tabBarController.setViewControllers([homeViewController, aroundViewController, makepostVC, shoppingViewController, mypageViewController], animated: true)
         
-        if let items = tabBarController.tabBar.items {
-            items[0].title = "홈"
-            items[1].title = "둘러보기"
-            items[2].title = "쇼핑"
-            items[3].title = "마이페이지"
-        }
+        tabBarController.tabBar.backgroundColor = AppColor.white.color
+        
+        tabBarController.setupLayout()
         
         self.rootViewController = tabBarController
     }
@@ -71,3 +82,51 @@ class RootWindow : UIWindow {
         self.originalRootViewController = nil
     }
 }
+
+extension RootWindow : UITabBarControllerDelegate {
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        guard let items = tabBarController.tabBar.items else { return }
+        for (index, item) in items.enumerated() {
+            if index == viewController.tabBarItem.tag {
+                // Set the selected image for the selected tab
+                switch index {
+                case 0:
+                    item.image = AppImage.homeSelected.image
+                case 1:
+                    item.image = AppImage.browseSelected.image
+                case 2:
+                    if KeychainHelper.shared.load(key: "accessToken") != nil {
+                        NotificationCenter.default.post(name: .showAuth, object: nil)
+                        tabBarController.selectedIndex = 0
+                        items[0].image = AppImage.homeSelected.image
+                    } else {
+                        tabBarController.tabBar.isHidden = true
+                    }
+                case 3:
+                    item.image = AppImage.shoppingSelected.image
+                case 4:
+                    item.image = AppImage.mypageSelected.image
+                default:
+                    break
+                }
+            } else {
+                // Set the unselected image for the other tabs
+                switch index {
+                case 0:
+                    item.image = AppImage.homeUnselected.image
+                case 1:
+                    item.image = AppImage.browseUnselected.image
+                case 2:
+                    continue
+                case 3:
+                    item.image = AppImage.shoppingUnselected.image
+                case 4:
+                    item.image = AppImage.mypageUnselected.image
+                default:
+                    break
+                }
+            }
+        }
+    }
+}
+

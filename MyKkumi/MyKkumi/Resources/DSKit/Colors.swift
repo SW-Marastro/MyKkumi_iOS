@@ -20,6 +20,7 @@ enum AppColor {
     case negative
     case information
     case kakao
+    case hash
 
     var color: UIColor {
         switch self {
@@ -42,6 +43,7 @@ enum AppColor {
         case .negative: return UIColor(hex: "FF2517")
         case .information: return UIColor(hex: "1355FF")
         case .kakao : return UIColor(hex : "FEE500")
+        case .hash : return UIColor(hex : "0062FF")
         }
     }
 }

@@ -93,3 +93,26 @@ enum ContentType: String, Codable {
     case plain
     case hashtag
 }
+
+public struct ReportBody : Codable {
+    let reason : String
+    let content : String
+    
+    public init(reason: String, content: String) {
+        self.reason = reason
+        self.content = content
+    }
+}
+
+public struct ReportResult : Codable {
+    let result : String
+    
+    enum CodingKeys : String, CodingKey {
+        case result
+    }
+    
+    public init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.result = try container.decode(String.self, forKey: .result)
+    }
+}
