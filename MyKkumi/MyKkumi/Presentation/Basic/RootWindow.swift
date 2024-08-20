@@ -40,9 +40,10 @@ class RootWindow : UIWindow {
         let aroundViewController = UINavigationController(rootViewController: AroundViewController())
         aroundViewController.tabBarItem = UITabBarItem(title: nil, image: AppImage.browseUnselected.image, tag: 1)
         
-        let makepostVC = MakePostViewController()
-        makepostVC.setupBind(viewModel: MakePostViewModel())
-        makepostVC.hidesBottomBarWhenPushed = true
+        let makepost = MakePostViewController()
+        let makepostVC = UINavigationController(rootViewController: makepost)
+        makepost.setupBind(viewModel: MakePostViewModel())
+        makepost.hidesBottomBarWhenPushed = true
         makepostVC.tabBarItem = UITabBarItem(title: nil, image: AppImage.addPostButton.image, tag: 2)
         
         let shoppingViewController = UINavigationController(rootViewController: ShoppingViewController())
@@ -91,8 +92,10 @@ extension RootWindow : UITabBarControllerDelegate {
                 // Set the selected image for the selected tab
                 switch index {
                 case 0:
+                    tabBarController.tabBar.isHidden = false
                     item.image = AppImage.homeSelected.image
                 case 1:
+                    tabBarController.tabBar.isHidden = false
                     item.image = AppImage.browseSelected.image
                 case 2:
                     if KeychainHelper.shared.load(key: "accessToken") != nil {
@@ -103,8 +106,10 @@ extension RootWindow : UITabBarControllerDelegate {
                         tabBarController.tabBar.isHidden = true
                     }
                 case 3:
+                    tabBarController.tabBar.isHidden = false
                     item.image = AppImage.shoppingSelected.image
                 case 4:
+                    tabBarController.tabBar.isHidden = false
                     item.image = AppImage.mypageSelected.image
                 default:
                     break

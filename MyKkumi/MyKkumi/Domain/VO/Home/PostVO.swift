@@ -95,10 +95,12 @@ enum ContentType: String, Codable {
 }
 
 public struct ReportBody : Codable {
+    let postId : Int
     let reason : String
     let content : String
     
-    public init(reason: String, content: String) {
+    public init(postId: Int, reason: String, content: String) {
+        self.postId = postId
         self.reason = reason
         self.content = content
     }

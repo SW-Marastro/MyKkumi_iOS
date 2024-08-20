@@ -31,6 +31,7 @@ enum AppImage {
     case scrapButton
     case shareButton
     case pin
+    case addImageButton
     
     var image : UIImage {
         return self.getImage()
@@ -84,6 +85,8 @@ enum AppImage {
             return UIImage(named : "ShareButton")!
         case .pin :
             return UIImage(named : "PinButton")!
+        case .addImageButton :
+            return UIImage(named : "AddImageButton")!
         }
     }
 }

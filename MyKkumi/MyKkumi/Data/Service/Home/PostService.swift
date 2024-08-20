@@ -46,8 +46,8 @@ extension Post : TargetType {
             params["limit"] = 5
             params["cursor"] = cursor
             return .requestParameters(parameters: params, encoding: URLEncoding.default)
-        case .report(_) :
-            let body  = ReportBody(reason: "ETC", content: "남을 비방하는 내용이 포함된 포스트인 것 같습니다.")
+        case .report(let postId) :
+            let body  = ReportBody(postId: postId, reason: "ETC", content: "남을 비방하는 내용이 포함된 포스트인 것같습니다.")
             return .requestJSONEncodable(body)
         }
     }
