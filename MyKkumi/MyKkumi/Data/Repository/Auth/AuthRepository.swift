@@ -32,7 +32,19 @@ public class DefaultAuthRepository : AuthRepository {
         return dataSource.patchUserData(user)
     }
     
-    public func refreshToken() {
+    public func refreshToken(){
         dataSource.refreshToken()
+    }
+    
+    public func getPresignedUrl() -> Single<Result<PreSignedUrlVO, AuthError>> {
+        return dataSource.getPresignedUrl()
+    }
+    
+    public func reportUser(_ uuid: String) -> Single<Result<ReportResult, AuthError>> {
+        return dataSource.reportUser(uuid)
+    }
+    
+    public func getUserData() -> Single<Result<UserVO, AuthError>> {
+        return dataSource.getUserData()
     }
 }

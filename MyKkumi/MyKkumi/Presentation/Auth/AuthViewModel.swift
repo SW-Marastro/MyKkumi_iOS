@@ -50,8 +50,18 @@ class AuthViewModel : AuthViewModelProtocol {
             }
             .share()
         
-        self.appleSuccess = appleSignin
+        let appleSignedUser = appleSignin
+            .compactMap { $0.successValue()}
+            .flatMap { auth in
+                return authUsecase.getUserData()
+            }
+            .share()
+        
+        self.appleSuccess = appleSignedUser
             .compactMap{ $0.successValue()}
+            .map { user in
+                return user.nickname == nil
+            }
             .asDriver(onErrorDriveWith: .empty())
         
         
@@ -70,8 +80,18 @@ class AuthViewModel : AuthViewModelProtocol {
             }
             .share()
         
-        self.kakaoSuccess = kakaoSignin
+        let kakaoSignedUser = kakaoSignin
+            .compactMap { $0.successValue()}
+            .flatMap { auth in
+                return authUsecase.getUserData()
+            }
+            .share()
+        
+        self.kakaoSuccess = kakaoSignedUser
             .compactMap{ $0.successValue()}
+            .map { user in
+                return user.nickname == nil
+            }
             .asDriver(onErrorDriveWith: .empty())
         
         self.backButtonTap

@@ -20,26 +20,42 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationController?.isNavigationBarHidden = true
+        self.navigationController?.setNavigationBarHidden(false, animated: false)
     }
     
     override func setupHierarchy() {
-        view.addSubview(buttonStack)
-        view.addSubview(imageScrollview)
-        view.addSubview(selectedImageScrollView)
-        view.addSubview(customNavBar)
-        customNavBar.addSubview(backButton)
-        customNavBar.addSubview(saveButton)
+        view.addSubview(mainScrollView)
+        mainScrollView.addSubview(mainStackView)
+        mainStackView.addArrangedSubview(selectedImageScrollView)
+        mainStackView.addArrangedSubview(imageContainView)
+        mainStackView.addArrangedSubview(emptyView)
+        mainStackView.addArrangedSubview(buttonView)
+        mainStackView.addArrangedSubview(contentView)
+        mainStackView.addArrangedSubview(categoryView)
+        mainStackView.addArrangedSubview(completeButtonView)
+        contentView.addSubview(contentLabel)
+        contentView.addSubview(contentTextView)
+        contentView.addSubview(placeHolderLabel)
+        imageContainView.addSubview(imageScrollview)
         imageScrollview.addSubview(imageScrollStackView)
+        buttonView.addSubview(buttonStack)
         selectedImageScrollView.addSubview(selectedImageStackView)
-        buttonStack.addArrangedSubview(autoPinAddButton)
         buttonStack.addArrangedSubview(addPinButton)
-        view.addSubview(contentTextView)
-        view.addSubview(AIContentButton)
+        buttonStack.addArrangedSubview(autoPinAddButton)
+        completeButtonView.addSubview(completeButton)
+        categoryView.addSubview(categoryLabel)
+        categoryView.addSubview(categoryMultiView)
+        
+        
+        self.categoryMultiView.translatesAutoresizingMaskIntoConstraints = false
+        let backBarButtonItem = UIBarButtonItem(customView: backButton)
+        navigationItem.leftBarButtonItem = backBarButtonItem
+        navigationItem.titleView = navTitle
     }
     
     override func setupDelegate() {
         self.selectedImageScrollView.delegate = self
+        self.contentTextView.delegate = self
     }
     
     public override func setupBind(viewModel: MakePostViewModelProtocol) {
@@ -52,7 +68,18 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
         self.viewModel.shouldDrawAddButton
             .drive(onNext: {[weak self] _ in
                 guard let self = self else { return }
-                self.imageScrollStackView.addArrangedSubview(self.addButton)
+                basicView.addSubview(addImageButton)
+                selectedImageStackView.addArrangedSubview(basicView)
+                
+                NSLayoutConstraint.activate([
+                    basicView.widthAnchor.constraint(equalTo: selectedImageScrollView.widthAnchor),
+                    basicView.heightAnchor.constraint(equalTo: selectedImageScrollView.heightAnchor),
+                    
+                    addImageButton.centerXAnchor.constraint(equalTo: basicView.centerXAnchor),
+                    addImageButton.centerYAnchor.constraint(equalTo: basicView.centerYAnchor),
+                    addImageButton.heightAnchor.constraint(equalToConstant: 47),
+                    addImageButton.widthAnchor.constraint(equalToConstant: 122)
+                ])
             })
             .disposed(by: disposeBag)
 
@@ -99,6 +126,23 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
             .bind(to: viewModel.contentInput)
             .disposed(by: disposeBag)
         
+        self.viewModel.contentRelay
+            .subscribe(onNext: {[weak self] string in
+                guard let self = self else { return }
+                if string != "" {
+                    if self.viewModel.postImageRelay.value.count != 0 && self.viewModel.subCategories.value != 0{
+                        self.completeButton.backgroundColor = AppColor.primary.color
+                        self.completeButton.setAttributedTitle(NSAttributedString(string : "등록하기", attributes: Typography.body15SemiBold(color: AppColor.white).attributes), for: .normal)
+                        self.completeButton.isEnabled = true
+                    } else {
+                        self.completeButton.isEnabled = false
+                    }
+                } else {
+                    self.completeButton.isEnabled = false
+                }
+            })
+            .disposed(by: disposeBag)
+        
         self.viewModel.sholudAlertOverChar
             .drive(onNext: {[weak self] _ in
                 guard let self = self else { return }
@@ -117,14 +161,18 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
                 self.selectedImageStackView.subviews.forEach{ $0.removeFromSuperview()}
                 
                 for image in images {
-                    let imageView = drawImage(image)
+                    self.drawImage(image)
                     self.drawSelectedView(for: image)
-                    self.imageScrollStackView.addArrangedSubview(imageView)
                 }
                 
                 if images.count < CountValues.MaxImageCount.value {
                     self.imageScrollStackView.addArrangedSubview(addButton)
+                    NSLayoutConstraint.activate([
+                        addButton.heightAnchor.constraint(equalTo: imageScrollStackView.heightAnchor),
+                        addButton.widthAnchor.constraint(equalTo: imageScrollStackView.heightAnchor)
+                    ])
                 }
+                
             })
             .disposed(by: disposeBag)
         
@@ -134,6 +182,10 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
                 self.scrollToImage(with: uuid)
                 self.viewModel.pinInfoRelay.accept(self.viewModel.pinInfoRelay.value)
             })
+            .disposed(by: disposeBag)
+        
+        self.addImageButton.rx.tap
+            .bind(to: self.viewModel.addImageButtonTap)
             .disposed(by: disposeBag)
         
         self.addButton.rx.tap
@@ -163,7 +215,7 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
                             button.removeFromSuperview()
                         }
                     }
-                    
+
                     for pin in pins {
                         let x = viewModel.selectedImageSize.value.size.width * pin.pin.positionX + viewModel.selectedImageSize.value.origin.x
                         let y = viewModel.selectedImageSize.value.size.height * pin.pin.positionY + viewModel.selectedImageSize.value.origin.y
@@ -175,10 +227,10 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
                         let button = UIButton()
                         selectedImageView.addSubview(button)
                         button.translatesAutoresizingMaskIntoConstraints = false
-                        button.backgroundColor = .blue
+                        button.setBackgroundImage(AppImage.addPostButton.image, for: .normal)
                         button.layer.cornerRadius = 10
-                        button.heightAnchor.constraint(equalToConstant: 30).isActive = true
-                        button.widthAnchor.constraint(equalToConstant: 30).isActive = true
+                        button.heightAnchor.constraint(equalToConstant: 24).isActive = true
+                        button.widthAnchor.constraint(equalToConstant: 24).isActive = true
                         button.leadingAnchor.constraint(equalTo: selectedImageView.leadingAnchor, constant: x).isActive = true
                         button.topAnchor.constraint(equalTo: selectedImageView.topAnchor, constant: y).isActive = true
                         button.uuidString = pin.UUID
@@ -225,110 +277,242 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
             })
             .disposed(by: disposeBag)
         
+        self.viewModel.sholudDrawCategory
+            .drive(onNext: {[weak self] categorys in
+                guard let self = self else { return }
+                var categoryName : [String] = []
+                var categoryId : [Int] = []
+                
+                for category in categorys.categories {
+                    for subCategory in category.subCategories {
+                        categoryName.append(subCategory.name)
+                        categoryId.append(Int(subCategory.id))
+                    }
+                }
+                
+                self.categoryMultiView.setTag(words: categoryName, id: categoryId)
+                let buttons = self.categoryMultiView.getButtons()
+                
+                for button in buttons {
+                    button.rx.tap
+                        .map { button.tag }
+                        .bind(to: viewModel.subCategoryButtonTap)
+                        .disposed(by: disposeBag)
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        self.viewModel.subCategories
+            .subscribe(onNext: {[weak self] id in
+                guard let self = self else { return }
+                
+                let buttons = self.categoryMultiView.getButtons()
+                
+                for button in buttons {
+                    if button.tag == id {
+                        let title = button.attributedTitle(for: .normal)!.string
+                        button.backgroundColor = AppColor.primary.color
+                        button.setAttributedTitle(NSAttributedString(string: title, attributes: Typography.body14SemiBold(color: AppColor.white).attributes), for: .normal)
+                        button.layer.borderColor = AppColor.primary.color.cgColor
+                    } else {
+                        let title = button.attributedTitle(for: .normal)!.string
+                        button.backgroundColor = AppColor.white.color
+                        button.setAttributedTitle(NSAttributedString(string: title, attributes: Typography.body14Medium(color: AppColor.neutral700).attributes), for: .normal)
+                        button.layer.borderColor = AppColor.neutral200.color.cgColor
+                    }
+                }
+                
+                if self.viewModel.postImageRelay.value.count != 0 && self.viewModel.subCategories.value != 0 && self.viewModel.contentRelay.value != ""{
+                    self.completeButton.backgroundColor = AppColor.primary.color
+                    self.completeButton.setAttributedTitle(NSAttributedString(string : "등록하기", attributes: Typography.body15SemiBold(color: AppColor.white).attributes), for: .normal)
+                    self.completeButton.isEnabled = true
+                } else {
+                    self.completeButton.isEnabled = false
+                }
+            })
+            .disposed(by: disposeBag)
+        
         //MARK: NavBar
         self.backButton.rx.tap
             .bind(to: self.viewModel.backButtontap)
             .disposed(by: disposeBag)
         
-        self.saveButton.rx.tap
+        self.completeButton.rx.tap
             .bind(to: self.viewModel.saveButtonTap)
             .disposed(by: disposeBag)
         
         self.viewModel.dismissVC
             .drive(onNext: {[weak self] _ in
-                self?.navigationController?.popViewController(animated: true)
+                guard let tabBarController = self?.tabBarController else { return }
+                tabBarController.tabBar.isHidden = false
+                tabBarController.selectedIndex = 0
             })
             .disposed(by: disposeBag)
         
-        self.viewModel.sholudPresentCategory
-            .drive(onNext : {[weak self] _ in
-                guard let self = self else { return }
-                let category = PostCategoryViewController()
-                category.setupBind(viewModel: self.viewModel.deliverCategoryViewModel.value)
-                category.modalPresentationStyle = .overFullScreen
-                self.present(category, animated: true)
+        self.viewModel.backToTabBar
+            .drive(onNext: {[weak self] _ in
+                guard let tabBarController = self?.tabBarController else { return }
+                tabBarController.tabBar.isHidden = false
+                tabBarController.selectedIndex = 0
             })
             .disposed(by: disposeBag)
+        
     }
     
     override func setupLayout() {
-        //imageScrollView
         NSLayoutConstraint.activate([
-            imageScrollview.topAnchor.constraint(equalTo: customNavBar.bottomAnchor),
-            imageScrollview.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 38),
-            imageScrollview.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -38),
-            imageScrollview.heightAnchor.constraint(equalToConstant: 69)
+            mainScrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            mainScrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            mainScrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            mainScrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            mainScrollView.widthAnchor.constraint(equalTo: view.widthAnchor)
         ])
         
         NSLayoutConstraint.activate([
-            imageScrollStackView.heightAnchor.constraint(equalTo: imageScrollview.heightAnchor),
-            imageScrollStackView.topAnchor.constraint(equalTo: imageScrollview.topAnchor),
-            imageScrollStackView.leadingAnchor.constraint(equalTo: imageScrollview.leadingAnchor),
-            imageScrollStackView.trailingAnchor.constraint(equalTo: imageScrollview.trailingAnchor),
-            imageScrollStackView.bottomAnchor.constraint(equalTo: imageScrollview.bottomAnchor),
+            mainStackView.topAnchor.constraint(equalTo: mainScrollView.topAnchor),
+            mainStackView.leadingAnchor.constraint(equalTo: mainScrollView.leadingAnchor),
+            mainStackView.trailingAnchor.constraint(equalTo: mainScrollView.trailingAnchor),
+            mainStackView.bottomAnchor.constraint(equalTo: mainScrollView.bottomAnchor),
+            mainStackView.widthAnchor.constraint(equalTo: mainScrollView.widthAnchor)
         ])
         
-        //selectedimage
+        //MARK: SelectedImage
         NSLayoutConstraint.activate([
-            selectedImageScrollView.topAnchor.constraint(equalTo: imageScrollview.bottomAnchor, constant: 15),
-            selectedImageScrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 26),
-            selectedImageScrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -26),
-            selectedImageScrollView.bottomAnchor.constraint(equalTo: buttonStack.topAnchor, constant: -12)
+            selectedImageScrollView.topAnchor.constraint(equalTo: mainScrollView.topAnchor),
+            selectedImageScrollView.leadingAnchor.constraint(equalTo: mainScrollView.leadingAnchor),
+            selectedImageScrollView.trailingAnchor.constraint(equalTo: mainScrollView.trailingAnchor),
+            selectedImageScrollView.widthAnchor.constraint(equalTo: mainScrollView.widthAnchor),
+            selectedImageScrollView.heightAnchor.constraint(equalTo: mainScrollView.widthAnchor)
         ])
         
         NSLayoutConstraint.activate([
             selectedImageStackView.topAnchor.constraint(equalTo: selectedImageScrollView.topAnchor),
-            selectedImageStackView.leadingAnchor.constraint(equalTo:selectedImageScrollView.leadingAnchor),
-            selectedImageStackView.trailingAnchor.constraint(equalTo:selectedImageScrollView.trailingAnchor),
-            selectedImageStackView.bottomAnchor.constraint(equalTo:selectedImageScrollView.bottomAnchor),
+            selectedImageStackView.leadingAnchor.constraint(equalTo: selectedImageScrollView.leadingAnchor),
+            selectedImageStackView.trailingAnchor.constraint(equalTo: selectedImageScrollView.trailingAnchor),
+            selectedImageStackView.bottomAnchor.constraint(equalTo: selectedImageScrollView.bottomAnchor),
             selectedImageStackView.heightAnchor.constraint(equalTo: selectedImageScrollView.heightAnchor)
         ])
         
-        //buttonStack
         NSLayoutConstraint.activate([
-            buttonStack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15),
-            buttonStack.bottomAnchor.constraint(equalTo: contentTextView.topAnchor, constant: -12)
+            imageContainView.leadingAnchor.constraint(equalTo: mainScrollView.leadingAnchor),
+            imageContainView.trailingAnchor.constraint(equalTo: mainScrollView.trailingAnchor),
+            imageContainView.heightAnchor.constraint(equalToConstant: 120)
         ])
         
         NSLayoutConstraint.activate([
-            addPinButton.heightAnchor.constraint(equalToConstant: 32),
-            autoPinAddButton.heightAnchor.constraint(equalToConstant: 32)
-        ])
-        
-        //content
-        NSLayoutConstraint.activate([
-            contentTextView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            contentTextView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 14),
-            contentTextView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -14),
-            contentTextView.heightAnchor.constraint(equalToConstant: 171)
-        ])
-        
-        //aibutton
-        NSLayoutConstraint.activate([
-            AIContentButton.trailingAnchor.constraint(equalTo: contentTextView.trailingAnchor, constant: -8),
-            AIContentButton.bottomAnchor.constraint(equalTo: contentTextView.bottomAnchor, constant: -8)
-        ])
-        
-        //CustomNavBar
-        NSLayoutConstraint.activate([
-            customNavBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            customNavBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            customNavBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            customNavBar.heightAnchor.constraint(equalToConstant: 65)
+            imageScrollview.centerYAnchor.constraint(equalTo: imageContainView.centerYAnchor),
+            imageScrollview.leadingAnchor.constraint(equalTo: imageContainView.leadingAnchor, constant: 20),
+            imageScrollview.trailingAnchor.constraint(equalTo: imageContainView.trailingAnchor),
+            imageScrollview.heightAnchor.constraint(equalToConstant: (view.frame.size.width - 20) / (4.5))
         ])
         
         NSLayoutConstraint.activate([
-            backButton.leadingAnchor.constraint(equalTo: customNavBar.leadingAnchor, constant: 14),
-            backButton.centerYAnchor.constraint(equalTo: customNavBar.centerYAnchor),
-            backButton.heightAnchor.constraint(equalToConstant: 15),
-            backButton.widthAnchor.constraint(equalTo: backButton.heightAnchor)
+            imageScrollStackView.topAnchor.constraint(equalTo: imageScrollview.topAnchor),
+            imageScrollStackView.leadingAnchor.constraint(equalTo: imageScrollview.leadingAnchor),
+            imageScrollStackView.trailingAnchor.constraint(equalTo: imageScrollview.trailingAnchor),
+            imageScrollStackView.bottomAnchor.constraint(equalTo: imageScrollview.bottomAnchor),
+            imageScrollStackView.heightAnchor.constraint(equalTo: imageScrollview.heightAnchor)
         ])
         
         NSLayoutConstraint.activate([
-            saveButton.trailingAnchor.constraint(equalTo: customNavBar.trailingAnchor, constant: -14),
-            saveButton.centerYAnchor.constraint(equalTo: customNavBar.centerYAnchor),
+            emptyView.leadingAnchor.constraint(equalTo: mainScrollView.leadingAnchor),
+            emptyView.trailingAnchor.constraint(equalTo: mainScrollView.trailingAnchor),
+            emptyView.heightAnchor.constraint(equalToConstant: 12)
+        ])
+        
+        NSLayoutConstraint.activate([
+            buttonView.heightAnchor.constraint(equalToConstant: 85),
+            buttonView.leadingAnchor.constraint(equalTo: mainScrollView.leadingAnchor),
+            buttonView.trailingAnchor.constraint(equalTo: mainScrollView.trailingAnchor)
+        ])
+
+        NSLayoutConstraint.activate([
+            buttonStack.topAnchor.constraint(equalTo: buttonView.topAnchor, constant: 24),
+            buttonStack.leadingAnchor.constraint(equalTo: buttonView.leadingAnchor, constant: 20)
+        ])
+        
+        NSLayoutConstraint.activate([
+            addPinButton.heightAnchor.constraint(equalToConstant: 37),
+            addPinButton.widthAnchor.constraint(equalToConstant: 72),
+            autoPinAddButton.heightAnchor.constraint(equalToConstant: 37),
+            autoPinAddButton.widthAnchor.constraint(equalToConstant: 100)
+        ])
+        
+        NSLayoutConstraint.activate([
+            contentView.leadingAnchor.constraint(equalTo: mainScrollView.leadingAnchor),
+            contentView.trailingAnchor.constraint(equalTo: mainScrollView.trailingAnchor),
+            contentView.heightAnchor.constraint(equalToConstant: 144)
+        ])
+
+        NSLayoutConstraint.activate([
+            contentLabel.topAnchor.constraint(equalTo: contentView.topAnchor),
+            contentLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20)
+        ])
+        
+        NSLayoutConstraint.activate([
+            contentTextView.topAnchor.constraint(equalTo: contentLabel.bottomAnchor, constant: 8),
+            contentTextView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+            contentTextView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
+            contentTextView.heightAnchor.constraint(equalToConstant: 112)
+        ])
+        
+        NSLayoutConstraint.activate([
+            placeHolderLabel.topAnchor.constraint(equalTo: contentTextView.topAnchor, constant: 14),
+            placeHolderLabel.leadingAnchor.constraint(equalTo: contentTextView.leadingAnchor, constant: 16)
+        ])
+        
+        NSLayoutConstraint.activate([
+            categoryView.leadingAnchor.constraint(equalTo: mainScrollView.leadingAnchor),
+            categoryView.trailingAnchor.constraint(equalTo: mainScrollView.trailingAnchor),
+            
+            categoryLabel.topAnchor.constraint(equalTo: categoryView.topAnchor, constant: 20),
+            categoryLabel.leadingAnchor.constraint(equalTo: categoryView.leadingAnchor, constant: 20),
+            
+            categoryMultiView.topAnchor.constraint(equalTo: categoryLabel.bottomAnchor, constant: 8),
+            categoryMultiView.leadingAnchor.constraint(equalTo: categoryView.leadingAnchor, constant: 20),
+            categoryMultiView.trailingAnchor.constraint(equalTo: categoryView.trailingAnchor, constant: -20),
+            categoryMultiView.bottomAnchor.constraint(equalTo: categoryView.bottomAnchor)
+        ])
+        
+        NSLayoutConstraint.activate([
+            completeButtonView.leadingAnchor.constraint(equalTo: mainScrollView.leadingAnchor),
+            completeButtonView.trailingAnchor.constraint(equalTo: mainScrollView.trailingAnchor),
+            completeButtonView.heightAnchor.constraint(equalToConstant: 120)
+        ])
+        
+        NSLayoutConstraint.activate([
+            completeButton.leadingAnchor.constraint(equalTo: completeButtonView.leadingAnchor, constant: 20),
+            completeButton.trailingAnchor.constraint(equalTo: completeButtonView.trailingAnchor, constant: -20),
+            completeButton.topAnchor.constraint(equalTo: completeButtonView.topAnchor, constant: 56),
+            completeButton.bottomAnchor.constraint(equalTo: completeButtonView.bottomAnchor, constant: -10)
         ])
     }
+    
+    private var mainScrollView : UIScrollView = {
+        let scrollView = UIScrollView()
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        return scrollView
+    }()
+    
+    private var mainStackView : UIStackView = {
+        let stack = UIStackView()
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        stack.axis = .vertical
+        return stack
+    }()
+    
+    private var emptyView : UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = AppColor.neutral50.color
+        return view
+    }()
+    
+    private var imageContainView : UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
     
     private var imageScrollview : UIScrollView  = {
         let scrollView = UIScrollView()
@@ -354,8 +538,15 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
     private var selectedImageStackView : UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
+        stackView.backgroundColor = AppColor.neutral100.color
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
+    }()
+    
+    private var buttonView : UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
     }()
     
     private var buttonStack : UIStackView = {
@@ -368,21 +559,28 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
     
     private var addPinButton : UIButton = {
         let button = UIButton()
-        button.setTitle("핀 추가", for: .normal)
+        button.setAttributedTitle(NSAttributedString(string: "핀 추가", attributes: Typography.body14SemiBold(color: AppColor.neutral900).attributes), for: .normal)
         button.setTitleColor(.black, for: .normal)
-        button.backgroundColor = UIColor(red: 217/255.0, green: 217/255.0, blue: 217/255.0, alpha: 1.0)
-
+        button.backgroundColor = AppColor.secondary.color
+        button.layer.cornerRadius = 17.5
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
     
     private var autoPinAddButton : UIButton = {
         let button = UIButton()
-        button.setTitle("핀 자동 생성", for: .normal)
+        button.setAttributedTitle(NSAttributedString(string: "핀 자동 생성", attributes: Typography.body14SemiBold(color: AppColor.neutral900).attributes), for: .normal)
         button.setTitleColor(.black, for: .normal)
-        button.backgroundColor = UIColor(red: 217/255.0, green: 217/255.0, blue: 217/255.0, alpha: 1.0)
+        button.backgroundColor = AppColor.secondary.color
+        button.layer.cornerRadius = 17.5
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
+    }()
+    
+    private var contentView : UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
     }()
     
     private var contentTextView : UITextView = {
@@ -392,8 +590,18 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
         textView.isUserInteractionEnabled = true
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.layer.borderWidth = 1.0
-        textView.layer.borderColor = UIColor.black.cgColor
+        textView.layer.borderColor = AppColor.neutral200.color.cgColor
+        textView.layer.cornerRadius = 12
+        textView.textContainerInset = UIEdgeInsets(top: 15, left: 16, bottom: 14, right: 16)
         return textView
+    }()
+    
+    private var placeHolderLabel : UILabel = {
+        let label = UILabel()
+        label.numberOfLines = 0
+        label.attributedText = NSAttributedString(string : "최대 2000자 까지 작성할 수 있어요.\n해시태그는 20개 까지 추가할 수 있어요.", attributes: Typography.body14Medium(color: AppColor.neutral300).attributes)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
     }()
     
     private var AIContentButton : UIButton = {
@@ -407,17 +615,19 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
     
     private var addButton : UIButton = {
         let button = UIButton()
-        button.setBackgroundImage(UIImage(named: "chat"), for: .normal)
+        button.setImage(AppImage.addImageButton.image, for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.heightAnchor.constraint(equalToConstant: 69).isActive = true
-        button.widthAnchor.constraint(equalToConstant: 69).isActive = true
+        button.backgroundColor = AppColor.neutral100.color
+        button.layer.cornerRadius = 8
+        button.imageView?.contentMode = .scaleAspectFit
         return button
     }()
     
-    private var customNavBar : UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
+    private var contentLabel : UILabel = {
+        let label = UILabel()
+        label.attributedText = NSAttributedString(string: "내용 입력", attributes: Typography.subTitle16Bold(color: AppColor.neutral900).attributes)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
     }()
     
     private var backButton : UIButton = {
@@ -427,11 +637,55 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
         return button
     }()
     
-    private var saveButton : UIButton = {
+    private var categoryView : UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    private var categoryLabel : UILabel = {
+        let label = UILabel()
+        label.attributedText = NSAttributedString(string: "카테고리 선택", attributes: Typography.subTitle16Bold(color: AppColor.neutral900).attributes)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    private var categoryMultiView = MultiLineTagView(horizontalSpacing: 8, verticalSpacing: 8, rowHeight: 30, horizontalPadding: 10)
+    
+    private var completeButtonView : UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    private var completeButton : UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("등록", for: .normal)
-        button.setTitleColor(.black, for: .normal)
+        button.backgroundColor = AppColor.neutral50.color
+        button.setAttributedTitle(NSAttributedString(string : "등록하기", attributes: Typography.body15SemiBold(color: AppColor.neutral300).attributes), for: .normal)
+        button.layer.cornerRadius = 12
+        return button
+    }()
+    
+    let navTitle : UILabel = {
+        let label = UILabel()
+        label.attributedText = NSAttributedString(string: "새 게시물", attributes: Typography.heading18Bold(color: AppColor.neutral900).attributes)
+        return label
+    }()
+    
+    let basicView : UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = AppColor.neutral50.color
+        return view
+    }()
+    
+    let addImageButton : UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = AppColor.neutral700.color
+        button.setAttributedTitle(NSAttributedString(string: "이미지 올리기", attributes: Typography.body15SemiBold(color: AppColor.white).attributes), for: .normal)
+        button.layer.cornerRadius = 23.5
         return button
     }()
     
@@ -489,18 +743,18 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
         }
     }
     
-    func drawImage(_ imageInfo : PostImageStruct) -> UIView {
+    func drawImage(_ imageInfo : PostImageStruct) {
         let view : UIView = {
             let view = UIView()
             view.translatesAutoresizingMaskIntoConstraints = false
+            view.backgroundColor = AppColor.neutral50.color
             return view
         }()
         
         let deleteButton : UIButton = {
             let button = UIButton()
             button.translatesAutoresizingMaskIntoConstraints = false
-            button.setTitle("X", for: .normal)
-            button.backgroundColor = .red
+            button.setBackgroundImage(AppImage.deleteImage.image, for: .normal)
             return button
         }()
         
@@ -526,24 +780,24 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
             })
             .disposed(by: disposeBag)
         
+        
         view.addSubview(deleteButton)
         view.addSubview(imageView)
         view.bringSubviewToFront(deleteButton)
+        imageScrollStackView.addArrangedSubview(view)
         
         NSLayoutConstraint.activate([
-            view.heightAnchor.constraint(equalToConstant: 69),
-            view.widthAnchor.constraint(equalToConstant: 69),
+            view.heightAnchor.constraint(equalTo: imageScrollview.heightAnchor),
+            view.widthAnchor.constraint(equalTo: imageScrollview.heightAnchor),
             
-            imageView.topAnchor.constraint(equalTo: view.topAnchor),
+            imageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 6),
             imageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            imageView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            imageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -6),
             imageView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             
-            deleteButton.topAnchor.constraint(equalTo: imageView.topAnchor),
-            deleteButton.trailingAnchor.constraint(equalTo: imageView.trailingAnchor)
+            deleteButton.topAnchor.constraint(equalTo: imageView.topAnchor, constant: -6),
+            deleteButton.trailingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: 6)
         ])
-        
-        return view
     }
     
     private func drawSelectedView(for imageInfo: PostImageStruct) {
@@ -570,7 +824,7 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
         
         NSLayoutConstraint.activate([
             selectedImageAndPin.widthAnchor.constraint(equalTo: selectedImageScrollView.widthAnchor),
-            selectedImageAndPin.heightAnchor.constraint(equalTo: selectedImageStackView.heightAnchor),
+            selectedImageAndPin.heightAnchor.constraint(equalTo: selectedImageScrollView.heightAnchor),
             
             selectedImageView.topAnchor.constraint(equalTo: selectedImageAndPin.topAnchor),
             selectedImageView.leadingAnchor.constraint(equalTo: selectedImageAndPin.leadingAnchor),
@@ -649,5 +903,9 @@ extension MakePostViewController : UITextViewDelegate {
         let isHashCountValid = hashCount <= 20
 
         return isLengthValid && isHashCountValid
+    }
+    
+    func textViewDidChange(_ textView: UITextView) {
+        placeHolderLabel.isHidden = !textView.text.isEmpty
     }
 }

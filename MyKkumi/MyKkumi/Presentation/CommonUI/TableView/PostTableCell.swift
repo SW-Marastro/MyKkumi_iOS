@@ -10,268 +10,422 @@ import RxSwift
 
 open class PostTableCell : UITableViewCell {
     public static let cellID = "PostTableCell"
-    private let disposeBag = DisposeBag()
-    private var images : [String] = []
+    private var disposeBag = DisposeBag()
     private var viewModel : PostCellViewModelProtocol!
     
     public override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        setupHierarchy()
-        initAttribute()
-        setupLayout()
     }
     
     public func bind(viewModel : PostCellViewModelProtocol) {
         self.viewModel = viewModel
         
-        optionButton.rx.tap
-            .bind(to: viewModel.optionButtonTap)
+        self.contentView.subviews.forEach { $0.removeFromSuperview() }
+        self.dotView.arrangedSubviews.forEach { $0.removeFromSuperview() }
+        self.postImageStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
+        
+        self.disposeBag = DisposeBag()
+        
+        setCellData(postVO: viewModel.post.value)
+        
+        self.viewModel.showedImage
+            .subscribe(onNext: {[weak self] idx in
+                guard let self = self else { return }
+                self.dotView.arrangedSubviews.forEach { dot in
+                    dot.backgroundColor = AppColor.neutral50.color
+                }
+                
+                if idx  < self.dotView.arrangedSubviews.count {
+                    self.dotView.arrangedSubviews[idx].backgroundColor = AppColor.primary.color
+                }
+            })
             .disposed(by: disposeBag)
         
-        viewModel.setPostData
-            .drive(onNext : {[weak self] post in
-                self?.setCellData(postVO: post)
-            })
+        self.reportPostButton.rx.tap
+            .map{ [self.viewModel.post.value.writer.uuid : self.viewModel.post.value.id] }
+            .bind(to: self.viewModel.reportButtonTap)
             .disposed(by: disposeBag)
     }
     
     //관련 Data Binding
     public func setCellData(postVO : PostVO) {
-        profileImageView.load(url: URL(string: postVO.writer.profileImage)!)
-        self.images = postVO.imageURLs
-        postImageCollection.reloadData()
-        updateCountLabel()
-        nicknameLabel.text = postVO.writer.nickname
-        categoryLabel.text = postVO.category + "-" + postVO.subCategory
+        setupHierarchy()
+        
+        if let imageurl = postVO.writer.profileImage {
+            if imageurl == "nullValue" {
+                profileImageView.image = AppImage.profile.image
+            } else {
+                profileImageView.load(url: URL(string: imageurl)!)
+            }
+        } else {
+            profileImageView.image = AppImage.profile.image
+        }
+        
+        let category = postVO.category + " > \(postVO.subCategory)"
+        
+        nicknameLabel.attributedText = NSAttributedString(string : postVO.writer.nickname, attributes: Typography.body14SemiBold(color: AppColor.neutral900).attributes)
+        
+        categoryLabel.attributedText = NSAttributedString(string: category, attributes: Typography.body13Medium(color: AppColor.neutral500).attributes)
+        
+        postNameLabel.attributedText = NSAttributedString(string : postVO.writer.nickname, attributes: Typography.body14SemiBold(color: AppColor.neutral900).attributes)
+        
+        postContent.setTextWithMore(content: postVO.content)
+        
+        for post in postVO.images {
+            let imageAndPinView : UIView = {
+                let view = UIView()
+                view.translatesAutoresizingMaskIntoConstraints = false
+                return view
+            }()
+            
+            let imageView : UIImageView = {
+                let image = UIImageView()
+                image.contentMode = .scaleAspectFit
+                image.translatesAutoresizingMaskIntoConstraints = false
+                return image
+            }()
+            
+            let dot : UIView = {
+                let view  = UIView()
+                view.translatesAutoresizingMaskIntoConstraints = false
+                view.layer.cornerRadius = 4
+                view.backgroundColor = AppColor.neutral50.color
+                return view
+            }()
+            
+            imageAndPinView.addSubview(imageView)
+            dotView.addArrangedSubview(dot)
+            postImageStackView.addArrangedSubview(imageAndPinView)
+            
+            NSLayoutConstraint.activate([
+                imageAndPinView.widthAnchor.constraint(equalTo: postImageScrollView.widthAnchor),
+                imageAndPinView.heightAnchor.constraint(equalTo: postImageScrollView.heightAnchor)
+            ])
+            
+            NSLayoutConstraint.activate([
+                imageView.topAnchor.constraint(equalTo: imageAndPinView.topAnchor),
+                imageView.leadingAnchor.constraint(equalTo: imageAndPinView.leadingAnchor),
+                imageView.trailingAnchor.constraint(equalTo: imageAndPinView.trailingAnchor),
+                imageView.bottomAnchor.constraint(equalTo: imageAndPinView.bottomAnchor)
+            ])
+            
+            NSLayoutConstraint.activate([
+                dot.widthAnchor.constraint(equalToConstant: 8),
+                dot.heightAnchor.constraint(equalToConstant: 8)
+            ])
+            
+            imageView.load(url:URL(string: post.url)!) { _ in
+                if let image = imageView.image {
+                    let imageSize = image.size
+                    let imageViewSize = imageView.bounds.size
+                    
+                    let scaleWidth = imageViewSize.width / imageSize.width
+                    let scaleHeight = imageViewSize.height / imageSize.height
+                    
+                    var aspectRatio: CGFloat = 1.0
+                    var scaledImageSize: CGSize = .zero
+                    
+                    aspectRatio = min(scaleWidth, scaleHeight)
+                    scaledImageSize = CGSize(width: imageSize.width * aspectRatio, height: imageSize.height * aspectRatio)
+                    
+                    let imageX = (imageViewSize.width - scaledImageSize.width) / 2
+                    let imageY = (imageViewSize.height - scaledImageSize.height) / 2
+                    
+                    for pin in post.pins {
+                        let x = scaledImageSize.width * pin.positionX + imageX
+                        let y = scaledImageSize.height * pin.positionY + imageY
+                        
+                        let pinImageView : UIImageView = {
+                            let image = UIImageView()
+                            image.translatesAutoresizingMaskIntoConstraints = false
+                            image.image = AppImage.pin.image
+                            return image
+                        }()
+                        
+                        imageAndPinView.addSubview(pinImageView)
+                        
+                        NSLayoutConstraint.activate([
+                            pinImageView.heightAnchor.constraint(equalToConstant: 24),
+                            pinImageView.widthAnchor.constraint(equalTo: pinImageView.heightAnchor),
+                            pinImageView.leadingAnchor.constraint(equalTo: imageAndPinView.leadingAnchor, constant: x - 12),
+                            pinImageView.topAnchor.constraint(equalTo: imageAndPinView.topAnchor, constant: y - 12)
+                        ])
+                    }
+                }
+            }
+        }
+        
+        setupLayout()
+        setupDelegate()
     }
     
-    func initAttribute() {
-        profileImageView.layer.cornerRadius = profileImageView.frame.height/2
-        
-        postImageCollection.delegate = self
-        postImageCollection.dataSource = self
+    func setupDelegate() {
+        self.postImageScrollView.delegate = self
     }
     
     func setupHierarchy() {
-        contentView.addSubview(mainStack)
-        mainStack.addArrangedSubview(userProfileStack)
-        mainStack.addArrangedSubview(postImageView)
-        postImageView.addSubview(postImageCollection)
-        postImageView.addSubview(countImageLabel)
-        userProfileStack.addArrangedSubview(profileImageView)
-        userProfileStack.addArrangedSubview(postInfoStack)
-        userProfileStack.addArrangedSubview(optionButton)
-        postInfoStack.addArrangedSubview(nicknameLabel)
-        postInfoStack.addArrangedSubview(categoryLabel)
+        self.contentView.addSubview(profileView)
+        self.contentView.addSubview(postImageScrollView)
+        self.contentView.addSubview(dotView)
+        self.contentView.addSubview(buttonStack)
+        self.contentView.addSubview(reportPostButton)
+        self.contentView.addSubview(postNameLabel)
+        self.contentView.addSubview(postContent)
+        self.contentView.addSubview(writeComment)
+        
+        self.profileView.addSubview(profileImageView)
+        self.profileView.addSubview(nicknameLabel)
+        self.profileView.addSubview(categoryLabel)
+        self.profileView.addSubview(followButton)
+        
+        self.postImageScrollView.addSubview(postImageStackView)
+        self.buttonStack.addArrangedSubview(likeButton)
+        self.buttonStack.addArrangedSubview(commentButton)
+        self.buttonStack.addArrangedSubview(shareButton)
+        self.buttonStack.addArrangedSubview(scrapButton)
     }
     
     func setupLayout() {
+        //MARK: Profile
+        NSLayoutConstraint.activate([
+            profileView.topAnchor.constraint(equalTo: self.contentView.topAnchor),
+            profileView.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor),
+            profileView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor),
+            profileView.heightAnchor.constraint(equalToConstant: 92)
+        ])
+        
+        NSLayoutConstraint.activate([
+            profileImageView.topAnchor.constraint(equalTo: profileView.topAnchor, constant: 24),
+            profileImageView.leadingAnchor.constraint(equalTo: profileView.leadingAnchor, constant: 16),
+            profileImageView.heightAnchor.constraint(equalToConstant: 48),
+            profileImageView.widthAnchor.constraint(equalTo: profileImageView.heightAnchor)
+        ])
+        
+        NSLayoutConstraint.activate([
+            nicknameLabel.topAnchor.constraint(equalTo: profileView.topAnchor, constant: 27),
+            nicknameLabel.leadingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: 13),
+            categoryLabel.topAnchor.constraint(equalTo: nicknameLabel.bottomAnchor),
+            categoryLabel.leadingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: 13)
+        ])
+        
+        NSLayoutConstraint.activate([
+            followButton.topAnchor.constraint(equalTo: profileView.topAnchor, constant: 27),
+            followButton.trailingAnchor.constraint(equalTo: profileView.trailingAnchor, constant: -16),
+            followButton.heightAnchor.constraint(equalToConstant: 28),
+            followButton.widthAnchor.constraint(equalToConstant: 50)
+        ])
+        
+        NSLayoutConstraint.activate([
+            postImageScrollView.topAnchor.constraint(equalTo: profileView.bottomAnchor),
+            postImageScrollView.widthAnchor.constraint(equalTo: self.contentView.widthAnchor),
+            postImageScrollView.heightAnchor.constraint(equalTo: postImageScrollView.widthAnchor)
+        ])
+        
+        NSLayoutConstraint.activate([
+            postImageStackView.topAnchor.constraint(equalTo: postImageScrollView.topAnchor),
+            postImageStackView.leadingAnchor.constraint(equalTo: postImageScrollView.leadingAnchor),
+            postImageStackView.trailingAnchor.constraint(equalTo: postImageScrollView.trailingAnchor),
+            postImageStackView.bottomAnchor.constraint(equalTo: postImageScrollView.bottomAnchor),
+            postImageStackView.heightAnchor.constraint(equalTo: postImageScrollView.heightAnchor)
+        ])
+        
+        NSLayoutConstraint.activate([
+            dotView.topAnchor.constraint(equalTo: postImageScrollView.bottomAnchor, constant: 10),
+            dotView.centerXAnchor.constraint(equalTo: self.contentView.centerXAnchor),
+            dotView.heightAnchor.constraint(equalToConstant: 8)
+        ])
+        
+        NSLayoutConstraint.activate([
+            buttonStack.topAnchor.constraint(equalTo: dotView.bottomAnchor, constant: 16),
+            buttonStack.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 16),
+            likeButton.heightAnchor.constraint(equalToConstant: 24),
+            likeButton.widthAnchor.constraint(equalTo: likeButton.heightAnchor),
+            commentButton.heightAnchor.constraint(equalTo: likeButton.heightAnchor),
+            commentButton.widthAnchor.constraint(equalTo: likeButton.widthAnchor),
+            shareButton.heightAnchor.constraint(equalTo: likeButton.heightAnchor),
+            shareButton.widthAnchor.constraint(equalTo: likeButton.widthAnchor),
+            scrapButton.heightAnchor.constraint(equalTo: likeButton.heightAnchor),
+            scrapButton.widthAnchor.constraint(equalTo: likeButton.widthAnchor),
+        ])
+        
+        NSLayoutConstraint.activate([
+            reportPostButton.topAnchor.constraint(equalTo: dotView.bottomAnchor, constant: 12),
+            reportPostButton.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -10),
+            reportPostButton.heightAnchor.constraint(equalToConstant: 32),
+            reportPostButton.widthAnchor.constraint(equalToConstant: 65)
+        ])
+        
+        NSLayoutConstraint.activate([
+            postNameLabel.topAnchor.constraint(equalTo: reportPostButton.bottomAnchor, constant: 12),
+            postNameLabel.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 16),
+            postNameLabel.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -16)
+        ])
+        
+        NSLayoutConstraint.activate([
+            postContent.topAnchor.constraint(equalTo: postNameLabel.bottomAnchor, constant: 8),
+            postContent.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 16),
+            postContent.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -16)
+        ])
+        
+        NSLayoutConstraint.activate([
+            writeComment.topAnchor.constraint(equalTo: postContent.bottomAnchor, constant: 16),
+            writeComment.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 16),
+            writeComment.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -32),
+            writeComment.heightAnchor.constraint(equalToConstant: 28),
+            writeComment.widthAnchor.constraint(equalToConstant: 73)
+        ])
     }
     
-    required public init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    let mainStack : UIStackView = {
-        let view = UIStackView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.axis = .vertical
-        view.alignment = .center
-        return view
-    }()
-    
-    let userProfileStack : UIStackView = {
-        let view = UIStackView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.axis = .horizontal
-        view.alignment = .leading
-        return view
-    }()
-    
-    let postInfoStack : UIStackView = {
-        let view = UIStackView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.axis = .vertical
-        view.alignment = .leading
-        view.spacing = 3
-        return view
-    }()
-    
-    let ButtonStack : UIStackView = {
-        let view = UIStackView()
-        view.translatesAutoresizingMaskIntoConstraints  = false
-        view.axis = .horizontal
-        return view
-    }()
-    
-    let contentStack : UIStackView = {
-        let view = UIStackView()
-        view.translatesAutoresizingMaskIntoConstraints  = false
-        view.axis = .vertical
-        return view
-    }()
-    
-    let postImageView : UIView = {
+    private let profileView : UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     
-    let profileImageView : UIImageView = {
+    private let profileImageView : UIImageView = {
         let view = UIImageView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.contentMode = .scaleAspectFill
+        view.layer.cornerRadius = 24
         view.layer.masksToBounds = true
+        view.image = AppImage.profile.image
         return view
     }()
     
-    let nicknameLabel : UILabel = {
+    private let nicknameLabel : UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.boldSystemFont(ofSize: 17)
+        label.font = Typography.body14SemiBold(color: AppColor.neutral900).font()
         return label
     }()
     
-    let categoryLabel : UILabel = {
-       let label = UILabel()
+    private let categoryLabel : UILabel = {
+        let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.systemFont(ofSize: 17)
+        label.font = Typography.body13Medium(color: AppColor.neutral900).font()
         return label
     }()
     
-    let optionButton : UIButton = {
+    private let followButton : UIButton = {
         let button = UIButton()
-        button.setBackgroundImage(UIImage(named: "trheePoint"), for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.layer.cornerRadius = 6
+        button.setAttributedTitle(NSAttributedString(string: "팔로우", attributes: Typography.body13Medium(color: AppColor.white).attributes), for: .normal)
+        button.backgroundColor = AppColor.primary.color
         return button
     }()
     
-    let postImageCollection : PostImageCollectionView = {
-        let collection = PostImageCollectionView(frame: CGRect.zero, collectionViewLayout: PostImageCollectionViewFlowLayout())
-        
-        return collection
+    private let postImageScrollView : UIScrollView = {
+        let scroll = UIScrollView()
+        scroll.translatesAutoresizingMaskIntoConstraints = false
+        scroll.isPagingEnabled = true
+        scroll.showsHorizontalScrollIndicator = false
+        scroll.backgroundColor = AppColor.neutral50.color
+        return scroll
     }()
     
-    let countImageLabel : UILabel = {
-       let label = UILabel()
+    private let postImageStackView : UIStackView = {
+        let stack = UIStackView()
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        stack.axis = .horizontal
+        return stack
+    }()
+    
+    private let dotView : UIStackView = {
+        let stack = UIStackView()
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        stack.axis = .horizontal
+        stack.spacing = 6
+        stack.alignment = .center
+        stack.distribution = .equalSpacing
+        return stack
+    }()
+    
+    private let buttonStack : UIStackView = {
+        let stack = UIStackView()
+        stack.axis = .horizontal
+        stack.spacing = 8
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        return stack
+    }()
+    
+    private let likeButton : UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setBackgroundImage(AppImage.favoritButton.image, for: .normal)
+        return button
+    }()
+    
+    private let commentButton : UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setBackgroundImage(AppImage.commentButton.image, for: .normal)
+        return button
+    }()
+    
+    private let shareButton : UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setBackgroundImage(AppImage.shareButton.image, for: .normal)
+        return button
+    }()
+    
+    private let scrapButton : UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setBackgroundImage(AppImage.scrapButton.image, for: .normal)
+        return button
+    }()
+    
+    private let reportPostButton : UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle("신고하기", for: .normal)
+        button.titleLabel?.font = Typography.body13SemiBold(color: AppColor.neutral900).font()
+        button.setTitleColor(AppColor.neutral400.color, for: .normal)
+        return button
+    }()
+    
+    private let postNameLabel : UILabel = {
+        let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
-}
-
-
-open class PostTableCellOption : UITableViewCell {
-    public static let cellID = "PostTableCellOption"
+    private let postContent : UILabel = {
+        let label = UILabel()
+        label.numberOfLines = 0
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
     
-    public override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        setupHierarchy()
-        initAttribute()
-        setupLayout()
-    }
-    
-    public func setCellData(postVO : PostVO) {
-        contentLabel.text = postVO.content
-        contentLabel.text = postVO.writer.nickname + " " + postVO.content
-        iconButtonStack.addArrangedSubview(like)
-        iconButtonStack.addArrangedSubview(comment)
-        iconButtonStack.addArrangedSubview(bookmark)
-    }
-    
-    func initAttribute() {
-        shareButton.translatesAutoresizingMaskIntoConstraints = false
-        contentLabel.translatesAutoresizingMaskIntoConstraints = false
-        
-        contentLabel.font = UIFont.systemFont(ofSize: 17)
-        contentLabel.textColor = .gray
-    }
-    
-    func setupHierarchy() {
-        contentView.addSubview(mainStack)
-        mainStack.addArrangedSubview(iconButtonStack)
-        iconButtonStack.addArrangedSubview(shareButton)
-        mainStack.addArrangedSubview(contentLabel)
-    }
-    
-    func setupLayout() {
-        NSLayoutConstraint.activate([
-            mainStack.topAnchor.constraint(equalTo: contentView.topAnchor),
-            mainStack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            mainStack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            mainStack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
-        ])
-        
-        NSLayoutConstraint.activate([
-            iconButtonStack.topAnchor.constraint(equalTo: mainStack.topAnchor),
-            iconButtonStack.leadingAnchor.constraint(equalTo: mainStack.leadingAnchor),
-            iconButtonStack.trailingAnchor.constraint(equalTo: mainStack.trailingAnchor)
-        ])
-    }
+    private let writeComment : UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle("댓글 작성", for: .normal)
+        button.titleLabel?.font = Typography.body13SemiBold(color: AppColor.neutral900).font()
+        button.backgroundColor = AppColor.secondary.color
+        button.layer.cornerRadius = 8
+        return button
+    }()
     
     required public init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    let mainStack : UIStackView = {
-        let view = UIStackView()
-        view.axis = .vertical
-        view.alignment = .center
-        view.spacing = 4
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-    
-    let iconButtonStack : UIStackView = {
-        let view = UIStackView()
-        view.axis = .horizontal
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-    
-    let shareButton : UIButton = {
-        let button = UIButton()
-        button.setBackgroundImage(UIImage(named: "share"), for: .normal)
-        return button
-    }()
-    
-    let contentLabel = UILabel()
-    
-    let like = CountButton(image: "heart", text: "57")
-    let comment = CountButton(image: "chat", text: "2")
-    let bookmark = CountButton(image: "bookmark", text: "6")
 }
 
-extension PostTableCell : UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: collectionView.bounds.width, height: collectionView.bounds.height)
-    }
-    
-    public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return images.count
-    }
-    
-    public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PostImageCollectionViewCell.cellID, for: indexPath) as! PostImageCollectionViewCell
-        cell.imageView.load(url: URL(string: images[indexPath.item])!)
-        return cell
-    }
-    
+extension PostTableCell : UIScrollViewDelegate {
     public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        updateCountLabel()
+        let nowPage = Int(scrollView.contentOffset.x / scrollView.frame.width)
+        self.viewModel.showedImage.accept(nowPage)
     }
 
-    public func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
-        updateCountLabel()
-    }
-    
-    private func updateCountLabel() {
-        let visibleCells = postImageCollection.visibleCells
-        guard let visibleCell = visibleCells.first else { return }
-        guard let indexPath = postImageCollection.indexPath(for: visibleCell) else { return }
-        
-        let currentItem = indexPath.item + 1
-        let totalItems = postImageCollection.numberOfItems(inSection: 0)
-        countImageLabel.text = "\(currentItem) / \(totalItems)"
-    }
 }
+
+//
+//@available(iOS 17, *)
+//#Preview(traits: .defaultLayout, body: {
+//    let cell = PostTableCell()
+//    
+//    return cell
+//})

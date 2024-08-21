@@ -11,9 +11,17 @@ import Moya
 
 public protocol PostDataSource {
     func getPosts(_ cursor : String?) -> Single<Result<PostsVO, PostError>>
+    func reportPost(_ id : Int) -> Single<Result<String, PostError>>
 }
 
 public class DefaultPostDataSource : PostDataSource {
+    public func reportPost(_ id: Int) -> RxSwift.Single<Result<String, PostError>> {
+        return postProvier.rx.request(.report(id))
+            .filterSuccessfulStatusCodes()
+            .map(ReportResult.self)
+            .map{ .success($0.result) }
+    }
+    
     public func getPosts(_ cursor : String?) -> Single<Result<PostsVO, PostError>> {
         return postProvier.rx.request(.getPost(cursor))
             .filterSuccessfulStatusCodes()

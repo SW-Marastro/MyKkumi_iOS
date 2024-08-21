@@ -13,6 +13,7 @@ import AVFoundation
 
 public protocol MakePostViewModelInput {
     var viewdidLoad : PublishSubject<Void> { get }
+    
     //camera & library & content
     var addImageButtonTap : PublishSubject<Void> { get }
     var libraryTap : PublishSubject<Void> { get }
@@ -32,6 +33,9 @@ public protocol MakePostViewModelInput {
     var modifyPinOptionButtonTap : PublishSubject<String> { get }
     var deletePinButtonTap : PublishSubject<String> { get }
     
+    //category
+    var subCategoryButtonTap : PublishSubject<Int> { get }
+    
     //navBar
     var backButtontap : PublishSubject<Void> { get }
     var saveButtonTap : PublishSubject<Void> { get }
@@ -48,7 +52,8 @@ public protocol MakePostViewModelOutput {
     var sholudPresentModifyPin : Driver<String> { get }
     var sholudAlertOverChar : Driver<Void> { get }
     var dismissVC : Driver<Void> { get }
-    var sholudPresentCategory : Driver<Void> { get }
+    var backToTabBar : Driver<Void> { get }
+    var sholudDrawCategory : Driver<CategoriesVO> { get }
 }
 
 public protocol MakePostViewModelProtocol : MakePostViewModelOutput,  MakePostViewModelInput{
@@ -58,7 +63,6 @@ public protocol MakePostViewModelProtocol : MakePostViewModelOutput,  MakePostVi
     var pinInfoRelay : BehaviorRelay<[String : [PinInfoStrcut]]> { get }
     var selectedImageSize : BehaviorRelay<CGRect> { get }
     var deliverPinInfoViewModel : BehaviorRelay<PinInfoViewModelProtocol> { get }
-    var deliverCategoryViewModel : BehaviorRelay<PostCategoryViewModelProtocol> { get }
     var subCategories : BehaviorRelay<Int> { get }
 }
  
@@ -67,7 +71,6 @@ public class MakePostViewModel : MakePostViewModelProtocol {
     private let disposeBag = DisposeBag()
     private let makePostUsecase : MakePostUseCase
     private let pinInfoViewModel  = PinInfoViewModel("nil")
-    private let postCategoryViewModel = PostCategoryViewModel()
     
     public init(makePostUsecase : MakePostUseCase = DependencyInjector.shared.resolve(MakePostUseCase.self)) {
         self.makePostUsecase = makePostUsecase
@@ -88,6 +91,7 @@ public class MakePostViewModel : MakePostViewModelProtocol {
         self.overChar = PublishSubject<Void>()
         self.saveButtonTap = PublishSubject<Void>()
         self.backButtontap = PublishSubject<Void>()
+        self.subCategoryButtonTap = PublishSubject<Int>()
         
         self.contentRelay = BehaviorRelay<String>(value: "")
         self.postImageRelay = BehaviorRelay<[PostImageStruct]>(value: [])
@@ -95,7 +99,6 @@ public class MakePostViewModel : MakePostViewModelProtocol {
         self.pinInfoRelay = BehaviorRelay<[String : [PinInfoStrcut]]>(value: [:])
         self.selectedImageSize = BehaviorRelay<CGRect>(value: CGRect())
         self.deliverPinInfoViewModel = BehaviorRelay<PinInfoViewModelProtocol>(value: pinInfoViewModel)
-        self.deliverCategoryViewModel = BehaviorRelay<PostCategoryViewModelProtocol>(value : postCategoryViewModel)
         self.subCategories = BehaviorRelay<Int>(value: 0)
         
         self.shouldDrawAddButton = self.viewdidLoad
@@ -125,10 +128,20 @@ public class MakePostViewModel : MakePostViewModelProtocol {
         self.sholudAlertOverChar = self.overChar
             .asDriver(onErrorDriveWith: .empty())
         
+        self.backToTabBar = self.backButtontap
+            .asDriver(onErrorDriveWith: .empty())
+        
         self.dismissVC = self.backButtontap
             .asDriver(onErrorDriveWith: .empty())
         
-        self.sholudPresentCategory = self.saveButtonTap
+        let categoryResult = viewdidLoad
+            .flatMap {_ in
+                return makePostUsecase.getCategory()
+            }
+            .share()
+        
+        self.sholudDrawCategory = categoryResult
+            .compactMap { $0.successValue()}
             .asDriver(onErrorDriveWith: .empty())
         
         self.imagesInput
@@ -170,12 +183,12 @@ public class MakePostViewModel : MakePostViewModelProtocol {
                 
                 for imageData in imageDatas {
                     dispatchGroup.enter()
-                    makePostUsecase.putImage(url: imageData.url, image: imageData.data)
+                    makePostUsecase.putImage(url: imageData.url.presignedUrl, image: imageData.data)
                         .subscribe(onSuccess: { result in
                             if case let .success(check) = result {
                                 if check {
                                     let uuId = UUID().uuidString + ".jpeg"
-                                    let imageUrl = imageData.url.components(separatedBy: "?").first!
+                                    let imageUrl = imageData.url.cdnUrl
                                     let postImage = PostImageStruct(UUID: uuId, imageUrl: imageUrl)
                                     tmpInfo.append(postImage)
                                     pinInfo[uuId] = []
@@ -322,8 +335,7 @@ public class MakePostViewModel : MakePostViewModelProtocol {
             .subscribe(onNext: {[weak self] value in
                 guard let self = self else { return }
                 var hashCount : Int = 0
-                print(value)
-                if value.count > CountValues.MaxContentCount.value {
+                if value.count > CountValues.MaxMakePostContentCount.value {
                     self.overChar.onNext(())
                     return
                 }
@@ -343,14 +355,14 @@ public class MakePostViewModel : MakePostViewModelProtocol {
             })
             .disposed(by: disposeBag)
         
-        self.postCategoryViewModel.categoryButtonTap
+        self.subCategoryButtonTap
             .subscribe(onNext: {[weak self] id in
-                guard let self = self else {return}
+                guard let self = self else { return }
                 self.subCategories.accept(id)
             })
             .disposed(by: disposeBag)
         
-        let saveResult = self.postCategoryViewModel.completeButtonTap
+        let saveResult = self.saveButtonTap
             .flatMap {[weak self] _ in
                 if let self = self {
                     let subCategoryId = self.subCategories.value
@@ -374,11 +386,10 @@ public class MakePostViewModel : MakePostViewModelProtocol {
             }
             .share()
         
-        self.postCategoryViewModel.dismissView = saveResult
-            .compactMap { $0.successValue()}
+        self.dismissVC = saveResult
+            .compactMap { $0.successValue() }
+            .map { _ in Void()}
             .asDriver(onErrorDriveWith: .empty())
-        
-        
     }
 
     public var addImageButtonTap: PublishSubject<Void>
@@ -397,6 +408,7 @@ public class MakePostViewModel : MakePostViewModelProtocol {
     public var overChar: PublishSubject<Void>
     public var backButtontap: PublishSubject<Void>
     public var saveButtonTap: PublishSubject<Void>
+    public var subCategoryButtonTap: PublishSubject<Int>
     
     public var shouldPushCamera: Driver<Void>
     public var shouldPushImagePicker: Driver<Void>
@@ -408,7 +420,8 @@ public class MakePostViewModel : MakePostViewModelProtocol {
     public var sholudPresentModifyPin: Driver<String>
     public var sholudAlertOverChar: Driver<Void>
     public var dismissVC: Driver<Void>
-    public var sholudPresentCategory: Driver<Void>
+    public var sholudDrawCategory: Driver<CategoriesVO>
+    public var backToTabBar: Driver<Void>
 
     public var contentRelay: BehaviorRelay<String>
     public var postImageRelay: BehaviorRelay<[PostImageStruct]>
@@ -416,15 +429,14 @@ public class MakePostViewModel : MakePostViewModelProtocol {
     public var pinInfoRelay: BehaviorRelay<[String : [PinInfoStrcut]]>
     public var selectedImageSize: BehaviorRelay<CGRect>
     public var deliverPinInfoViewModel: BehaviorRelay<any PinInfoViewModelProtocol>
-    public var deliverCategoryViewModel: BehaviorRelay<any PostCategoryViewModelProtocol>
     public var subCategories: BehaviorRelay<Int>
 }
 
 public struct ImageData {
     let data : Data
-    let url : String
+    let url : PreSignedUrlVO
     
-    init(data: Data, url: String) {
+    init(data: Data, url: PreSignedUrlVO) {
         self.data = data
         self.url = url
     }

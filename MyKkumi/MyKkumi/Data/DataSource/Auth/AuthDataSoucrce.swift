@@ -16,6 +16,9 @@ public protocol AuthDataSource {
     func signinApple(_ auth : AppleAuth) -> Single<Result<Bool, AuthError>>
     func patchUserData(_ user : PatchUserVO) -> Single<Result<UserVO, AuthError>>
     func refreshToken()
+    func getPresignedUrl() -> Single<Result<PreSignedUrlVO, AuthError>>
+    func reportUser(_ uuid : String) -> Single<Result<ReportResult, AuthError>>
+    func getUserData() -> Single<Result<UserVO, AuthError>>
 }
 
 public class DefaultAuthDataSource : AuthDataSource {
@@ -111,7 +114,6 @@ public class DefaultAuthDataSource : AuthDataSource {
                 }
             }
             .catch { error in
-                print(error)
                 let customError : ErrorVO
                 if let moyaError = error as? MoyaError {
                     switch moyaError {
@@ -181,5 +183,86 @@ public class DefaultAuthDataSource : AuthDataSource {
                 })
                 .disposed(by: disposeBag)
         }
+    }
+    
+    public func getPresignedUrl() -> Single<Result<PreSignedUrlVO, AuthError>> {
+        return authProvider.rx.request(.getPresignedUrl)
+            .filterSuccessfulStatusCodes()
+            .map(PreSignedUrlVO.self) // map to PreSignedUrlVO
+            .map { result in
+                return .success(result) // map to success with the url string
+            }
+            .catch { error in
+                let customError: ErrorVO = ErrorVO(errorCode: "unknown", message: "UnknownError", detail: "unknownError in getPresignedUrl")
+                return .just(.failure(AuthError.unknownError(customError)))
+            }
+    }
+    
+    public func reportUser(_ uuid: String) -> Single<Result<ReportResult, AuthError>> {
+        return authProvider.rx.request(.reportUser(uuid))
+            .filterSuccessfulStatusCodes()
+            .map(ReportResult.self)
+            .map { result in
+                return .success(result)
+            }
+            .catch { error in
+                let customError : ErrorVO
+                if let moyaError = error as? MoyaError {
+                    switch moyaError {
+                    case .statusCode(let response) :
+                        if let error =  (try? JSONDecoder().decode(ErrorVO.self, from : response.data)) {
+                            customError = error
+                            if customError.errorCode == "CONFLICT" {
+                                return .just(.failure(AuthError.CONFLICT))
+                            } else if customError.errorCode == "NOTFOUNT" {
+                                return .just(.failure(AuthError.NOTFOUND))
+                            }
+                            return .just(.failure(AuthError.unknownError(customError)))
+                        } else {
+                            customError = ErrorVO(errorCode: "unknown", message: "UnknownError", detail: "unknownError in Default")
+                            return .just(.failure(AuthError.unknownError(customError)))
+                        }
+                    default :
+                        customError = ErrorVO(errorCode: "unknown", message: "UnknownError", detail: "unknownError in Default")
+                        return .just(.failure(AuthError.unknownError(customError)))
+                    }
+                } else {
+                    customError = ErrorVO(errorCode: "unknown", message: "UnknownError", detail: "unknownError in POST")
+                    return .just(.failure(AuthError.unknownError(customError)))
+                }
+            }
+    }
+    
+    public func getUserData() -> Single<Result<UserVO, AuthError>> {
+        return authProvider.rx.request(.getUserData)
+            .filterSuccessfulStatusCodes()
+            .map(UserVO.self)
+            .map { result in
+                return .success(result)
+            }
+            .catch { error in
+                let customError : ErrorVO
+                if let moyaError = error as? MoyaError {
+                    switch moyaError {
+                    case .statusCode(let response) :
+                        if let error =  (try? JSONDecoder().decode(ErrorVO.self, from : response.data)) {
+                            customError = error
+                            if customError.errorCode == "INVALID_TOKEN" {
+                                return .just(.failure(AuthError.INVALIDTOKEN))
+                            }
+                            return .just(.failure(AuthError.unknownError(customError)))
+                        } else {
+                            customError = ErrorVO(errorCode: "unknown", message: "UnknownError", detail: "unknownError in Default")
+                            return .just(.failure(AuthError.unknownError(customError)))
+                        }
+                    default :
+                        customError = ErrorVO(errorCode: "unknown", message: "UnknownError", detail: "unknownError in Default")
+                        return .just(.failure(AuthError.unknownError(customError)))
+                    }
+                } else {
+                    customError = ErrorVO(errorCode: "unknown", message: "UnknownError", detail: "unknownError in POST")
+                    return .just(.failure(AuthError.unknownError(customError)))
+                }
+            }
     }
 }

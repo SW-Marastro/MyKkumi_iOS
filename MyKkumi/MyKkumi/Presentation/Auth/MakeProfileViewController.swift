@@ -80,13 +80,13 @@ class MakeProfileViewController : BaseViewController<MakeProfileViewModelProtoco
                     }
                     completeButton.backgroundColor = AppColor.neutral50.color
                     completeButton.isEnabled = false
-                    let attributedString = NSMutableAttributedString(string : "완료", attributes: Typography.body15SemiBold.attributes)
+                    let attributedString = NSMutableAttributedString(string : "완료", attributes: Typography.body15SemiBold(color: AppColor.neutral900).attributes)
                     attributedString.addAttribute(.foregroundColor, value: AppColor.neutral300.color, range: NSRange(location: 0, length: attributedString.length))
                     completeButton.setAttributedTitle(attributedString, for: .normal)
                 } else {
                     completeButton.backgroundColor = AppColor.primary.color
                     completeButton.isEnabled = true
-                    let attributedString = NSMutableAttributedString(string : "완료", attributes: Typography.body15SemiBold.attributes)
+                    let attributedString = NSMutableAttributedString(string : "완료", attributes: Typography.body15SemiBold(color: AppColor.neutral900).attributes)
                     attributedString.addAttribute(.foregroundColor, value: AppColor.white.color, range: NSRange(location: 0, length: attributedString.length))
                     completeButton.setAttributedTitle(attributedString, for: .normal)
                 }
@@ -259,7 +259,7 @@ class MakeProfileViewController : BaseViewController<MakeProfileViewModelProtoco
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.numberOfLines = 0
-        label.attributedText = NSAttributedString(string: "마이꾸미에 사용하실\n닉네임을 작성해주세요", attributes: Typography.heading20Bold.attributes)
+        label.attributedText = NSAttributedString(string: "마이꾸미에 사용하실\n닉네임을 작성해주세요", attributes: Typography.heading20Bold(color: AppColor.neutral900).attributes)
         label.textColor = AppColor.neutral900.color
         return label
     }()
@@ -267,7 +267,7 @@ class MakeProfileViewController : BaseViewController<MakeProfileViewModelProtoco
     private var profileLabel : UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.attributedText = NSAttributedString(string: "프로필 사진", attributes: Typography.body15SemiBold.attributes)
+        label.attributedText = NSAttributedString(string: "프로필 사진", attributes: Typography.body15SemiBold(color: AppColor.neutral900).attributes)
         label.textColor = AppColor.neutral900.color
         return label
     }()
@@ -284,7 +284,7 @@ class MakeProfileViewController : BaseViewController<MakeProfileViewModelProtoco
     private var profileImageChangeButton : UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setAttributedTitle(NSAttributedString(string: "프로필 이미지 변경", attributes: Typography.body13SemiBold.attributes), for: .normal)
+        button.setAttributedTitle(NSAttributedString(string: "프로필 이미지 변경", attributes: Typography.body13SemiBold(color: AppColor.neutral900).attributes), for: .normal)
         button.layer.cornerRadius = 12
         button.backgroundColor = AppColor.secondary.color
         return button
@@ -293,7 +293,7 @@ class MakeProfileViewController : BaseViewController<MakeProfileViewModelProtoco
     private var nickNameLabel : UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.attributedText = NSAttributedString(string: "닉네임", attributes: Typography.body15SemiBold.attributes)
+        label.attributedText = NSAttributedString(string: "닉네임", attributes: Typography.body15SemiBold(color: AppColor.neutral900).attributes)
         label.textColor = AppColor.neutral900.color
         return label
     }()
@@ -311,7 +311,7 @@ class MakeProfileViewController : BaseViewController<MakeProfileViewModelProtoco
     private var nickNameTextField: UITextField = {
         let textField = UITextField()
         textField.translatesAutoresizingMaskIntoConstraints = false
-        textField.attributedPlaceholder = NSAttributedString(string: "닉네임을 작성해주세요", attributes: Typography.body14Medium.attributes)
+        textField.attributedPlaceholder = NSAttributedString(string: "닉네임을 작성해주세요", attributes: Typography.body14Medium(color: AppColor.neutral900).attributes)
         return textField
     }()
     
@@ -341,7 +341,7 @@ class MakeProfileViewController : BaseViewController<MakeProfileViewModelProtoco
         label.translatesAutoresizingMaskIntoConstraints = false
         
         // NSMutableAttributedString을 사용하여 텍스트 색상을 포함한 속성 추가
-        let attributes = Typography.caption12Medium.attributes
+        let attributes = Typography.caption12Medium(color: AppColor.neutral900).attributes
         var attributedString = NSMutableAttributedString(string: "한글/영문/숫자/특수문자 모두 가능해요", attributes: attributes)
         
         // 텍스트 색상 추가
@@ -370,7 +370,7 @@ class MakeProfileViewController : BaseViewController<MakeProfileViewModelProtoco
         label.translatesAutoresizingMaskIntoConstraints = false
         
         // NSMutableAttributedString을 사용하여 텍스트 색상을 포함한 속성 추가
-        let attributes = Typography.caption12Medium.attributes
+        let attributes = Typography.caption12Medium(color: AppColor.neutral900).attributes
         var attributedString = NSMutableAttributedString(string: "최소 3자 ~ 최대 16자로 적어주세요", attributes: attributes)
         
         // 텍스트 색상 추가
@@ -383,7 +383,7 @@ class MakeProfileViewController : BaseViewController<MakeProfileViewModelProtoco
     private var completeButton : UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        let attributedString = NSMutableAttributedString(string : "완료", attributes: Typography.body15SemiBold.attributes)
+        let attributedString = NSMutableAttributedString(string : "완료", attributes: Typography.body15SemiBold(color: AppColor.neutral900).attributes)
         attributedString.addAttribute(.foregroundColor, value: AppColor.neutral300, range: NSRange(location: 0, length: attributedString.length))
         button.setAttributedTitle(attributedString, for: .normal)
         button.backgroundColor = AppColor.neutral50.color

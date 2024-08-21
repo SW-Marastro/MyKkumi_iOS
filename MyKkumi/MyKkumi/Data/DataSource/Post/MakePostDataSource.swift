@@ -11,7 +11,7 @@ import Moya
 
 public protocol MakePostDataSource {
     func getCategory() -> Single<Result<CategoriesVO, MakePostError>>
-    func getPresignedUrl() -> Single<Result<String, MakePostError>>
+    func getPresignedUrl() -> Single<Result<PreSignedUrlVO, MakePostError>>
     func putImage(url : String, image : Data) -> Single<Result<Bool, MakePostError>>
     func uploadPost(_ post : MakePostVO) -> Single<Result<Bool, MakePostError>>
     func deletePost(_ postId : Int) -> Single<Result<Bool, MakePostError>>
@@ -29,18 +29,19 @@ public class DefaultMakePostDataSource : MakePostDataSource {
             }
     }
     
-    public func getPresignedUrl() -> RxSwift.Single<Result<String, MakePostError>> {
+    public func getPresignedUrl() -> RxSwift.Single<Result<PreSignedUrlVO, MakePostError>> {
         return makePostProvider.rx.request(.getPresignedURL)
             .filterSuccessfulStatusCodes()
-            .map( PreSignedUrlVO.self )
-            .map{ result in
-                    .success(result.url)
+            .map(PreSignedUrlVO.self) // map to PreSignedUrlVO
+            .map { result in
+                return .success(result) // map to success with the url string
             }
-            .catch { _ in
-                let customError :ErrorVO = ErrorVO(errorCode: "unknown", message: "UnknownError", detail: "unknownError in getPresignedUrl")
+            .catch { error in
+                let customError: ErrorVO = ErrorVO(errorCode: "unknown", message: "UnknownError", detail: "unknownError in getPresignedUrl")
                 return .just(.failure(MakePostError.unknownError(customError)))
             }
     }
+
     
     public func putImage(url: String, image: Data) -> Single<Result<Bool, MakePostError>> {
         return putImageToBucketProvider.rx.request(.putImage(url: url, image: image))

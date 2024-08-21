@@ -13,7 +13,7 @@ class HomeViewController: BaseViewController<HomeViewModelProtocol> {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //self.navigationController?.setNavigationBarHidden(true, animated: false)
+        self.navigationController?.setNavigationBarHidden(true, animated: false)
     }
     
     public override func setupHierarchy() {
@@ -55,22 +55,48 @@ class HomeViewController: BaseViewController<HomeViewModelProtocol> {
             .disposed(by: disposeBag)
         
         //MARK: PostBinding
-        self.viewModel.getPostsData
-            .onNext(nil)
-        
-        
         self.viewModel.shouldReloadPostTable
             .emit(onNext: { [weak self] _ in
                 self?.postTableView.reloadData()
+                self?.fetch = false
             })
             .disposed(by: disposeBag)
         
-        self.viewModel.shouldPushUploadPostView
-            .drive(onNext : {[weak self] _ in
-                let makePostVC = MakePostViewController()
-                makePostVC.setupBind(viewModel: MakePostViewModel())
-                makePostVC.hidesBottomBarWhenPushed  = true
-                self?.navigationController?.pushViewController(makePostVC, animated: true)
+        self.viewModel.shouldPushReport
+            .drive(onNext: {[weak self] id in
+                guard let self = self else { return }
+                
+                let keys = id.map { $0.key }
+                let values = id.map { $0.value }
+                
+                let alert = UIAlertController(title : "신고하시겠습니까?", message: "", preferredStyle: .actionSheet)
+                let post = UIAlertAction(title: "포스트 신고", style: .default) {_ in
+                    self.viewModel.postReported.onNext(values[0])
+                }
+                
+                let user = UIAlertAction(title: "포스트 신고", style: .default) {_ in
+                    self.viewModel.userReported.onNext(keys[0])
+                }
+
+                let cancel = UIAlertAction(title: "취소", style: .cancel)
+                
+                alert.addAction(post)
+                alert.addAction(user)
+                alert.addAction(cancel)
+                self.present(alert, animated: true, completion: nil)
+            })
+            .disposed(by: disposeBag)
+        
+        self.viewModel.shouldPushReportCompleteAlert
+            .drive(onNext: {[weak self] _ in
+                guard let self = self else { return }
+                
+                let alert = UIAlertController(title : "포스트 신고가 완료되었습니다.", message: "", preferredStyle: .alert)
+                let complete = UIAlertAction(title: "완료", style: .default)
+
+                
+                alert.addAction(complete)
+                self.present(alert, animated: true, completion: nil)
             })
             .disposed(by: disposeBag)
     }
@@ -87,7 +113,7 @@ class HomeViewController: BaseViewController<HomeViewModelProtocol> {
     public override func setupLayout() {
         //MARK: TopView
         NSLayoutConstraint.activate([
-            infoView.topAnchor.constraint(equalTo: view.topAnchor, constant: 44),
+            infoView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             infoView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             infoView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             infoView.heightAnchor.constraint(equalToConstant: 53)
@@ -128,7 +154,7 @@ class HomeViewController: BaseViewController<HomeViewModelProtocol> {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "MYKKUMI"
-        label.font = Typography.chab.font()
+        label.font = Typography.chab(color: AppColor.primary).font()
         label.textColor = AppColor.primary.color
         return label
     }()
@@ -151,8 +177,7 @@ class HomeViewController: BaseViewController<HomeViewModelProtocol> {
     
     public lazy var postTableView : PostTableView = {
         let tableView = PostTableView()
-        tableView.estimatedRowHeight = 50
-        tableView.rowHeight = UITableView.automaticDimension
+        tableView.translatesAutoresizingMaskIntoConstraints = false
         return tableView
     }()
 }
@@ -167,19 +192,22 @@ extension HomeViewController: UITextFieldDelegate {
 
 extension HomeViewController : UITableViewDelegate, UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
+        return 1
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section == 0 {
-            return 1
-        }else {
-            return viewModel.postViewModels.value.count
+        return viewModel.postViewModels.value.count + 1
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if indexPath.row == 0 {
+            return 100
         }
+        return UITableView.automaticDimension
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.section == 0 {
+        if indexPath.row == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: HomeBannerCell.cellID, for: indexPath) as! HomeBannerCell
             
             viewModel.deliverBannerViewModel
@@ -197,7 +225,7 @@ extension HomeViewController : UITableViewDelegate, UITableViewDataSource {
             return cell
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: PostTableCell.cellID, for: indexPath) as! PostTableCell
-            cell.bind(viewModel: viewModel.postViewModels.value[indexPath.row])
+            cell.bind(viewModel: viewModel.postViewModels.value[indexPath.row-1])
             return cell
         }
     }
@@ -206,8 +234,7 @@ extension HomeViewController : UITableViewDelegate, UITableViewDataSource {
         let cursur = cursur
         viewModel.getPostsData
             .onNext(cursur)
-            
-        postTableView.reloadData()
+        
         fetch = true
     }
     
@@ -216,7 +243,9 @@ extension HomeViewController : UITableViewDelegate, UITableViewDataSource {
         let lastRow = tableView.numberOfRows(inSection: sectionIndex) - 1
         
         if indexPath.section == sectionIndex && indexPath.row == lastRow {
-            
+            if(viewModel.cursur.value != "" && !fetch) {
+                beginFetch(viewModel.cursur.value)
+            }
         }
     }
 }

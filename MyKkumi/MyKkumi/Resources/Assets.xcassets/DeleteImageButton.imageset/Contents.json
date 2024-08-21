@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "DeleteImageButton.svg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

@@ -120,6 +120,7 @@ class MakeProfileViewModel : MakeProfileViewModelProtocol {
         
         let patchUserResult = self.completeButtonTap
             .flatMap{user in
+                print(user)
                 return authUsecase.patchUserData(user!)
             }
             .share()
@@ -139,14 +140,15 @@ class MakeProfileViewModel : MakeProfileViewModelProtocol {
                 guard let self = self else { return }
                 guard let image = image else { return }
 
-                self.makePostUsecase.getPresignedUrl()
+                self.authUsecase.getPresignedUrl()
                     .subscribe(onSuccess: { result in
                         if case let .success(url) = result {
                             let resizedImage = image.resized(toMaxSize: CGSize(width: 1024, height: 1024))
                             let imageToData = resizedImage.jpegData(compressionQuality: 1)!
-                            makepostUseCase.putImage(url: url, image: imageToData)
+                            self.imageUrl.accept(url.cdnUrl)
+                            makepostUseCase.putImage(url: url.presignedUrl, image: imageToData)
                                 .subscribe(onSuccess: { _ in
-                                    self.imageUrl.accept(url)
+                                    self.imageUrl.accept(url.cdnUrl)
                                 })
                                 .disposed(by: self.disposeBag)
                         }

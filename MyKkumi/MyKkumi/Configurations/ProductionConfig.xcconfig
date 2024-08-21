@@ -8,9 +8,9 @@
 // Configuration settings file format documentation can be found at:
 // https://help.apple.com/xcode/#/dev745c5c974
 
-#include "Target Support Files/Pods-MyKkumi/Pods-MyKkumi.release.xcconfig"
+#include "../../Pods/Target Support Files/Pods-MyKkumi/Pods-MyKkumi.release.xcconfig"
 
-BASE_URL=api.mykkumi.com
-KAKAO_NATIVE_KEY=
+BASE_URL=api.mykkumi.com/api/v1
+KAKAO_NATIVE_KEY="0ec05c4fb43a8e00113619ab88f06f86"
 APP_NAME=MYKKUMI
-BUNDLE_ID="com.MyKkumi.MyKkumi"
+BUNDLE_ID=com.MyKkumi.MyKkumi

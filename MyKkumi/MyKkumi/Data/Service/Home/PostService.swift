@@ -19,6 +19,7 @@ public enum PostError : Error {
 
 public enum Post {
     case getPost(String?)
+    case report(Int)
 }
 
 extension Post : TargetType {
@@ -27,12 +28,14 @@ extension Post : TargetType {
     public var path: String {
         switch self {
         case .getPost(_) : return NetworkConfiguration.getPost
+        case .report(_ ) : return NetworkConfiguration.reportPost
         }
     }
     
     public var method: Moya.Method {
         switch self {
         case .getPost(_) : return .get
+        case .report(_) : return .post
         }
     }
     
@@ -43,10 +46,15 @@ extension Post : TargetType {
             params["limit"] = 5
             params["cursor"] = cursor
             return .requestParameters(parameters: params, encoding: URLEncoding.default)
+        case .report(let postId) :
+            let body  = ReportBody(postId: postId, reason: "ETC", content: "남을 비방하는 내용이 포함된 포스트인 것같습니다.")
+            return .requestJSONEncodable(body)
         }
     }
     
     public var headers: [String : String]? {
+//        var accessToken = KeychainHelper.shared.load(key: "accessToken")!
+//        accessToken = "Bearer " + accessToken
         return ["Content-Type" : "application/json"]
     }
     

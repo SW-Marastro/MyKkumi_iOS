@@ -11,6 +11,7 @@ enum AppImage {
     case appLogo
     case launch
     case kakaoSimbol
+    case appleLogo
     case profile
     case ellipse
     case cancel
@@ -25,6 +26,16 @@ enum AppImage {
     case mypageSelected
     case notificationButton
     case searchButton
+    case back
+    case commentButton
+    case favoritButton
+    case scrapButton
+    case shareButton
+    case pin
+    case addImageButton
+    case whiteAppLogo
+    case backArrow
+    case deleteImage
     
     var image : UIImage {
         return self.getImage()
@@ -38,6 +49,8 @@ enum AppImage {
             return UIImage(named : "Launch")!
         case .kakaoSimbol :
             return UIImage(named : "KakaoSimbol")!
+        case .appleLogo :
+            return UIImage(named : "AppleLogo")!
         case .profile :
             return UIImage(named : "ProfilePlaceHold")!
         case .ellipse :
@@ -66,7 +79,26 @@ enum AppImage {
             return UIImage(named : "NotificationButton")!
         case .searchButton :
             return UIImage(named : "SearchButton")!
-            
+        case .back :
+            return UIImage(named : "back")!
+        case .commentButton :
+            return UIImage(named : "CommentButton")!
+        case .favoritButton :
+            return UIImage(named : "FavoriteButton")!
+        case .scrapButton :
+            return UIImage(named : "ScrapButton")!
+        case .shareButton :
+            return UIImage(named : "ShareButton")!
+        case .pin :
+            return UIImage(named : "PinButton")!
+        case .addImageButton :
+            return UIImage(named : "AddImageButton")!
+        case .whiteAppLogo :
+            return UIImage(named : "WhiteAppLogo")!
+        case .backArrow :
+            return UIImage(named : "BackArrow")!
+        case .deleteImage :
+            return UIImage(named : "DeleteImageButton")!
         }
     }
 }

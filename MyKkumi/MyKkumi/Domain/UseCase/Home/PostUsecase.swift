@@ -10,6 +10,7 @@ import RxSwift
 
 public protocol PostUsecase {
     func getPosts(_ cursor : String?) -> Single<Result<PostsVO, PostError>>
+    func reportPost(_ id : Int) -> Single<Result<String, PostError>>
 }
 
 public final class DefaultPostUsecase : PostUsecase {
@@ -21,5 +22,9 @@ public final class DefaultPostUsecase : PostUsecase {
     
     public func getPosts(_ cursor: String?) -> Single<Result<PostsVO, PostError>> {
         return repository.getPosts(cursor)
+    }
+    
+    public func reportPost(_ id: Int) -> Single<Result<String, PostError>> {
+        return repository.reportPost(id)
     }
 }
