@@ -14,6 +14,7 @@ public enum AuthError : Error {
     case unknownError(ErrorVO)
     case CONFLICT
     case NOTFOUND
+    case INVALIDTOKEN
 }
 
 public enum Auth {
@@ -55,8 +56,12 @@ extension Auth : TargetType {
             return .requestJSONEncodable(auth)
         case .signinApple(let auth) :
             return .requestJSONEncodable(auth)
-        case .getUserData, .getPresignedUrl :
+        case .getUserData :
             return .requestPlain
+        case .getPresignedUrl :
+            var params : [String: Any] = [:]
+            params["extension"] = "jpeg"
+            return .requestParameters(parameters: params, encoding: URLEncoding.default)
         case .patchUser(let user) :
             return .requestJSONEncodable(user)
         case .refreshToken(let refreshToken) :
@@ -69,7 +74,7 @@ extension Auth : TargetType {
     
     public var headers : [String : String]? {
         switch self {
-        case .patchUser(_), .getPresignedUrl, .reportUser(_) :
+        case .patchUser(_), .getPresignedUrl, .reportUser(_), .getUserData :
             var accessToken = KeychainHelper.shared.load(key: "accessToken")!
             accessToken = "Bearer " + accessToken
             return ["Content-Type" : "application/json",

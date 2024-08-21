@@ -68,7 +68,18 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
         self.viewModel.shouldDrawAddButton
             .drive(onNext: {[weak self] _ in
                 guard let self = self else { return }
-                self.imageScrollStackView.addArrangedSubview(self.addButton)
+                basicView.addSubview(addImageButton)
+                selectedImageStackView.addArrangedSubview(basicView)
+                
+                NSLayoutConstraint.activate([
+                    basicView.widthAnchor.constraint(equalTo: selectedImageScrollView.widthAnchor),
+                    basicView.heightAnchor.constraint(equalTo: selectedImageScrollView.heightAnchor),
+                    
+                    addImageButton.centerXAnchor.constraint(equalTo: basicView.centerXAnchor),
+                    addImageButton.centerYAnchor.constraint(equalTo: basicView.centerYAnchor),
+                    addImageButton.heightAnchor.constraint(equalToConstant: 47),
+                    addImageButton.widthAnchor.constraint(equalToConstant: 122)
+                ])
             })
             .disposed(by: disposeBag)
 
@@ -145,6 +156,7 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
         //MARK: Image
         self.viewModel.sholudDrawImage
             .drive(onNext : {[weak self] images in
+                print(images)
                 guard let self = self else { return }
                 self.imageScrollStackView.subviews.forEach{ $0.removeFromSuperview()}
                 self.selectedImageStackView.subviews.forEach{ $0.removeFromSuperview()}
@@ -154,13 +166,14 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
                     self.drawSelectedView(for: image)
                 }
                 
-                if images.count < CountValues.MaxImageCount.value {
+                if images.count < CountValues.MaxImageCount.value && images.count > 0{
                     self.imageScrollStackView.addArrangedSubview(addButton)
                     NSLayoutConstraint.activate([
                         addButton.heightAnchor.constraint(equalTo: imageScrollStackView.heightAnchor),
                         addButton.widthAnchor.constraint(equalTo: imageScrollStackView.heightAnchor)
                     ])
                 }
+                
             })
             .disposed(by: disposeBag)
         
@@ -170,6 +183,10 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
                 self.scrollToImage(with: uuid)
                 self.viewModel.pinInfoRelay.accept(self.viewModel.pinInfoRelay.value)
             })
+            .disposed(by: disposeBag)
+        
+        self.addImageButton.rx.tap
+            .bind(to: self.viewModel.addImageButtonTap)
             .disposed(by: disposeBag)
         
         self.addButton.rx.tap
@@ -305,6 +322,14 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
                         button.layer.borderColor = AppColor.neutral200.color.cgColor
                     }
                 }
+                
+                if self.viewModel.postImageRelay.value.count != 0 && self.viewModel.subCategories.value != 0 && self.viewModel.contentRelay.value != ""{
+                    self.completeButton.backgroundColor = AppColor.primary.color
+                    self.completeButton.setAttributedTitle(NSAttributedString(string : "등록하기", attributes: Typography.body15SemiBold(color: AppColor.white).attributes), for: .normal)
+                    self.completeButton.isEnabled = true
+                } else {
+                    self.completeButton.isEnabled = false
+                }
             })
             .disposed(by: disposeBag)
         
@@ -319,7 +344,6 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
         
         self.viewModel.dismissVC
             .drive(onNext: {[weak self] _ in
-                print("dismiiss")
                 guard let tabBarController = self?.tabBarController else { return }
                 tabBarController.tabBar.isHidden = false
                 tabBarController.selectedIndex = 0
@@ -328,7 +352,6 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
         
         self.viewModel.backToTabBar
             .drive(onNext: {[weak self] _ in
-                print("back")
                 guard let tabBarController = self?.tabBarController else { return }
                 tabBarController.tabBar.isHidden = false
                 tabBarController.selectedIndex = 0
@@ -649,6 +672,22 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
         let label = UILabel()
         label.attributedText = NSAttributedString(string: "새 게시물", attributes: Typography.heading18Bold(color: AppColor.neutral900).attributes)
         return label
+    }()
+    
+    let basicView : UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = AppColor.neutral50.color
+        return view
+    }()
+    
+    let addImageButton : UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = AppColor.neutral700.color
+        button.setAttributedTitle(NSAttributedString(string: "이미지 올리기", attributes: Typography.body15SemiBold(color: AppColor.white).attributes), for: .normal)
+        button.layer.cornerRadius = 23.5
+        return button
     }()
     
     private func calcurateXY() {

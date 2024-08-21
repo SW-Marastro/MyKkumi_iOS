@@ -12,9 +12,6 @@
 		CEE63EDF48E74F388F0DB9F5 /* Pods_MyKkumi_MyKkumiUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07DFB17D7AB07B56C790B172 /* Pods_MyKkumi_MyKkumiUITests.framework */; };
 		D20BC2502C428EC9000AA8C9 /* ResultExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D20BC24F2C428EC9000AA8C9 /* ResultExtension.swift */; };
 		D21030602C1FC1900059CACA /* HelloWorld.swift in Sources */ = {isa = PBXBuildFile; fileRef = D210305F2C1FC1900059CACA /* HelloWorld.swift */; };
-		D21030632C2177E90059CACA /* BasicNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = D21030622C2177E90059CACA /* BasicNetwork.swift */; };
-		D21030662C2178530059CACA /* BasicProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D21030652C2178530059CACA /* BasicProtocol.swift */; };
-		D210306D2C21864B0059CACA /* GetTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D210306C2C21864B0059CACA /* GetTitle.swift */; };
 		D21FB5462C3BEE5700927905 /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D21FB5452C3BEE5700927905 /* TestView.swift */; };
 		D21FB5482C3BEE7F00927905 /* TestViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D21FB5472C3BEE7F00927905 /* TestViewModel.swift */; };
 		D21FB54A2C3D2B7700927905 /* PostCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D21FB5492C3D2B7700927905 /* PostCellViewModel.swift */; };
@@ -74,10 +71,6 @@
 		D2AB22942C6C83CC00027027 /* (null) in Sources */ = {isa = PBXBuildFile; };
 		D2AB22962C6C8CA200027027 /* (null) in Sources */ = {isa = PBXBuildFile; };
 		D2AB229B2C6E0C8300027027 /* UILabelExtention+RichText.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2AB229A2C6E0C8300027027 /* UILabelExtention+RichText.swift */; };
-		D2ABCDCB2C2A66350035F7A1 /* BasicUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ABCDCA2C2A66350035F7A1 /* BasicUsecase.swift */; };
-		D2ABCDCE2C2A66910035F7A1 /* BasicRespository.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ABCDCD2C2A66910035F7A1 /* BasicRespository.swift */; };
-		D2ABCDD22C2A68940035F7A1 /* BasicDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ABCDD12C2A68940035F7A1 /* BasicDataSource.swift */; };
-		D2ABCDD42C2A69D10035F7A1 /* BasicRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ABCDD32C2A69D10035F7A1 /* BasicRepository.swift */; };
 		D2ABCDDC2C2A6E780035F7A1 /* DependencyInjector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ABCDDB2C2A6E780035F7A1 /* DependencyInjector.swift */; };
 		D2ABCDE52C2A9CED0035F7A1 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ABCDE42C2A9CED0035F7A1 /* HomeViewController.swift */; };
 		D2ABCDE72C2A9D510035F7A1 /* AroundViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ABCDE62C2A9D510035F7A1 /* AroundViewController.swift */; };
@@ -161,9 +154,6 @@
 		A547AF2DE94455B170A30B21 /* Pods_MyKkumi.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MyKkumi.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D20BC24F2C428EC9000AA8C9 /* ResultExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultExtension.swift; sourceTree = "<group>"; };
 		D210305F2C1FC1900059CACA /* HelloWorld.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelloWorld.swift; sourceTree = "<group>"; };
-		D21030622C2177E90059CACA /* BasicNetwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicNetwork.swift; sourceTree = "<group>"; };
-		D21030652C2178530059CACA /* BasicProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicProtocol.swift; sourceTree = "<group>"; };
-		D210306C2C21864B0059CACA /* GetTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetTitle.swift; sourceTree = "<group>"; };
 		D21FB5452C3BEE5700927905 /* TestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
 		D21FB5472C3BEE7F00927905 /* TestViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestViewModel.swift; sourceTree = "<group>"; };
 		D21FB5492C3D2B7700927905 /* PostCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCellViewModel.swift; sourceTree = "<group>"; };
@@ -212,10 +202,6 @@
 		D2AB22982C6CCF2800027027 /* DevConfig.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = DevConfig.xcconfig; sourceTree = "<group>"; };
 		D2AB22992C6CCF3800027027 /* ProductionConfig.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = ProductionConfig.xcconfig; sourceTree = "<group>"; };
 		D2AB229A2C6E0C8300027027 /* UILabelExtention+RichText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabelExtention+RichText.swift"; sourceTree = "<group>"; };
-		D2ABCDCA2C2A66350035F7A1 /* BasicUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicUsecase.swift; sourceTree = "<group>"; };
-		D2ABCDCD2C2A66910035F7A1 /* BasicRespository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicRespository.swift; sourceTree = "<group>"; };
-		D2ABCDD12C2A68940035F7A1 /* BasicDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicDataSource.swift; sourceTree = "<group>"; };
-		D2ABCDD32C2A69D10035F7A1 /* BasicRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicRepository.swift; sourceTree = "<group>"; };
 		D2ABCDDB2C2A6E780035F7A1 /* DependencyInjector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DependencyInjector.swift; sourceTree = "<group>"; };
 		D2ABCDE42C2A9CED0035F7A1 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		D2ABCDE62C2A9D510035F7A1 /* AroundViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AroundViewController.swift; sourceTree = "<group>"; };
@@ -340,18 +326,9 @@
 			children = (
 				D2672C242C64BB04005B23A4 /* Post */,
 				D2ED953E2C46AC70004DA169 /* Auth */,
-				D2ABCE122C2D2F2D0035F7A1 /* Basic */,
 				D2ABCE0F2C2D2E920035F7A1 /* Home */,
 			);
 			path = Service;
-			sourceTree = "<group>";
-		};
-		D21030642C2178220059CACA /* Protocols */ = {
-			isa = PBXGroup;
-			children = (
-				D21030652C2178530059CACA /* BasicProtocol.swift */,
-			);
-			path = Protocols;
 			sourceTree = "<group>";
 		};
 		D21FB54B2C3E7AB100927905 /* Auth */ = {
@@ -627,7 +604,6 @@
 				D2672C3E2C64D65F005B23A4 /* Post */,
 				D2672C3D2C64D659005B23A4 /* Auth */,
 				D2672C3C2C64D650005B23A4 /* Home */,
-				D2ABCDCA2C2A66350035F7A1 /* BasicUsecase.swift */,
 			);
 			path = UseCase;
 			sourceTree = "<group>";
@@ -638,7 +614,6 @@
 				D2672C392C64D197005B23A4 /* Post */,
 				D2672C382C64D192005B23A4 /* Auth */,
 				D2672C372C64D18C005B23A4 /* Home */,
-				D2ABCDCD2C2A66910035F7A1 /* BasicRespository.swift */,
 			);
 			path = RepositoryProtocol;
 			sourceTree = "<group>";
@@ -649,7 +624,6 @@
 				D2672C2B2C64C222005B23A4 /* Post */,
 				D2672C2A2C64C214005B23A4 /* Home */,
 				D2672C292C64C20C005B23A4 /* Auth */,
-				D2ABCDD12C2A68940035F7A1 /* BasicDataSource.swift */,
 			);
 			path = DataSource;
 			sourceTree = "<group>";
@@ -660,7 +634,6 @@
 				D2672C342C64D16E005B23A4 /* Post */,
 				D2672C332C64D16A005B23A4 /* Auth */,
 				D2672C322C64D165005B23A4 /* Home */,
-				D2ABCDD32C2A69D10035F7A1 /* BasicRepository.swift */,
 			);
 			path = Repository;
 			sourceTree = "<group>";
@@ -775,15 +748,6 @@
 			path = Home;
 			sourceTree = "<group>";
 		};
-		D2ABCE122C2D2F2D0035F7A1 /* Basic */ = {
-			isa = PBXGroup;
-			children = (
-				D21030622C2177E90059CACA /* BasicNetwork.swift */,
-				D210306C2C21864B0059CACA /* GetTitle.swift */,
-			);
-			path = Basic;
-			sourceTree = "<group>";
-		};
 		D2ABCE252C33BFC20035F7A1 /* TableView */ = {
 			isa = PBXGroup;
 			children = (
@@ -852,7 +816,6 @@
 				D2ABCE132C2D2F490035F7A1 /* NetworkConfiguration.swift */,
 				D2ABCDD02C2A683D0035F7A1 /* Repository */,
 				D2ABCDCF2C2A68360035F7A1 /* DataSource */,
-				D21030642C2178220059CACA /* Protocols */,
 				D21030612C2177C50059CACA /* Service */,
 				D2ED954B2C4CD79E004DA169 /* KeychainHelper.swift */,
 				D2C79F262C58FF1200E41D8C /* RequestInterceptorExtension.swift */,
@@ -1217,7 +1180,6 @@
 				D2ED95532C4E26E4004DA169 /* CategoryCollectionViewFlowLayout.swift in Sources */,
 				D2911AE62C72FDD100D1BABC /* CustomTabbarViewModel.swift in Sources */,
 				D2672C482C661A5B005B23A4 /* PutImageToBucketService.swift in Sources */,
-				D2ABCDD22C2A68940035F7A1 /* BasicDataSource.swift in Sources */,
 				D21FB54F2C3E820100927905 /* AuthViewModel.swift in Sources */,
 				D2ABCDF92C2BE55B0035F7A1 /* BaseViewController.swift in Sources */,
 				D2828C3B2C53A5100036DFDD /* RootWindow.swift in Sources */,
@@ -1225,17 +1187,13 @@
 				D2ABCE312C33C64C0035F7A1 /* PostImageCollectionViewFlowLayout.swift in Sources */,
 				D2ED95442C4799A5004DA169 /* AuthUsecase.swift in Sources */,
 				D2ABCDF22C2AB5470035F7A1 /* Colors.swift in Sources */,
-				D2ABCDCE2C2A66910035F7A1 /* BasicRespository.swift in Sources */,
 				D2ABCE082C2D256B0035F7A1 /* BannerUsecase.swift in Sources */,
 				D2C79F2A2C5A1A7600E41D8C /* MakePostViewController.swift in Sources */,
 				D2672C402C64D679005B23A4 /* MakePostUseCase.swift in Sources */,
 				D2672C312C64C2A0005B23A4 /* CategoryVO.swift in Sources */,
 				D2ABCE0E2C2D2DB10035F7A1 /* BannerDataSource.swift in Sources */,
-				D2ABCDCB2C2A66350035F7A1 /* BasicUsecase.swift in Sources */,
 				D2C79F272C58FF1200E41D8C /* RequestInterceptorExtension.swift in Sources */,
 				D2ABCDFF2C2BFF330035F7A1 /* BannerCollectionCell.swift in Sources */,
-				D210306D2C21864B0059CACA /* GetTitle.swift in Sources */,
-				D21030662C2178530059CACA /* BasicProtocol.swift in Sources */,
 				D21FB5462C3BEE5700927905 /* TestView.swift in Sources */,
 				D2ABCE0C2C2D2D6A0035F7A1 /* BannerRepository.swift in Sources */,
 				D2ABCE0A2C2D26430035F7A1 /* BannerRepositoryProtocol.swift in Sources */,
@@ -1243,7 +1201,6 @@
 				D2ABCDDC2C2A6E780035F7A1 /* DependencyInjector.swift in Sources */,
 				D2672C282C64C202005B23A4 /* MakePostDataSource.swift in Sources */,
 				D2672C3B2C64D1AA005B23A4 /* MakePostRepositoryProtocol.swift in Sources */,
-				D21030632C2177E90059CACA /* BasicNetwork.swift in Sources */,
 				D2ED95512C4E1BB2004DA169 /* CategoryCollectionViewCell.swift in Sources */,
 				D2672BD42C62B723005B23A4 /* PinInfoViewController.swift in Sources */,
 				D2672C672C6B4236005B23A4 /* Images.swift in Sources */,
@@ -1279,7 +1236,6 @@
 				D2ABCE392C3433C10035F7A1 /* PostRespositoryProtocol.swift in Sources */,
 				D2ABCE182C2D4E370035F7A1 /* DataAssembly.swift in Sources */,
 				D2ABCE1C2C2D94EE0035F7A1 /* DetailBannerViewController.swift in Sources */,
-				D2ABCDD42C2A69D10035F7A1 /* BasicRepository.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

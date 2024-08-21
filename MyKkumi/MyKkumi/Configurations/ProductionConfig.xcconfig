@@ -11,6 +11,6 @@
 #include "../../Pods/Target Support Files/Pods-MyKkumi/Pods-MyKkumi.release.xcconfig"
 
 BASE_URL=api.mykkumi.com/api/v1
-KAKAO_NATIVE_KEY="fb35dd32a688651b45f223f867455402"
+KAKAO_NATIVE_KEY="0ec05c4fb43a8e00113619ab88f06f86"
 APP_NAME=MYKKUMI
 BUNDLE_ID=com.MyKkumi.MyKkumi

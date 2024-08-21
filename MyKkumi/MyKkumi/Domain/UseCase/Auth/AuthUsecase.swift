@@ -16,6 +16,7 @@ public protocol AuthUsecase {
     func refreshToken()
     func getPresignedUrl() -> Single<Result<PreSignedUrlVO, AuthError>>
     func reportUser(_ uuid : String) -> Single<Result<ReportResult, AuthError>>
+    func getUserData() -> Single<Result<UserVO, AuthError>>
 }
 
 public final class DefaultAuthUsecase : AuthUsecase {
@@ -53,5 +54,9 @@ public final class DefaultAuthUsecase : AuthUsecase {
     
     public func reportUser(_ uuid: String) -> Single<Result<ReportResult, AuthError>> {
         return repository.reportUser(uuid)
+    }
+    
+    public func getUserData() -> Single<Result<UserVO, AuthError>> {
+        return repository.getUserData()
     }
 }

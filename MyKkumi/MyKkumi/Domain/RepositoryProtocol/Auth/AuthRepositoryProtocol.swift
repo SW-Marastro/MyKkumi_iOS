@@ -15,4 +15,5 @@ public protocol AuthRepository {
     func refreshToken()
     func getPresignedUrl() -> Single<Result<PreSignedUrlVO, AuthError>>
     func reportUser(_ uuid : String) -> Single<Result<ReportResult, AuthError>>
+    func getUserData() -> Single<Result<UserVO, AuthError>>
 }

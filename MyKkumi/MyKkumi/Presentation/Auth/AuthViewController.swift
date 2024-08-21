@@ -54,6 +54,8 @@ class AuthViewController : BaseViewController<AuthViewModelProtocol>{
                     let collectCategoryVC = CollectCategoryViewController()
                     collectCategoryVC.setupBind(viewModel: CollectCategoryViewModel())
                     self.navigationController?.pushViewController(collectCategoryVC, animated: true)
+                } else {
+                    viewModel.backButtonTap.onNext(Void())
                 }
             })
             .disposed(by: disposeBag)
@@ -74,6 +76,8 @@ class AuthViewController : BaseViewController<AuthViewModelProtocol>{
                     let collectCategoryVC = CollectCategoryViewController()
                     collectCategoryVC.setupBind(viewModel: CollectCategoryViewModel())
                     self.navigationController?.pushViewController(collectCategoryVC, animated: true)
+                } else {
+                    viewModel.backButtonTap.onNext(())
                 }
             })
             .disposed(by: disposeBag)

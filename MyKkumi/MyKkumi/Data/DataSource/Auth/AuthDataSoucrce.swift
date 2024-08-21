@@ -18,6 +18,7 @@ public protocol AuthDataSource {
     func refreshToken()
     func getPresignedUrl() -> Single<Result<PreSignedUrlVO, AuthError>>
     func reportUser(_ uuid : String) -> Single<Result<ReportResult, AuthError>>
+    func getUserData() -> Single<Result<UserVO, AuthError>>
 }
 
 public class DefaultAuthDataSource : AuthDataSource {
@@ -215,6 +216,39 @@ public class DefaultAuthDataSource : AuthDataSource {
                                 return .just(.failure(AuthError.CONFLICT))
                             } else if customError.errorCode == "NOTFOUNT" {
                                 return .just(.failure(AuthError.NOTFOUND))
+                            }
+                            return .just(.failure(AuthError.unknownError(customError)))
+                        } else {
+                            customError = ErrorVO(errorCode: "unknown", message: "UnknownError", detail: "unknownError in Default")
+                            return .just(.failure(AuthError.unknownError(customError)))
+                        }
+                    default :
+                        customError = ErrorVO(errorCode: "unknown", message: "UnknownError", detail: "unknownError in Default")
+                        return .just(.failure(AuthError.unknownError(customError)))
+                    }
+                } else {
+                    customError = ErrorVO(errorCode: "unknown", message: "UnknownError", detail: "unknownError in POST")
+                    return .just(.failure(AuthError.unknownError(customError)))
+                }
+            }
+    }
+    
+    public func getUserData() -> Single<Result<UserVO, AuthError>> {
+        return authProvider.rx.request(.getUserData)
+            .filterSuccessfulStatusCodes()
+            .map(UserVO.self)
+            .map { result in
+                return .success(result)
+            }
+            .catch { error in
+                let customError : ErrorVO
+                if let moyaError = error as? MoyaError {
+                    switch moyaError {
+                    case .statusCode(let response) :
+                        if let error =  (try? JSONDecoder().decode(ErrorVO.self, from : response.data)) {
+                            customError = error
+                            if customError.errorCode == "INVALID_TOKEN" {
+                                return .just(.failure(AuthError.INVALIDTOKEN))
                             }
                             return .just(.failure(AuthError.unknownError(customError)))
                         } else {

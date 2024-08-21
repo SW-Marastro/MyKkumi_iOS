@@ -26,8 +26,15 @@ class PinInfoViewController : BaseViewController<PinInfoViewModelProtocol> {
         emptyView.addSubview(saveButton)
         emptyView.addSubview(productNameLabel)
         emptyView.addSubview(productNameTextView)
+        emptyView.addSubview(namePlaceHolderLabel)
         emptyView.addSubview(purchaseInfoLabel)
         emptyView.addSubview(purchaseTextView)
+        emptyView.addSubview(infoPlaceHolderLabel)
+    }
+    
+    override func setupDelegate() {
+        self.productNameTextView.delegate = self
+        self.purchaseTextView.delegate = self
     }
     
     public override func setupBind(viewModel: PinInfoViewModelProtocol) {
@@ -156,7 +163,8 @@ class PinInfoViewController : BaseViewController<PinInfoViewModelProtocol> {
     private var productNameLabel : UILabel = {
         let label = UILabel()
         label.text = "제품명"
-        label.textColor = .black
+        label.textColor = AppColor.black.color
+        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
@@ -185,7 +193,8 @@ class PinInfoViewController : BaseViewController<PinInfoViewModelProtocol> {
     private var purchaseInfoLabel : UILabel = {
         let label = UILabel()
         label.text = "구매처"
-        label.textColor = .black
+        label.textColor = AppColor.black.color
+        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
@@ -229,6 +238,13 @@ class PinInfoViewController : BaseViewController<PinInfoViewModelProtocol> {
         button.isEnabled = false
         return button
     }()
+}
+
+extension PinInfoViewController : UITextViewDelegate {
+    func textViewDidChange(_ textView: UITextView) {
+        self.namePlaceHolderLabel.isHidden = !self.productNameTextView.text.isEmpty
+        self.infoPlaceHolderLabel.isHidden = !self.purchaseTextView.text.isEmpty
+    }
 }
 
 

@@ -43,4 +43,8 @@ public class DefaultAuthRepository : AuthRepository {
     public func reportUser(_ uuid: String) -> Single<Result<ReportResult, AuthError>> {
         return dataSource.reportUser(uuid)
     }
+    
+    public func getUserData() -> Single<Result<UserVO, AuthError>> {
+        return dataSource.getUserData()
+    }
 }

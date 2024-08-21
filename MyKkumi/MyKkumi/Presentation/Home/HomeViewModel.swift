@@ -66,10 +66,30 @@ public class HomeViewModel : HomeViewModelProtocol {
             }
             .share()
         
-        self.viewdidload
-            .subscribe(onNext: {
+        let refreshResult = self.viewdidload
+            .flatMap {_ -> Observable<Bool> in
                 if KeychainHelper.shared.load(key: "refreshToken") != nil {
                     authUsecase.refreshToken()
+                    return Observable.just(true)
+                } else {
+                    return Observable.just(false)
+                }
+            }
+            .share()
+        
+        let getUserResult = refreshResult
+            .filter {$0}
+            .flatMap {_ in
+                return authUsecase.getUserData()
+            }
+            .compactMap{$0.successValue()}
+            .share()
+        
+        getUserResult
+            .subscribe(onNext: { user in
+                if user.nickname == nil {
+                    KeychainHelper.shared.delete(key: "accessToken")
+                    KeychainHelper.shared.delete(key: "refreshToken")
                 }
             })
             .disposed(by: disposeBag)
