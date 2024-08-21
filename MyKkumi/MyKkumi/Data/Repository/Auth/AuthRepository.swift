@@ -32,7 +32,7 @@ public class DefaultAuthRepository : AuthRepository {
         return dataSource.patchUserData(user)
     }
     
-    public func refreshToken() {
+    public func refreshToken(){
         dataSource.refreshToken()
     }
     

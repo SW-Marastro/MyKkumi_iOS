@@ -69,7 +69,6 @@ public class HomeViewModel : HomeViewModelProtocol {
         let refreshResult = self.viewdidload
             .flatMap {_ -> Observable<Bool> in
                 if KeychainHelper.shared.load(key: "refreshToken") != nil {
-                    authUsecase.refreshToken()
                     return Observable.just(true)
                 } else {
                     return Observable.just(false)
@@ -77,17 +76,15 @@ public class HomeViewModel : HomeViewModelProtocol {
             }
             .share()
         
-        let getUserResult = refreshResult
+        refreshResult
             .filter {$0}
             .flatMap {_ in
                 return authUsecase.getUserData()
             }
             .compactMap{$0.successValue()}
-            .share()
-        
-        getUserResult
             .subscribe(onNext: { user in
                 if user.nickname == nil {
+                    print(user)
                     KeychainHelper.shared.delete(key: "accessToken")
                     KeychainHelper.shared.delete(key: "refreshToken")
                 }

@@ -63,6 +63,14 @@ class CollectCategoryViewController : BaseViewController<CollectCategoryViewMode
             })
             .disposed(by: disposeBag)
         
+        self.viewModel.categoryRelay
+            .subscribe(onNext: { [weak self] ids in
+                guard let self = self else { return }
+                
+                
+            })
+            .disposed(by: disposeBag)
+        
         self.viewModel.shouldDrawCategory
             .drive(onNext: {[weak self] categories in
                 guard let self = self else { return }
@@ -118,6 +126,7 @@ class CollectCategoryViewController : BaseViewController<CollectCategoryViewMode
                         let button : UIButton = {
                             let button = UIButton()
                             button.translatesAutoresizingMaskIntoConstraints = false
+                            button.tag = Int(subcategory.id)
                             return button
                         }()
                         
@@ -126,6 +135,8 @@ class CollectCategoryViewController : BaseViewController<CollectCategoryViewMode
                             image.translatesAutoresizingMaskIntoConstraints = false
                             image.backgroundColor = AppColor.neutral50.color
                             image.layer.cornerRadius = 16
+                            image.layer.borderWidth = 1
+                            image.layer.borderColor = AppColor.neutral50.color.cgColor
                             return image
                         }()
                         
@@ -145,6 +156,14 @@ class CollectCategoryViewController : BaseViewController<CollectCategoryViewMode
                         button.rx.tap
                             .subscribe(onNext: {
                                 viewModel.categoryTap.onNext(Int(subcategory.id))
+                                
+                                if let ids = viewModel.categoryRelay.value {
+                                    if ids.contains(button.tag) {
+                                        buttonImage.layer.borderColor = AppColor.primary.color.cgColor
+                                    } else {
+                                        buttonImage.layer.borderColor = AppColor.neutral50.color.cgColor
+                                    }
+                                }
                             })
                             .disposed(by: disposeBag)
                         

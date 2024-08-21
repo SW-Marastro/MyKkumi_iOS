@@ -156,7 +156,6 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
         //MARK: Image
         self.viewModel.sholudDrawImage
             .drive(onNext : {[weak self] images in
-                print(images)
                 guard let self = self else { return }
                 self.imageScrollStackView.subviews.forEach{ $0.removeFromSuperview()}
                 self.selectedImageStackView.subviews.forEach{ $0.removeFromSuperview()}
@@ -166,7 +165,7 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
                     self.drawSelectedView(for: image)
                 }
                 
-                if images.count < CountValues.MaxImageCount.value && images.count > 0{
+                if images.count < CountValues.MaxImageCount.value {
                     self.imageScrollStackView.addArrangedSubview(addButton)
                     NSLayoutConstraint.activate([
                         addButton.heightAnchor.constraint(equalTo: imageScrollStackView.heightAnchor),
@@ -228,10 +227,10 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
                         let button = UIButton()
                         selectedImageView.addSubview(button)
                         button.translatesAutoresizingMaskIntoConstraints = false
-                        button.backgroundColor = .blue
+                        button.setBackgroundImage(AppImage.addPostButton.image, for: .normal)
                         button.layer.cornerRadius = 10
-                        button.heightAnchor.constraint(equalToConstant: 30).isActive = true
-                        button.widthAnchor.constraint(equalToConstant: 30).isActive = true
+                        button.heightAnchor.constraint(equalToConstant: 24).isActive = true
+                        button.widthAnchor.constraint(equalToConstant: 24).isActive = true
                         button.leadingAnchor.constraint(equalTo: selectedImageView.leadingAnchor, constant: x).isActive = true
                         button.topAnchor.constraint(equalTo: selectedImageView.topAnchor, constant: y).isActive = true
                         button.uuidString = pin.UUID
@@ -401,7 +400,7 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
         ])
         
         NSLayoutConstraint.activate([
-            imageScrollview.topAnchor.constraint(equalTo: imageContainView.topAnchor),
+            imageScrollview.centerYAnchor.constraint(equalTo: imageContainView.centerYAnchor),
             imageScrollview.leadingAnchor.constraint(equalTo: imageContainView.leadingAnchor, constant: 20),
             imageScrollview.trailingAnchor.constraint(equalTo: imageContainView.trailingAnchor),
             imageScrollview.heightAnchor.constraint(equalToConstant: (view.frame.size.width - 20) / (4.5))
@@ -755,8 +754,7 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
         let deleteButton : UIButton = {
             let button = UIButton()
             button.translatesAutoresizingMaskIntoConstraints = false
-            button.setTitle("X", for: .normal)
-            button.backgroundColor = .red
+            button.setBackgroundImage(AppImage.deleteImage.image, for: .normal)
             return button
         }()
         
@@ -792,13 +790,13 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
             view.heightAnchor.constraint(equalTo: imageScrollview.heightAnchor),
             view.widthAnchor.constraint(equalTo: imageScrollview.heightAnchor),
             
-            imageView.topAnchor.constraint(equalTo: view.topAnchor),
+            imageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 6),
             imageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            imageView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            imageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -6),
             imageView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             
-            deleteButton.topAnchor.constraint(equalTo: imageView.topAnchor),
-            deleteButton.trailingAnchor.constraint(equalTo: imageView.trailingAnchor)
+            deleteButton.topAnchor.constraint(equalTo: imageView.topAnchor, constant: -6),
+            deleteButton.trailingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: 6)
         ])
     }
     
