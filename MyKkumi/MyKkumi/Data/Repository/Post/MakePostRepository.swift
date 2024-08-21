@@ -20,7 +20,7 @@ public class DefaultMakePostRespository : MakePostRepository {
         return dataSource.getCategory()
     }
     
-    public func getPresignedUrl() -> RxSwift.Single<Result<String, MakePostError>> {
+    public func getPresignedUrl() -> RxSwift.Single<Result<PreSignedUrlVO, MakePostError>> {
         return dataSource.getPresignedUrl()
     }
     

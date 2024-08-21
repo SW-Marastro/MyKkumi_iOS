@@ -14,8 +14,9 @@ public protocol HomeViewModelInput {
     var postTap : PublishSubject<Int64> { get }
     var uploadPostButtonTap : PublishSubject<Void> { get }
     var getPostsData : BehaviorSubject<String?> { get }
-    var reportButtonTapInput : PublishSubject<Int> { get }
+    var reportButtonTapInput : PublishSubject<[String : Int]> { get }
     var postReported : PublishSubject<Int> { get }
+    var userReported : PublishSubject<String> { get }
 }
 
 public protocol HomeviewModelOutput {
@@ -24,7 +25,7 @@ public protocol HomeviewModelOutput {
     var shouldPushBannerInfoView : Driver<Void> { get } // 전체 베너보기 버튼 결과 전달
     var deliverBannerViewModel : Signal<BannerCellViewModelProtocol> {get}
     var shouldReloadPostTable : Signal<Void> { get }
-    var shouldPushReport : Driver<Int> { get }
+    var shouldPushReport : Driver<[String : Int]> { get }
     var shouldPushReportCompleteAlert : Driver<Void> { get }
 }
 
@@ -53,8 +54,9 @@ public class HomeViewModel : HomeViewModelProtocol {
         self.deliverBannerViewModel = Signal.empty()
         self.cursur = BehaviorRelay<String>(value: "")
         self.postViewModels = BehaviorRelay<[PostCellViewModelProtocol]>(value: [])
-        self.reportButtonTapInput = PublishSubject<Int>()
+        self.reportButtonTapInput = PublishSubject<[String : Int]>()
         self.postReported = PublishSubject<Int>()
+        self.userReported = PublishSubject<String>()
         
 
         //MARK: Banner
@@ -111,8 +113,26 @@ public class HomeViewModel : HomeViewModelProtocol {
         self.shouldPushReport = self.reportButtonTapInput
             .asDriver(onErrorDriveWith: .empty())
         
-        self.shouldPushReportCompleteAlert = self.postReported
+        let postReportResult = self.postReported
+            .flatMap { id in
+                return postUsecase.reportPost(id)
+            }
+            .share()
+        
+        self.shouldPushReportCompleteAlert = postReportResult
+            .compactMap { $0.successValue() }
             .map { _ in Void() }
+            .asDriver(onErrorDriveWith: .empty())
+        
+        let userReportResult = self.userReported
+            .flatMap { uuid in
+                return authUsecase.reportUser(uuid)
+            }
+            .share()
+        
+        self.shouldPushReportCompleteAlert = userReportResult
+            .compactMap{ $0.successValue() }
+            .map { _ in Void()}
             .asDriver(onErrorDriveWith: .empty())
         
         successAllPostResult
@@ -140,14 +160,15 @@ public class HomeViewModel : HomeViewModelProtocol {
     public var shouldPushBannerInfoView: Driver<Void>
     public var deliverBannerViewModel: Signal<BannerCellViewModelProtocol>
     public var shouldReloadPostTable: Signal<Void>
-    public var shouldPushReport: Driver<Int>
+    public var shouldPushReport: Driver<[String : Int]>
     public var shouldPushReportCompleteAlert: Driver<Void>
     
     public var postTap : PublishSubject<Int64>
     public var uploadPostButtonTap : PublishSubject<Void>
     public var getPostsData: BehaviorSubject<String?>
-    public var reportButtonTapInput: PublishSubject<Int>
+    public var reportButtonTapInput: PublishSubject<[String : Int]>
     public var postReported: PublishSubject<Int>
+    public var userReported: PublishSubject<String>
     
     public var cursur: BehaviorRelay<String>
     public var postViewModels: BehaviorRelay<[any PostCellViewModelProtocol]>

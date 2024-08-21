@@ -12,9 +12,9 @@ class RootWindow : UIWindow {
     private var originalRootViewController: UIViewController?
     
     public override init(windowScene: UIWindowScene){
-       super.init(windowScene: windowScene)
-       self.setupObservers()
-       self.showTapbarController()
+        super.init(windowScene: windowScene)
+        self.setupObservers()
+        self.showTapbarController()
    }
     
     required init?(coder: NSCoder) {
@@ -49,7 +49,9 @@ class RootWindow : UIWindow {
         let shoppingViewController = UINavigationController(rootViewController: ShoppingViewController())
         shoppingViewController.tabBarItem = UITabBarItem(title: nil, image: AppImage.shoppingUnselected.image, tag: 3)
         
-        let mypageViewController = UINavigationController(rootViewController: MypageViewController())
+        let mypageVC = MypageViewController()
+        mypageVC.setupBind(viewModel: MypageViewModel())
+        let mypageViewController = UINavigationController(rootViewController: mypageVC)
         mypageViewController.tabBarItem = UITabBarItem(title: nil, image: AppImage.mypageUnselected.image, tag: 4)
         
         tabBarController.setViewControllers([homeViewController, aroundViewController, makepostVC, shoppingViewController, mypageViewController], animated: true)
@@ -98,7 +100,7 @@ extension RootWindow : UITabBarControllerDelegate {
                     tabBarController.tabBar.isHidden = false
                     item.image = AppImage.browseSelected.image
                 case 2:
-                    if KeychainHelper.shared.load(key: "accessToken") != nil {
+                    if KeychainHelper.shared.load(key: "accessToken") == nil {
                         NotificationCenter.default.post(name: .showAuth, object: nil)
                         tabBarController.selectedIndex = 0
                         items[0].image = AppImage.homeSelected.image

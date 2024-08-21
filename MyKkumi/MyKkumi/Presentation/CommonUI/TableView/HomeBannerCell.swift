@@ -33,20 +33,25 @@ open class HomeBannerCell : UITableViewCell {
     }
     
     public func setCellData(bannerData : [BannerVO]) {
-        self.bannerData = [bannerData.last!] + bannerData + [bannerData.first!]
-        
-        for banner in (0...self.bannerData.count - 2) {
-            addBanner(self.bannerData[banner])
+        if bannerData.count > 0 {
+            self.bannerData = [bannerData.last!] + bannerData + [bannerData.first!]
+            
+            for banner in (0...self.bannerData.count - 2) {
+                addBanner(self.bannerData[banner])
+            }
+            
+            addBannerEvent()
+            
+            addBanner(self.bannerData.last!)
+            
+            // 첫 번째 페이지로 설정
+            bannerScrollView.contentOffset = CGPoint(x: bannerScrollView.frame.width, y: 0)
+            setupButtonLabel()
+            startAutoScroll()
+        } else {
+            self.bannerPage.isHidden = true
+            addBannerEvent()
         }
-        
-        addBannerEvent()
-        
-        addBanner(self.bannerData.last!)
-        
-        // 첫 번째 페이지로 설정
-        bannerScrollView.contentOffset = CGPoint(x: bannerScrollView.frame.width, y: 0)
-        setupButtonLabel()
-        startAutoScroll()
     }
     
     private func startAutoScroll() {

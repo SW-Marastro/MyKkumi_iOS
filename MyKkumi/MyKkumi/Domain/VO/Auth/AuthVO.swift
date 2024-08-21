@@ -117,3 +117,14 @@ public struct ReAccessToken : Codable {
     }
 }
 
+public struct ReportUserBody : Codable {
+    let userUuid : String
+    let reason : String
+    let content : String
+    
+    public init(userUuid: String, reason: String, content: String) {
+        self.userUuid = userUuid
+        self.reason = reason
+        self.content = content
+    }
+}

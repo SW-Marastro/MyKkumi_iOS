@@ -10,7 +10,7 @@ import RxCocoa
 import RxSwift
 
 public protocol PostCellViewModelInput {
-    var reportButtonTap : PublishSubject<Int> { get }
+    var reportButtonTap : PublishSubject<[String : Int]> { get }
 }
 
 public protocol PostCellViewModelOutput {
@@ -27,11 +27,11 @@ public class PostCellViewModel : PostCellViewModelProtocol {
     public init(_ post : PostVO) {
         self.post = BehaviorRelay<PostVO> (value: post)
         self.showedImage = BehaviorRelay<Int> (value: 0)
-        self.reportButtonTap = PublishSubject<Int>()
+        self.reportButtonTap = PublishSubject<[String : Int]>()
     }
     
     public var showedImage: BehaviorRelay<Int>
     public var post: BehaviorRelay<PostVO>
     
-    public var reportButtonTap: PublishSubject<Int>
+    public var reportButtonTap: PublishSubject<[String : Int]>
 }

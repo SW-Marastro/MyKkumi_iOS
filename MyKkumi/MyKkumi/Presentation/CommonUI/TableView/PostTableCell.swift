@@ -42,7 +42,7 @@ open class PostTableCell : UITableViewCell {
             .disposed(by: disposeBag)
         
         self.reportPostButton.rx.tap
-            .map{ self.viewModel.post.value.id }
+            .map{ [self.viewModel.post.value.writer.uuid : self.viewModel.post.value.id] }
             .bind(to: self.viewModel.reportButtonTap)
             .disposed(by: disposeBag)
     }

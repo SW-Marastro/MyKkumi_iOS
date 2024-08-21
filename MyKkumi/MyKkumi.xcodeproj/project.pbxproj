@@ -38,8 +38,6 @@
 		D2672C422C64EE52005B23A4 /* AppValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2672C412C64EE52005B23A4 /* AppValues.swift */; };
 		D2672C462C651682005B23A4 /* MakePostDataStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2672C452C651682005B23A4 /* MakePostDataStruct.swift */; };
 		D2672C482C661A5B005B23A4 /* PutImageToBucketService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2672C472C661A5B005B23A4 /* PutImageToBucketService.swift */; };
-		D2672C4A2C6A03C8005B23A4 /* PostCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2672C492C6A03C8005B23A4 /* PostCategoryViewController.swift */; };
-		D2672C4C2C6A0625005B23A4 /* PostCategoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2672C4B2C6A0625005B23A4 /* PostCategoryViewModel.swift */; };
 		D2672C522C6B2A8D005B23A4 /* Pretendard-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = D2672C4E2C6B2A8D005B23A4 /* Pretendard-Bold.otf */; };
 		D2672C532C6B2A8D005B23A4 /* Pretendard-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = D2672C4E2C6B2A8D005B23A4 /* Pretendard-Bold.otf */; };
 		D2672C542C6B2A8D005B23A4 /* Pretendard-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = D2672C4E2C6B2A8D005B23A4 /* Pretendard-Bold.otf */; };
@@ -71,6 +69,8 @@
 		D28347042C3BB1D50048CB2E /* BannerCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28347032C3BB1D50048CB2E /* BannerCellViewModel.swift */; };
 		D2911AE42C72FB9E00D1BABC /* CustomTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2911AE32C72FB9E00D1BABC /* CustomTabBarController.swift */; };
 		D2911AE62C72FDD100D1BABC /* CustomTabbarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2911AE52C72FDD100D1BABC /* CustomTabbarViewModel.swift */; };
+		D2911AE82C750BE800D1BABC /* MultiLineTagView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2911AE72C750BE800D1BABC /* MultiLineTagView.swift */; };
+		D2911AEA2C75A84500D1BABC /* MypageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2911AE92C75A84500D1BABC /* MypageViewModel.swift */; };
 		D2AB22942C6C83CC00027027 /* (null) in Sources */ = {isa = PBXBuildFile; };
 		D2AB22962C6C8CA200027027 /* (null) in Sources */ = {isa = PBXBuildFile; };
 		D2AB229B2C6E0C8300027027 /* UILabelExtention+RichText.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2AB229A2C6E0C8300027027 /* UILabelExtention+RichText.swift */; };
@@ -118,7 +118,6 @@
 		D2C79F2A2C5A1A7600E41D8C /* MakePostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2C79F292C5A1A7600E41D8C /* MakePostViewController.swift */; };
 		D2C79F2C2C5A1AB200E41D8C /* MakePostViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2C79F2B2C5A1AB200E41D8C /* MakePostViewModel.swift */; };
 		D2E4594F2C1DB41500DB0756 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D2E4594E2C1DB41500DB0756 /* LaunchScreen.storyboard */; };
-		D2E4595C2C1E383D00DB0756 /* BasicCommon.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2E4595B2C1E383D00DB0756 /* BasicCommon.swift */; };
 		D2ED95312C440F3C004DA169 /* CollectCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ED95302C440F3C004DA169 /* CollectCategoryViewController.swift */; };
 		D2ED95332C440F4D004DA169 /* CollectCategoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ED95322C440F4D004DA169 /* CollectCategoryViewModel.swift */; };
 		D2ED95352C44C7F1004DA169 /* MakeProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ED95342C44C7F1004DA169 /* MakeProfileViewController.swift */; };
@@ -192,8 +191,6 @@
 		D2672C412C64EE52005B23A4 /* AppValues.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppValues.swift; sourceTree = "<group>"; };
 		D2672C452C651682005B23A4 /* MakePostDataStruct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakePostDataStruct.swift; sourceTree = "<group>"; };
 		D2672C472C661A5B005B23A4 /* PutImageToBucketService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PutImageToBucketService.swift; sourceTree = "<group>"; };
-		D2672C492C6A03C8005B23A4 /* PostCategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCategoryViewController.swift; sourceTree = "<group>"; };
-		D2672C4B2C6A0625005B23A4 /* PostCategoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCategoryViewModel.swift; sourceTree = "<group>"; };
 		D2672C4E2C6B2A8D005B23A4 /* Pretendard-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Bold.otf"; sourceTree = "<group>"; };
 		D2672C4F2C6B2A8D005B23A4 /* Pretendard-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Regular.otf"; sourceTree = "<group>"; };
 		D2672C502C6B2A8D005B23A4 /* Pretendard-SemiBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-SemiBold.otf"; sourceTree = "<group>"; };
@@ -210,6 +207,8 @@
 		D28347032C3BB1D50048CB2E /* BannerCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerCellViewModel.swift; sourceTree = "<group>"; };
 		D2911AE32C72FB9E00D1BABC /* CustomTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBarController.swift; sourceTree = "<group>"; };
 		D2911AE52C72FDD100D1BABC /* CustomTabbarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabbarViewModel.swift; sourceTree = "<group>"; };
+		D2911AE72C750BE800D1BABC /* MultiLineTagView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiLineTagView.swift; sourceTree = "<group>"; };
+		D2911AE92C75A84500D1BABC /* MypageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MypageViewModel.swift; sourceTree = "<group>"; };
 		D2AB22982C6CCF2800027027 /* DevConfig.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = DevConfig.xcconfig; sourceTree = "<group>"; };
 		D2AB22992C6CCF3800027027 /* ProductionConfig.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = ProductionConfig.xcconfig; sourceTree = "<group>"; };
 		D2AB229A2C6E0C8300027027 /* UILabelExtention+RichText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabelExtention+RichText.swift"; sourceTree = "<group>"; };
@@ -257,7 +256,6 @@
 		D2C79F292C5A1A7600E41D8C /* MakePostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakePostViewController.swift; sourceTree = "<group>"; };
 		D2C79F2B2C5A1AB200E41D8C /* MakePostViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakePostViewModel.swift; sourceTree = "<group>"; };
 		D2E4594E2C1DB41500DB0756 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
-		D2E4595B2C1E383D00DB0756 /* BasicCommon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicCommon.swift; sourceTree = "<group>"; };
 		D2ED95302C440F3C004DA169 /* CollectCategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectCategoryViewController.swift; sourceTree = "<group>"; };
 		D2ED95322C440F4D004DA169 /* CollectCategoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectCategoryViewModel.swift; sourceTree = "<group>"; };
 		D2ED95342C44C7F1004DA169 /* MakeProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakeProfileViewController.swift; sourceTree = "<group>"; };
@@ -592,6 +590,7 @@
 			isa = PBXGroup;
 			children = (
 				D28346F92C38312A0048CB2E /* CountButton.swift */,
+				D2911AE72C750BE800D1BABC /* MultiLineTagView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -721,6 +720,7 @@
 			isa = PBXGroup;
 			children = (
 				D2ABCDEA2C2A9D8A0035F7A1 /* MypageViewController.swift */,
+				D2911AE92C75A84500D1BABC /* MypageViewModel.swift */,
 			);
 			path = Mypage;
 			sourceTree = "<group>";
@@ -735,13 +735,6 @@
 				D2AB229A2C6E0C8300027027 /* UILabelExtention+RichText.swift */,
 			);
 			path = Extension;
-			sourceTree = "<group>";
-		};
-		D2ABCDF32C2AB5930035F7A1 /* Enum */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Enum;
 			sourceTree = "<group>";
 		};
 		D2ABCDF62C2BE5390035F7A1 /* Base */ = {
@@ -828,8 +821,6 @@
 				D2672BD32C62B723005B23A4 /* PinInfoViewController.swift */,
 				D2C79F2B2C5A1AB200E41D8C /* MakePostViewModel.swift */,
 				D2672BD12C62B64B005B23A4 /* PinInfoViewModel.swift */,
-				D2672C492C6A03C8005B23A4 /* PostCategoryViewController.swift */,
-				D2672C4B2C6A0625005B23A4 /* PostCategoryViewModel.swift */,
 			);
 			path = Post;
 			sourceTree = "<group>";
@@ -841,15 +832,6 @@
 				D2ABCDD52C2A6AAD0035F7A1 /* DI */,
 			);
 			path = App;
-			sourceTree = "<group>";
-		};
-		D2E459492C1DB1C800DB0756 /* Common */ = {
-			isa = PBXGroup;
-			children = (
-				D2ABCDF32C2AB5930035F7A1 /* Enum */,
-				D2E4595B2C1E383D00DB0756 /* BasicCommon.swift */,
-			);
-			path = Common;
 			sourceTree = "<group>";
 		};
 		D2E4594A2C1DB1F900DB0756 /* CommonUI */ = {
@@ -897,7 +879,6 @@
 				D21FB54B2C3E7AB100927905 /* Auth */,
 				D2ABCDEE2C2AB2FC0035F7A1 /* Extension */,
 				D2E4594A2C1DB1F900DB0756 /* CommonUI */,
-				D2E459492C1DB1C800DB0756 /* Common */,
 				D2ABCDE32C2A9CDC0035F7A1 /* Mypage */,
 				D2ABCDE22C2A9CD20035F7A1 /* Shopping */,
 				D2ABCDE12C2A9CB30035F7A1 /* Around */,
@@ -1221,7 +1202,6 @@
 				D28346FA2C38312A0048CB2E /* CountButton.swift in Sources */,
 				D2ABCDFD2C2BFE370035F7A1 /* BannerCollectionView.swift in Sources */,
 				D21FB5482C3BEE7F00927905 /* TestViewModel.swift in Sources */,
-				D2672C4C2C6A0625005B23A4 /* PostCategoryViewModel.swift in Sources */,
 				D2ED95422C46AF20004DA169 /* AuthRepositoryProtocol.swift in Sources */,
 				D2C79F2C2C5A1AB200E41D8C /* MakePostViewModel.swift in Sources */,
 				D230F9252C1D714C00C43797 /* AppDelegate.swift in Sources */,
@@ -1230,8 +1210,8 @@
 				D2ED954F2C4E1B76004DA169 /* CategoryCollectionView.swift in Sources */,
 				D2672C422C64EE52005B23A4 /* AppValues.swift in Sources */,
 				D2ABCE2B2C33C4D90035F7A1 /* PostImageCollectionView.swift in Sources */,
-				D2672C4A2C6A03C8005B23A4 /* PostCategoryViewController.swift in Sources */,
 				D2ED95372C44C804004DA169 /* MakeProfileViewModel.swift in Sources */,
+				D2911AE82C750BE800D1BABC /* MultiLineTagView.swift in Sources */,
 				D2ED95482C4A273D004DA169 /* Notification.swift in Sources */,
 				D2ABCE142C2D2F490035F7A1 /* NetworkConfiguration.swift in Sources */,
 				D2ED95532C4E26E4004DA169 /* CategoryCollectionViewFlowLayout.swift in Sources */,
@@ -1267,6 +1247,7 @@
 				D2ED95512C4E1BB2004DA169 /* CategoryCollectionViewCell.swift in Sources */,
 				D2672BD42C62B723005B23A4 /* PinInfoViewController.swift in Sources */,
 				D2672C672C6B4236005B23A4 /* Images.swift in Sources */,
+				D2911AEA2C75A84500D1BABC /* MypageViewModel.swift in Sources */,
 				D230F9272C1D714C00C43797 /* SceneDelegate.swift in Sources */,
 				D2ABCE1A2C2D4F590035F7A1 /* DomainAssembly.swift in Sources */,
 				D2ABCDE52C2A9CED0035F7A1 /* HomeViewController.swift in Sources */,
@@ -1289,7 +1270,6 @@
 				D2ED95402C46AF0A004DA169 /* AuthRepository.swift in Sources */,
 				D2ABCE112C2D2E9F0035F7A1 /* BannerService.swift in Sources */,
 				D2ABCDED2C2AAEA10035F7A1 /* HomeViewModel.swift in Sources */,
-				D2E4595C2C1E383D00DB0756 /* BasicCommon.swift in Sources */,
 				D2ED954C2C4CD79E004DA169 /* KeychainHelper.swift in Sources */,
 				D2ED95392C46A7FF004DA169 /* AuthDataSoucrce.swift in Sources */,
 				D2672C262C64BB0E005B23A4 /* MakePostService.swift in Sources */,

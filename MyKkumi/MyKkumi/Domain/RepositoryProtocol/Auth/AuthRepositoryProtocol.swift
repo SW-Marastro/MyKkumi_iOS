@@ -13,4 +13,6 @@ public protocol AuthRepository {
     func siginApple(_ auth : AppleAuth) -> Single<Result<Bool, AuthError>>
     func patchUserData(_ user : PatchUserVO) -> Single<Result<UserVO, AuthError>>
     func refreshToken()
+    func getPresignedUrl() -> Single<Result<PreSignedUrlVO, AuthError>>
+    func reportUser(_ uuid : String) -> Single<Result<ReportResult, AuthError>>
 }

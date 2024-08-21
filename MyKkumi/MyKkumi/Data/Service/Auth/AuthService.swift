@@ -12,6 +12,8 @@ public var authProvider = MoyaProvider<Auth>()
 
 public enum AuthError : Error {
     case unknownError(ErrorVO)
+    case CONFLICT
+    case NOTFOUND
 }
 
 public enum Auth {
@@ -20,6 +22,8 @@ public enum Auth {
     case getUserData
     case patchUser(PatchUserVO)
     case refreshToken(RefreshToekn)
+    case getPresignedUrl
+    case reportUser(String)
 }
 
 extension Auth : TargetType {
@@ -32,13 +36,15 @@ extension Auth : TargetType {
         case .getUserData : return NetworkConfiguration.getUserData
         case .patchUser(_) : return NetworkConfiguration.patchUser
         case .refreshToken(_) : return NetworkConfiguration.getToken
+        case .getPresignedUrl : return NetworkConfiguration.profileImagePresigned
+        case .reportUser(_) : return NetworkConfiguration.reportUser
         }
     }
     
     public var method : Moya.Method {
         switch self {
-        case .getUserData : return .get
-        case .signinKakao(_), .signinApple(_), .refreshToken  : return .post
+        case .getUserData, .getPresignedUrl : return .get
+        case .signinKakao(_), .signinApple(_), .refreshToken, .reportUser(_)  : return .post
         case .patchUser(_) : return .patch
         }
     }
@@ -49,18 +55,21 @@ extension Auth : TargetType {
             return .requestJSONEncodable(auth)
         case .signinApple(let auth) :
             return .requestJSONEncodable(auth)
-        case .getUserData :
+        case .getUserData, .getPresignedUrl :
             return .requestPlain
         case .patchUser(let user) :
             return .requestJSONEncodable(user)
         case .refreshToken(let refreshToken) :
             return .requestJSONEncodable(refreshToken)
+        case .reportUser(let userId) :
+            let reportBody = ReportUserBody(userUuid: userId, reason: "ETC", content: "그냥 싫습니다.")
+            return .requestJSONEncodable(reportBody)
         }
     }
     
     public var headers : [String : String]? {
         switch self {
-        case .patchUser(_) :
+        case .patchUser(_), .getPresignedUrl, .reportUser(_) :
             var accessToken = KeychainHelper.shared.load(key: "accessToken")!
             accessToken = "Bearer " + accessToken
             return ["Content-Type" : "application/json",

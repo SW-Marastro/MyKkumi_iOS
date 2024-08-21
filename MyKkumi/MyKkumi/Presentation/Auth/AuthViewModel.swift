@@ -70,6 +70,12 @@ class AuthViewModel : AuthViewModelProtocol {
             }
             .share()
         
+//        let signedUser = kakaoSignin
+//            .compactMap { $0.successValue()}
+//            .flatMap { auth in
+//                return authUsecase.
+//            }
+        
         self.kakaoSuccess = kakaoSignin
             .compactMap{ $0.successValue()}
             .asDriver(onErrorDriveWith: .empty())

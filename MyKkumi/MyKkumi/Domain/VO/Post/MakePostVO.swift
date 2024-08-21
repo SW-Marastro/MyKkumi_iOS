@@ -49,14 +49,17 @@ public struct MakePostResponse : Codable {
 }
 
 public struct PreSignedUrlVO : Codable {
-    let url : String
+    let presignedUrl : String
+    let cdnUrl : String
     
     enum CodingKeys : String, CodingKey {
-        case url
+        case presignedUrl
+        case cdnUrl
     }
     
     public init(from decoder : Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
-        url = try values.decode(String.self, forKey: .url)
+        presignedUrl = try values.decode(String.self, forKey: .presignedUrl)
+        cdnUrl = try values.decode(String.self, forKey: .cdnUrl)
     }
 }

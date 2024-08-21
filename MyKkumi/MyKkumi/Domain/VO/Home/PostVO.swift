@@ -76,16 +76,19 @@ struct ContentVO: Codable {
 public struct Writer: Codable {
     let profileImage: String?
     let nickname: String
+    let uuid : String
     
     enum CodingKeys: String, CodingKey {
         case profileImage
         case nickname
+        case uuid
     }
     
     public init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         profileImage = try values.decodeIfPresent(String.self, forKey: .profileImage) ?? "nullValue"
         nickname = try values.decode(String.self, forKey: .nickname)
+        uuid = try values.decode(String.self, forKey: .uuid)
     }
 }
 

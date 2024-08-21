@@ -66,14 +66,22 @@ class HomeViewController: BaseViewController<HomeViewModelProtocol> {
             .drive(onNext: {[weak self] id in
                 guard let self = self else { return }
                 
-                let alert = UIAlertController(title : "포스트를 신고하시겠습니까?", message: "", preferredStyle: .actionSheet)
-                let report = UIAlertAction(title: "포스트 신고", style: .default) {_ in
-                    self.viewModel.postReported.onNext(id)
+                let keys = id.map { $0.key }
+                let values = id.map { $0.value }
+                
+                let alert = UIAlertController(title : "신고하시겠습니까?", message: "", preferredStyle: .actionSheet)
+                let post = UIAlertAction(title: "포스트 신고", style: .default) {_ in
+                    self.viewModel.postReported.onNext(values[0])
+                }
+                
+                let user = UIAlertAction(title: "포스트 신고", style: .default) {_ in
+                    self.viewModel.userReported.onNext(keys[0])
                 }
 
                 let cancel = UIAlertAction(title: "취소", style: .cancel)
                 
-                alert.addAction(report)
+                alert.addAction(post)
+                alert.addAction(user)
                 alert.addAction(cancel)
                 self.present(alert, animated: true, completion: nil)
             })

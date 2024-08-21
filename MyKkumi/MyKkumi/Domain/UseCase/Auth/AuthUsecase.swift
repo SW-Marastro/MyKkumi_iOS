@@ -14,6 +14,8 @@ public protocol AuthUsecase {
     func signinApple(_ auth : AppleAuth) -> Single<Result<Bool, AuthError>>
     func patchUserData(_ user : PatchUserVO) -> Single<Result<UserVO, AuthError>>
     func refreshToken()
+    func getPresignedUrl() -> Single<Result<PreSignedUrlVO, AuthError>>
+    func reportUser(_ uuid : String) -> Single<Result<ReportResult, AuthError>>
 }
 
 public final class DefaultAuthUsecase : AuthUsecase {
@@ -43,5 +45,13 @@ public final class DefaultAuthUsecase : AuthUsecase {
     
     public func refreshToken() {
         repository.refreshToken()
+    }
+    
+    public func getPresignedUrl() -> Single<Result<PreSignedUrlVO, AuthError>> {
+        return repository.getPresignedUrl()
+    }
+    
+    public func reportUser(_ uuid: String) -> Single<Result<ReportResult, AuthError>> {
+        return repository.reportUser(uuid)
     }
 }
