@@ -21,5 +21,8 @@ pod 'RxCocoa'
 pod 'Alamofire'
 pod 'Moya/RxSwift'
 pod 'Swinject'
+pod 'RxDataSources'
+pod 'KakaoSDKUser'
+pod 'KakaoSDKAuth'
 
 end

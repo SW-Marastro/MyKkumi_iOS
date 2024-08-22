@@ -6,40 +6,32 @@
 //
 
 import UIKit
+import KakaoSDKAuth
 import Swinject
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
-    var window: UIWindow?
-    private var injector : Injector = DependencyInjector(container: Container())
+    var window: RootWindow?
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScence = (scene as? UIWindowScene) else { return }
         
-        injector.assemble([BasicAssembly(),
-                          BasicDataAssembly(),
-                          ViewAssembly()])
+        DependencyInjector.shared.assemble([
+                          DataAssembly(),
+                          DomainAssembly()
+        ])
         
-        let homeViewController = UINavigationController(rootViewController: HomeViewController())
-                let aroundViewController = UINavigationController(rootViewController: AroundViewController())
-                let shoppingViewController = UINavigationController(rootViewController: ShoppingViewController())
-                let mypageViewController = UINavigationController(rootViewController: MypageViewController())
-                
-                let tabBarController = UITabBarController()
-                tabBarController.setViewControllers([homeViewController, aroundViewController, shoppingViewController, mypageViewController], animated: true)
-                
-                if let items = tabBarController.tabBar.items {
-                    items[0].title = "홈"
-                    
-                    items[1].title = "둘러보기"
-                    
-                    items[2].title = "쇼핑"
-                    
-                    items[3].title = "마이페이지"
-                }
-        window = .init(windowScene: windowScence)
-        window?.rootViewController = tabBarController
+        //keyChain에서 값 꺼내서 확인
+        window = RootWindow(windowScene: windowScence)
         window?.makeKeyAndVisible()
+    }
+    
+    func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
+        if let url = URLContexts.first?.url {
+            if (AuthApi.isKakaoTalkLoginUrl(url)) {
+                _ = AuthController.handleOpenUrl(url: url)
+            }
+        }
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

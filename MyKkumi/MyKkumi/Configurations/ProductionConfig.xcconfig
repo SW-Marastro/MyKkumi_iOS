@@ -1,0 +1,16 @@
+//
+//  ProductionConfig.xcconfig
+//  MyKkumi
+//
+//  Created by 최재혁 on 8/14/24.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+
+#include "../../Pods/Target Support Files/Pods-MyKkumi/Pods-MyKkumi.release.xcconfig"
+
+BASE_URL=api.mykkumi.com/api/v1
+KAKAO_NATIVE_KEY="0ec05c4fb43a8e00113619ab88f06f86"
+APP_NAME=MYKKUMI
+BUNDLE_ID=com.MyKkumi.MyKkumi
