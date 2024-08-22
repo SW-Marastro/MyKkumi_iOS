@@ -16,6 +16,8 @@ public protocol MypageViewModelInputProtocol {
 
 public protocol MypageViewModelOutputProtocol {
     var sholudAlertDeleteComplet : Driver<String> { get }
+    var sholudAlertLogout : Driver<String> { get }
+    var sholudPresentForm : Driver<Void> { get }
 }
 
 public protocol MypageViewModelProtocol : MypageViewModelInputProtocol, MypageViewModelOutputProtocol {
@@ -31,7 +33,6 @@ public class MypageViewModel : MypageViewModelProtocol {
         
         let logoutResult = self.logoutButtonTap
             .flatMapLatest {_ -> Observable<String> in
-                print("logoutbutton tap")
                 if let _ = KeychainHelper.shared.load(key: "accessToken") {
                     KeychainHelper.shared.delete(key: "accessToken")
                     KeychainHelper.shared.delete(key: "refreshToken")
@@ -41,7 +42,26 @@ public class MypageViewModel : MypageViewModelProtocol {
                 }
             }
         
-        self.sholudAlertDeleteComplet = logoutResult
+        let deleteResult = self.deleteIdButtonTap
+            .flatMapLatest {_ -> Observable<Bool> in
+                if let _ = KeychainHelper.shared.load(key: "accessToken") {
+                    return Observable.just(true)
+                } else {
+                    return Observable.just(false)
+                }
+            }
+        
+        self.sholudAlertLogout = logoutResult
+            .asDriver(onErrorDriveWith: .empty())
+        
+        self.sholudPresentForm = deleteResult
+            .filter{$0}
+            .map { _ in Void()}
+            .asDriver(onErrorDriveWith: .empty())
+        
+        self.sholudAlertDeleteComplet = deleteResult
+            .filter{!$0}
+            .map{_ in "로그인이 필요합니다."}
             .asDriver(onErrorDriveWith: .empty())
     }
     
@@ -49,4 +69,6 @@ public class MypageViewModel : MypageViewModelProtocol {
     public var deleteIdButtonTap: PublishSubject<Void>
     
     public var sholudAlertDeleteComplet: Driver<String>
+    public var sholudPresentForm: Driver<Void>
+    public var sholudAlertLogout: Driver<String>
 }

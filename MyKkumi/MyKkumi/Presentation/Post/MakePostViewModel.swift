@@ -161,7 +161,6 @@ public class MakePostViewModel : MakePostViewModelProtocol {
                             }
                             dispatchGroup.leave()
                         }, onFailure: { error in
-                            print("Error corrured : \(error)")
                             dispatchGroup.leave()
                         })
                         .disposed(by: self.disposeBag)
@@ -196,7 +195,6 @@ public class MakePostViewModel : MakePostViewModelProtocol {
                             }
                             dispatchGroup.leave()
                         }, onFailure: { error in
-                            print("Error corrured : \(error)")
                             dispatchGroup.leave()
                         })
                         .disposed(by: self.disposeBag)

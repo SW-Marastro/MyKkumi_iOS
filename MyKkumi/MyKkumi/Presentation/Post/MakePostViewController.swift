@@ -21,6 +21,13 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.setNavigationBarHidden(false, animated: false)
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        view.addGestureRecognizer(tapGesture)
+    }
+    
+    @objc private func dismissKeyboard() {
+        view.endEditing(true)  // This will dismiss the keyboard
     }
     
     override func setupHierarchy() {
@@ -586,7 +593,7 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
     private var contentTextView : UITextView = {
         let textView = UITextView()
         textView.keyboardType = .default
-        textView.returnKeyType = .done
+        textView.returnKeyType = .default
         textView.isUserInteractionEnabled = true
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.layer.borderWidth = 1.0

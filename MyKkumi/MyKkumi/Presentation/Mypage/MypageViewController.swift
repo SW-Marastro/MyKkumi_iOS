@@ -8,6 +8,7 @@
 import Foundation
 import RxSwift
 import UIKit
+import SafariServices
 
 class MypageViewController : BaseViewController<MypageViewModelProtocol> {
     var viewModel : MypageViewModelProtocol!
@@ -42,6 +43,29 @@ class MypageViewController : BaseViewController<MypageViewModelProtocol> {
                 
                 alert.addAction(complete)
                 self.present(alert, animated: true, completion: nil)
+            })
+            .disposed(by: disposeBag)
+        
+        self.viewModel.sholudAlertLogout
+            .drive(onNext: {[weak self] title in
+                guard let self = self else { return }
+                
+                let alert = UIAlertController(title : title, message: "", preferredStyle: .alert)
+                let complete = UIAlertAction(title: "완료", style: .default)
+                
+                alert.addAction(complete)
+                self.present(alert, animated: true, completion: nil)
+            })
+            .disposed(by: disposeBag)
+        
+        self.viewModel.sholudPresentForm
+            .drive(onNext: { [weak self] _ in
+                guard let self = self else { return }
+                
+                let formUrl = NSURL(string: "https://forms.gle/Jgh7U3cujjfLcbwm7")!
+                let formSafariView : SFSafariViewController = SFSafariViewController(url: formUrl as URL)
+                
+                self.present(formSafariView, animated: true, completion: nil)
             })
             .disposed(by: disposeBag)
     }

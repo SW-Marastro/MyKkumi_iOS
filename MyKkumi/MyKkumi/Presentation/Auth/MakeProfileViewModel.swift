@@ -19,6 +19,7 @@ protocol MakeProfileViewModelInput {
     var cameraTap : PublishSubject<Void> { get }
     var nickNameInput : PublishSubject<String>{ get }
     var deleteButtonTap : PublishSubject<Void> { get }
+    var backButtonTap : PublishSubject<Void> { get }
 }
 
 protocol MakeProfileViewModelOutput {
@@ -27,6 +28,7 @@ protocol MakeProfileViewModelOutput {
     var sholudPushCamera : Driver<Bool> { get }
     var sholudPopView : Driver<UserVO> { get }
     var deleteTextField : Driver<Void> { get }
+    var dismissView : Driver<Void> { get }
 }
 
 protocol MakeProfileViewModelProtocol : MakeProfileViewModelInput, MakeProfileViewModelOutput {
@@ -52,6 +54,7 @@ class MakeProfileViewModel : MakeProfileViewModelProtocol {
         self.cameraTap = PublishSubject<Void>()
         self.nickNameInput = PublishSubject<String>()
         self.deleteButtonTap = PublishSubject<Void>()
+        self.backButtonTap = PublishSubject<Void>()
         
         self.imageData = BehaviorRelay<UIImage?>(value: nil)
         self.nickName = BehaviorRelay<String?>(value : nil)
@@ -59,6 +62,9 @@ class MakeProfileViewModel : MakeProfileViewModelProtocol {
         self.imageUrl = BehaviorRelay<String?>(value: nil)
         
         self.sholudPushSelectAlert = self.profileImageTap
+            .asDriver(onErrorDriveWith: .empty())
+        
+        self.dismissView = self.backButtonTap
             .asDriver(onErrorDriveWith: .empty())
         
         self.deleteTextField = self.deleteButtonTap
@@ -120,7 +126,6 @@ class MakeProfileViewModel : MakeProfileViewModelProtocol {
         
         let patchUserResult = self.completeButtonTap
             .flatMap{user in
-                print(user)
                 return authUsecase.patchUserData(user!)
             }
             .share()
@@ -165,12 +170,14 @@ class MakeProfileViewModel : MakeProfileViewModelProtocol {
     public var cameraTap: PublishSubject<Void>
     public var nickNameInput: PublishSubject<String>
     public var deleteButtonTap: PublishSubject<Void>
+    public var backButtonTap: PublishSubject<Void>
     
     public var sholudPushSelectAlert: Driver<Void>
     public var sholudPushImagePicker: Driver<Bool>
     public var sholudPushCamera: Driver<Bool>
     public var sholudPopView: Driver<UserVO>
     public var deleteTextField: Driver<Void>
+    public var dismissView: Driver<Void>
     
     public var imageData: BehaviorRelay<UIImage?>
     public var nickName: BehaviorRelay<String?>
