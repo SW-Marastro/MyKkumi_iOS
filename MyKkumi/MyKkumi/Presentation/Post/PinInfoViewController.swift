@@ -245,6 +245,14 @@ extension PinInfoViewController : UITextViewDelegate {
         self.namePlaceHolderLabel.isHidden = !self.productNameTextView.text.isEmpty
         self.infoPlaceHolderLabel.isHidden = !self.purchaseTextView.text.isEmpty
     }
+    
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        if text == "\n" {  // Detect if the return key is pressed
+            textView.resignFirstResponder()  // Hide the keyboard
+            return false  // Prevent the default newline behavior
+        }
+        return true  // Allow other text changes
+    }
 }
 
 

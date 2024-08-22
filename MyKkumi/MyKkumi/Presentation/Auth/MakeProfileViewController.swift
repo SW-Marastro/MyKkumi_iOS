@@ -39,6 +39,9 @@ class MakeProfileViewController : BaseViewController<MakeProfileViewModelProtoco
         
         nickNameView.addSubview(nickNameTextField)
         nickNameView.addSubview(nickNameCancelButton)
+        
+        let backBarButtonItem = UIBarButtonItem(customView: backButton)
+        navigationItem.leftBarButtonItem = backBarButtonItem
     }
     
     public override func setupDelegate() {
@@ -67,6 +70,16 @@ class MakeProfileViewController : BaseViewController<MakeProfileViewModelProtoco
         
         self.nickNameTextField.rx.text.orEmpty
             .bind(to: self.viewModel.nickNameInput)
+            .disposed(by: disposeBag)
+        
+        self.backButton.rx.tap
+            .bind(to: viewModel.backButtonTap)
+            .disposed(by: disposeBag)
+        
+        self.viewModel.dismissView
+            .drive(onNext: {[weak self] _ in
+                self?.navigationController?.popViewController(animated: true)
+            })
             .disposed(by: disposeBag)
         
         self.viewModel.nickName
@@ -388,6 +401,13 @@ class MakeProfileViewController : BaseViewController<MakeProfileViewModelProtoco
         button.setAttributedTitle(attributedString, for: .normal)
         button.backgroundColor = AppColor.neutral50.color
         button.layer.cornerRadius = 12
+        return button
+    }()
+    
+    private var backButton : UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setImage(AppImage.backArrow.image , for: .normal)
         return button
     }()
 }

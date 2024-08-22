@@ -29,6 +29,9 @@ class CollectCategoryViewController : BaseViewController<CollectCategoryViewMode
         categoryScrollView.addSubview(categoryStackView)
         buttonView.addSubview(skipButton)
         buttonView.addSubview(nextButton)
+        
+        let backBarButtonItem = UIBarButtonItem(customView: backButton)
+        navigationItem.leftBarButtonItem = backBarButtonItem
     }
     
     public override func setupBind(viewModel: CollectCategoryViewModelProtocol) {
@@ -44,6 +47,16 @@ class CollectCategoryViewController : BaseViewController<CollectCategoryViewMode
         
         self.skipButton.rx.tap
             .bind(to: self.viewModel.skipButtonTap)
+            .disposed(by: disposeBag)
+        
+        self.backButton.rx.tap
+            .bind(to: viewModel.backButtonTap)
+            .disposed(by: disposeBag)
+        
+        self.viewModel.dismissView
+            .drive(onNext: {[weak self] _ in
+                self?.navigationController?.popViewController(animated: true)
+            })
             .disposed(by: disposeBag)
         
         self.viewModel.shouldPushMakeProfile
@@ -63,13 +76,7 @@ class CollectCategoryViewController : BaseViewController<CollectCategoryViewMode
             })
             .disposed(by: disposeBag)
         
-        self.viewModel.categoryRelay
-            .subscribe(onNext: { [weak self] ids in
-                guard let self = self else { return }
-                
-                
-            })
-            .disposed(by: disposeBag)
+        
         
         self.viewModel.shouldDrawCategory
             .drive(onNext: {[weak self] categories in
@@ -203,7 +210,7 @@ class CollectCategoryViewController : BaseViewController<CollectCategoryViewMode
     
     public override func setupLayout() {
         NSLayoutConstraint.activate([
-            selectCategoryLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 84),
+            selectCategoryLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 40),
             selectCategoryLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20)
         ])
         
@@ -294,6 +301,13 @@ class CollectCategoryViewController : BaseViewController<CollectCategoryViewMode
         button.backgroundColor = AppColor.primary.color
         button.layer.cornerRadius = 12
         button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
+    private var backButton : UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setImage(AppImage.backArrow.image , for: .normal)
         return button
     }()
 }
