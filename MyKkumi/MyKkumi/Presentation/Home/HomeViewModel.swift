@@ -84,7 +84,6 @@ public class HomeViewModel : HomeViewModelProtocol {
             .compactMap{$0.successValue()}
             .subscribe(onNext: { user in
                 if user.nickname == nil {
-                    print(user)
                     KeychainHelper.shared.delete(key: "accessToken")
                     KeychainHelper.shared.delete(key: "refreshToken")
                 }

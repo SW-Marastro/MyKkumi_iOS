@@ -14,12 +14,14 @@ protocol CollectCategoryViewModelInput {
     var nextButtonTap : PublishSubject<Void> { get }
     var viewdDidLoad : PublishSubject<Void> { get }
     var skipButtonTap : PublishSubject<Void> { get }
+    var backButtonTap : PublishSubject<Void> { get }
 }
 
 protocol CollectCategoryViewModelOutput {
     var shouldPushMakeProfile : Driver<Void> { get }
     var shouldSkipView : Driver<Void> { get }
     var shouldDrawCategory : Driver<CategoriesVO> { get }
+    var dismissView : Driver<Void> { get }
 }
 
 protocol CollectCategoryViewModelProtocol : CollectCategoryViewModelInput, CollectCategoryViewModelOutput {
@@ -38,6 +40,7 @@ class CollectCategoryViewModel : CollectCategoryViewModelProtocol {
         self.viewdDidLoad = PublishSubject<Void>()
         self.skipButtonTap = PublishSubject<Void>()
         self.categoryRelay = BehaviorRelay<[Int]?>(value: nil)
+        self.backButtonTap = PublishSubject<Void>()
         
         self.shouldPushMakeProfile = nextButtonTap
             .asDriver(onErrorDriveWith: .empty())
@@ -53,6 +56,9 @@ class CollectCategoryViewModel : CollectCategoryViewModelProtocol {
         
         self.shouldDrawCategory = categoryResult
             .compactMap { $0.successValue()}
+            .asDriver(onErrorDriveWith: .empty())
+        
+        self.dismissView = self.backButtonTap
             .asDriver(onErrorDriveWith: .empty())
         
         self.categoryTap
@@ -84,8 +90,10 @@ class CollectCategoryViewModel : CollectCategoryViewModelProtocol {
     public var viewdDidLoad: PublishSubject<Void>
     public var skipButtonTap: PublishSubject<Void>
     public var categoryRelay: BehaviorRelay<[Int]?>
+    public var backButtonTap: PublishSubject<Void>
 
     public var shouldPushMakeProfile: Driver<Void>
     public var shouldSkipView: Driver<Void>
     public var shouldDrawCategory: Driver<CategoriesVO>
+    public var dismissView: Driver<Void>
 }

@@ -104,7 +104,18 @@ class HomeViewController: BaseViewController<HomeViewModelProtocol> {
     public override func setupDelegate() {
         postTableView.delegate = self
         postTableView.dataSource = self
+        
+        refreshControl.addTarget(self, action: #selector(handleRefresh(_:)), for: .valueChanged)
+        postTableView.refreshControl = refreshControl
     }
+    
+    @objc private func handleRefresh(_ refreshControl: UIRefreshControl) {
+        viewModel.cursur.accept("")
+        viewModel.postViewModels.accept([])
+        beginFetch(nil)
+        refreshControl.endRefreshing()
+    }
+
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -175,11 +186,13 @@ class HomeViewController: BaseViewController<HomeViewModelProtocol> {
         return button
     }()
     
-    public lazy var postTableView : PostTableView = {
+    private lazy var postTableView : PostTableView = {
         let tableView = PostTableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
         return tableView
     }()
+    
+    private let refreshControl = UIRefreshControl()
 }
 
 extension HomeViewController: UITextFieldDelegate {
