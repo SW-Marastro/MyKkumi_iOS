@@ -8,6 +8,8 @@
 import Foundation
 import Moya
 
+let interceptor : RequestInterceptor =  NetworkInterceptor()
+let session = Session(interceptor : interceptor)
 public var makePostProvider = MoyaProvider<MakePost>(session : session)
 
 public enum MakePostError : Error {
@@ -37,7 +39,7 @@ extension MakePost : TargetType {
         switch self {
         case .getCategory : return NetworkConfiguration.getCategory
         case .getPresignedURL : return NetworkConfiguration.getPresignedURL
-        case .putImage(let url, _) : return ""
+        case .putImage(_, _) : return ""
         case .uploadPost : return NetworkConfiguration.uploadPost
         case .deletePost(let postid) : return NetworkConfiguration.deletePost + postid
         }
@@ -70,8 +72,6 @@ extension MakePost : TargetType {
     //requestIntercepter에 header 구현되어있음
     public var headers: [String : String]? {
         switch self {
-        case .putImage(_, _) :
-            return ["Content-Type": "application/octet-stream"]
         default : return ["Content-Type": "application/json"]
         }
     }

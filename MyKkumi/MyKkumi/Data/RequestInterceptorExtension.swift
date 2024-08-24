@@ -37,8 +37,9 @@ class NetworkInterceptor : RequestInterceptor {
                     completion(.doNotRetry)
                 })
                 .disposed(by: disposeBag)
+        } else {
+            completion(.doNotRetry)
         }
-        completion(.doNotRetry)
     }
     
     private func refreshAccessToken() -> Single<Bool> {
@@ -56,6 +57,3 @@ class NetworkInterceptor : RequestInterceptor {
         }
     }
 }
-
-let interceptor : RequestInterceptor =  NetworkInterceptor()
-let session = Session(interceptor : interceptor)
