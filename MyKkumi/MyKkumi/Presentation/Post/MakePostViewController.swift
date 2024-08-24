@@ -24,6 +24,15 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tapGesture)
+        
+        
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        self.viewModel.contentRelay.accept("")
+        self.viewModel.pinInfoRelay.accept([:])
+        self.viewModel.postImageRelay.accept([])
+        self.viewModel.viewdidLoad.onNext(Void())
     }
     
     @objc private func dismissKeyboard() {
