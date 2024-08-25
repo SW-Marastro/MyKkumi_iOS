@@ -155,7 +155,7 @@ public class MakePostViewModel : MakePostViewModelProtocol {
                         .subscribe(onSuccess: {result in
                             if case let .success(url) = result {
                                 let resizedImage = image.resized(toMaxSize: CGSize(width: 1024, height: 1024))
-                                let imageToData = resizedImage.jpegData(compressionQuality: 1)!
+                                let imageToData = resizedImage.jpegData(compressionQuality: 0.8)!
                                 let imageData = ImageData(data: imageToData, url: url)
                                 imagesData.append(imageData)
                             }

@@ -1393,6 +1393,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D2AB22982C6CCF2800027027 /* DevConfig.xcconfig */;
 			buildSettings = {
+				APP_NAME = "$(APP_NAME)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_MODULES = YES;
@@ -1403,7 +1404,7 @@
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MyKkumi/Resources/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = MYKKUMI_DEV;
+				INFOPLIST_KEY_CFBundleDisplayName = "$(APP_NAME)";
 				INFOPLIST_KEY_NSCameraUsageDescription = "포스트 등록, 프로필 설정을 목적으로 마이꾸미의 회원님의 카메라에 대한 엑세스 권한을 요청합니다.";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "포스트 등록, 프로필 설정을 목적으로 마이꾸미의 회원님의 사진 보관함에 대한 엑세스 권한을 요청합니다.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -1429,6 +1430,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D2AB22992C6CCF3800027027 /* ProductionConfig.xcconfig */;
 			buildSettings = {
+				APP_NAME = "$(APP_NAME)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_MODULES = YES;
@@ -1439,7 +1441,7 @@
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MyKkumi/Resources/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = MYKKUMI_DEV;
+				INFOPLIST_KEY_CFBundleDisplayName = "$(APP_NAME)";
 				INFOPLIST_KEY_NSCameraUsageDescription = "포스트 등록, 프로필 설정을 목적으로 마이꾸미의 회원님의 카메라에 대한 엑세스 권한을 요청합니다.";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "포스트 등록, 프로필 설정을 목적으로 마이꾸미의 회원님의 사진 보관함에 대한 엑세스 권한을 요청합니다.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

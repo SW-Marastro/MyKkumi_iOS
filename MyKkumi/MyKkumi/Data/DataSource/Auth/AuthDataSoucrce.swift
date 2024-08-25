@@ -30,7 +30,7 @@ public class DefaultAuthDataSource : AuthDataSource {
             .map {response in
                 let tokens = try JSONDecoder().decode(AuthVO.self, from: response.data)
                 let accessTokenSaved = KeychainHelper.shared.save(tokens.accessToken, key: "accessToken")
-                let refreshTokenSaved = KeychainHelper.shared.save(tokens.refreshToken, key: "refreshToken")
+                let refreshTokenSaved = KeychainHelper.shared.save(tokens.refreshToken!, key: "refreshToken")
                 
                 if accessTokenSaved && refreshTokenSaved {
                     return .success(true)
@@ -105,7 +105,7 @@ public class DefaultAuthDataSource : AuthDataSource {
             .map {response in
                 let tokens = try JSONDecoder().decode(AuthVO.self, from: response.data)
                 let accessTokenSaved = KeychainHelper.shared.save(tokens.accessToken, key: "accessToken")
-                let refreshTokenSaved = KeychainHelper.shared.save(tokens.refreshToken, key: "refreshToken")
+                let refreshTokenSaved = KeychainHelper.shared.save(tokens.refreshToken!, key: "refreshToken")
                 
                 if accessTokenSaved && refreshTokenSaved {
                     return .success(true)
@@ -172,9 +172,9 @@ public class DefaultAuthDataSource : AuthDataSource {
                     return token.accessToken
                 }
                 .subscribe(onSuccess: { accessToken in
+                    KeychainHelper.shared.delete(key: "accessToken")
                     let accessTokenSave = KeychainHelper.shared.save(accessToken, key: "accessToken")
                     if !accessTokenSave {
-                        KeychainHelper.shared.delete(key: "accessToken")
                         KeychainHelper.shared.delete(key: "refreshToken")
                     }
                 }, onFailure: {error in

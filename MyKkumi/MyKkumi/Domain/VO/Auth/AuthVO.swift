@@ -8,7 +8,7 @@
 import Foundation
 
 public struct AuthVO : Codable {
-    let refreshToken: String
+    let refreshToken: String?
     let accessToken: String
     
     enum CodingKeys : String, CodingKey {
@@ -18,7 +18,7 @@ public struct AuthVO : Codable {
     
     public init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
-        refreshToken = try values.decode(String.self, forKey: .refreshToken)
+        refreshToken = try values.decodeIfPresent(String.self, forKey: .refreshToken)
         accessToken = try values.decode(String.self, forKey: .accessToken)
     }
     
