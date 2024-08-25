@@ -15,6 +15,7 @@ open class PostTableCell : UITableViewCell {
     
     public override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        self.selectionStyle = .none
     }
     
     public func bind(viewModel : PostCellViewModelProtocol) {
@@ -402,8 +403,7 @@ open class PostTableCell : UITableViewCell {
     private let writeComment : UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("댓글 작성", for: .normal)
-        button.titleLabel?.font = Typography.body13SemiBold(color: AppColor.neutral900).font()
+        button.setAttributedTitle(NSAttributedString(string: "댓글작성", attributes: Typography.body13SemiBold(color: AppColor.neutral900).attributes), for: .normal)
         button.backgroundColor = AppColor.secondary.color
         button.layer.cornerRadius = 8
         return button
