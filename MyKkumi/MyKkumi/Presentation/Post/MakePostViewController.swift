@@ -84,18 +84,18 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
         self.viewModel.shouldDrawAddButton
             .drive(onNext: {[weak self] _ in
                 guard let self = self else { return }
-                basicView.addSubview(addImageButton)
-                selectedImageStackView.addArrangedSubview(basicView)
-                
-                NSLayoutConstraint.activate([
-                    basicView.widthAnchor.constraint(equalTo: selectedImageScrollView.widthAnchor),
-                    basicView.heightAnchor.constraint(equalTo: selectedImageScrollView.heightAnchor),
-                    
-                    addImageButton.centerXAnchor.constraint(equalTo: basicView.centerXAnchor),
-                    addImageButton.centerYAnchor.constraint(equalTo: basicView.centerYAnchor),
-                    addImageButton.heightAnchor.constraint(equalToConstant: 47),
-                    addImageButton.widthAnchor.constraint(equalToConstant: 122)
-                ])
+                if self.selectedImageScrollView.superview != nil {
+                    basicView.addSubview(addImageButton)
+                    selectedImageStackView.addArrangedSubview(basicView)
+                    NSLayoutConstraint.activate([
+                        basicView.widthAnchor.constraint(equalTo: selectedImageScrollView.widthAnchor),
+                        basicView.heightAnchor.constraint(equalTo: selectedImageScrollView.heightAnchor),
+                        addImageButton.centerXAnchor.constraint(equalTo: basicView.centerXAnchor),
+                        addImageButton.centerYAnchor.constraint(equalTo: basicView.centerYAnchor),
+                        addImageButton.heightAnchor.constraint(equalToConstant: 47),
+                        addImageButton.widthAnchor.constraint(equalToConstant: 122)
+                    ])
+                }
             })
             .disposed(by: disposeBag)
 

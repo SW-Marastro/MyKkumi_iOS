@@ -24,11 +24,11 @@ public final class DefaultMakePostUsecase : MakePostUseCase {
         self.repository = repository
     }
     
-    public func getCategory() -> RxSwift.Single<Result<CategoriesVO, MakePostError>> {
+    public func getCategory() -> Single<Result<CategoriesVO, MakePostError>> {
         return repository.getCategory()
     }
     
-    public func getPresignedUrl() -> RxSwift.Single<Result<PreSignedUrlVO, MakePostError>> {
+    public func getPresignedUrl() -> Single<Result<PreSignedUrlVO, MakePostError>> {
         return repository.getPresignedUrl()
     }
     
