@@ -48,7 +48,7 @@ extension UILabel {
     }
 
     @objc private func handleTapOnMore() {
-        guard let currentText = self.attributedText else { return }
+        guard self.attributedText != nil else { return }
         
         let fullText = createRichText(from: originalContent ?? [])
         self.attributedText = fullText
