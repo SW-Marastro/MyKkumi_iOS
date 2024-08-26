@@ -168,22 +168,22 @@ open class PostTableCell : UITableViewCell {
         self.contentView.addSubview(profileView)
         self.contentView.addSubview(postImageScrollView)
         self.contentView.addSubview(dotView)
-        self.contentView.addSubview(buttonStack)
+//        self.contentView.addSubview(buttonStack)
         self.contentView.addSubview(reportPostButton)
         self.contentView.addSubview(postNameLabel)
         self.contentView.addSubview(postContent)
-        self.contentView.addSubview(writeComment)
+//        self.contentView.addSubview(writeComment)
         
         self.profileView.addSubview(profileImageView)
         self.profileView.addSubview(nicknameLabel)
         self.profileView.addSubview(categoryLabel)
-        self.profileView.addSubview(followButton)
+//        self.profileView.addSubview(followButton)
         
         self.postImageScrollView.addSubview(postImageStackView)
-        self.buttonStack.addArrangedSubview(likeButton)
-        self.buttonStack.addArrangedSubview(commentButton)
-        self.buttonStack.addArrangedSubview(shareButton)
-        self.buttonStack.addArrangedSubview(scrapButton)
+//        self.buttonStack.addArrangedSubview(likeButton)
+//        self.buttonStack.addArrangedSubview(commentButton)
+//        self.buttonStack.addArrangedSubview(shareButton)
+//        self.buttonStack.addArrangedSubview(scrapButton)
     }
     
     func setupLayout() {
@@ -209,12 +209,12 @@ open class PostTableCell : UITableViewCell {
             categoryLabel.leadingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: 13)
         ])
         
-        NSLayoutConstraint.activate([
-            followButton.topAnchor.constraint(equalTo: profileView.topAnchor, constant: 27),
-            followButton.trailingAnchor.constraint(equalTo: profileView.trailingAnchor, constant: -16),
-            followButton.heightAnchor.constraint(equalToConstant: 28),
-            followButton.widthAnchor.constraint(equalToConstant: 50)
-        ])
+//        NSLayoutConstraint.activate([
+//            followButton.topAnchor.constraint(equalTo: profileView.topAnchor, constant: 27),
+//            followButton.trailingAnchor.constraint(equalTo: profileView.trailingAnchor, constant: -16),
+//            followButton.heightAnchor.constraint(equalToConstant: 28),
+//            followButton.widthAnchor.constraint(equalToConstant: 50)
+//        ])
         
         NSLayoutConstraint.activate([
             postImageScrollView.topAnchor.constraint(equalTo: profileView.bottomAnchor),
@@ -236,18 +236,18 @@ open class PostTableCell : UITableViewCell {
             dotView.heightAnchor.constraint(equalToConstant: 8)
         ])
         
-        NSLayoutConstraint.activate([
-            buttonStack.topAnchor.constraint(equalTo: dotView.bottomAnchor, constant: 16),
-            buttonStack.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 16),
-            likeButton.heightAnchor.constraint(equalToConstant: 24),
-            likeButton.widthAnchor.constraint(equalTo: likeButton.heightAnchor),
-            commentButton.heightAnchor.constraint(equalTo: likeButton.heightAnchor),
-            commentButton.widthAnchor.constraint(equalTo: likeButton.widthAnchor),
-            shareButton.heightAnchor.constraint(equalTo: likeButton.heightAnchor),
-            shareButton.widthAnchor.constraint(equalTo: likeButton.widthAnchor),
-            scrapButton.heightAnchor.constraint(equalTo: likeButton.heightAnchor),
-            scrapButton.widthAnchor.constraint(equalTo: likeButton.widthAnchor),
-        ])
+//        NSLayoutConstraint.activate([
+//            buttonStack.topAnchor.constraint(equalTo: dotView.bottomAnchor, constant: 16),
+//            buttonStack.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 16),
+//            likeButton.heightAnchor.constraint(equalToConstant: 24),
+//            likeButton.widthAnchor.constraint(equalTo: likeButton.heightAnchor),
+//            commentButton.heightAnchor.constraint(equalTo: likeButton.heightAnchor),
+//            commentButton.widthAnchor.constraint(equalTo: likeButton.widthAnchor),
+//            shareButton.heightAnchor.constraint(equalTo: likeButton.heightAnchor),
+//            shareButton.widthAnchor.constraint(equalTo: likeButton.widthAnchor),
+//            scrapButton.heightAnchor.constraint(equalTo: likeButton.heightAnchor),
+//            scrapButton.widthAnchor.constraint(equalTo: likeButton.widthAnchor),
+//        ])
         
         NSLayoutConstraint.activate([
             reportPostButton.topAnchor.constraint(equalTo: dotView.bottomAnchor, constant: 12),
@@ -265,16 +265,17 @@ open class PostTableCell : UITableViewCell {
         NSLayoutConstraint.activate([
             postContent.topAnchor.constraint(equalTo: postNameLabel.bottomAnchor, constant: 8),
             postContent.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 16),
-            postContent.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -16)
+            postContent.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -16),
+            postContent.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor)
         ])
         
-        NSLayoutConstraint.activate([
-            writeComment.topAnchor.constraint(equalTo: postContent.bottomAnchor, constant: 16),
-            writeComment.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 16),
-            writeComment.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -32),
-            writeComment.heightAnchor.constraint(equalToConstant: 28),
-            writeComment.widthAnchor.constraint(equalToConstant: 73)
-        ])
+//        NSLayoutConstraint.activate([
+//            writeComment.topAnchor.constraint(equalTo: postContent.bottomAnchor, constant: 16),
+//            writeComment.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 16),
+//            writeComment.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -32),
+//            writeComment.heightAnchor.constraint(equalToConstant: 28),
+//            writeComment.widthAnchor.constraint(equalToConstant: 73)
+//        ])
     }
     
     private let profileView : UIView = {

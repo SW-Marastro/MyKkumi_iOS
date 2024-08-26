@@ -66,7 +66,7 @@ class HomeViewController: BaseViewController<HomeViewModelProtocol> {
             .drive(onNext: {[weak self] id in
                 guard let self = self else { return }
                 
-                let keys = id.map { $0.key }
+                _ = id.map { $0.key }
                 let values = id.map { $0.value }
                 
                 let alert = UIAlertController(title : "신고하시겠습니까?", message: "", preferredStyle: .actionSheet)

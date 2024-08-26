@@ -25,7 +25,6 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tapGesture)
         
-        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -60,7 +59,7 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
         buttonView.addSubview(buttonStack)
         selectedImageScrollView.addSubview(selectedImageStackView)
         buttonStack.addArrangedSubview(addPinButton)
-        buttonStack.addArrangedSubview(autoPinAddButton)
+//        buttonStack.addArrangedSubview(autoPinAddButton)
         completeButtonView.addSubview(completeButton)
         categoryView.addSubview(categoryLabel)
         categoryView.addSubview(categoryMultiView)
@@ -450,11 +449,16 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
             buttonStack.leadingAnchor.constraint(equalTo: buttonView.leadingAnchor, constant: 20)
         ])
         
+//        NSLayoutConstraint.activate([
+//            addPinButton.heightAnchor.constraint(equalToConstant: 37),
+//            addPinButton.widthAnchor.constraint(equalToConstant: 72),
+//            autoPinAddButton.heightAnchor.constraint(equalToConstant: 37),
+//            autoPinAddButton.widthAnchor.constraint(equalToConstant: 100)
+//        ])
+        
         NSLayoutConstraint.activate([
             addPinButton.heightAnchor.constraint(equalToConstant: 37),
             addPinButton.widthAnchor.constraint(equalToConstant: 72),
-            autoPinAddButton.heightAnchor.constraint(equalToConstant: 37),
-            autoPinAddButton.widthAnchor.constraint(equalToConstant: 100)
         ])
         
         NSLayoutConstraint.activate([
