@@ -62,7 +62,8 @@ enum Typography {
         return [
             .font: self.font(),
             .foregroundColor: textColor,  // 설정한 색상을 사용
-            .paragraphStyle: paragraphStyle
+            .paragraphStyle: paragraphStyle,
+            .baselineOffset : (self.lineHeight() - self.font().lineHeight) / 4
         ]
     }
     
