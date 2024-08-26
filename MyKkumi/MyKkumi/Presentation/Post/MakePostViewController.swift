@@ -33,6 +33,9 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
         self.viewModel.pinInfoRelay.accept([:])
         self.viewModel.postImageRelay.accept([])
         self.viewModel.viewdidLoad.onNext(Void())
+        self.viewModel.subCategories.accept(0)
+        self.contentTextView.text = nil
+        self.placeHolderLabel.isHidden = false
     }
     
     @objc private func dismissKeyboard() {

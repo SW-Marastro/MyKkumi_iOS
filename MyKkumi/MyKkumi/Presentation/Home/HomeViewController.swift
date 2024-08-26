@@ -73,15 +73,10 @@ class HomeViewController: BaseViewController<HomeViewModelProtocol> {
                 let post = UIAlertAction(title: "포스트 신고", style: .default) {_ in
                     self.viewModel.postReported.onNext(values[0])
                 }
-                
-                let user = UIAlertAction(title: "포스트 신고", style: .default) {_ in
-                    self.viewModel.userReported.onNext(keys[0])
-                }
 
                 let cancel = UIAlertAction(title: "취소", style: .cancel)
                 
                 alert.addAction(post)
-                alert.addAction(user)
                 alert.addAction(cancel)
                 self.present(alert, animated: true, completion: nil)
             })
