@@ -20,8 +20,8 @@ class HomeViewController: BaseViewController<HomeViewModelProtocol> {
         view.addSubview(infoView)
         view.addSubview(postTableView)
         infoView.addSubview(homeLabel)
-        infoView.addSubview(searchButton)
-        infoView.addSubview(notificationButton)
+        //infoView.addSubview(searchButton)
+        //infoView.addSubview(notificationButton)
     }
     
     public override func setupBind(viewModel : HomeViewModelProtocol) {
@@ -66,17 +66,21 @@ class HomeViewController: BaseViewController<HomeViewModelProtocol> {
             .drive(onNext: {[weak self] id in
                 guard let self = self else { return }
                 
-                _ = id.map { $0.key }
+                let keys = id.map { $0.key }
                 let values = id.map { $0.value }
                 
                 let alert = UIAlertController(title : "신고하시겠습니까?", message: "", preferredStyle: .actionSheet)
                 let post = UIAlertAction(title: "포스트 신고", style: .default) {_ in
                     self.viewModel.postReported.onNext(values[0])
                 }
+                let user = UIAlertAction(title: "사용자 신고", style: .default) {_ in
+                    self.viewModel.userReported.onNext(keys[0])
+                }
 
                 let cancel = UIAlertAction(title: "취소", style: .cancel)
                 
                 alert.addAction(post)
+                alert.addAction(user)
                 alert.addAction(cancel)
                 self.present(alert, animated: true, completion: nil)
             })
@@ -130,17 +134,17 @@ class HomeViewController: BaseViewController<HomeViewModelProtocol> {
             homeLabel.leadingAnchor.constraint(equalTo: infoView.leadingAnchor, constant: 16)
         ])
         
-        NSLayoutConstraint.activate([
-            notificationButton.topAnchor.constraint(equalTo: infoView.topAnchor, constant: 15),
-            notificationButton.trailingAnchor.constraint(equalTo: infoView.trailingAnchor, constant: -20),
-            notificationButton.heightAnchor.constraint(equalToConstant: 24),
-            notificationButton.widthAnchor.constraint(equalToConstant: 24)
-        ])
-        
-        NSLayoutConstraint.activate([
-            searchButton.topAnchor.constraint(equalTo: infoView.topAnchor, constant: 15),
-            searchButton.trailingAnchor.constraint(equalTo: notificationButton.leadingAnchor, constant: -16)
-        ])
+//        NSLayoutConstraint.activate([
+//            notificationButton.topAnchor.constraint(equalTo: infoView.topAnchor, constant: 15),
+//            notificationButton.trailingAnchor.constraint(equalTo: infoView.trailingAnchor, constant: -20),
+//            notificationButton.heightAnchor.constraint(equalToConstant: 24),
+//            notificationButton.widthAnchor.constraint(equalToConstant: 24)
+//        ])
+//        
+//        NSLayoutConstraint.activate([
+//            searchButton.topAnchor.constraint(equalTo: infoView.topAnchor, constant: 15),
+//            searchButton.trailingAnchor.constraint(equalTo: notificationButton.leadingAnchor, constant: -16)
+//        ])
         
         NSLayoutConstraint.activate([
             postTableView.topAnchor.constraint(equalTo: infoView.bottomAnchor, constant: 8),
@@ -217,18 +221,16 @@ extension HomeViewController : UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.row == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: HomeBannerCell.cellID, for: indexPath) as! HomeBannerCell
-            
-            viewModel.deliverBannerViewModel
-                .emit(onNext: { viewModel in
-                    cell.bind(viewModel: viewModel)
-                })
-                .disposed(by: disposeBag)
-            
-            viewModel.bannerDataOutput
-                .emit(onNext : { banners in
-                    cell.setCellData(bannerData: banners)
-                })
-                .disposed(by: disposeBag)
+            if viewModel.bannerViewUsed.value {
+                cell.bind(viewModel: viewModel.bannerViewModel.value)
+                
+                viewModel.bannerDataOutput
+                    .emit(onNext : { banners in
+                        cell.setCellData(bannerData: banners)
+                    })
+                    .disposed(by: disposeBag)
+                viewModel.bannerViewUsed.accept(false)
+            }
             
             return cell
         } else {

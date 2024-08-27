@@ -18,6 +18,11 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
         super.init()
     }
     
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.setNavigationBarHidden(false, animated: false)
@@ -25,6 +30,8 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tapGesture)
         
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -132,10 +139,11 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
         
         self.viewModel.shouldPushCamera
             .drive(onNext : {[weak self] _ in
-                let imagePicker = UIImagePickerController()
-                imagePicker.delegate = self
-                imagePicker.sourceType = .camera
-                self?.present(imagePicker, animated: true, completion: nil)
+//                let imagePicker = UIImagePickerController()
+//                imagePicker.delegate = self
+//                imagePicker.sourceType = .camera
+//                self?.present(imagePicker, animated: true, completion: nil)
+                self?.checkCameraPermissionAndProceed()
             })
             .disposed(by: disposeBag)
         
@@ -480,7 +488,7 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
         ])
         
         NSLayoutConstraint.activate([
-            placeHolderLabel.topAnchor.constraint(equalTo: contentTextView.topAnchor, constant: 14),
+            placeHolderLabel.topAnchor.constraint(equalTo: contentTextView.topAnchor, constant: 13),
             placeHolderLabel.leadingAnchor.constraint(equalTo: contentTextView.leadingAnchor, constant: 16)
         ])
         
@@ -616,6 +624,7 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
         textView.layer.borderColor = AppColor.neutral200.color.cgColor
         textView.layer.cornerRadius = 12
         textView.textContainerInset = UIEdgeInsets(top: 15, left: 16, bottom: 14, right: 16)
+        textView.textContainer.lineFragmentPadding = 0
         return textView
     }()
     
@@ -867,6 +876,84 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
             calcurateXY()
         }
     }
+    
+    @objc private func keyboardWillShow(notification: NSNotification) {
+        guard let userInfo = notification.userInfo else { return }
+        guard let keyboardFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
+        
+        let keyboardHeight = keyboardFrame.height
+        let contentInsets = UIEdgeInsets(top: 0, left: 0, bottom: keyboardHeight, right: 0)
+        
+        mainScrollView.contentInset = contentInsets
+        mainScrollView.scrollIndicatorInsets = contentInsets
+        
+        // 텍스트뷰가 보이도록 스크롤
+        var visibleRect = self.view.frame
+        visibleRect.size.height -= keyboardHeight
+        if !visibleRect.contains(self.contentTextView.frame.origin) {
+            let scrollPoint = CGPoint(x: 0, y: self.contentTextView.frame.origin.y - keyboardHeight)
+            mainScrollView.setContentOffset(scrollPoint, animated: true)
+        }
+    }
+    
+    @objc private func keyboardWillHide(notification: NSNotification) {
+        let contentInsets = UIEdgeInsets.zero
+        mainScrollView.contentInset = contentInsets
+        mainScrollView.scrollIndicatorInsets = contentInsets
+    }
+    
+    private func checkCameraPermissionAndProceed() {
+        let cameraAuthorizationStatus = AVCaptureDevice.authorizationStatus(for: .video)
+
+        switch cameraAuthorizationStatus {
+        case .authorized:
+            let imagePicker = UIImagePickerController()
+            imagePicker.delegate = self
+            imagePicker.sourceType = .camera
+            self.present(imagePicker, animated: true, completion: nil)
+
+        case .notDetermined:
+            AVCaptureDevice.requestAccess(for: .video) { [weak self] granted in
+                DispatchQueue.main.async {
+                    if granted {
+                        let imagePicker = UIImagePickerController()
+                        imagePicker.delegate = self
+                        imagePicker.sourceType = .camera
+                        self?.present(imagePicker, animated: true, completion: nil)
+                    } else {
+                        self?.showPermissionDeniedAlert()
+                    }
+                }
+            }
+
+        case .denied, .restricted:
+            showPermissionDeniedAlert()
+
+        @unknown default:
+            fatalError("Unexpected authorization status")
+        }
+    }
+
+    private func showPermissionDeniedAlert() {
+        let alert = UIAlertController(
+            title: "카메라 권한 필요",
+            message: "카메라에 접근하기 위해 권한이 필요합니다. 설정에서 권한을 허용해 주세요.",
+            preferredStyle: .alert
+        )
+
+        let goToSettingsAction = UIAlertAction(title: "설정으로 이동", style: .default) { _ in
+            if let appSettingsURL = URL(string: UIApplication.openSettingsURLString) {
+                UIApplication.shared.open(appSettingsURL, options: [:], completionHandler: nil)
+            }
+        }
+
+        let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
+
+        alert.addAction(goToSettingsAction)
+        alert.addAction(cancelAction)
+
+        self.present(alert, animated: true, completion: nil)
+    }
 }
 
 extension MakePostViewController : UIScrollViewDelegate {
@@ -930,5 +1017,13 @@ extension MakePostViewController : UITextViewDelegate {
     
     func textViewDidChange(_ textView: UITextView) {
         placeHolderLabel.isHidden = !textView.text.isEmpty
+    }
+    
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        var visibleRect = self.view.frame
+        visibleRect.size.height -= view.frame.size.height
+        if !visibleRect.contains(textView.frame.origin) {
+            mainScrollView.scrollRectToVisible(textView.frame, animated: true)
+        }
     }
 }

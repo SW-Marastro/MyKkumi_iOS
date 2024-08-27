@@ -23,7 +23,6 @@ public protocol HomeviewModelOutput {
     var bannerDataOutput : Signal<[BannerVO]> { get }//전체 배너 정보 view로 전달 -> output
     var shouldPushBannerView : Driver<BannerVO>{ get } // 눌린 배너 상세 정보 view로 전달
     var shouldPushBannerInfoView : Driver<Void> { get } // 전체 베너보기 버튼 결과 전달
-    var deliverBannerViewModel : Signal<BannerCellViewModelProtocol> {get}
     var shouldReloadPostTable : Signal<Void> { get }
     var shouldPushReport : Driver<[String : Int]> { get }
     var shouldPushReportCompleteAlert : Driver<Void> { get }
@@ -32,6 +31,8 @@ public protocol HomeviewModelOutput {
 public protocol HomeViewModelProtocol : HomeviewModelOutput, HomeViewModelInput {
     var cursur : BehaviorRelay<String> { get }
     var postViewModels : BehaviorRelay<[PostCellViewModelProtocol]> { get }
+    var bannerViewModel : BehaviorRelay<BannerCellViewModelProtocol> { get }
+    var bannerViewUsed : BehaviorRelay<Bool> { get }
 }
 
 public class HomeViewModel : HomeViewModelProtocol {
@@ -51,13 +52,13 @@ public class HomeViewModel : HomeViewModelProtocol {
         self.postTap = PublishSubject<Int64>()
         self.uploadPostButtonTap = PublishSubject<Void>()
         self.getPostsData = BehaviorSubject<String?>(value: nil)
-        self.deliverBannerViewModel = Signal.empty()
         self.cursur = BehaviorRelay<String>(value: "")
         self.postViewModels = BehaviorRelay<[PostCellViewModelProtocol]>(value: [])
         self.reportButtonTapInput = PublishSubject<[String : Int]>()
         self.postReported = PublishSubject<Int>()
         self.userReported = PublishSubject<String>()
-        
+        self.bannerViewModel = BehaviorRelay<BannerCellViewModelProtocol>(value: bannerDetailViewModel)
+        self.bannerViewUsed = BehaviorRelay<Bool> (value: true)
 
         //MARK: Banner
         let allBannerResult = self.viewdidload
@@ -100,16 +101,12 @@ public class HomeViewModel : HomeViewModelProtocol {
             }
             .share()
         
-        self.shouldPushBannerInfoView = self.bannerDetailViewModel
-            .bannerPageTap
+        self.shouldPushBannerInfoView = self.bannerDetailViewModel.bannerPageTap
             .asDriver(onErrorJustReturn: ())
         
         self.shouldPushBannerView = bannerResult
             .compactMap { $0.successValue() }
             .asDriver(onErrorDriveWith: .empty())
-        
-        self.deliverBannerViewModel = Single.just(bannerDetailViewModel)
-            .asSignal(onErrorSignalWith: .empty())
         
         //MARK: Post
         let allPostResult = self.getPostsData
@@ -174,7 +171,6 @@ public class HomeViewModel : HomeViewModelProtocol {
     public var bannerDataOutput: Signal<[BannerVO]>
     public var shouldPushBannerView: Driver<BannerVO>
     public var shouldPushBannerInfoView: Driver<Void>
-    public var deliverBannerViewModel: Signal<BannerCellViewModelProtocol>
     public var shouldReloadPostTable: Signal<Void>
     public var shouldPushReport: Driver<[String : Int]>
     public var shouldPushReportCompleteAlert: Driver<Void>
@@ -188,4 +184,6 @@ public class HomeViewModel : HomeViewModelProtocol {
     
     public var cursur: BehaviorRelay<String>
     public var postViewModels: BehaviorRelay<[any PostCellViewModelProtocol]>
+    public var bannerViewModel: BehaviorRelay<any BannerCellViewModelProtocol>
+    public var bannerViewUsed: BehaviorRelay<Bool>
 }

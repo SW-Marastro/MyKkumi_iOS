@@ -29,6 +29,7 @@ protocol MakeProfileViewModelOutput {
     var sholudPopView : Driver<UserVO> { get }
     var deleteTextField : Driver<Void> { get }
     var dismissView : Driver<Void> { get }
+    var sholudPushErrorAlert : Driver<AuthError> { get }
 }
 
 protocol MakeProfileViewModelProtocol : MakeProfileViewModelInput, MakeProfileViewModelOutput {
@@ -130,6 +131,10 @@ class MakeProfileViewModel : MakeProfileViewModelProtocol {
             }
             .share()
         
+        self.sholudPushErrorAlert = patchUserResult
+            .compactMap {$0.failureValue()}
+            .asDriver(onErrorDriveWith: .empty())
+        
         self.sholudPopView = patchUserResult
             .compactMap{ $0.successValue() }
             .asDriver(onErrorDriveWith: .empty())
@@ -178,6 +183,7 @@ class MakeProfileViewModel : MakeProfileViewModelProtocol {
     public var sholudPopView: Driver<UserVO>
     public var deleteTextField: Driver<Void>
     public var dismissView: Driver<Void>
+    public var sholudPushErrorAlert: Driver<AuthError>
     
     public var imageData: BehaviorRelay<UIImage?>
     public var nickName: BehaviorRelay<String?>
