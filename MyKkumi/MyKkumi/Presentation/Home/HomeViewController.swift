@@ -79,18 +79,57 @@ class HomeViewController: BaseViewController<HomeViewModelProtocol> {
 
                 let cancel = UIAlertAction(title: "취소", style: .cancel)
                 
-                alert.addAction(post)
                 alert.addAction(user)
+                alert.addAction(post)
                 alert.addAction(cancel)
                 self.present(alert, animated: true, completion: nil)
             })
             .disposed(by: disposeBag)
         
         self.viewModel.shouldPushReportCompleteAlert
-            .drive(onNext: {[weak self] _ in
+            .drive(onNext: {[weak self] title in
                 guard let self = self else { return }
                 
-                let alert = UIAlertController(title : "포스트 신고가 완료되었습니다.", message: "", preferredStyle: .alert)
+                let alert = UIAlertController(title : title, message: "", preferredStyle: .alert)
+                let complete = UIAlertAction(title: "완료", style: .default)
+
+                
+                alert.addAction(complete)
+                self.present(alert, animated: true, completion: nil)
+            })
+            .disposed(by: disposeBag)
+        
+        self.viewModel.shouldPushReportPostAlert
+            .drive(onNext: {[weak self] title in
+                guard let self = self else { return }
+                
+                let alert = UIAlertController(title : title, message: "", preferredStyle: .alert)
+                let complete = UIAlertAction(title: "완료", style: .default)
+
+                
+                alert.addAction(complete)
+                self.present(alert, animated: true, completion: nil)
+            })
+            .disposed(by: disposeBag)
+        
+        self.viewModel.shouldPushReportErrorAlert
+            .drive(onNext: {[weak self] title in
+                guard let self = self else { return }
+                
+                let alert = UIAlertController(title : title, message: "", preferredStyle: .alert)
+                let complete = UIAlertAction(title: "완료", style: .default)
+
+                
+                alert.addAction(complete)
+                self.present(alert, animated: true, completion: nil)
+            })
+            .disposed(by: disposeBag)
+        
+        self.viewModel.shouldPushReportPostErrorAlert
+            .drive(onNext: {[weak self] title in
+                guard let self = self else { return }
+                
+                let alert = UIAlertController(title : title, message: "", preferredStyle: .alert)
                 let complete = UIAlertAction(title: "완료", style: .default)
 
                 

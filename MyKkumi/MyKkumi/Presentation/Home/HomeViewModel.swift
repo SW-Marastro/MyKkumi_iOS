@@ -25,7 +25,10 @@ public protocol HomeviewModelOutput {
     var shouldPushBannerInfoView : Driver<Void> { get } // 전체 베너보기 버튼 결과 전달
     var shouldReloadPostTable : Signal<Void> { get }
     var shouldPushReport : Driver<[String : Int]> { get }
-    var shouldPushReportCompleteAlert : Driver<Void> { get }
+    var shouldPushReportCompleteAlert : Driver<String> { get }
+    var shouldPushReportErrorAlert : Driver<String> { get }
+    var shouldPushReportPostAlert : Driver<String> { get }
+    var shouldPushReportPostErrorAlert : Driver<String> { get }
 }
 
 public protocol HomeViewModelProtocol : HomeviewModelOutput, HomeViewModelInput {
@@ -132,9 +135,27 @@ public class HomeViewModel : HomeViewModelProtocol {
             }
             .share()
         
-        self.shouldPushReportCompleteAlert = postReportResult
+        self.shouldPushReportPostAlert = postReportResult
             .compactMap { $0.successValue() }
-            .map { _ in Void() }
+            .map { _ in "신고가 완료되었습니다." }
+            .asDriver(onErrorDriveWith: .empty())
+        
+        self.shouldPushReportPostErrorAlert = postReportResult
+            .compactMap{ result in
+                if let error = result.failureValue() {
+                    switch error {
+                    case .unknownError(_):
+                        return "알수 없는 에러입니다."
+                    case .ENCODING_ERROR:
+                        return "에러가 발생하였습니다."
+                    case .DECODING_ERROR:
+                        return "에러가 발생하였습니다."
+                    case .INVALID_VALUE:
+                        return "올바르지 못한 신고입니다."
+                    }
+                }
+                return nil
+            }
             .asDriver(onErrorDriveWith: .empty())
         
         let userReportResult = self.userReported
@@ -145,7 +166,25 @@ public class HomeViewModel : HomeViewModelProtocol {
         
         self.shouldPushReportCompleteAlert = userReportResult
             .compactMap{ $0.successValue() }
-            .map { _ in Void()}
+            .map { _ in "신고가 완료되었습니다."}
+            .asDriver(onErrorDriveWith: .empty())
+        
+        self.shouldPushReportErrorAlert = userReportResult
+            .compactMap{ result in
+                if let error = result.failureValue() {
+                    switch error {
+                    case .CONFLICT:
+                        return "이미 신고한 포스트입니다."
+                    case .NOTFOUND:
+                        return "삭제된 포스트 입니다."
+                    case .unknownError(_):
+                        return "알수 없는 에러입니다."
+                    case .INVALIDTOKEN:
+                        return "올바르지 못한 토큰입니다."
+                    }
+                }
+                return nil
+            }
             .asDriver(onErrorDriveWith: .empty())
         
         successAllPostResult
@@ -173,7 +212,10 @@ public class HomeViewModel : HomeViewModelProtocol {
     public var shouldPushBannerInfoView: Driver<Void>
     public var shouldReloadPostTable: Signal<Void>
     public var shouldPushReport: Driver<[String : Int]>
-    public var shouldPushReportCompleteAlert: Driver<Void>
+    public var shouldPushReportCompleteAlert: Driver<String>
+    public var shouldPushReportPostAlert: Driver<String>
+    public var shouldPushReportErrorAlert: Driver<String>
+    public var shouldPushReportPostErrorAlert: Driver<String>
     
     public var postTap : PublishSubject<Int64>
     public var uploadPostButtonTap : PublishSubject<Void>

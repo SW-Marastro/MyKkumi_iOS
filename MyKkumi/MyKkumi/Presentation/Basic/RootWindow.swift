@@ -106,6 +106,7 @@ extension RootWindow : UITabBarControllerDelegate {
                         items[0].image = AppImage.homeSelected.image
                     } else {
                         tabBarController.tabBar.isHidden = true
+                        items[0].image = AppImage.homeSelected.image
                     }
                 case 3:
                     tabBarController.tabBar.isHidden = false

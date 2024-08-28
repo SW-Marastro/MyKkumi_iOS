@@ -16,14 +16,44 @@ public protocol PostDataSource {
 
 public class DefaultPostDataSource : PostDataSource {
     public func reportPost(_ id: Int) -> RxSwift.Single<Result<String, PostError>> {
-        return postProvier.rx.request(.report(id))
+        return Post.report(id).provider.rx.request(.report(id))
             .filterSuccessfulStatusCodes()
             .map(ReportResult.self)
             .map{ .success($0.result) }
+            .catch { error in
+                let customError : ErrorVO
+                if let moyaError = error as? MoyaError {
+                    switch moyaError {
+                    case .statusCode(let response) :
+                        if let error = try? JSONDecoder().decode(ErrorVO.self, from: response.data) {
+                            customError = error
+                            if customError.errorCode == "ENCODING_ERROR" {
+                                return .just(.failure(PostError.ENCODING_ERROR))
+                            } else if customError.errorCode == "DECODING_ERROR" {
+                                return .just(.failure(PostError.DECODING_ERROR))
+                            } else if customError.errorCode == "INTERNAL_SERVER_ERROR"{
+                                return .just(.failure(PostError.INVALID_VALUE))
+                            }
+                            else {
+                                return .just(.failure(PostError.INVALID_VALUE))
+                            }
+                        } else {
+                            customError = ErrorVO(errorCode: "DECODING_ERROR", message: "Decoding Error in Error case", detail: "Error case decoding fail")
+                            return .just(.failure(PostError.DECODING_ERROR))
+                        }
+                    default :
+                        customError = ErrorVO(errorCode: "unknown", message: "UnknownError", detail: "unknownError in Default")
+                        return .just(.failure(PostError.unknownError(customError)))
+                    }
+                } else {
+                    customError = ErrorVO(errorCode: "unknown", message: "UnknownError", detail: "unknownError in POST")
+                    return .just(.failure(PostError.unknownError(customError)))
+                }
+            }
     }
     
     public func getPosts(_ cursor : String?) -> Single<Result<PostsVO, PostError>> {
-        return postProvier.rx.request(.getPost(cursor))
+        return Post.getPost(cursor).provider.rx.request(.getPost(cursor))
             .filterSuccessfulStatusCodes()
             .map(PostsVO.self)
             .map{ .success($0) }
