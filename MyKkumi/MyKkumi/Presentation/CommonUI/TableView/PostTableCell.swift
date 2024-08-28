@@ -173,6 +173,7 @@ open class PostTableCell : UITableViewCell {
         self.contentView.addSubview(postNameLabel)
         self.contentView.addSubview(postContent)
 //        self.contentView.addSubview(writeComment)
+        self.contentView.addSubview(blankView)
         
         self.profileView.addSubview(profileImageView)
         self.profileView.addSubview(nicknameLabel)
@@ -266,7 +267,7 @@ open class PostTableCell : UITableViewCell {
             postContent.topAnchor.constraint(equalTo: postNameLabel.bottomAnchor, constant: 8),
             postContent.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 16),
             postContent.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -16),
-            postContent.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor)
+//            postContent.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor)
         ])
         
 //        NSLayoutConstraint.activate([
@@ -276,6 +277,14 @@ open class PostTableCell : UITableViewCell {
 //            writeComment.heightAnchor.constraint(equalToConstant: 28),
 //            writeComment.widthAnchor.constraint(equalToConstant: 73)
 //        ])
+        
+        NSLayoutConstraint.activate([
+            blankView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor),
+            blankView.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor),
+            blankView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor),
+            blankView.topAnchor.constraint(equalTo: postContent.bottomAnchor),
+            blankView.heightAnchor.constraint(equalToConstant: 8)
+        ])
     }
     
     private let profileView : UIView = {
@@ -408,6 +417,13 @@ open class PostTableCell : UITableViewCell {
         button.backgroundColor = AppColor.secondary.color
         button.layer.cornerRadius = 8
         return button
+    }()
+    
+    private let blankView : UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = AppColor.neutral50.color
+        return view
     }()
     
     required public init?(coder: NSCoder) {
