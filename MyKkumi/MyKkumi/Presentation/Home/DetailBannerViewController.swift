@@ -18,6 +18,12 @@ class DetailBannerViewController : BaseViewController<Void> {
         return imageView
     }()
     
+    let backButton : UIButton = {
+        let backButton = UIButton(type: .custom)
+        backButton.setImage(AppImage.back.image, for: .normal)
+        return backButton
+    }()
+    
     init(banner: BannerVO) {
         super.init()
         self.bannerImageView.load(url: URL(string: banner.imageURL)!)
@@ -25,6 +31,10 @@ class DetailBannerViewController : BaseViewController<Void> {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationController?.setNavigationBarHidden(false, animated: false)
+        let backBarButtonItem = UIBarButtonItem(customView: backButton)
+        backButton.addTarget(self, action: #selector(popView), for: .touchUpInside)
+        navigationItem.leftBarButtonItem = backBarButtonItem
     }
     
     public override func setupHierarchy() {
@@ -38,5 +48,9 @@ class DetailBannerViewController : BaseViewController<Void> {
             bannerImageView.topAnchor.constraint(equalTo: view.topAnchor),
             bannerImageView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
+    }
+    
+    @objc func popView() {
+        self.navigationController?.popViewController(animated: true)
     }
 }

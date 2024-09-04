@@ -16,6 +16,11 @@ class HomeViewController: BaseViewController<HomeViewModelProtocol> {
         self.navigationController?.setNavigationBarHidden(true, animated: false)
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.setNavigationBarHidden(true, animated: false)
+    }
+    
     public override func setupHierarchy() {
         view.addSubview(infoView)
         view.addSubview(postTableView)
@@ -50,6 +55,7 @@ class HomeViewController: BaseViewController<HomeViewModelProtocol> {
         self.viewModel.shouldPushBannerView
             .drive(onNext : {[weak self] bannerVO in
                 let cellVC = DetailBannerViewController(banner: bannerVO)
+                cellVC.hidesBottomBarWhenPushed = true
                 self?.navigationController?.pushViewController(cellVC, animated: true)
             })
             .disposed(by: disposeBag)
@@ -227,6 +233,7 @@ class HomeViewController: BaseViewController<HomeViewModelProtocol> {
     private lazy var postTableView : PostTableView = {
         let tableView = PostTableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 5, right: 0)
         return tableView
     }()
     

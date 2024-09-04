@@ -155,16 +155,11 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
         self.viewModel.contentRelay
             .subscribe(onNext: {[weak self] string in
                 guard let self = self else { return }
-                if string != "" {
-                    if self.viewModel.postImageRelay.value.count != 0 && self.viewModel.subCategories.value != 0{
-                        self.completeButton.backgroundColor = AppColor.primary.color
-                        self.completeButton.setAttributedTitle(NSAttributedString(string : "등록하기", attributes: Typography.body15SemiBold(color: AppColor.white).attributes), for: .normal)
-                        self.completeButton.isEnabled = true
-                    } else {
-                        self.completeButton.isEnabled = false
-                    }
-                } else {
-                    self.completeButton.isEnabled = false
+                
+                if self.viewModel.postImageRelay.value.count != 0 && self.viewModel.subCategories.value != 0{
+                    self.completeButton.backgroundColor = AppColor.primary.color
+                    self.completeButton.setAttributedTitle(NSAttributedString(string : "등록하기", attributes: Typography.body15SemiBold(color: AppColor.white).attributes), for: .normal)
+                    self.completeButton.isEnabled = true
                 }
             })
             .disposed(by: disposeBag)
@@ -185,6 +180,23 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
                 guard let self = self else { return }
                 self.imageScrollStackView.subviews.forEach{ $0.removeFromSuperview()}
                 self.selectedImageStackView.subviews.forEach{ $0.removeFromSuperview()}
+                
+                if images.isEmpty &&  self.selectedImageScrollView.superview != nil  {
+                    basicView.addSubview(addImageButton)
+                    selectedImageStackView.addArrangedSubview(basicView)
+                    NSLayoutConstraint.activate([
+                        basicView.widthAnchor.constraint(equalTo: selectedImageScrollView.widthAnchor),
+                        basicView.heightAnchor.constraint(equalTo: selectedImageScrollView.heightAnchor),
+                        addImageButton.centerXAnchor.constraint(equalTo: basicView.centerXAnchor),
+                        addImageButton.centerYAnchor.constraint(equalTo: basicView.centerYAnchor),
+                        addImageButton.heightAnchor.constraint(equalToConstant: 47),
+                        addImageButton.widthAnchor.constraint(equalToConstant: 122)
+                    ])
+                    
+                    self.completeButton.backgroundColor = AppColor.neutral50.color
+                    self.completeButton.setAttributedTitle(NSAttributedString(string : "등록하기", attributes: Typography.body15SemiBold(color: AppColor.neutral300).attributes), for: .normal)
+                    self.completeButton.isEnabled = false
+                }
                 
                 for image in images {
                     self.drawImage(image)
@@ -299,7 +311,7 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
                 let pinInfoVC = PinInfoViewController()
                 pinInfoVC.modalPresentationStyle = .overFullScreen
                 pinInfoVC.setupBind(viewModel: self.viewModel.deliverPinInfoViewModel.value)
-                self.present(pinInfoVC, animated: true)
+                self.present(pinInfoVC, animated: false)
             })
             .disposed(by: disposeBag)
         
@@ -316,14 +328,16 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
                     }
                 }
                 
-                self.categoryMultiView.setTag(words: categoryName, id: categoryId)
-                let buttons = self.categoryMultiView.getButtons()
-                
-                for button in buttons {
-                    button.rx.tap
-                        .map { button.tag }
-                        .bind(to: viewModel.subCategoryButtonTap)
-                        .disposed(by: disposeBag)
+                if self.categoryMultiView.getButtons().count == 0 {
+                    self.categoryMultiView.setTag(words: categoryName, id: categoryId)
+                    let buttons = self.categoryMultiView.getButtons()
+                    
+                    for button in buttons {
+                        button.rx.tap
+                            .map { button.tag }
+                            .bind(to: viewModel.subCategoryButtonTap)
+                            .disposed(by: disposeBag)
+                    }
                 }
             })
             .disposed(by: disposeBag)
@@ -348,11 +362,13 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
                     }
                 }
                 
-                if self.viewModel.postImageRelay.value.count != 0 && self.viewModel.subCategories.value != 0 && self.viewModel.contentRelay.value != ""{
+                if !self.viewModel.postImageRelay.value.isEmpty && self.viewModel.subCategories.value != 0 && self.viewModel.contentRelay.value != ""{
                     self.completeButton.backgroundColor = AppColor.primary.color
                     self.completeButton.setAttributedTitle(NSAttributedString(string : "등록하기", attributes: Typography.body15SemiBold(color: AppColor.white).attributes), for: .normal)
                     self.completeButton.isEnabled = true
                 } else {
+                    self.completeButton.backgroundColor = AppColor.neutral50.color
+                    self.completeButton.setAttributedTitle(NSAttributedString(string : "등록하기", attributes: Typography.body15SemiBold(color: AppColor.neutral300).attributes), for: .normal)
                     self.completeButton.isEnabled = false
                 }
             })
@@ -522,6 +538,8 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
     private var mainScrollView : UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.contentInsetAdjustmentBehavior = .never
+        scrollView.automaticallyAdjustsScrollIndicatorInsets = false
         return scrollView
     }()
     
@@ -880,26 +898,31 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
     @objc private func keyboardWillShow(notification: NSNotification) {
         guard let userInfo = notification.userInfo else { return }
         guard let keyboardFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
-        
-        let keyboardHeight = keyboardFrame.height
+
+        let keyboardHeight = keyboardFrame.size.height
         let contentInsets = UIEdgeInsets(top: 0, left: 0, bottom: keyboardHeight, right: 0)
         
-        mainScrollView.contentInset = contentInsets
-        mainScrollView.scrollIndicatorInsets = contentInsets
+        print(keyboardHeight)
+        print(self.contentTextView.frame.maxY - self.view.safeAreaInsets.top)
         
-        // 텍스트뷰가 보이도록 스크롤
-        var visibleRect = self.view.frame
-        visibleRect.size.height -= keyboardHeight
-        if !visibleRect.contains(self.contentTextView.frame.origin) {
-            let scrollPoint = CGPoint(x: 0, y: self.contentTextView.frame.origin.y - keyboardHeight)
-            mainScrollView.setContentOffset(scrollPoint, animated: true)
+        mainScrollView.contentInset.bottom = keyboardHeight
+        
+        let firstResponder = UIResponder.currentResponder
+        
+        if let textview = firstResponder as? UITextView {
+            mainScrollView.scrollRectToVisible(textview.frame, animated: true)
         }
     }
+
+
     
     @objc private func keyboardWillHide(notification: NSNotification) {
         let contentInsets = UIEdgeInsets.zero
         mainScrollView.contentInset = contentInsets
         mainScrollView.scrollIndicatorInsets = contentInsets
+        
+        mainScrollView.automaticallyAdjustsScrollIndicatorInsets = false
+        mainScrollView.contentInsetAdjustmentBehavior = .never
     }
     
     private func checkCameraPermissionAndProceed() {

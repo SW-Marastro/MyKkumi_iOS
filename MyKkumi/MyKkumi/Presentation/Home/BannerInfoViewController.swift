@@ -23,11 +23,6 @@ class BannerInfoViewController : BaseViewController<BannerInfoViewModelProtocol>
         self.navigationController?.setNavigationBarHidden(false, animated: false)
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        self.navigationController?.setNavigationBarHidden(true, animated: false)
-    }
-    
     public override func setupHierarchy() {
         let backBarButtonItem = UIBarButtonItem(customView: backButton)
         navigationItem.leftBarButtonItem = backBarButtonItem
@@ -55,6 +50,13 @@ class BannerInfoViewController : BaseViewController<BannerInfoViewModelProtocol>
         
         self.backButton.rx.tap
             .bind(to: viewModel.backButtonTap)
+            .disposed(by: disposeBag)
+        
+        self.viewModel.shouldPushDetailBanner
+            .drive(onNext : {[weak self] bannerVO in
+                let cellVC = DetailBannerViewController(banner: bannerVO)
+                self?.navigationController?.pushViewController(cellVC, animated: true)
+            })
             .disposed(by: disposeBag)
         
         self.viewModel.shouldPopView
