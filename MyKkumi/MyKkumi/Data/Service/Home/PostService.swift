@@ -8,7 +8,10 @@
 import Foundation
 import Moya
 
-public var postProvier = MoyaProvider<Post>()
+private let interceptor : RequestInterceptor = NetworkInterceptor()
+private let session = Session(interceptor : interceptor)
+public var postProviderWithAuth = MoyaProvider<Post>(session : session)
+public var postProviderWithoutAuth = MoyaProvider<Post>()
 
 public enum PostError : Error {
     case ENCODING_ERROR
@@ -53,8 +56,6 @@ extension Post : TargetType {
     }
     
     public var headers: [String : String]? {
-//        var accessToken = KeychainHelper.shared.load(key: "accessToken")!
-//        accessToken = "Bearer " + accessToken
         return ["Content-Type" : "application/json"]
     }
     
@@ -62,4 +63,18 @@ extension Post : TargetType {
         return Data()
     }
     
+    public var provider: MoyaProvider<Post> {
+        switch self {
+        case .getPost:
+            return postProviderWithoutAuth
+        case .report:
+            return postProviderWithAuth
+        }
+    }
+}
+
+extension Post {
+    public var validationType: ValidationType {
+        return .successCodes
+    }
 }

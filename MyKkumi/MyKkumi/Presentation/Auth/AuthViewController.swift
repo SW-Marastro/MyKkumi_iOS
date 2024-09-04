@@ -105,7 +105,7 @@ class AuthViewController : BaseViewController<AuthViewModelProtocol>{
     public override func setupLayout() {
         
         NSLayoutConstraint.activate([
-            authLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 160),
+            authLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 63),
             authLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ])
         

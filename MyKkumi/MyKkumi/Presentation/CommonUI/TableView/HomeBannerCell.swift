@@ -284,7 +284,7 @@ extension HomeBannerCell : UIScrollViewDelegate {
         currentPage = Int(scrollView.contentOffset.x / scrollView.frame.width) - 1
         
         if currentPage == -1 {
-            scrollView.setContentOffset(CGPoint(x: CGFloat(bannerData.count - 2) * scrollView.frame.width, y: 0), animated: false)
+            scrollView.setContentOffset(CGPoint(x: CGFloat(bannerData.count - 1) * scrollView.frame.width, y: 0), animated: false)
             currentPage = bannerData.count - 2
         } else if currentPage == self.bannerData.count - 1 {
             scrollView.setContentOffset(CGPoint(x: scrollView.frame.width, y: 0), animated: false)

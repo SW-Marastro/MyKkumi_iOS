@@ -8,8 +8,8 @@
 import Foundation
 import Moya
 
-let interceptor : RequestInterceptor =  NetworkInterceptor()
-let session = Session(interceptor : interceptor)
+private let interceptor : RequestInterceptor =  NetworkInterceptor()
+private let session = Session(interceptor : interceptor)
 public var makePostProvider = MoyaProvider<MakePost>(session : session)
 
 public enum MakePostError : Error {

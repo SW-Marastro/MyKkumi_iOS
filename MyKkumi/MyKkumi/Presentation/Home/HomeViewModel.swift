@@ -23,15 +23,19 @@ public protocol HomeviewModelOutput {
     var bannerDataOutput : Signal<[BannerVO]> { get }//전체 배너 정보 view로 전달 -> output
     var shouldPushBannerView : Driver<BannerVO>{ get } // 눌린 배너 상세 정보 view로 전달
     var shouldPushBannerInfoView : Driver<Void> { get } // 전체 베너보기 버튼 결과 전달
-    var deliverBannerViewModel : Signal<BannerCellViewModelProtocol> {get}
     var shouldReloadPostTable : Signal<Void> { get }
     var shouldPushReport : Driver<[String : Int]> { get }
-    var shouldPushReportCompleteAlert : Driver<Void> { get }
+    var shouldPushReportCompleteAlert : Driver<String> { get }
+    var shouldPushReportErrorAlert : Driver<String> { get }
+    var shouldPushReportPostAlert : Driver<String> { get }
+    var shouldPushReportPostErrorAlert : Driver<String> { get }
 }
 
 public protocol HomeViewModelProtocol : HomeviewModelOutput, HomeViewModelInput {
     var cursur : BehaviorRelay<String> { get }
     var postViewModels : BehaviorRelay<[PostCellViewModelProtocol]> { get }
+    var bannerViewModel : BehaviorRelay<BannerCellViewModelProtocol> { get }
+    var bannerViewUsed : BehaviorRelay<Bool> { get }
 }
 
 public class HomeViewModel : HomeViewModelProtocol {
@@ -51,13 +55,13 @@ public class HomeViewModel : HomeViewModelProtocol {
         self.postTap = PublishSubject<Int64>()
         self.uploadPostButtonTap = PublishSubject<Void>()
         self.getPostsData = BehaviorSubject<String?>(value: nil)
-        self.deliverBannerViewModel = Signal.empty()
         self.cursur = BehaviorRelay<String>(value: "")
         self.postViewModels = BehaviorRelay<[PostCellViewModelProtocol]>(value: [])
         self.reportButtonTapInput = PublishSubject<[String : Int]>()
         self.postReported = PublishSubject<Int>()
         self.userReported = PublishSubject<String>()
-        
+        self.bannerViewModel = BehaviorRelay<BannerCellViewModelProtocol>(value: bannerDetailViewModel)
+        self.bannerViewUsed = BehaviorRelay<Bool> (value: true)
 
         //MARK: Banner
         let allBannerResult = self.viewdidload
@@ -100,16 +104,12 @@ public class HomeViewModel : HomeViewModelProtocol {
             }
             .share()
         
-        self.shouldPushBannerInfoView = self.bannerDetailViewModel
-            .bannerPageTap
+        self.shouldPushBannerInfoView = self.bannerDetailViewModel.bannerPageTap
             .asDriver(onErrorJustReturn: ())
         
         self.shouldPushBannerView = bannerResult
             .compactMap { $0.successValue() }
             .asDriver(onErrorDriveWith: .empty())
-        
-        self.deliverBannerViewModel = Single.just(bannerDetailViewModel)
-            .asSignal(onErrorSignalWith: .empty())
         
         //MARK: Post
         let allPostResult = self.getPostsData
@@ -135,9 +135,27 @@ public class HomeViewModel : HomeViewModelProtocol {
             }
             .share()
         
-        self.shouldPushReportCompleteAlert = postReportResult
+        self.shouldPushReportPostAlert = postReportResult
             .compactMap { $0.successValue() }
-            .map { _ in Void() }
+            .map { _ in "신고가 완료되었습니다." }
+            .asDriver(onErrorDriveWith: .empty())
+        
+        self.shouldPushReportPostErrorAlert = postReportResult
+            .compactMap{ result in
+                if let error = result.failureValue() {
+                    switch error {
+                    case .unknownError(_):
+                        return "알수 없는 에러입니다."
+                    case .ENCODING_ERROR:
+                        return "에러가 발생하였습니다."
+                    case .DECODING_ERROR:
+                        return "에러가 발생하였습니다."
+                    case .INVALID_VALUE:
+                        return "올바르지 못한 신고입니다."
+                    }
+                }
+                return nil
+            }
             .asDriver(onErrorDriveWith: .empty())
         
         let userReportResult = self.userReported
@@ -148,7 +166,25 @@ public class HomeViewModel : HomeViewModelProtocol {
         
         self.shouldPushReportCompleteAlert = userReportResult
             .compactMap{ $0.successValue() }
-            .map { _ in Void()}
+            .map { _ in "신고가 완료되었습니다."}
+            .asDriver(onErrorDriveWith: .empty())
+        
+        self.shouldPushReportErrorAlert = userReportResult
+            .compactMap{ result in
+                if let error = result.failureValue() {
+                    switch error {
+                    case .CONFLICT:
+                        return "이미 신고한 포스트입니다."
+                    case .NOTFOUND:
+                        return "삭제된 포스트 입니다."
+                    case .unknownError(_):
+                        return "알수 없는 에러입니다."
+                    case .INVALIDTOKEN:
+                        return "올바르지 못한 토큰입니다."
+                    }
+                }
+                return nil
+            }
             .asDriver(onErrorDriveWith: .empty())
         
         successAllPostResult
@@ -174,10 +210,12 @@ public class HomeViewModel : HomeViewModelProtocol {
     public var bannerDataOutput: Signal<[BannerVO]>
     public var shouldPushBannerView: Driver<BannerVO>
     public var shouldPushBannerInfoView: Driver<Void>
-    public var deliverBannerViewModel: Signal<BannerCellViewModelProtocol>
     public var shouldReloadPostTable: Signal<Void>
     public var shouldPushReport: Driver<[String : Int]>
-    public var shouldPushReportCompleteAlert: Driver<Void>
+    public var shouldPushReportCompleteAlert: Driver<String>
+    public var shouldPushReportPostAlert: Driver<String>
+    public var shouldPushReportErrorAlert: Driver<String>
+    public var shouldPushReportPostErrorAlert: Driver<String>
     
     public var postTap : PublishSubject<Int64>
     public var uploadPostButtonTap : PublishSubject<Void>
@@ -188,4 +226,6 @@ public class HomeViewModel : HomeViewModelProtocol {
     
     public var cursur: BehaviorRelay<String>
     public var postViewModels: BehaviorRelay<[any PostCellViewModelProtocol]>
+    public var bannerViewModel: BehaviorRelay<any BannerCellViewModelProtocol>
+    public var bannerViewUsed: BehaviorRelay<Bool>
 }

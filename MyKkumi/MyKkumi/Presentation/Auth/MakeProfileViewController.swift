@@ -163,6 +163,18 @@ class MakeProfileViewController : BaseViewController<MakeProfileViewModelProtoco
                 self.viewModel.nickName.accept("")
             })
             .disposed(by: disposeBag)
+        
+        self.viewModel.sholudPushErrorAlert
+            .drive(onNext: {[weak self] error in
+                guard let self = self else { return }
+                let alert = UIAlertController(title : "특수문자는 '_' '-' '.' 세가지만 사용 가능합니다.", message: "", preferredStyle: .alert)
+                let complete = UIAlertAction(title: "완료", style: .default)
+
+                
+                alert.addAction(complete)
+                self.present(alert, animated: true, completion: nil)
+            })
+            .disposed(by: disposeBag)
     }
     
     public override func setupViewProperty() {

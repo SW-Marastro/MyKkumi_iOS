@@ -16,12 +16,17 @@ class HomeViewController: BaseViewController<HomeViewModelProtocol> {
         self.navigationController?.setNavigationBarHidden(true, animated: false)
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.setNavigationBarHidden(true, animated: false)
+    }
+    
     public override func setupHierarchy() {
         view.addSubview(infoView)
         view.addSubview(postTableView)
         infoView.addSubview(homeLabel)
-        infoView.addSubview(searchButton)
-        infoView.addSubview(notificationButton)
+        //infoView.addSubview(searchButton)
+        //infoView.addSubview(notificationButton)
     }
     
     public override func setupBind(viewModel : HomeViewModelProtocol) {
@@ -50,6 +55,7 @@ class HomeViewController: BaseViewController<HomeViewModelProtocol> {
         self.viewModel.shouldPushBannerView
             .drive(onNext : {[weak self] bannerVO in
                 let cellVC = DetailBannerViewController(banner: bannerVO)
+                cellVC.hidesBottomBarWhenPushed = true
                 self?.navigationController?.pushViewController(cellVC, animated: true)
             })
             .disposed(by: disposeBag)
@@ -73,9 +79,13 @@ class HomeViewController: BaseViewController<HomeViewModelProtocol> {
                 let post = UIAlertAction(title: "포스트 신고", style: .default) {_ in
                     self.viewModel.postReported.onNext(values[0])
                 }
+                let user = UIAlertAction(title: "사용자 신고", style: .default) {_ in
+                    self.viewModel.userReported.onNext(keys[0])
+                }
 
                 let cancel = UIAlertAction(title: "취소", style: .cancel)
                 
+                alert.addAction(user)
                 alert.addAction(post)
                 alert.addAction(cancel)
                 self.present(alert, animated: true, completion: nil)
@@ -83,10 +93,49 @@ class HomeViewController: BaseViewController<HomeViewModelProtocol> {
             .disposed(by: disposeBag)
         
         self.viewModel.shouldPushReportCompleteAlert
-            .drive(onNext: {[weak self] _ in
+            .drive(onNext: {[weak self] title in
                 guard let self = self else { return }
                 
-                let alert = UIAlertController(title : "포스트 신고가 완료되었습니다.", message: "", preferredStyle: .alert)
+                let alert = UIAlertController(title : title, message: "", preferredStyle: .alert)
+                let complete = UIAlertAction(title: "완료", style: .default)
+
+                
+                alert.addAction(complete)
+                self.present(alert, animated: true, completion: nil)
+            })
+            .disposed(by: disposeBag)
+        
+        self.viewModel.shouldPushReportPostAlert
+            .drive(onNext: {[weak self] title in
+                guard let self = self else { return }
+                
+                let alert = UIAlertController(title : title, message: "", preferredStyle: .alert)
+                let complete = UIAlertAction(title: "완료", style: .default)
+
+                
+                alert.addAction(complete)
+                self.present(alert, animated: true, completion: nil)
+            })
+            .disposed(by: disposeBag)
+        
+        self.viewModel.shouldPushReportErrorAlert
+            .drive(onNext: {[weak self] title in
+                guard let self = self else { return }
+                
+                let alert = UIAlertController(title : title, message: "", preferredStyle: .alert)
+                let complete = UIAlertAction(title: "완료", style: .default)
+
+                
+                alert.addAction(complete)
+                self.present(alert, animated: true, completion: nil)
+            })
+            .disposed(by: disposeBag)
+        
+        self.viewModel.shouldPushReportPostErrorAlert
+            .drive(onNext: {[weak self] title in
+                guard let self = self else { return }
+                
+                let alert = UIAlertController(title : title, message: "", preferredStyle: .alert)
                 let complete = UIAlertAction(title: "완료", style: .default)
 
                 
@@ -130,17 +179,17 @@ class HomeViewController: BaseViewController<HomeViewModelProtocol> {
             homeLabel.leadingAnchor.constraint(equalTo: infoView.leadingAnchor, constant: 16)
         ])
         
-        NSLayoutConstraint.activate([
-            notificationButton.topAnchor.constraint(equalTo: infoView.topAnchor, constant: 15),
-            notificationButton.trailingAnchor.constraint(equalTo: infoView.trailingAnchor, constant: -20),
-            notificationButton.heightAnchor.constraint(equalToConstant: 24),
-            notificationButton.widthAnchor.constraint(equalToConstant: 24)
-        ])
-        
-        NSLayoutConstraint.activate([
-            searchButton.topAnchor.constraint(equalTo: infoView.topAnchor, constant: 15),
-            searchButton.trailingAnchor.constraint(equalTo: notificationButton.leadingAnchor, constant: -16)
-        ])
+//        NSLayoutConstraint.activate([
+//            notificationButton.topAnchor.constraint(equalTo: infoView.topAnchor, constant: 15),
+//            notificationButton.trailingAnchor.constraint(equalTo: infoView.trailingAnchor, constant: -20),
+//            notificationButton.heightAnchor.constraint(equalToConstant: 24),
+//            notificationButton.widthAnchor.constraint(equalToConstant: 24)
+//        ])
+//        
+//        NSLayoutConstraint.activate([
+//            searchButton.topAnchor.constraint(equalTo: infoView.topAnchor, constant: 15),
+//            searchButton.trailingAnchor.constraint(equalTo: notificationButton.leadingAnchor, constant: -16)
+//        ])
         
         NSLayoutConstraint.activate([
             postTableView.topAnchor.constraint(equalTo: infoView.bottomAnchor, constant: 8),
@@ -184,6 +233,7 @@ class HomeViewController: BaseViewController<HomeViewModelProtocol> {
     private lazy var postTableView : PostTableView = {
         let tableView = PostTableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 5, right: 0)
         return tableView
     }()
     
@@ -217,18 +267,16 @@ extension HomeViewController : UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.row == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: HomeBannerCell.cellID, for: indexPath) as! HomeBannerCell
-            
-            viewModel.deliverBannerViewModel
-                .emit(onNext: { viewModel in
-                    cell.bind(viewModel: viewModel)
-                })
-                .disposed(by: disposeBag)
-            
-            viewModel.bannerDataOutput
-                .emit(onNext : { banners in
-                    cell.setCellData(bannerData: banners)
-                })
-                .disposed(by: disposeBag)
+            if viewModel.bannerViewUsed.value {
+                cell.bind(viewModel: viewModel.bannerViewModel.value)
+                
+                viewModel.bannerDataOutput
+                    .emit(onNext : { banners in
+                        cell.setCellData(bannerData: banners)
+                    })
+                    .disposed(by: disposeBag)
+                viewModel.bannerViewUsed.accept(false)
+            }
             
             return cell
         } else {

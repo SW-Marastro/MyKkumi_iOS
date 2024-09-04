@@ -25,7 +25,7 @@ public class DefaultAuthDataSource : AuthDataSource {
     private var disposeBag = DisposeBag()
     
     public func signinKakao(auth: AuthVO) -> Single<Result<Bool, AuthError>> {
-        return authProvider.rx.request(.signinKakao(auth))
+        return Auth.signinKakao(auth).provider.rx.request(.signinKakao(auth))
             .filterSuccessfulStatusCodes()
             .map {response in
                 let tokens = try JSONDecoder().decode(AuthVO.self, from: response.data)
@@ -100,7 +100,7 @@ public class DefaultAuthDataSource : AuthDataSource {
     }
     
     public func signinApple(_ auth: AppleAuth) -> RxSwift.Single<Result<Bool, AuthError>> {
-        return authProvider.rx.request(.signinApple(auth))
+        return Auth.signinApple(auth).provider.rx.request(.signinApple(auth))
             .filterSuccessfulStatusCodes()
             .map {response in
                 let tokens = try JSONDecoder().decode(AuthVO.self, from: response.data)
@@ -138,7 +138,7 @@ public class DefaultAuthDataSource : AuthDataSource {
     }
     
     public func patchUserData(_ user: PatchUserVO) -> Single<Result<UserVO, AuthError>> {
-        return authProvider.rx.request(.patchUser(user))
+        return Auth.patchUser(user).provider.rx.request(.patchUser(user))
             .filterSuccessfulStatusCodes()
             .map(UserVO.self)
             .map{ .success($0) }
@@ -166,7 +166,7 @@ public class DefaultAuthDataSource : AuthDataSource {
         print("refreshToken")
         if let refreshToken = KeychainHelper.shared.load(key: "refreshToken") {
             let object = RefreshToekn(refreshToken: refreshToken)
-            authProvider.rx.request(.refreshToken(object))
+            Auth.refreshToken(object).provider.rx.request(.refreshToken(object))
                 .filterSuccessfulStatusCodes()
                 .map { response in
                     let token = try JSONDecoder().decode(ReAccessToken.self, from: response.data)
@@ -187,7 +187,7 @@ public class DefaultAuthDataSource : AuthDataSource {
     }
     
     public func getPresignedUrl() -> Single<Result<PreSignedUrlVO, AuthError>> {
-        return authProvider.rx.request(.getPresignedUrl)
+        return Auth.getPresignedUrl.provider.rx.request(.getPresignedUrl)
             .filterSuccessfulStatusCodes()
             .map(PreSignedUrlVO.self) // map to PreSignedUrlVO
             .map { result in
@@ -200,7 +200,7 @@ public class DefaultAuthDataSource : AuthDataSource {
     }
     
     public func reportUser(_ uuid: String) -> Single<Result<ReportResult, AuthError>> {
-        return authProvider.rx.request(.reportUser(uuid))
+        return Auth.reportUser(uuid).provider.rx.request(.reportUser(uuid))
             .filterSuccessfulStatusCodes()
             .map(ReportResult.self)
             .map { result in
@@ -213,11 +213,11 @@ public class DefaultAuthDataSource : AuthDataSource {
                     case .statusCode(let response) :
                         if let error =  (try? JSONDecoder().decode(ErrorVO.self, from : response.data)) {
                             customError = error
-                            if customError.errorCode == "CONFLICT" {
+                            if customError.errorCode == "DUPLICATE_REPORT" {
                                 return .just(.failure(AuthError.CONFLICT))
                             } else if customError.errorCode == "NOTFOUNT" {
                                 return .just(.failure(AuthError.NOTFOUND))
-                            }
+                            } 
                             return .just(.failure(AuthError.unknownError(customError)))
                         } else {
                             customError = ErrorVO(errorCode: "unknown", message: "UnknownError", detail: "unknownError in Default")
@@ -235,7 +235,7 @@ public class DefaultAuthDataSource : AuthDataSource {
     }
     
     public func getUserData() -> Single<Result<UserVO, AuthError>> {
-        return authProvider.rx.request(.getUserData)
+        return Auth.getUserData.provider.rx.request(.getUserData)
             .filterSuccessfulStatusCodes()
             .map(UserVO.self)
             .map { result in

@@ -8,7 +8,10 @@
 import Foundation
 import Moya
 
-public var authProvider = MoyaProvider<Auth>()
+private let interceptor : RequestInterceptor = NetworkInterceptor()
+private let session = Session(interceptor : interceptor)
+public var authProviderWithAuth = MoyaProvider<Auth>(session : session)
+public var authProviderWithoutAuth = MoyaProvider<Auth>()
 
 public enum AuthError : Error {
     case unknownError(ErrorVO)
@@ -86,5 +89,20 @@ extension Auth : TargetType {
     
     public var sampleData : Data {
         return Data()
+    }
+    
+    public var provider: MoyaProvider<Auth> {
+        switch self {
+        case .patchUser(_), .getPresignedUrl, .reportUser(_), .getUserData :
+            return authProviderWithAuth
+        default :
+            return authProviderWithoutAuth
+        }
+    }
+}
+
+extension Auth {
+    public var validationType: ValidationType {
+        return .successCodes
     }
 }
