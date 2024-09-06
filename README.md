@@ -7,7 +7,7 @@
 ```
 
 <div align="center"> 
-  <a href="https://hits.seeyoufarm.com"><img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FSW-Marastro%2FMyKkumi_AOS%2Fedit%2Fmain%2FREADME.md&count_bg=%23E267F6&title_bg=%23A238D2&icon=&icon_color=%23E7E7E7&title=%EB%A7%88%EC%9D%B4%EA%BE%B8%EB%AF%B8+AOS&edge_flat=false"/></a>
+  <a href="https://hits.seeyoufarm.com"><img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FSW-Marastro%2FMyKkumi_iOS%2Fedit%2Fmain%2FREADME.md&count_bg=%23E267F6&title_bg=%23A238D2&icon=&icon_color=%23E7E7E7&title=%EB%A7%88%EC%9D%B4%EA%BE%B8%EB%AF%B8+AOS&edge_flat=false"/></a>
 </div>
 
 ---
