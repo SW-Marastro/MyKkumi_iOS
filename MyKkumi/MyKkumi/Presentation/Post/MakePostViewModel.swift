@@ -181,7 +181,6 @@ public class MakePostViewModel : MakePostViewModelProtocol {
                 var pinInfo = self.pinInfoRelay.value
                 
                 for imageData in imageDatas {
-                    print(imageData)
                     dispatchGroup.enter()
                     makePostUsecase.putImage(url: imageData.url.presignedUrl, image: imageData.data)
                         .subscribe(onSuccess: { result in
