@@ -435,7 +435,7 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
         NSLayoutConstraint.activate([
             imageContainView.leadingAnchor.constraint(equalTo: mainScrollView.leadingAnchor),
             imageContainView.trailingAnchor.constraint(equalTo: mainScrollView.trailingAnchor),
-            imageContainView.heightAnchor.constraint(equalToConstant: 120)
+            imageContainView.heightAnchor.constraint(equalToConstant: (view.frame.size.width - 20) / (4.5) + 48)
         ])
         
         NSLayoutConstraint.activate([
@@ -563,6 +563,8 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
     private var imageScrollview : UIScrollView  = {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.showsHorizontalScrollIndicator = false
+        scrollView.showsVerticalScrollIndicator = false
         return scrollView
     }()
     
@@ -793,6 +795,12 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
     }
     
     func drawImage(_ imageInfo : PostImageStruct) {
+        let containView : UIView = {
+            let view = UIView()
+            view.translatesAutoresizingMaskIntoConstraints = false
+            return view
+        }()
+        
         let view : UIView = {
             let view = UIView()
             view.translatesAutoresizingMaskIntoConstraints = false
@@ -829,23 +837,28 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
             })
             .disposed(by: disposeBag)
         
-        
-        view.addSubview(deleteButton)
+        containView.addSubview(view)
+        containView.addSubview(deleteButton)
         view.addSubview(imageView)
         view.bringSubviewToFront(deleteButton)
-        imageScrollStackView.addArrangedSubview(view)
+        imageScrollStackView.addArrangedSubview(containView)
         
         NSLayoutConstraint.activate([
-            view.heightAnchor.constraint(equalTo: imageScrollview.heightAnchor),
-            view.widthAnchor.constraint(equalTo: imageScrollview.heightAnchor),
+            containView.heightAnchor.constraint(equalTo: imageScrollview.heightAnchor),
+            containView.widthAnchor.constraint(equalTo: imageScrollview.heightAnchor),
+            
+            view.topAnchor.constraint(equalTo: containView.topAnchor, constant: 5),
+            view.leadingAnchor.constraint(equalTo: containView.leadingAnchor),
+            view.trailingAnchor.constraint(equalTo: containView.trailingAnchor, constant: -5),
+            view.bottomAnchor.constraint(equalTo: containView.bottomAnchor),
+            
+            deleteButton.topAnchor.constraint(equalTo: containView.topAnchor),
+            deleteButton.trailingAnchor.constraint(equalTo: containView.trailingAnchor),
             
             imageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 6),
             imageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             imageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -6),
             imageView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            
-            deleteButton.topAnchor.constraint(equalTo: imageView.topAnchor, constant: -6),
-            deleteButton.trailingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: 6)
         ])
     }
     
