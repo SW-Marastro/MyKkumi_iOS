@@ -581,6 +581,13 @@
 			path = Components;
 			sourceTree = "<group>";
 		};
+		D28AA9C32CBE5A9400834FA5 /* Cache */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Cache;
+			sourceTree = "<group>";
+		};
 		D2911AE22C72FB8800D1BABC /* TabBar */ = {
 			isa = PBXGroup;
 			children = (
@@ -800,6 +807,7 @@
 		D2E459482C1DB1C000DB0756 /* App */ = {
 			isa = PBXGroup;
 			children = (
+				D28AA9C32CBE5A9400834FA5 /* Cache */,
 				D2ABCDDF2C2A9C950035F7A1 /* Application */,
 				D2ABCDD52C2A6AAD0035F7A1 /* DI */,
 			);
