@@ -158,7 +158,7 @@ open class HomeBannerCell : UITableViewCell {
         button.setTitleColor(AppColor.white.color, for: .normal)
         button.titleLabel?.font = Typography.caption12Medium(color: AppColor.neutral900).font()
         button.titleLabel?.textAlignment = .center
-        button.layer.cornerRadius = 12
+        button.layer.cornerRadius = 10
         button.clipsToBounds = true
         return button
     }()

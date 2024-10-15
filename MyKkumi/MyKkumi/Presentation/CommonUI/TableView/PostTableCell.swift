@@ -95,7 +95,9 @@ open class PostTableCell : UITableViewCell {
             }()
             
             imageAndPinView.addSubview(imageView)
-            dotView.addArrangedSubview(dot)
+            if postVO.images.count > 1 {
+                dotView.addArrangedSubview(dot)
+            }
             postImageStackView.addArrangedSubview(imageAndPinView)
             
             NSLayoutConstraint.activate([

@@ -34,6 +34,23 @@ class MypageViewController : BaseViewController<MypageViewModelProtocol> {
             .bind(to: self.viewModel.deleteIdButtonTap)
             .disposed(by: disposeBag)
         
+        self.viewModel.sholudSelectLogout
+            .drive(onNext: {[weak self] _ in
+                guard let self = self else { return }
+                
+                let alert = UIAlertController(title : title, message: "로그아웃 하시겠습니까?", preferredStyle: .alert)
+                let logout = UIAlertAction(title: "로그아웃", style: .default){ _ in
+                    self.viewModel.selectLogoutButtonTap.onNext(Void())
+                }
+                let cancel = UIAlertAction(title: "취소", style: .cancel)
+                
+                alert.addAction(logout)
+                alert.addAction(cancel)
+                self.present(alert, animated: true, completion: nil)
+                
+            })
+            .disposed(by: disposeBag)
+        
         self.viewModel.sholudAlertDeleteComplet
             .drive(onNext: {[weak self] title in
                 guard let self = self else { return }

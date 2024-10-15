@@ -163,7 +163,6 @@ public class DefaultAuthDataSource : AuthDataSource {
     }
     
     public func refreshToken() {
-        print("refreshToken")
         if let refreshToken = KeychainHelper.shared.load(key: "refreshToken") {
             let object = RefreshToekn(refreshToken: refreshToken)
             Auth.refreshToken(object).provider.rx.request(.refreshToken(object))

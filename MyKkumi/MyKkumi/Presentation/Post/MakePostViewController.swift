@@ -350,14 +350,12 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
                 
                 for button in buttons {
                     if button.tag == id {
-                        let title = button.attributedTitle(for: .normal)!.string
                         button.backgroundColor = AppColor.primary.color
-                        button.setAttributedTitle(NSAttributedString(string: title, attributes: Typography.body14SemiBold(color: AppColor.white).attributes), for: .normal)
+                        button.setTitleColor(AppColor.white.color, for: .normal)
                         button.layer.borderColor = AppColor.primary.color.cgColor
                     } else {
-                        let title = button.attributedTitle(for: .normal)!.string
                         button.backgroundColor = AppColor.white.color
-                        button.setAttributedTitle(NSAttributedString(string: title, attributes: Typography.body14Medium(color: AppColor.neutral700).attributes), for: .normal)
+                        button.setTitleColor(AppColor.neutral700.color, for: .normal)
                         button.layer.borderColor = AppColor.neutral200.color.cgColor
                     }
                 }
@@ -398,7 +396,6 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
                 tabBarController.selectedIndex = 0
             })
             .disposed(by: disposeBag)
-        
     }
     
     override func setupLayout() {
@@ -438,7 +435,7 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
         NSLayoutConstraint.activate([
             imageContainView.leadingAnchor.constraint(equalTo: mainScrollView.leadingAnchor),
             imageContainView.trailingAnchor.constraint(equalTo: mainScrollView.trailingAnchor),
-            imageContainView.heightAnchor.constraint(equalToConstant: 120)
+            imageContainView.heightAnchor.constraint(equalToConstant: (view.frame.size.width - 20) / (4.5) + 48)
         ])
         
         NSLayoutConstraint.activate([
@@ -524,14 +521,14 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
         NSLayoutConstraint.activate([
             completeButtonView.leadingAnchor.constraint(equalTo: mainScrollView.leadingAnchor),
             completeButtonView.trailingAnchor.constraint(equalTo: mainScrollView.trailingAnchor),
-            completeButtonView.heightAnchor.constraint(equalToConstant: 120)
+            completeButtonView.heightAnchor.constraint(equalToConstant: 154)
         ])
         
         NSLayoutConstraint.activate([
             completeButton.leadingAnchor.constraint(equalTo: completeButtonView.leadingAnchor, constant: 20),
             completeButton.trailingAnchor.constraint(equalTo: completeButtonView.trailingAnchor, constant: -20),
             completeButton.topAnchor.constraint(equalTo: completeButtonView.topAnchor, constant: 56),
-            completeButton.bottomAnchor.constraint(equalTo: completeButtonView.bottomAnchor, constant: -10)
+            completeButton.bottomAnchor.constraint(equalTo: completeButtonView.bottomAnchor, constant: -44)
         ])
     }
     
@@ -566,6 +563,8 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
     private var imageScrollview : UIScrollView  = {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.showsHorizontalScrollIndicator = false
+        scrollView.showsVerticalScrollIndicator = false
         return scrollView
     }()
     
@@ -608,7 +607,9 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
     
     private var addPinButton : UIButton = {
         let button = UIButton()
-        button.setAttributedTitle(NSAttributedString(string: "핀 추가", attributes: Typography.body14SemiBold(color: AppColor.neutral900).attributes), for: .normal)
+        button.setTitle("핀 추가", for: .normal)
+        button.titleLabel?.font = Typography.body14SemiBold(color: AppColor.neutral900).font()
+        button.setTitleColor(AppColor.neutral900.color, for: .normal)
         button.setTitleColor(.black, for: .normal)
         button.backgroundColor = AppColor.secondary.color
         button.layer.cornerRadius = 17.5
@@ -794,6 +795,12 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
     }
     
     func drawImage(_ imageInfo : PostImageStruct) {
+        let containView : UIView = {
+            let view = UIView()
+            view.translatesAutoresizingMaskIntoConstraints = false
+            return view
+        }()
+        
         let view : UIView = {
             let view = UIView()
             view.translatesAutoresizingMaskIntoConstraints = false
@@ -830,23 +837,28 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
             })
             .disposed(by: disposeBag)
         
-        
-        view.addSubview(deleteButton)
+        containView.addSubview(view)
+        containView.addSubview(deleteButton)
         view.addSubview(imageView)
         view.bringSubviewToFront(deleteButton)
-        imageScrollStackView.addArrangedSubview(view)
+        imageScrollStackView.addArrangedSubview(containView)
         
         NSLayoutConstraint.activate([
-            view.heightAnchor.constraint(equalTo: imageScrollview.heightAnchor),
-            view.widthAnchor.constraint(equalTo: imageScrollview.heightAnchor),
+            containView.heightAnchor.constraint(equalTo: imageScrollview.heightAnchor),
+            containView.widthAnchor.constraint(equalTo: imageScrollview.heightAnchor),
+            
+            view.topAnchor.constraint(equalTo: containView.topAnchor, constant: 5),
+            view.leadingAnchor.constraint(equalTo: containView.leadingAnchor),
+            view.trailingAnchor.constraint(equalTo: containView.trailingAnchor, constant: -5),
+            view.bottomAnchor.constraint(equalTo: containView.bottomAnchor),
+            
+            deleteButton.topAnchor.constraint(equalTo: containView.topAnchor),
+            deleteButton.trailingAnchor.constraint(equalTo: containView.trailingAnchor),
             
             imageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 6),
             imageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             imageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -6),
             imageView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            
-            deleteButton.topAnchor.constraint(equalTo: imageView.topAnchor, constant: -6),
-            deleteButton.trailingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: 6)
         ])
     }
     
@@ -901,9 +913,6 @@ class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
 
         let keyboardHeight = keyboardFrame.size.height
         let contentInsets = UIEdgeInsets(top: 0, left: 0, bottom: keyboardHeight, right: 0)
-        
-        print(keyboardHeight)
-        print(self.contentTextView.frame.maxY - self.view.safeAreaInsets.top)
         
         mainScrollView.contentInset.bottom = keyboardHeight
         

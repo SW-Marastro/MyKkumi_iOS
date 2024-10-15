@@ -78,10 +78,13 @@ extension Auth : TargetType {
     public var headers : [String : String]? {
         switch self {
         case .patchUser(_), .getPresignedUrl, .reportUser(_), .getUserData :
-            var accessToken = KeychainHelper.shared.load(key: "accessToken")!
-            accessToken = "Bearer " + accessToken
-            return ["Content-Type" : "application/json",
-                    "Authorization" : accessToken]
+            if let accessToken = KeychainHelper.shared.load(key: "accessToken") {
+                var accessTokens = "Bearer " + accessToken
+                return ["Content-Type" : "application/json",
+                        "Authorization" : accessTokens]
+            } else {
+                return ["Content-Type" : "application/json"]
+            }
         default :
             return ["Content-Type" : "application/json"]
         }

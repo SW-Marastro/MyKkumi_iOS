@@ -39,14 +39,16 @@ class MultiLineTagView: UIView {
         button.layer.borderWidth = 1
         button.layer.borderColor = AppColor.neutral200.color.cgColor
         button.backgroundColor = AppColor.white.color
-        button.layer.cornerRadius = 16.5
+        button.layer.cornerRadius = 15
     }
     
     final func setTag(words: [String], id : [Int]) {
         var count = 0
         for word in words {
             let button = UIButton()
-            button.setAttributedTitle(NSAttributedString(string: word, attributes: Typography.body14Medium(color: AppColor.neutral700).attributes), for: .normal)
+            button.setTitle(word, for: .normal)
+            button.titleLabel?.font = Typography.body14Medium(color: AppColor.neutral700).font()
+            button.setTitleColor(AppColor.neutral700.color, for: .normal)
             applyAttribute(button: button)
             addSubview(button)
             button.frame.size.width = button.intrinsicContentSize.width + horizontalPadding * 2

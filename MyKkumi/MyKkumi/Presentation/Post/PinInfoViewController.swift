@@ -118,7 +118,7 @@ class PinInfoViewController : BaseViewController<PinInfoViewModelProtocol> {
             productNameTextView.trailingAnchor.constraint(equalTo: emptyView.trailingAnchor, constant: -20),
             productNameTextView.heightAnchor.constraint(equalToConstant: 70),
             namePlaceHolderLabel.topAnchor.constraint(equalTo: productNameTextView.topAnchor, constant: 14),
-            namePlaceHolderLabel.leadingAnchor.constraint(equalTo: productNameTextView.leadingAnchor, constant: 16),
+            namePlaceHolderLabel.leadingAnchor.constraint(equalTo: productNameTextView.leadingAnchor, constant: 18),
             namePlaceHolderLabel.trailingAnchor.constraint(equalTo: productNameTextView.trailingAnchor, constant: -16)
         ])
         
@@ -133,7 +133,7 @@ class PinInfoViewController : BaseViewController<PinInfoViewModelProtocol> {
             purchaseTextView.trailingAnchor.constraint(equalTo: emptyView.trailingAnchor, constant: -20),
             purchaseTextView.heightAnchor.constraint(equalToConstant: 70),
             infoPlaceHolderLabel.topAnchor.constraint(equalTo: purchaseTextView.topAnchor, constant: 14),
-            infoPlaceHolderLabel.leadingAnchor.constraint(equalTo: purchaseTextView.leadingAnchor, constant: 16),
+            infoPlaceHolderLabel.leadingAnchor.constraint(equalTo: purchaseTextView.leadingAnchor, constant: 18),
             infoPlaceHolderLabel.trailingAnchor.constraint(equalTo: purchaseTextView.trailingAnchor, constant: -16)
         ])
         
@@ -184,7 +184,9 @@ class PinInfoViewController : BaseViewController<PinInfoViewModelProtocol> {
     private var namePlaceHolderLabel : UILabel = {
         let label = UILabel()
         label.numberOfLines = 0
-        label.attributedText = NSAttributedString(string : "최대 20자 까지 작성할 수 있어요.", attributes: Typography.body14Medium(color: AppColor.neutral300).attributes)
+        label.text = "최대 20자 까지 작성할 수 있어요."
+        label.font = Typography.body14Medium(color: AppColor.neutral300).font()
+        label.textColor = AppColor.neutral300.color
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -214,7 +216,9 @@ class PinInfoViewController : BaseViewController<PinInfoViewModelProtocol> {
     private var infoPlaceHolderLabel : UILabel = {
         let label = UILabel()
         label.numberOfLines = 0
-        label.attributedText = NSAttributedString(string : "구매한 사이트의 URL을 작성해 주세요 (예 https//www.shop.com)", attributes: Typography.body14Medium(color: AppColor.neutral300).attributes)
+        label.text = "구매한 사이트의 URL을 작성해 주세요 (예 https//www.shop.com)"
+        label.font = Typography.body14Medium(color: AppColor.neutral300).font()
+        label.textColor = AppColor.neutral300.color
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()

@@ -12,12 +12,14 @@ import RxCocoa
 public protocol MypageViewModelInputProtocol {
     var logoutButtonTap : PublishSubject<Void> { get }
     var deleteIdButtonTap : PublishSubject<Void> { get }
+    var selectLogoutButtonTap : PublishSubject<Void> { get }
 }
 
 public protocol MypageViewModelOutputProtocol {
     var sholudAlertDeleteComplet : Driver<String> { get }
     var sholudAlertLogout : Driver<String> { get }
     var sholudPresentForm : Driver<Void> { get }
+    var sholudSelectLogout : Driver<Void> { get }
 }
 
 public protocol MypageViewModelProtocol : MypageViewModelInputProtocol, MypageViewModelOutputProtocol {
@@ -30,8 +32,12 @@ public class MypageViewModel : MypageViewModelProtocol {
     init() {
         self.logoutButtonTap = PublishSubject<Void>()
         self.deleteIdButtonTap = PublishSubject<Void>()
+        self.selectLogoutButtonTap = PublishSubject<Void>()
         
-        let logoutResult = self.logoutButtonTap
+        self.sholudSelectLogout = self.logoutButtonTap
+            .asDriver(onErrorDriveWith: .empty())
+        
+        let logoutResult = self.selectLogoutButtonTap
             .flatMapLatest {_ -> Observable<String> in
                 if let _ = KeychainHelper.shared.load(key: "accessToken") {
                     KeychainHelper.shared.delete(key: "accessToken")
@@ -67,8 +73,10 @@ public class MypageViewModel : MypageViewModelProtocol {
     
     public var logoutButtonTap: PublishSubject<Void>
     public var deleteIdButtonTap: PublishSubject<Void>
+    public var selectLogoutButtonTap: PublishSubject<Void>
     
     public var sholudAlertDeleteComplet: Driver<String>
     public var sholudPresentForm: Driver<Void>
     public var sholudAlertLogout: Driver<String>
+    public var sholudSelectLogout: Driver<Void>
 }
