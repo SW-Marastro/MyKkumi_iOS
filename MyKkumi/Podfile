@@ -24,5 +24,6 @@ pod 'Swinject'
 pod 'RxDataSources'
 pod 'KakaoSDKUser'
 pod 'KakaoSDKAuth'
+pod 'Kingfisher'
 
 end

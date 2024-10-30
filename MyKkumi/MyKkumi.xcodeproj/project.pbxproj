@@ -62,6 +62,7 @@
 		D28346F72C37F6230048CB2E /* HomeBannerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28346F62C37F6230048CB2E /* HomeBannerCell.swift */; };
 		D28346FA2C38312A0048CB2E /* CountButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28346F92C38312A0048CB2E /* CountButton.swift */; };
 		D28347042C3BB1D50048CB2E /* BannerCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28347032C3BB1D50048CB2E /* BannerCellViewModel.swift */; };
+		D28AA9C52CC7491A00834FA5 /* ImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28AA9C42CC7491A00834FA5 /* ImageCache.swift */; };
 		D2911AE42C72FB9E00D1BABC /* CustomTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2911AE32C72FB9E00D1BABC /* CustomTabBarController.swift */; };
 		D2911AE62C72FDD100D1BABC /* CustomTabbarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2911AE52C72FDD100D1BABC /* CustomTabbarViewModel.swift */; };
 		D2911AE82C750BE800D1BABC /* MultiLineTagView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2911AE72C750BE800D1BABC /* MultiLineTagView.swift */; };
@@ -197,6 +198,7 @@
 		D28346F62C37F6230048CB2E /* HomeBannerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeBannerCell.swift; sourceTree = "<group>"; };
 		D28346F92C38312A0048CB2E /* CountButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountButton.swift; sourceTree = "<group>"; };
 		D28347032C3BB1D50048CB2E /* BannerCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerCellViewModel.swift; sourceTree = "<group>"; };
+		D28AA9C42CC7491A00834FA5 /* ImageCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCache.swift; sourceTree = "<group>"; };
 		D2911AE32C72FB9E00D1BABC /* CustomTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBarController.swift; sourceTree = "<group>"; };
 		D2911AE52C72FDD100D1BABC /* CustomTabbarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabbarViewModel.swift; sourceTree = "<group>"; };
 		D2911AE72C750BE800D1BABC /* MultiLineTagView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiLineTagView.swift; sourceTree = "<group>"; };
@@ -584,6 +586,7 @@
 		D28AA9C32CBE5A9400834FA5 /* Cache */ = {
 			isa = PBXGroup;
 			children = (
+				D28AA9C42CC7491A00834FA5 /* ImageCache.swift */,
 			);
 			path = Cache;
 			sourceTree = "<group>";
@@ -1225,6 +1228,7 @@
 				D2ABCDDC2C2A6E780035F7A1 /* DependencyInjector.swift in Sources */,
 				D2672C282C64C202005B23A4 /* MakePostDataSource.swift in Sources */,
 				D2672C3B2C64D1AA005B23A4 /* MakePostRepositoryProtocol.swift in Sources */,
+				D28AA9C52CC7491A00834FA5 /* ImageCache.swift in Sources */,
 				D2911AEC2C809A3D00D1BABC /* UIResponderExtension.swift in Sources */,
 				D2ED95512C4E1BB2004DA169 /* CategoryCollectionViewCell.swift in Sources */,
 				D2672BD42C62B723005B23A4 /* PinInfoViewController.swift in Sources */,
