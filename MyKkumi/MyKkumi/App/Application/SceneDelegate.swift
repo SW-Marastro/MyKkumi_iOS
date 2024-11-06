@@ -24,6 +24,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         //keyChain에서 값 꺼내서 확인
         window = RootWindow(windowScene: windowScence)
         window?.makeKeyAndVisible()
+        
     }
     
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
