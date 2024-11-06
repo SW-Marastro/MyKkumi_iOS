@@ -26,6 +26,7 @@ enum Typography {
     case caption11Medium(color: AppColor)
     case chab(color: AppColor)
     case gmarketSansBold(color: AppColor)
+    case modak(color : AppColor)
     
     var attributes: [NSAttributedString.Key: Any] {
         let paragraphStyle = NSMutableParagraphStyle()
@@ -51,7 +52,8 @@ enum Typography {
              .caption12Medium(let color),
              .caption11Medium(let color),
              .chab(let color),
-             .gmarketSansBold(let color):
+             .gmarketSansBold(let color),
+             .modak(let color):
             textColor = color.color
             
             // lineHeight 설정
@@ -87,6 +89,7 @@ enum Typography {
         case .caption11Medium: return 11 * 1.4
         case .chab: return 24 * 1.4
         case .gmarketSansBold: return 18 * 1.4
+        case .modak: return 20 * 1.4
         }
     }
 
@@ -110,6 +113,7 @@ enum Typography {
         case .caption11Medium: return UIFont(name: "Pretendard-Medium", size: 11)!
         case .chab: return UIFont(name: "LOTTERIACHAB", size: 20)!
         case .gmarketSansBold: return UIFont(name: "GmarketSansBold", size: 18)!
+        case .modak: return UIFont(name: "Modak", size: 20)!
         }
     }
 }

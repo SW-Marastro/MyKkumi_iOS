@@ -209,7 +209,7 @@ class HomeViewController: BaseViewController<HomeViewModelProtocol> {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "MYKKUMI"
-        label.font = Typography.chab(color: AppColor.primary).font()
+        label.font = Typography.modak(color: AppColor.primary).font()
         label.textColor = AppColor.primary.color
         return label
     }()
