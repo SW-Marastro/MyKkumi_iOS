@@ -9,12 +9,18 @@ import Foundation
 import RxSwift
 import UIKit
 import SafariServices
+import FirebaseAnalytics
 
 class MypageViewController : BaseViewController<MypageViewModelProtocol> {
     var viewModel : MypageViewModelProtocol!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        Analytics.logEvent(AnalyticsEventScreenView, parameters: [
+            AnalyticsParameterScreenName: LogEvnetParameter.MypageViewController.value,
+            AnalyticsParameterScreenClass: NSStringFromClass(type(of: self))
+        ])
     }
     
     override func setupHierarchy() {

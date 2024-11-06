@@ -10,6 +10,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 import AuthenticationServices
+import FirebaseAnalytics
 
 class AuthViewController : BaseViewController<AuthViewModelProtocol>{
     var viewModel: AuthViewModelProtocol!
@@ -21,6 +22,10 @@ class AuthViewController : BaseViewController<AuthViewModelProtocol>{
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.isNavigationBarHidden = false
+        Analytics.logEvent(AnalyticsEventScreenView, parameters: [
+            AnalyticsParameterScreenName: LogEvnetParameter.AuthViewController.value,
+            AnalyticsParameterScreenClass: NSStringFromClass(type(of: self))
+        ])
     }
     
 //    override func viewDidDisappear(_ animated: Bool) {

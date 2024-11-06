@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 import RxSwift
+import FirebaseAnalytics
 
 
 class CollectCategoryViewController : BaseViewController<CollectCategoryViewModelProtocol> {
@@ -20,6 +21,11 @@ class CollectCategoryViewController : BaseViewController<CollectCategoryViewMode
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        Analytics.logEvent(AnalyticsEventScreenView, parameters: [
+            AnalyticsParameterScreenName: LogEvnetParameter.CollectCategoryViewController.value,
+            AnalyticsParameterScreenClass: NSStringFromClass(type(of: self))
+        ])
     }
     
     public override func setupHierarchy() {

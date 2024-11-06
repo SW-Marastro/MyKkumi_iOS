@@ -17,7 +17,7 @@ class HomeViewController: BaseViewController<HomeViewModelProtocol> {
         self.navigationController?.setNavigationBarHidden(true, animated: false)
         
         Analytics.logEvent(AnalyticsEventScreenView, parameters: [
-            AnalyticsParameterScreenName: "HomeScreen",
+            AnalyticsParameterScreenName: LogEvnetParameter.HomeViewController.value,
             AnalyticsParameterScreenClass: NSStringFromClass(type(of: self))
         ])
     }
