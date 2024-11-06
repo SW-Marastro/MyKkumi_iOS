@@ -2,6 +2,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 import RxDataSources
+import FirebaseAnalytics
 
 class HomeViewController: BaseViewController<HomeViewModelProtocol> {
     var viewModel: HomeViewModelProtocol!
@@ -14,6 +15,11 @@ class HomeViewController: BaseViewController<HomeViewModelProtocol> {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.setNavigationBarHidden(true, animated: false)
+        
+        Analytics.logEvent(AnalyticsEventScreenView, parameters: [
+            AnalyticsParameterScreenName: LogEvnetParameter.HomeViewController.value,
+            AnalyticsParameterScreenClass: NSStringFromClass(type(of: self))
+        ])
     }
     
     override func viewWillAppear(_ animated: Bool) {

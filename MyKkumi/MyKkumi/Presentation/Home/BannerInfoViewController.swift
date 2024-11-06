@@ -9,6 +9,7 @@ import Foundation
 import RxSwift
 import RxCocoa
 import RxDataSources
+import FirebaseAnalytics
 
 class BannerInfoViewController : BaseViewController<BannerInfoViewModelProtocol> {
     var viewModel : BannerInfoViewModelProtocol!
@@ -21,6 +22,11 @@ class BannerInfoViewController : BaseViewController<BannerInfoViewModelProtocol>
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.setNavigationBarHidden(false, animated: false)
+        
+        Analytics.logEvent(AnalyticsEventScreenView, parameters: [
+            AnalyticsParameterScreenName: LogEvnetParameter.BannerInfoViewController.value,
+            AnalyticsParameterScreenClass: NSStringFromClass(type(of: self))
+        ])
     }
     
     public override func setupHierarchy() {

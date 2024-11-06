@@ -8,6 +8,7 @@
 import UIKit
 import RxSwift
 import RxCocoa
+import FirebaseAnalytics
 
 class DetailBannerViewController : BaseViewController<Void> {
     private lazy var bannerImageView : UIImageView = {
@@ -35,6 +36,11 @@ class DetailBannerViewController : BaseViewController<Void> {
         let backBarButtonItem = UIBarButtonItem(customView: backButton)
         backButton.addTarget(self, action: #selector(popView), for: .touchUpInside)
         navigationItem.leftBarButtonItem = backBarButtonItem
+        
+        Analytics.logEvent(AnalyticsEventScreenView, parameters: [
+            AnalyticsParameterScreenName: LogEvnetParameter.DetailBannerViewController.value,
+            AnalyticsParameterScreenClass: NSStringFromClass(type(of: self))
+        ])
     }
     
     public override func setupHierarchy() {

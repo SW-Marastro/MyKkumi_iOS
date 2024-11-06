@@ -10,12 +10,18 @@ import RxSwift
 import RxCocoa
 import AVFoundation
 import PhotosUI
+import FirebaseAnalytics
 
 class MakePostViewController : BaseViewController<MakePostViewModelProtocol> {
     var viewModel : MakePostViewModelProtocol!
     
     override init() {
         super.init()
+        
+        Analytics.logEvent(AnalyticsEventScreenView, parameters: [
+            AnalyticsParameterScreenName: LogEvnetParameter.MakePostViewController.value,
+            AnalyticsParameterScreenClass: NSStringFromClass(type(of: self))
+        ])
     }
     
     deinit {

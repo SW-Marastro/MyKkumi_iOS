@@ -7,12 +7,18 @@
 
 import Foundation
 import UIKit
+import FirebaseAnalytics
 
 class PinInfoViewController : BaseViewController<PinInfoViewModelProtocol> {
     var viewModel : PinInfoViewModelProtocol!
     
     override init() {
         super.init()
+        
+        Analytics.logEvent(AnalyticsEventScreenView, parameters: [
+            AnalyticsParameterScreenName: LogEvnetParameter.PinInfoViewController.value,
+            AnalyticsParameterScreenClass: NSStringFromClass(type(of: self))
+        ])
     }
     
     override func viewDidLoad() {

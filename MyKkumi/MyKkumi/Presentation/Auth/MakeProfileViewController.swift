@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 import RxSwift
 import RxCocoa
+import FirebaseAnalytics
 
 class MakeProfileViewController : BaseViewController<MakeProfileViewModelProtocol> {
     var viewModel : MakeProfileViewModelProtocol!
@@ -19,6 +20,11 @@ class MakeProfileViewController : BaseViewController<MakeProfileViewModelProtoco
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        Analytics.logEvent(AnalyticsEventScreenView, parameters: [
+            AnalyticsParameterScreenName: LogEvnetParameter.MakeProfileViewController.value,
+            AnalyticsParameterScreenClass: NSStringFromClass(type(of: self))
+        ])
     }
     
     public override func setupHierarchy() {
