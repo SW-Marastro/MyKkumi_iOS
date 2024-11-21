@@ -132,6 +132,8 @@
 		D2ED954F2C4E1B76004DA169 /* CategoryCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ED954E2C4E1B76004DA169 /* CategoryCollectionView.swift */; };
 		D2ED95512C4E1BB2004DA169 /* CategoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ED95502C4E1BB2004DA169 /* CategoryCollectionViewCell.swift */; };
 		D2ED95532C4E26E4004DA169 /* CategoryCollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ED95522C4E26E4004DA169 /* CategoryCollectionViewFlowLayout.swift */; };
+		D2F934A82CEF09BA00EAD68E /* SetProfilViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2F934A72CEF09BA00EAD68E /* SetProfilViewController.swift */; };
+		D2F934AA2CEF293200EAD68E /* SetProfilViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2F934A92CEF293200EAD68E /* SetProfilViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -265,6 +267,8 @@
 		D2ED954E2C4E1B76004DA169 /* CategoryCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCollectionView.swift; sourceTree = "<group>"; };
 		D2ED95502C4E1BB2004DA169 /* CategoryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCollectionViewCell.swift; sourceTree = "<group>"; };
 		D2ED95522C4E26E4004DA169 /* CategoryCollectionViewFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCollectionViewFlowLayout.swift; sourceTree = "<group>"; };
+		D2F934A72CEF09BA00EAD68E /* SetProfilViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetProfilViewController.swift; sourceTree = "<group>"; };
+		D2F934A92CEF293200EAD68E /* SetProfilViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetProfilViewModel.swift; sourceTree = "<group>"; };
 		DD509B30BF78F2EF18546CC5 /* Pods-MyKkumiTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyKkumiTests.debug.xcconfig"; path = "Target Support Files/Pods-MyKkumiTests/Pods-MyKkumiTests.debug.xcconfig"; sourceTree = "<group>"; };
 		F6DC5A17030EFC69F83EACBA /* Pods-MyKkumi.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyKkumi.release.xcconfig"; path = "Target Support Files/Pods-MyKkumi/Pods-MyKkumi.release.xcconfig"; sourceTree = "<group>"; };
 		FC2461C807CEF6A2AC1EB837 /* Pods-MyKkumi-MyKkumiUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyKkumi-MyKkumiUITests.debug.xcconfig"; path = "Target Support Files/Pods-MyKkumi-MyKkumiUITests/Pods-MyKkumi-MyKkumiUITests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -713,6 +717,8 @@
 			children = (
 				D2ABCDEA2C2A9D8A0035F7A1 /* MypageViewController.swift */,
 				D2911AE92C75A84500D1BABC /* MypageViewModel.swift */,
+				D2F934A72CEF09BA00EAD68E /* SetProfilViewController.swift */,
+				D2F934A92CEF293200EAD68E /* SetProfilViewModel.swift */,
 			);
 			path = Mypage;
 			sourceTree = "<group>";
@@ -1180,6 +1186,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D2F934AA2CEF293200EAD68E /* SetProfilViewModel.swift in Sources */,
 				D21FB54A2C3D2B7700927905 /* PostCellViewModel.swift in Sources */,
 				D28346F72C37F6230048CB2E /* HomeBannerCell.swift in Sources */,
 				D2911AE42C72FB9E00D1BABC /* CustomTabBarController.swift in Sources */,
@@ -1189,6 +1196,7 @@
 				D2ED95312C440F3C004DA169 /* CollectCategoryViewController.swift in Sources */,
 				D2ED953D2C46A907004DA169 /* AuthService.swift in Sources */,
 				D2672BCE2C61F196005B23A4 /* MakePostVO.swift in Sources */,
+				D2F934A82CEF09BA00EAD68E /* SetProfilViewController.swift in Sources */,
 				D28347042C3BB1D50048CB2E /* BannerCellViewModel.swift in Sources */,
 				D2ED95352C44C7F1004DA169 /* MakeProfileViewController.swift in Sources */,
 				D2ABCE3B2C3434140035F7A1 /* PostRespository.swift in Sources */,

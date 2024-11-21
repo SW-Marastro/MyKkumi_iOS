@@ -56,6 +56,14 @@ class MypageViewController : BaseViewController<MypageViewModelProtocol> {
                 NotificationCenter.default.post(name: .showAuth, object: nil)
             })
             .disposed(by: disposeBag)
+        
+        self.viewModel.showSetProfilView
+            .drive(onNext: {
+                let setProfileVC = SetProfilViewController()
+                setProfileVC.setupBind(viewModel: SetProfilViewModel())
+                self.navigationController?.pushViewController(setProfileVC, animated: true)
+            })
+            .disposed(by: disposeBag)
     }
     
     override func setupLayout() {

@@ -17,6 +17,7 @@ public enum LogEvnetParameter {
     case MakePostViewController
     case PinInfoViewController
     case MypageViewController
+    case SetProfilViewController
 }
 
 extension LogEvnetParameter {
@@ -40,6 +41,8 @@ extension LogEvnetParameter {
             return "InputProductScreen"
         case .MypageViewController :
             return "MypageScreen"
+        case .SetProfilViewController :
+            return "EditProfileScreen"
         }
     }
 }
