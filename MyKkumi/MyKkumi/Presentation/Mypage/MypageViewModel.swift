@@ -10,16 +10,18 @@ import RxSwift
 import RxCocoa
 
 public protocol MypageViewModelInputProtocol {
-    var logoutButtonTap : PublishSubject<Void> { get }
-    var deleteIdButtonTap : PublishSubject<Void> { get }
-    var selectLogoutButtonTap : PublishSubject<Void> { get }
+    var viewDidLoad : PublishSubject<Void> { get }
+    var tapProfilSettingButton : PublishSubject<Void> { get }
+    var tapSettingButton : PublishSubject<Void> { get }
+    var tapLoginButton : PublishSubject<Void> { get }
 }
 
 public protocol MypageViewModelOutputProtocol {
-    var sholudAlertDeleteComplet : Driver<String> { get }
-    var sholudAlertLogout : Driver<String> { get }
-    var sholudPresentForm : Driver<Void> { get }
-    var sholudSelectLogout : Driver<Void> { get }
+    var showUnloginedPage : Driver<Bool> { get }
+    var showLoginedPage : Driver<UserVO> { get }
+    var showSetProfilView : Driver<Void> { get }
+    var showSettingView : Driver<Void> { get }
+    var showAuthView : Driver<Void> { get }
 }
 
 public protocol MypageViewModelProtocol : MypageViewModelInputProtocol, MypageViewModelOutputProtocol {
@@ -27,56 +29,60 @@ public protocol MypageViewModelProtocol : MypageViewModelInputProtocol, MypageVi
 }
 
 public class MypageViewModel : MypageViewModelProtocol {
-    let disposeBag = DisposeBag()
+    private let disposeBag = DisposeBag()
+    private let authUsecase : AuthUsecase
     
-    init() {
-        self.logoutButtonTap = PublishSubject<Void>()
-        self.deleteIdButtonTap = PublishSubject<Void>()
-        self.selectLogoutButtonTap = PublishSubject<Void>()
+    init(authUsecase : AuthUsecase = DependencyInjector.shared.resolve(AuthUsecase.self)) {
+        self.authUsecase = authUsecase
         
-        self.sholudSelectLogout = self.logoutButtonTap
-            .asDriver(onErrorDriveWith: .empty())
+        self.viewDidLoad = PublishSubject<Void>()
+        self.tapProfilSettingButton = PublishSubject<Void>()
+        self.tapSettingButton = PublishSubject<Void>()
+        self.tapLoginButton = PublishSubject<Void>()
         
-        let logoutResult = self.selectLogoutButtonTap
-            .flatMapLatest {_ -> Observable<String> in
-                if let _ = KeychainHelper.shared.load(key: "accessToken") {
-                    KeychainHelper.shared.delete(key: "accessToken")
-                    KeychainHelper.shared.delete(key: "refreshToken")
-                    return Observable.just("로그아웃이 완료되었습니다.")
-                } else {
-                    return Observable.just("로그인이 필요합니다.")
-                }
-            }
-        
-        let deleteResult = self.deleteIdButtonTap
-            .flatMapLatest {_ -> Observable<Bool> in
-                if let _ = KeychainHelper.shared.load(key: "accessToken") {
+        let logined = viewDidLoad
+            .flatMap{ _ -> Observable<Bool> in
+                if KeychainHelper.shared.load(key: "refreshToken") != nil {
                     return Observable.just(true)
                 } else {
                     return Observable.just(false)
                 }
             }
+            .share()
         
-        self.sholudAlertLogout = logoutResult
+        showUnloginedPage = logined
+            .filter { !$0 }
             .asDriver(onErrorDriveWith: .empty())
         
-        self.sholudPresentForm = deleteResult
-            .filter{$0}
-            .map { _ in Void()}
+        let userInfo = logined
+            .filter{ $0 }
+            .flatMap { _ in
+                return authUsecase.getUserData()
+            }
+            .share()
+        
+        showLoginedPage = userInfo
+            .compactMap { $0.successValue() }
             .asDriver(onErrorDriveWith: .empty())
         
-        self.sholudAlertDeleteComplet = deleteResult
-            .filter{!$0}
-            .map{_ in "로그인이 필요합니다."}
+        showSetProfilView = tapProfilSettingButton
+            .asDriver(onErrorDriveWith: .empty())
+        
+        showSettingView = tapSettingButton
+            .asDriver(onErrorDriveWith: .empty())
+        
+        showAuthView = tapLoginButton
             .asDriver(onErrorDriveWith: .empty())
     }
     
-    public var logoutButtonTap: PublishSubject<Void>
-    public var deleteIdButtonTap: PublishSubject<Void>
-    public var selectLogoutButtonTap: PublishSubject<Void>
+    public var viewDidLoad: PublishSubject<Void>
+    public var tapProfilSettingButton: PublishSubject<Void>
+    public var tapSettingButton: PublishSubject<Void>
+    public var tapLoginButton: PublishSubject<Void>
     
-    public var sholudAlertDeleteComplet: Driver<String>
-    public var sholudPresentForm: Driver<Void>
-    public var sholudAlertLogout: Driver<String>
-    public var sholudSelectLogout: Driver<Void>
+    public var showUnloginedPage: Driver<Bool>
+    public var showLoginedPage: Driver<UserVO>
+    public var showSetProfilView: Driver<Void>
+    public var showSettingView: Driver<Void>
+    public var showAuthView: Driver<Void>
 }
