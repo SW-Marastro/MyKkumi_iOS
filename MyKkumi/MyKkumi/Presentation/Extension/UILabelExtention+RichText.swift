@@ -71,7 +71,7 @@ func createRichText(from content: [ContentVO]) -> NSAttributedString {
             // 해시태그 속성
             var attributeDict: [NSAttributedString.Key: Any] = [:]
 
-            if let color = item.color {
+            if let _ = item.color {
                 attributeDict[.foregroundColor] = AppColor.hash.color
             }
 

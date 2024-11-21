@@ -5,6 +5,13 @@
 //  Created by 최재혁 on 8/7/24.
 //
 
+//
+//  PinInfoViewController.swift
+//  MyKkumi
+//
+//  Created by 최재혁 on 8/7/24.
+//
+
 import Foundation
 import UIKit
 import FirebaseAnalytics

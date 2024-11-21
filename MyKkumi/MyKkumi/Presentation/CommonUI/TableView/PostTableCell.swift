@@ -7,6 +7,7 @@
 
 import UIKit
 import RxSwift
+import RxCocoa
 
 open class PostTableCell : UITableViewCell {
     public static let cellID = "PostTableCell"
@@ -134,16 +135,22 @@ open class PostTableCell : UITableViewCell {
                     let imageX = (imageViewSize.width - scaledImageSize.width) / 2
                     let imageY = (imageViewSize.height - scaledImageSize.height) / 2
                     
-                    for pin in post.pins {
+                    for (index, pin) in post.pins.enumerated() {
                         let x = scaledImageSize.width * pin.positionX + imageX
                         let y = scaledImageSize.height * pin.positionY + imageY
                         
-                        let pinImageView : UIImageView = {
-                            let image = UIImageView()
-                            image.translatesAutoresizingMaskIntoConstraints = false
-                            image.image = AppImage.pin.image
-                            return image
+                        let pinImageView : UIButton = {
+                            let button = UIButton()
+                            button.translatesAutoresizingMaskIntoConstraints = false
+                            button.setImage(AppImage.pin.image, for: .normal)
+                            button.tag = index
+                            return button
                         }()
+                        
+                        pinImageView.rx.tap
+                            .map{ [post.url : pinImageView.tag] }
+                            .bind(to: self.viewModel.pinButtonTap)
+                            .disposed(by: self.disposeBag)
                         
                         imageAndPinView.addSubview(pinImageView)
                         

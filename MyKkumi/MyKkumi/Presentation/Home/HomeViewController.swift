@@ -149,6 +149,19 @@ class HomeViewController: BaseViewController<HomeViewModelProtocol> {
                 self.present(alert, animated: true, completion: nil)
             })
             .disposed(by: disposeBag)
+        
+        self.viewModel.shouldPresentPinInfo
+            .drive(onNext: { pin in
+                guard let pinInfo = pin else { return }
+                let showPinInfoVC = ShowPinInfoViewController()
+                if let productInfo = pinInfo.productInfo {
+                    showPinInfoVC.setupBind(viewModel: productInfo)
+                }
+
+                showPinInfoVC.modalPresentationStyle = .overFullScreen
+                self.present(showPinInfoVC, animated: false)
+            })
+            .disposed(by: disposeBag)
     }
     
     public override func setupDelegate() {

@@ -132,6 +132,7 @@
 		D2ED954F2C4E1B76004DA169 /* CategoryCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ED954E2C4E1B76004DA169 /* CategoryCollectionView.swift */; };
 		D2ED95512C4E1BB2004DA169 /* CategoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ED95502C4E1BB2004DA169 /* CategoryCollectionViewCell.swift */; };
 		D2ED95532C4E26E4004DA169 /* CategoryCollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ED95522C4E26E4004DA169 /* CategoryCollectionViewFlowLayout.swift */; };
+		D2F934AC2CEFCDBE00EAD68E /* ShowPinInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2F934AB2CEFCDBE00EAD68E /* ShowPinInfoViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -265,6 +266,7 @@
 		D2ED954E2C4E1B76004DA169 /* CategoryCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCollectionView.swift; sourceTree = "<group>"; };
 		D2ED95502C4E1BB2004DA169 /* CategoryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCollectionViewCell.swift; sourceTree = "<group>"; };
 		D2ED95522C4E26E4004DA169 /* CategoryCollectionViewFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCollectionViewFlowLayout.swift; sourceTree = "<group>"; };
+		D2F934AB2CEFCDBE00EAD68E /* ShowPinInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowPinInfoViewController.swift; sourceTree = "<group>"; };
 		DD509B30BF78F2EF18546CC5 /* Pods-MyKkumiTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyKkumiTests.debug.xcconfig"; path = "Target Support Files/Pods-MyKkumiTests/Pods-MyKkumiTests.debug.xcconfig"; sourceTree = "<group>"; };
 		F6DC5A17030EFC69F83EACBA /* Pods-MyKkumi.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyKkumi.release.xcconfig"; path = "Target Support Files/Pods-MyKkumi/Pods-MyKkumi.release.xcconfig"; sourceTree = "<group>"; };
 		FC2461C807CEF6A2AC1EB837 /* Pods-MyKkumi-MyKkumiUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyKkumi-MyKkumiUITests.debug.xcconfig"; path = "Target Support Files/Pods-MyKkumi-MyKkumiUITests/Pods-MyKkumi-MyKkumiUITests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -688,6 +690,7 @@
 				D2ABCE212C3271B60035F7A1 /* BannerInfoViewModel.swift */,
 				D28347032C3BB1D50048CB2E /* BannerCellViewModel.swift */,
 				D21FB5492C3D2B7700927905 /* PostCellViewModel.swift */,
+				D2F934AB2CEFCDBE00EAD68E /* ShowPinInfoViewController.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -1253,6 +1256,7 @@
 				D2AB229B2C6E0C8300027027 /* UILabelExtention+RichText.swift in Sources */,
 				D2672BD22C62B64B005B23A4 /* PinInfoViewModel.swift in Sources */,
 				D28346D72C3575ED0048CB2E /* UIViewController+Rx.swift in Sources */,
+				D2F934AC2CEFCDBE00EAD68E /* ShowPinInfoViewController.swift in Sources */,
 				D21030602C1FC1900059CACA /* HelloWorld.swift in Sources */,
 				D2ABCE012C2C01880035F7A1 /* BannerCollectionViewFlowLayout.swift in Sources */,
 				D2ABCE3D2C3434F00035F7A1 /* PostUsecase.swift in Sources */,

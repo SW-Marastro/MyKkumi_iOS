@@ -17,6 +17,7 @@ public protocol HomeViewModelInput {
     var reportButtonTapInput : PublishSubject<[String : Int]> { get }
     var postReported : PublishSubject<Int> { get }
     var userReported : PublishSubject<String> { get }
+    var pinButtonTapInput : PublishSubject<Pin?> { get }
 }
 
 public protocol HomeviewModelOutput {
@@ -29,6 +30,7 @@ public protocol HomeviewModelOutput {
     var shouldPushReportErrorAlert : Driver<String> { get }
     var shouldPushReportPostAlert : Driver<String> { get }
     var shouldPushReportPostErrorAlert : Driver<String> { get }
+    var shouldPresentPinInfo : Driver<Pin?> { get }
 }
 
 public protocol HomeViewModelProtocol : HomeviewModelOutput, HomeViewModelInput {
@@ -62,6 +64,7 @@ public class HomeViewModel : HomeViewModelProtocol {
         self.userReported = PublishSubject<String>()
         self.bannerViewModel = BehaviorRelay<BannerCellViewModelProtocol>(value: bannerDetailViewModel)
         self.bannerViewUsed = BehaviorRelay<Bool> (value: true)
+        self.pinButtonTapInput = PublishSubject<Pin?>()
 
         //MARK: Banner
         let allBannerResult = self.viewdidload
@@ -187,6 +190,9 @@ public class HomeViewModel : HomeViewModelProtocol {
             }
             .asDriver(onErrorDriveWith: .empty())
         
+        self.shouldPresentPinInfo = self.pinButtonTapInput
+            .asDriver(onErrorDriveWith: .empty())
+        
         successAllPostResult
             .subscribe(onNext: {[weak self] result in
                 guard let self = self else { return }
@@ -197,6 +203,11 @@ public class HomeViewModel : HomeViewModelProtocol {
                     vm.reportButtonTap
                         .subscribe(onNext: {id in
                             self.reportButtonTapInput.onNext(id)
+                        })
+                        .disposed(by: self.disposeBag)
+                    vm.showPinInfo
+                        .drive(onNext: {pin in
+                            self.pinButtonTapInput.onNext(pin)
                         })
                         .disposed(by: self.disposeBag)
                     tmpPostViewModels.append(vm)
@@ -216,6 +227,7 @@ public class HomeViewModel : HomeViewModelProtocol {
     public var shouldPushReportPostAlert: Driver<String>
     public var shouldPushReportErrorAlert: Driver<String>
     public var shouldPushReportPostErrorAlert: Driver<String>
+    public var shouldPresentPinInfo : Driver<Pin?>
     
     public var postTap : PublishSubject<Int64>
     public var uploadPostButtonTap : PublishSubject<Void>
@@ -223,6 +235,7 @@ public class HomeViewModel : HomeViewModelProtocol {
     public var reportButtonTapInput: PublishSubject<[String : Int]>
     public var postReported: PublishSubject<Int>
     public var userReported: PublishSubject<String>
+    public var pinButtonTapInput : PublishSubject<Pin?>
     
     public var cursur: BehaviorRelay<String>
     public var postViewModels: BehaviorRelay<[any PostCellViewModelProtocol]>
