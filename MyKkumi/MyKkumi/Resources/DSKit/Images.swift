@@ -36,6 +36,7 @@ enum AppImage {
     case whiteAppLogo
     case backArrow
     case deleteImage
+    case settingButton
     
     var image : UIImage {
         return self.getImage()
@@ -99,6 +100,8 @@ enum AppImage {
             return UIImage(named : "BackArrow")!
         case .deleteImage :
             return UIImage(named : "DeleteImageButton")!
+        case .settingButton :
+            return UIImage(named : "SettingButton")!
         }
     }
 }
